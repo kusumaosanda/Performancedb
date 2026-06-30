@@ -1,75 +1,44 @@
 {
-  "kpis": [
+  "period": "202506",
+  "period_label": "June 2025",
+  "generated_at": "2026-06-30T23:53:03",
+  "entities": [
     {
-      "label": "Overall Progress",
-      "actual": 67,
-      "target": 100,
-      "suffix": "%",
-      "trend": "up",
-      "delta": "5%",
-      "icon": "📈",
-      "progressLabel": "Complete"
-    },
-    {
-      "label": "Budget Used",
-      "actual": 1250000,
-      "target": 2000000,
-      "prefix": "RM ",
-      "trend": "flat",
-      "delta": "",
-      "icon": "💰",
-      "progressLabel": "Spent"
-    },
-    {
-      "label": "Tasks Completed",
-      "actual": 34,
-      "target": 50,
-      "trend": "up",
-      "delta": "8",
-      "icon": "✅",
-      "progressLabel": "Done"
-    },
-    {
-      "label": "Issues Open",
-      "actual": 7,
-      "target": 0,
-      "trend": "down",
-      "delta": "3",
-      "icon": "⚠️"
-    }
-  ],
-  "charts": [
-    {
-      "title": "Monthly Progress (%)",
-      "type": "line",
-      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      "datasets": [
+      "entity": "TTI",
+      "period": "202506",
+      "total": 155827,
+      "comply": 150326,
+      "not_comply": 5491,
+      "anomaly": 10,
+      "sla_pct": 96.48,
+      "by_area": [
         {
-          "label": "Planned",
-          "data": [5, 12, 20, 28, 38, 48, 57, 65, 74, 83, 92, 100],
-          "color": "#2d7dd2"
+          "area": "AREA 1",
+          "comply": 37002,
+          "not_comply": 2059,
+          "anomaly": 0,
+          "sla_pct": 94.73
         },
         {
-          "label": "Actual",
-          "data": [4, 10, 18, 27, 40, 52, 67, null, null, null, null, null],
-          "color": "#3ec6a6"
-        }
-      ]
-    },
-    {
-      "title": "Budget Breakdown (RM)",
-      "type": "bar",
-      "labels": ["Civil", "Structural", "M&E", "Finishing", "Prelim", "Contingency"],
-      "datasets": [
-        {
-          "label": "Budgeted",
-          "data": [400000, 350000, 300000, 250000, 150000, 100000],
-          "color": "#2d7dd2"
+          "area": "AREA 2",
+          "comply": 40729,
+          "not_comply": 637,
+          "anomaly": 10,
+          "sla_pct": 98.46
         },
         {
-          "label": "Spent",
-          "data": [310000, 290000, 200000, 150000, 130000, 40000],
-          "color": "#3ec6a6"
+          "area": "AREA 3",
+          "comply": 36734,
+          "not_comply": 1458,
+          "anomaly": 0,
+          "sla_pct": 96.18
+        },
+        {
+          "area": "AREA 4",
+          "comply": 35861,
+          "not_comply": 1337,
+          "anomaly": 0,
+          "sla_pct": 96.41
         }
       ]
     }
