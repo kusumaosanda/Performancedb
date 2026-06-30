@@ -1,0 +1,77 @@
+{
+  "kpis": [
+    {
+      "label": "Overall Progress",
+      "actual": 67,
+      "target": 100,
+      "suffix": "%",
+      "trend": "up",
+      "delta": "5%",
+      "icon": "📈",
+      "progressLabel": "Complete"
+    },
+    {
+      "label": "Budget Used",
+      "actual": 1250000,
+      "target": 2000000,
+      "prefix": "RM ",
+      "trend": "flat",
+      "delta": "",
+      "icon": "💰",
+      "progressLabel": "Spent"
+    },
+    {
+      "label": "Tasks Completed",
+      "actual": 34,
+      "target": 50,
+      "trend": "up",
+      "delta": "8",
+      "icon": "✅",
+      "progressLabel": "Done"
+    },
+    {
+      "label": "Issues Open",
+      "actual": 7,
+      "target": 0,
+      "trend": "down",
+      "delta": "3",
+      "icon": "⚠️"
+    }
+  ],
+  "charts": [
+    {
+      "title": "Monthly Progress (%)",
+      "type": "line",
+      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "datasets": [
+        {
+          "label": "Planned",
+          "data": [5, 12, 20, 28, 38, 48, 57, 65, 74, 83, 92, 100],
+          "color": "#2d7dd2"
+        },
+        {
+          "label": "Actual",
+          "data": [4, 10, 18, 27, 40, 52, 67, null, null, null, null, null],
+          "color": "#3ec6a6"
+        }
+      ]
+    },
+    {
+      "title": "Budget Breakdown (RM)",
+      "type": "bar",
+      "labels": ["Civil", "Structural", "M&E", "Finishing", "Prelim", "Contingency"],
+      "datasets": [
+        {
+          "label": "Budgeted",
+          "data": [400000, 350000, 300000, 250000, 150000, 100000],
+          "color": "#2d7dd2"
+        },
+        {
+          "label": "Spent",
+          "data": [310000, 290000, 200000, 150000, 130000, 40000],
+          "color": "#3ec6a6"
+        }
+      ]
+    }
+  ]
+}
