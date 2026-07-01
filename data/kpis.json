@@ -1,7 +1,7 @@
 {
-  "last_updated": "202603",
-  "last_updated_label": "March 2026",
-  "generated_at": "2026-07-01T14:20:51",
+  "last_updated": "202604",
+  "last_updated_label": "April 2026",
+  "generated_at": "2026-07-01T14:21:03",
   "months": {
     "202506": {
       "TTI": {
@@ -2526,6 +2526,589 @@
                     "not_comply": 143,
                     "anomaly": 0,
                     "sla_pct": 83.26
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "202604": {
+      "TTI": {
+        "total": 153546,
+        "comply": 147586,
+        "not_comply": 5959,
+        "anomaly": 1,
+        "sla_pct": 96.12,
+        "target": 95.0,
+        "by_area": [
+          {
+            "area": "AREA 1",
+            "comply": 34850,
+            "not_comply": 2442,
+            "anomaly": 0,
+            "sla_pct": 93.45,
+            "by_regional": [
+              {
+                "regional": "SUMBAGSEL",
+                "comply": 10585,
+                "not_comply": 937,
+                "anomaly": 0,
+                "sla_pct": 91.87,
+                "by_branch": [
+                  {
+                    "branch": "BENGKULU",
+                    "comply": 3231,
+                    "not_comply": 322,
+                    "anomaly": 0,
+                    "sla_pct": 90.94
+                  },
+                  {
+                    "branch": "JAMBI",
+                    "comply": 1363,
+                    "not_comply": 204,
+                    "anomaly": 0,
+                    "sla_pct": 86.98
+                  },
+                  {
+                    "branch": "LAMPUNG",
+                    "comply": 2141,
+                    "not_comply": 228,
+                    "anomaly": 0,
+                    "sla_pct": 90.38
+                  },
+                  {
+                    "branch": "PALEMBANG",
+                    "comply": 2500,
+                    "not_comply": 98,
+                    "anomaly": 0,
+                    "sla_pct": 96.23
+                  },
+                  {
+                    "branch": "PANGKAL PINANG",
+                    "comply": 1350,
+                    "not_comply": 85,
+                    "anomaly": 0,
+                    "sla_pct": 94.08
+                  }
+                ]
+              },
+              {
+                "regional": "SUMBAGTENG",
+                "comply": 9580,
+                "not_comply": 781,
+                "anomaly": 0,
+                "sla_pct": 92.46,
+                "by_branch": [
+                  {
+                    "branch": "BATAM",
+                    "comply": 1841,
+                    "not_comply": 19,
+                    "anomaly": 0,
+                    "sla_pct": 98.98
+                  },
+                  {
+                    "branch": "BUKIT TINGGI",
+                    "comply": 1727,
+                    "not_comply": 200,
+                    "anomaly": 0,
+                    "sla_pct": 89.62
+                  },
+                  {
+                    "branch": "DUMAI",
+                    "comply": 1348,
+                    "not_comply": 198,
+                    "anomaly": 0,
+                    "sla_pct": 87.19
+                  },
+                  {
+                    "branch": "PADANG",
+                    "comply": 2483,
+                    "not_comply": 91,
+                    "anomaly": 0,
+                    "sla_pct": 96.46
+                  },
+                  {
+                    "branch": "PEKANBARU",
+                    "comply": 2181,
+                    "not_comply": 273,
+                    "anomaly": 0,
+                    "sla_pct": 88.88
+                  }
+                ]
+              },
+              {
+                "regional": "SUMBAGUT",
+                "comply": 14685,
+                "not_comply": 724,
+                "anomaly": 0,
+                "sla_pct": 95.3,
+                "by_branch": [
+                  {
+                    "branch": "BANDA ACEH",
+                    "comply": 3910,
+                    "not_comply": 181,
+                    "anomaly": 0,
+                    "sla_pct": 95.58
+                  },
+                  {
+                    "branch": "BINJAI",
+                    "comply": 2832,
+                    "not_comply": 180,
+                    "anomaly": 0,
+                    "sla_pct": 94.02
+                  },
+                  {
+                    "branch": "MEDAN",
+                    "comply": 3920,
+                    "not_comply": 126,
+                    "anomaly": 0,
+                    "sla_pct": 96.89
+                  },
+                  {
+                    "branch": "PADANG SIDEMPUAN",
+                    "comply": 1188,
+                    "not_comply": 96,
+                    "anomaly": 0,
+                    "sla_pct": 92.52
+                  },
+                  {
+                    "branch": "PEMATANG SIANTAR",
+                    "comply": 1526,
+                    "not_comply": 42,
+                    "anomaly": 0,
+                    "sla_pct": 97.32
+                  },
+                  {
+                    "branch": "RANTAU PRAPAT",
+                    "comply": 1309,
+                    "not_comply": 99,
+                    "anomaly": 0,
+                    "sla_pct": 92.97
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "area": "AREA 2",
+            "comply": 40666,
+            "not_comply": 713,
+            "anomaly": 1,
+            "sla_pct": 98.28,
+            "by_regional": [
+              {
+                "regional": "EASTERN JABOTABEK",
+                "comply": 10047,
+                "not_comply": 218,
+                "anomaly": 0,
+                "sla_pct": 97.88,
+                "by_branch": [
+                  {
+                    "branch": "BEKASI",
+                    "comply": 3350,
+                    "not_comply": 64,
+                    "anomaly": 0,
+                    "sla_pct": 98.13
+                  },
+                  {
+                    "branch": "BOGOR",
+                    "comply": 3338,
+                    "not_comply": 78,
+                    "anomaly": 0,
+                    "sla_pct": 97.72
+                  },
+                  {
+                    "branch": "KARAWANG",
+                    "comply": 3359,
+                    "not_comply": 76,
+                    "anomaly": 0,
+                    "sla_pct": 97.79
+                  }
+                ]
+              },
+              {
+                "regional": "JABAR",
+                "comply": 13724,
+                "not_comply": 135,
+                "anomaly": 0,
+                "sla_pct": 99.03,
+                "by_branch": [
+                  {
+                    "branch": "BANDUNG",
+                    "comply": 7282,
+                    "not_comply": 60,
+                    "anomaly": 0,
+                    "sla_pct": 99.18
+                  },
+                  {
+                    "branch": "CIREBON",
+                    "comply": 1469,
+                    "not_comply": 28,
+                    "anomaly": 0,
+                    "sla_pct": 98.13
+                  },
+                  {
+                    "branch": "SOREANG",
+                    "comply": 2979,
+                    "not_comply": 14,
+                    "anomaly": 0,
+                    "sla_pct": 99.53
+                  },
+                  {
+                    "branch": "TASIKMALAYA",
+                    "comply": 1994,
+                    "not_comply": 33,
+                    "anomaly": 0,
+                    "sla_pct": 98.37
+                  }
+                ]
+              },
+              {
+                "regional": "JAKARTA BANTEN",
+                "comply": 16895,
+                "not_comply": 360,
+                "anomaly": 1,
+                "sla_pct": 97.91,
+                "by_branch": [
+                  {
+                    "branch": "NORTHERN JAKARTA",
+                    "comply": 4135,
+                    "not_comply": 67,
+                    "anomaly": 0,
+                    "sla_pct": 98.41
+                  },
+                  {
+                    "branch": "SERANG",
+                    "comply": 3057,
+                    "not_comply": 57,
+                    "anomaly": 0,
+                    "sla_pct": 98.17
+                  },
+                  {
+                    "branch": "SOUTHERN JAKARTA",
+                    "comply": 6293,
+                    "not_comply": 192,
+                    "anomaly": 1,
+                    "sla_pct": 97.04
+                  },
+                  {
+                    "branch": "TANGERANG",
+                    "comply": 3410,
+                    "not_comply": 44,
+                    "anomaly": 0,
+                    "sla_pct": 98.73
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "area": "AREA 3",
+            "comply": 36233,
+            "not_comply": 1338,
+            "anomaly": 0,
+            "sla_pct": 96.44,
+            "by_regional": [
+              {
+                "regional": "BALINUSRA",
+                "comply": 7234,
+                "not_comply": 467,
+                "anomaly": 0,
+                "sla_pct": 93.94,
+                "by_branch": [
+                  {
+                    "branch": "DENPASAR",
+                    "comply": 3155,
+                    "not_comply": 194,
+                    "anomaly": 0,
+                    "sla_pct": 94.21
+                  },
+                  {
+                    "branch": "FLORES",
+                    "comply": 874,
+                    "not_comply": 173,
+                    "anomaly": 0,
+                    "sla_pct": 83.48
+                  },
+                  {
+                    "branch": "KUPANG",
+                    "comply": 1274,
+                    "not_comply": 73,
+                    "anomaly": 0,
+                    "sla_pct": 94.58
+                  },
+                  {
+                    "branch": "MATARAM",
+                    "comply": 1931,
+                    "not_comply": 27,
+                    "anomaly": 0,
+                    "sla_pct": 98.62
+                  }
+                ]
+              },
+              {
+                "regional": "JATENG",
+                "comply": 11910,
+                "not_comply": 523,
+                "anomaly": 0,
+                "sla_pct": 95.79,
+                "by_branch": [
+                  {
+                    "branch": "MAGELANG",
+                    "comply": 1200,
+                    "not_comply": 64,
+                    "anomaly": 0,
+                    "sla_pct": 94.94
+                  },
+                  {
+                    "branch": "PEKALONGAN",
+                    "comply": 1809,
+                    "not_comply": 138,
+                    "anomaly": 0,
+                    "sla_pct": 92.91
+                  },
+                  {
+                    "branch": "PURWOKERTO",
+                    "comply": 1475,
+                    "not_comply": 53,
+                    "anomaly": 0,
+                    "sla_pct": 96.53
+                  },
+                  {
+                    "branch": "SEMARANG",
+                    "comply": 2844,
+                    "not_comply": 89,
+                    "anomaly": 0,
+                    "sla_pct": 96.97
+                  },
+                  {
+                    "branch": "SURAKARTA",
+                    "comply": 1933,
+                    "not_comply": 100,
+                    "anomaly": 0,
+                    "sla_pct": 95.08
+                  },
+                  {
+                    "branch": "YOGYAKARTA",
+                    "comply": 2649,
+                    "not_comply": 79,
+                    "anomaly": 0,
+                    "sla_pct": 97.1
+                  }
+                ]
+              },
+              {
+                "regional": "JATIM",
+                "comply": 17089,
+                "not_comply": 348,
+                "anomaly": 0,
+                "sla_pct": 98.0,
+                "by_branch": [
+                  {
+                    "branch": "JEMBER",
+                    "comply": 1193,
+                    "not_comply": 9,
+                    "anomaly": 0,
+                    "sla_pct": 99.25
+                  },
+                  {
+                    "branch": "LAMONGAN",
+                    "comply": 1790,
+                    "not_comply": 52,
+                    "anomaly": 0,
+                    "sla_pct": 97.18
+                  },
+                  {
+                    "branch": "MADIUN",
+                    "comply": 648,
+                    "not_comply": 25,
+                    "anomaly": 0,
+                    "sla_pct": 96.29
+                  },
+                  {
+                    "branch": "MALANG",
+                    "comply": 2026,
+                    "not_comply": 51,
+                    "anomaly": 0,
+                    "sla_pct": 97.54
+                  },
+                  {
+                    "branch": "SIDOARJO",
+                    "comply": 4297,
+                    "not_comply": 22,
+                    "anomaly": 0,
+                    "sla_pct": 99.49
+                  },
+                  {
+                    "branch": "SURABAYA",
+                    "comply": 7135,
+                    "not_comply": 189,
+                    "anomaly": 0,
+                    "sla_pct": 97.42
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "area": "AREA 4",
+            "comply": 35837,
+            "not_comply": 1466,
+            "anomaly": 0,
+            "sla_pct": 96.07,
+            "by_regional": [
+              {
+                "regional": "KALIMANTAN",
+                "comply": 15525,
+                "not_comply": 441,
+                "anomaly": 0,
+                "sla_pct": 97.24,
+                "by_branch": [
+                  {
+                    "branch": "BALIKPAPAN",
+                    "comply": 2279,
+                    "not_comply": 77,
+                    "anomaly": 0,
+                    "sla_pct": 96.73
+                  },
+                  {
+                    "branch": "BANJARMASIN",
+                    "comply": 3681,
+                    "not_comply": 35,
+                    "anomaly": 0,
+                    "sla_pct": 99.06
+                  },
+                  {
+                    "branch": "PALANGKARAYA",
+                    "comply": 1359,
+                    "not_comply": 55,
+                    "anomaly": 0,
+                    "sla_pct": 96.11
+                  },
+                  {
+                    "branch": "PANGKALAN BUN",
+                    "comply": 1649,
+                    "not_comply": 104,
+                    "anomaly": 0,
+                    "sla_pct": 94.07
+                  },
+                  {
+                    "branch": "PONTIANAK",
+                    "comply": 3101,
+                    "not_comply": 135,
+                    "anomaly": 0,
+                    "sla_pct": 95.83
+                  },
+                  {
+                    "branch": "SAMARINDA",
+                    "comply": 1839,
+                    "not_comply": 21,
+                    "anomaly": 0,
+                    "sla_pct": 98.87
+                  },
+                  {
+                    "branch": "TARAKAN",
+                    "comply": 1617,
+                    "not_comply": 14,
+                    "anomaly": 0,
+                    "sla_pct": 99.14
+                  }
+                ]
+              },
+              {
+                "regional": "PUMA",
+                "comply": 4984,
+                "not_comply": 117,
+                "anomaly": 0,
+                "sla_pct": 97.71,
+                "by_branch": [
+                  {
+                    "branch": "AMBON",
+                    "comply": 1561,
+                    "not_comply": 12,
+                    "anomaly": 0,
+                    "sla_pct": 99.24
+                  },
+                  {
+                    "branch": "JAYAPURA",
+                    "comply": 1134,
+                    "not_comply": 6,
+                    "anomaly": 0,
+                    "sla_pct": 99.47
+                  },
+                  {
+                    "branch": "SORONG",
+                    "comply": 1487,
+                    "not_comply": 83,
+                    "anomaly": 0,
+                    "sla_pct": 94.71
+                  },
+                  {
+                    "branch": "TIMIKA",
+                    "comply": 802,
+                    "not_comply": 16,
+                    "anomaly": 0,
+                    "sla_pct": 98.04
+                  }
+                ]
+              },
+              {
+                "regional": "SULAWESI",
+                "comply": 15328,
+                "not_comply": 908,
+                "anomaly": 0,
+                "sla_pct": 94.41,
+                "by_branch": [
+                  {
+                    "branch": "BONE",
+                    "comply": 1163,
+                    "not_comply": 160,
+                    "anomaly": 0,
+                    "sla_pct": 87.91
+                  },
+                  {
+                    "branch": "KENDARI",
+                    "comply": 2372,
+                    "not_comply": 94,
+                    "anomaly": 0,
+                    "sla_pct": 96.19
+                  },
+                  {
+                    "branch": "MAKASSAR",
+                    "comply": 3909,
+                    "not_comply": 164,
+                    "anomaly": 0,
+                    "sla_pct": 95.97
+                  },
+                  {
+                    "branch": "MANADO",
+                    "comply": 3047,
+                    "not_comply": 182,
+                    "anomaly": 0,
+                    "sla_pct": 94.36
+                  },
+                  {
+                    "branch": "PALU",
+                    "comply": 1766,
+                    "not_comply": 175,
+                    "anomaly": 0,
+                    "sla_pct": 90.98
+                  },
+                  {
+                    "branch": "PARE-PARE",
+                    "comply": 2169,
+                    "not_comply": 72,
+                    "anomaly": 0,
+                    "sla_pct": 96.79
+                  },
+                  {
+                    "branch": "TERNATE",
+                    "comply": 902,
+                    "not_comply": 61,
+                    "anomaly": 0,
+                    "sla_pct": 93.67
                   }
                 ]
               }
