@@ -1,0 +1,78 @@
+{
+  "projects": [
+    {
+      "id": "p001",
+      "name": "Dashboard Development Phase 1",
+      "status": "Completed",
+      "priority": "High",
+      "pic": "DWS Team",
+      "dueDate": "2026-06-30",
+      "progress": 100,
+      "category": "IT",
+      "subtasks": [
+        {"id": "s001a", "name": "Set up GitHub Pages hosting",    "status": "Completed", "priority": "High",   "pic": "DWS Team", "dueDate": "2026-05-15", "progress": 100, "category": "IT"},
+        {"id": "s001b", "name": "Build KPI Menu page",            "status": "Completed", "priority": "High",   "pic": "DWS Team", "dueDate": "2026-06-01", "progress": 100, "category": "IT"},
+        {"id": "s001c", "name": "Build Project Tracker page",     "status": "Completed", "priority": "Medium", "pic": "DWS Team", "dueDate": "2026-06-15", "progress": 100, "category": "IT"},
+        {"id": "s001d", "name": "Write Python update script",     "status": "Completed", "priority": "High",   "pic": "DWS Team", "dueDate": "2026-06-20", "progress": 100, "category": "IT"}
+      ]
+    },
+    {
+      "id": "p002",
+      "name": "Monthly KPI Data Pipeline",
+      "status": "In Progress",
+      "priority": "High",
+      "pic": "DWS Team",
+      "dueDate": "2026-12-31",
+      "progress": 40,
+      "category": "Operations",
+      "subtasks": [
+        {"id": "s002a", "name": "Rename TTI file to YYYYMM format and run script",  "status": "Completed",   "priority": "High",   "pic": "DWS Team", "dueDate": "2026-06-30", "progress": 100, "category": "Operations"},
+        {"id": "s002b", "name": "Add FFG entity data",                              "status": "Not Started", "priority": "High",   "pic": "DWS Team", "dueDate": "2026-07-15", "progress": 0,   "category": "Operations"},
+        {"id": "s002c", "name": "Add TTR FFG entity data",                          "status": "Not Started", "priority": "Medium", "pic": "DWS Team", "dueDate": "2026-07-15", "progress": 0,   "category": "Operations"},
+        {"id": "s002d", "name": "Add PS/RE entity data",                            "status": "Not Started", "priority": "Medium", "pic": "DWS Team", "dueDate": "2026-07-15", "progress": 0,   "category": "Operations"},
+        {"id": "s002e", "name": "Add FFG Gaul entity data",                         "status": "Not Started", "priority": "Low",    "pic": "DWS Team", "dueDate": "2026-07-31", "progress": 0,   "category": "Operations"}
+      ]
+    },
+    {
+      "id": "p003",
+      "name": "Dashboard Enhancement Phase 2",
+      "status": "In Progress",
+      "priority": "Medium",
+      "pic": "DWS Team",
+      "dueDate": "2026-08-31",
+      "progress": 20,
+      "category": "IT",
+      "subtasks": [
+        {"id": "s003a", "name": "Add multi-month trend analysis",     "status": "Not Started", "priority": "High",   "pic": "DWS Team", "dueDate": "2026-07-31", "progress": 0,  "category": "IT"},
+        {"id": "s003b", "name": "Export to PDF / Excel feature",      "status": "Not Started", "priority": "Medium", "pic": "DWS Team", "dueDate": "2026-08-15", "progress": 0,  "category": "IT"},
+        {"id": "s003c", "name": "Mobile responsive improvements",     "status": "Not Started", "priority": "Low",    "pic": "DWS Team", "dueDate": "2026-08-31", "progress": 0,  "category": "IT"}
+      ]
+    },
+    {
+      "id": "p004",
+      "name": "SLA Improvement Plan — AREA 1",
+      "status": "In Progress",
+      "priority": "High",
+      "pic": "Area 1 Manager",
+      "dueDate": "2026-09-30",
+      "progress": 30,
+      "category": "Operations",
+      "subtasks": [
+        {"id": "s004a", "name": "Root cause analysis — SUMBAGSEL (93.09%)", "status": "In Progress", "priority": "High",   "pic": "SUMBAGSEL RC", "dueDate": "2026-07-15", "progress": 60, "category": "Operations"},
+        {"id": "s004b", "name": "Action plan — JAMBI branch (90.11%)",       "status": "In Progress", "priority": "High",   "pic": "JAMBI Lead",   "dueDate": "2026-07-31", "progress": 40, "category": "Operations"},
+        {"id": "s004c", "name": "Review progress vs target — month 2",       "status": "Not Started", "priority": "Medium", "pic": "Area 1 Manager","dueDate": "2026-08-31", "progress": 0,  "category": "Operations"}
+      ]
+    },
+    {
+      "id": "p005",
+      "name": "Quarterly Performance Review",
+      "status": "Not Started",
+      "priority": "Medium",
+      "pic": "DWS Manager",
+      "dueDate": "2026-07-31",
+      "progress": 0,
+      "category": "Reporting",
+      "subtasks": []
+    }
+  ]
+}

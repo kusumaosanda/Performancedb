@@ -1,0 +1,20 @@
+{
+  "dashboardTitle": "Performance DB",
+  "dashboardSub": "FOS Management Portal",
+  "avatar": "📡",
+  "name": "DWS - FOS Performance Dashboard",
+  "subtitle": "Field Operations Support · PT. Telekomunikasi Indonesia",
+  "status": "Active",
+  "description": "A centralized SLA compliance monitoring dashboard for DWS Field Operations Support (FOS). Tracks KPI metrics across 4 Areas, 12 Regionals, and 47 Branches nationwide, covering entities including TTI, FFG, TTR FFG, PS/RE, and FFG Gaul. Data is processed monthly from operational files and published to this dashboard.",
+  "fields": [
+    {"label": "Division",      "value": "DWS - Field Operations Support"},
+    {"label": "Organization",  "value": "PT. Telekomunikasi Indonesia"},
+    {"label": "Coverage",      "value": "4 Areas · 12 Regionals · 47 Branches"},
+    {"label": "Entities",      "value": "TTI, FFG, TTR FFG, PS/RE, FFG Gaul"},
+    {"label": "Update Cycle",  "value": "Monthly"},
+    {"label": "SLA Standard",  "value": "≤ 72 hours"},
+    {"label": "SLA Target",    "value": "95%"},
+    {"label": "Contact",       "value": "ffmperformancemgt@gmail.com"}
+  ],
+  "tags": ["SLA", "KPI", "Field Operations", "Telkom", "DWS", "Monthly Report"]
+}
