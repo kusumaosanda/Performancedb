@@ -945,6 +945,7 @@ function buildTreeFilters(areas, tgt){
 
   const allRegs  = [...new Set(areas.flatMap(a=>(a.by_regional||[]).map(r=>r.regional)))].sort();
   const allBrs   = [...new Set(areas.flatMap(a=>(a.by_regional||[]).flatMap(r=>(r.by_branch||[]).map(b=>b.branch))))].sort();
+  const allStos  = [...new Set(areas.flatMap(a=>(a.by_regional||[]).flatMap(r=>(r.by_branch||[]).flatMap(b=>(b.by_sto||[]).map(s=>s.sto)))))].sort();
 
   bar.innerHTML = `
     <div class="filter-group">
@@ -963,9 +964,16 @@ function buildTreeFilters(areas, tgt){
     </div>
     <div class="filter-group">
       <label>Branch</label>
-      <select id="tf_branch" onchange="applyTreeFilter()">
+      <select id="tf_branch" onchange="onTreeBrChange()">
         <option value="">All Branches</option>
         ${allBrs.map(b=>`<option value="${b}">${b}</option>`).join('')}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>STO</label>
+      <select id="tf_sto" onchange="applyTreeFilter()">
+        <option value="">All STO</option>
+        ${allStos.map(s=>`<option value="${s}">${s}</option>`).join('')}
       </select>
     </div>`;
 
@@ -973,6 +981,14 @@ function buildTreeFilters(areas, tgt){
   window._treeBrMap  = brMap;
   window._allRegs    = allRegs;
   window._allBrs     = allBrs;
+  window._allStos    = allStos;
+
+  // sto map: branch -> stos
+  const stoMap = {};
+  areas.forEach(a=>(a.by_regional||[]).forEach(r=>(r.by_branch||[]).forEach(b=>{
+    stoMap[b.branch] = (b.by_sto||[]).map(s=>s.sto);
+  })));
+  window._treeStoMap = stoMap;
 }
 
 function onTreeAreaChange(){
@@ -994,6 +1010,17 @@ function onTreeRegChange(){
     tf_br.innerHTML = `<option value="">All Branches</option>` +
       allBrs.sort().map(b=>`<option value="${b}">${b}</option>`).join('');
   }
+  onTreeBrChange();
+}
+
+function onTreeBrChange(){
+  const br = ($('tf_branch')||{}).value;
+  const allStos = br ? (window._treeStoMap[br]||[]) : (window._allStos||[]);
+  const tf_sto = $('tf_sto');
+  if(tf_sto){
+    tf_sto.innerHTML = `<option value="">All STO</option>` +
+      allStos.sort().map(s=>`<option value="${s}">${s}</option>`).join('');
+  }
   applyTreeFilter();
 }
 
@@ -1001,24 +1028,32 @@ function applyTreeFilter(){
   const areaF = ($('tf_area')||{}).value    || '';
   const regF  = ($('tf_regional')||{}).value || '';
   const brF   = ($('tf_branch')||{}).value   || '';
+  const stoF  = ($('tf_sto')||{}).value      || '';
   const areas = window._currentAreas || [];
   const tgt   = window._currentTgt   || 95;
 
   let filtered = areas;
   if(areaF) filtered = filtered.filter(a=>a.area===areaF);
-  if(regF || brF){
+  if(regF || brF || stoF){
     filtered = filtered.map(a=>({
       ...a,
       by_regional: (a.by_regional||[])
         .filter(r => !regF || r.regional===regF)
         .map(r=>({
           ...r,
-          by_branch: (r.by_branch||[]).filter(b=> !brF || b.branch===brF)
+          by_branch: (r.by_branch||[])
+            .filter(b => !brF || b.branch===brF)
+            .map(b=>({
+              ...b,
+              by_sto: (b.by_sto||[]).filter(s => !stoF || s.sto===stoF)
+            }))
+            .filter(b => !stoF || b.by_sto.length > 0)
         }))
-        .filter(r => !brF || r.by_branch.length > 0)
+        .filter(r => !brF && !stoF || r.by_branch.length > 0)
     })).filter(a=>a.by_regional.length > 0);
   }
-  buildAreaTree(filtered, tgt, !areaF && !regF && !brF);
+  const anyFilter = areaF||regF||brF||stoF;
+  buildAreaTree(filtered, tgt, !anyFilter);
 }
 
 function buildAreaTree(areas, tgt=95, collapsed=true){
@@ -1080,16 +1115,48 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
       (reg.by_branch||[]).forEach(br=>{
         const bClr=slaColor(br.sla_pct, tgt);
         const bBadge = br.sla_pct < tgt ? `<span style="font-size:.6rem;font-weight:600;color:var(--red);margin-left:4px">▼</span>` : '';
+        const bId = rId+'_'+br.branch.replace(/\s+/g,'_');
+        const hasSto = (br.by_sto||[]).length > 0;
+
         const bRow=document.createElement('div');
         bRow.className='tree-row branch-level';
         bRow.style.background = br.sla_pct < tgt ? 'rgba(168,48,32,.04)' : '';
+        bRow.style.cursor = hasSto ? 'pointer' : 'default';
         bRow.innerHTML=`
-          <span style="width:18px;flex-shrink:0;color:var(--muted);font-size:.75rem">·</span>
+          <span class="tree-toggle" id="tgl_${bId}" style="font-size:.75rem;color:var(--muted)">${hasSto?'+':' '}</span>
           <span class="tree-name">${br.branch}${bBadge}</span>
           <span class="tree-sla" style="color:${bClr}">${br.sla_pct}%</span>
           <div class="tree-bar"><div class="tree-bar-fill" style="width:${br.sla_pct}%;background:${bClr}"></div></div>
           <span class="tree-counts">${(br.comply||0).toLocaleString()} C / ${(br.not_comply||0).toLocaleString()} NC</span>`;
+
+        const bChildren = document.createElement('div');
+        bChildren.className='tree-children'; bChildren.id='ch_'+bId;
+
+        if(hasSto){
+          bRow.onclick=e=>{
+            e.stopPropagation();
+            const open=bChildren.classList.toggle('open');
+            const tglEl=$('tgl_'+bId); if(tglEl) tglEl.textContent = open?'−':'+';
+          };
+          (br.by_sto||[]).forEach(sto=>{
+            const sClr=slaColor(sto.sla_pct, tgt);
+            const sBadge = sto.sla_pct < tgt ? `<span style="font-size:.58rem;color:var(--red);margin-left:3px">▼</span>` : '';
+            const sRow=document.createElement('div');
+            sRow.className='tree-row branch-level';
+            sRow.style.marginLeft='60px';
+            sRow.style.background = sto.sla_pct < tgt ? 'rgba(168,48,32,.03)' : '';
+            sRow.innerHTML=`
+              <span style="width:18px;flex-shrink:0;color:var(--border);font-size:.7rem">◦</span>
+              <span class="tree-name" style="font-size:.75rem;color:var(--muted)">${sto.sto}${sBadge}</span>
+              <span class="tree-sla" style="color:${sClr};font-size:.76rem">${sto.sla_pct}%</span>
+              <div class="tree-bar"><div class="tree-bar-fill" style="width:${sto.sla_pct}%;background:${sClr}"></div></div>
+              <span class="tree-counts">${(sto.comply||0).toLocaleString()} C / ${(sto.not_comply||0).toLocaleString()} NC</span>`;
+            bChildren.appendChild(sRow);
+          });
+        }
+
         rChildren.appendChild(bRow);
+        if(hasSto){ rChildren.appendChild(bChildren); }
       });
 
       aChildren.appendChild(rRow);
