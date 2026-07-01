@@ -8,17 +8,18 @@
 <style>
 /* ── PALETTE ──────────────────────────────────────────────────────────────── */
 :root{
-  --navy:    #1B3252;
+  --navy:    #1E3558;
   --navy2:   #122640;
   --teal:    #2D7E8A;
-  --teal2:   #5BAAA8;
-  --rust:    #C45A38;
-  --sandy:   #D4B896;
-  --bg:      #F4EFE8;
+  --teal2:   #4FA8B0;
+  --rust:    #C4522A;
+  --sandy:   #D4A87A;
+  --wine:    #6B2440;
+  --bg:      #F2EDE5;
   --card:    #FFFFFF;
   --text:    #1B2D3E;
   --muted:   #6B7A8D;
-  --border:  #E0D8CE;
+  --border:  #E0D5C5;
   --green:   #2E8B57;
   --amber:   #D4901A;
   --red:     #C0392B;
@@ -88,12 +89,12 @@ header h1{font-size:.95rem;font-weight:600}
 .kpi-select{padding:7px 14px;border:1px solid var(--border);border-radius:8px;font-size:.85rem;background:var(--bg);color:var(--text);cursor:pointer;outline:none;min-width:140px;font-weight:600}
 .kpi-select:focus{border-color:var(--teal)}
 .month-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
-.month-tab{padding:6px 13px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);font-size:.78rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all .18s}
-.month-tab:hover{border-color:var(--teal);color:var(--teal)}
-.month-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
-.month-tab.has-data{border-color:var(--teal2);color:var(--teal)}
-.month-tab.no-data{opacity:.4;cursor:not-allowed}
-.month-tab.current::after{content:'*';color:var(--rust);font-size:.7rem}
+.month-tab{padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);font-size:.78rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all .18s}
+.month-tab:hover{border-color:var(--wine);color:var(--wine)}
+.month-tab.active{background:var(--wine);border-color:var(--wine);color:#fff;box-shadow:0 2px 8px rgba(107,36,64,.3)}
+.month-tab.has-data{border-color:var(--rust);color:var(--rust);background:rgba(196,82,42,.07)}
+.month-tab.no-data{opacity:.35;cursor:not-allowed}
+.month-tab.current::after{content:'*';color:var(--sandy);font-size:.8rem;font-weight:900}
 
 /* ── SLA SUMMARY CARDS ───────────────────────────────────────────────────── */
 .sla-stat{background:var(--card);border-radius:10px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-top:4px solid var(--teal)}
@@ -126,8 +127,8 @@ header h1{font-size:.95rem;font-weight:600}
 .tree-row.regional-level{margin-left:20px;padding:7px 12px}
 .tree-row.branch-level{margin-left:40px;padding:6px 12px;cursor:default}
 .tree-row.branch-level:hover{background:none}
-.tree-toggle{font-size:.75rem;color:var(--muted);width:16px;flex-shrink:0;transition:transform .2s}
-.tree-toggle.open{transform:rotate(90deg)}
+.tree-toggle{font-size:.88rem;font-weight:800;color:var(--wine);width:18px;flex-shrink:0;transition:color .15s;line-height:1}
+.tree-toggle:hover{color:var(--rust)}
 .tree-name{flex:1;font-size:.85rem;font-weight:600}
 .tree-row.regional-level .tree-name{font-size:.82rem;font-weight:500}
 .tree-row.branch-level .tree-name{font-size:.78rem;font-weight:400;color:var(--muted)}
@@ -474,7 +475,7 @@ function renderKPIBody(){
 // ── DEFAULT: All entities overview ──
 function renderAllView(){
   const monthData = (kpiData.months||{})[selectedMonth] || {};
-  const entities  = Object.keys(monthData);
+  const entities  = Object.keys(monthData).sort();
   if(!entities.length){ $('kpiBody').innerHTML='<div class="loading">No data for this month.</div>'; return; }
 
   const totalC   = entities.reduce((s,e)=>s+(monthData[e].comply||0),0);
@@ -483,53 +484,122 @@ function renderAllView(){
   const overallSla = totalC+totalNC>0 ? (totalC/(totalC+totalNC)*100).toFixed(2) : '—';
   const oClr = slaColor(parseFloat(overallSla));
 
+  // Build month-to-month trend data for all entities
+  const allMonths = Object.keys(kpiData.months||{}).sort();
+  const COLORS=['#2D7E8A','#C4522A','#1E3558','#4FA8B0','#D4901A','#2E8B57','#6B2440'];
+
+  // Analysis insights
+  const aboveTarget = entities.filter(e=>monthData[e].sla_pct>=(monthData[e].target||95));
+  const belowTarget = entities.filter(e=>monthData[e].sla_pct<(monthData[e].target||95));
+  const bestEntity  = entities.reduce((a,b)=>monthData[a].sla_pct>monthData[b].sla_pct?a:b);
+  const worstEntity = entities.reduce((a,b)=>monthData[a].sla_pct<monthData[b].sla_pct?a:b);
+
+  // Trend direction per entity (compare last 2 months)
+  function trendArrow(e){
+    const sorted=allMonths.filter(m=>kpiData.months[m][e]);
+    if(sorted.length<2) return '';
+    const prev=(kpiData.months[sorted[sorted.length-2]][e]||{}).sla_pct;
+    const curr=(kpiData.months[sorted[sorted.length-1]][e]||{}).sla_pct;
+    if(curr>prev) return '<span style="color:var(--green)">↑</span>';
+    if(curr<prev) return '<span style="color:var(--red)">↓</span>';
+    return '<span style="color:var(--muted)">→</span>';
+  }
+
   $('kpiBody').innerHTML = `
     <div class="grid-4" style="margin-bottom:18px">
       <div class="sla-stat ${slaClass(parseFloat(overallSla))}">
         <div class="lbl">Overall SLA</div>
         <div class="val" style="color:${oClr}">${overallSla}%</div>
-        <div class="sub">All entities</div>
+        <div class="sub">All entities combined</div>
       </div>
-      <div class="sla-stat"><div class="lbl">Total Orders</div><div class="val">${totalAll.toLocaleString()}</div><div class="sub">This month</div></div>
+      <div class="sla-stat"><div class="lbl">Total Orders</div><div class="val">${totalAll.toLocaleString()}</div><div class="sub">This period</div></div>
       <div class="sla-stat green"><div class="lbl">Comply</div><div class="val" style="color:var(--green)">${totalC.toLocaleString()}</div><div class="sub">≤ 72 hours</div></div>
       <div class="sla-stat red2"><div class="lbl">Not Comply</div><div class="val" style="color:var(--red)">${totalNC.toLocaleString()}</div><div class="sub">> 72 hours</div></div>
     </div>
 
-    <div class="card-title" style="margin-bottom:10px">SLA by Entity — click to drill down</div>
+    <!-- Entity cards -->
+    <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:10px">SLA by Entity — click to drill down</div>
     <div class="entity-overview-grid" id="entityOvGrid"></div>
 
-    <div class="grid-2">
-      <div class="card"><div class="card-title">SLA % by Entity</div><div class="chart-wrap"><canvas id="ch_ov_bar"></canvas></div></div>
+    <!-- Month-to-month trend -->
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-title">All KPI — Month to Month Performance</div>
+      <div class="chart-wrap tall"><canvas id="ch_all_trend"></canvas></div>
+    </div>
+
+    <!-- Charts row -->
+    <div class="grid-2" style="margin-bottom:18px">
+      <div class="card"><div class="card-title">This Month — SLA % by Entity</div><div class="chart-wrap"><canvas id="ch_ov_bar"></canvas></div></div>
       <div class="card"><div class="card-title">Comply vs Not Comply</div><div class="chart-wrap"><canvas id="ch_ov_donut"></canvas></div></div>
+    </div>
+
+    <!-- Analysis -->
+    <div class="card">
+      <div class="card-title">Performance Analysis & Outlook</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:4px">
+        <div>
+          <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📊 Current Status</div>
+          <div style="font-size:.83rem;line-height:1.8;color:#374151">
+            ${aboveTarget.length} of ${entities.length} entities met the 95% SLA target this period.
+            ${belowTarget.length>0?`<br>⚠ Below target: <strong>${belowTarget.join(', ')}</strong>`:'<br>✅ All entities on target.'}
+            <br>Best performer: <strong style="color:var(--green)">${bestEntity} (${monthData[bestEntity].sla_pct}%)</strong>
+            ${entities.length>1?`<br>Needs attention: <strong style="color:var(--red)">${worstEntity} (${monthData[worstEntity].sla_pct}%)</strong>`:''}
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📈 Trend Direction</div>
+          <div style="font-size:.83rem;line-height:2;color:#374151">
+            ${entities.map(e=>`${trendArrow(e)} <strong>${e}</strong> — ${monthData[e].sla_pct}% ${monthData[e].sla_pct>=(monthData[e].target||95)?'<span style="color:var(--green);font-size:.72rem">▲ ON TARGET</span>':'<span style="color:var(--red);font-size:.72rem">▼ BELOW TARGET</span>'}`).join('<br>')}
+          </div>
+        </div>
+      </div>
     </div>`;
 
   // Entity cards
   const grid = $('entityOvGrid');
-  entities.sort().forEach(e => {
+  entities.forEach(e => {
     const d = monthData[e];
     const clr = slaColor(d.sla_pct);
     const card = document.createElement('div');
     card.className='entity-ov-card';
     card.style.borderLeftColor=clr;
-    card.innerHTML=`<div class="e-name">${e}</div><div class="e-pct" style="color:${clr}">${d.sla_pct}%</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
+    card.innerHTML=`<div class="e-name">${e} ${trendArrow(e)}</div><div class="e-pct" style="color:${clr}">${d.sla_pct}%</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
     card.onclick=()=>{ $('entitySelect').value=e; selectedEntity=e; renderKPIBody(); };
     grid.appendChild(card);
   });
 
   setTimeout(()=>{
-    const heights = Math.max(180, entities.length*44);
+    // Month-to-month trend all entities
+    const ct=document.getElementById('ch_all_trend');
+    if(ct){ if(chartInstances.all_trend) chartInstances.all_trend.destroy();
+      chartInstances.all_trend=new Chart(ct,{type:'line',data:{
+        labels:allMonths.map(m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;}}),
+        datasets:[
+          ...entities.map((e,i)=>({label:e,data:allMonths.map(m=>(kpiData.months[m]||{})[e]?.sla_pct||null),
+            borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]+'18',
+            borderWidth:2.5,tension:.35,pointRadius:5,pointHoverRadius:7,fill:false})),
+          {label:'Target (95%)',data:allMonths.map(()=>95),borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],tension:0,pointRadius:0,fill:false}
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{position:'top',labels:{font:{size:11},padding:14}}},
+          scales:{y:{min:80,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
+    }
+
+    // Bar chart
     const c1=document.getElementById('ch_ov_bar');
     if(c1){ if(chartInstances.ov_bar) chartInstances.ov_bar.destroy();
-      chartInstances.ov_bar=new Chart(c1,{ type:'bar', data:{
-        labels:entities.sort(),
-        datasets:[{label:'SLA %',data:entities.sort().map(e=>monthData[e].sla_pct),
-          backgroundColor:entities.sort().map(e=>slaColor(monthData[e].sla_pct)+'bb'),
-          borderColor:entities.sort().map(e=>slaColor(monthData[e].sla_pct)),
+      chartInstances.ov_bar=new Chart(c1,{type:'bar',data:{
+        labels:entities,
+        datasets:[{label:'SLA %',data:entities.map(e=>monthData[e].sla_pct),
+          backgroundColor:entities.map(e=>slaColor(monthData[e].sla_pct)+'bb'),
+          borderColor:entities.map(e=>slaColor(monthData[e].sla_pct)),
           borderWidth:2,borderRadius:6}]},
         options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{display:false}},
+          plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}}},
           scales:{x:{min:80,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},y:{grid:{display:false}}}}});
     }
+
+    // Donut
     const c2=document.getElementById('ch_ov_donut');
     if(c2){ if(chartInstances.ov_donut) chartInstances.ov_donut.destroy();
       chartInstances.ov_donut=new Chart(c2,{type:'doughnut',data:{
@@ -647,11 +717,10 @@ function buildAreaTree(areas){
     const aClr = slaColor(area.sla_pct);
     const aId  = 'area_'+area.area.replace(/\s+/g,'_');
 
-    // Area row
     const aRow = document.createElement('div');
     aRow.className='tree-row area-level';
     aRow.innerHTML=`
-      <span class="tree-toggle" id="tgl_${aId}">▶</span>
+      <span class="tree-toggle" id="tgl_${aId}">+</span>
       <span class="tree-name" style="font-weight:700">${area.area}</span>
       <span class="tree-sla" style="color:${aClr}">${area.sla_pct}%</span>
       <div class="tree-bar"><div class="tree-bar-fill" style="width:${area.sla_pct}%;background:${aClr}"></div></div>
@@ -662,7 +731,7 @@ function buildAreaTree(areas){
 
     aRow.onclick=()=>{
       const open=aChildren.classList.toggle('open');
-      $('tgl_'+aId).classList.toggle('open',open);
+      $('tgl_'+aId).textContent = open ? '−' : '+';
     };
 
     // Regional rows
@@ -673,7 +742,7 @@ function buildAreaTree(areas){
       const rRow = document.createElement('div');
       rRow.className='tree-row regional-level';
       rRow.innerHTML=`
-        <span class="tree-toggle" id="tgl_${rId}">▶</span>
+        <span class="tree-toggle" id="tgl_${rId}">+</span>
         <span class="tree-name">${reg.regional}</span>
         <span class="tree-sla" style="color:${rClr}">${reg.sla_pct}%</span>
         <div class="tree-bar"><div class="tree-bar-fill" style="width:${reg.sla_pct}%;background:${rClr}"></div></div>
@@ -685,7 +754,7 @@ function buildAreaTree(areas){
       rRow.onclick=e=>{
         e.stopPropagation();
         const open=rChildren.classList.toggle('open');
-        $('tgl_'+rId).classList.toggle('open',open);
+        $('tgl_'+rId).textContent = open ? '−' : '+';
       };
 
       // Branch rows
@@ -694,7 +763,7 @@ function buildAreaTree(areas){
         const bRow=document.createElement('div');
         bRow.className='tree-row branch-level';
         bRow.innerHTML=`
-          <span class="tree-toggle" style="visibility:hidden">▶</span>
+          <span style="width:18px;flex-shrink:0;color:var(--muted);font-size:.75rem">·</span>
           <span class="tree-name">${br.branch}</span>
           <span class="tree-sla" style="color:${bClr}">${br.sla_pct}%</span>
           <div class="tree-bar"><div class="tree-bar-fill" style="width:${br.sla_pct}%;background:${bClr}"></div></div>
