@@ -30,15 +30,16 @@
 body{font-family:'Poppins','Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
 
 /* ── SIDEBAR ─────────────────────────────────────────────────────────────── */
-#sidebar{width:var(--sidebar-w);background:var(--navy2);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
-.sidebar-logo{padding:22px 18px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
-.sidebar-logo h2{font-size:1rem;font-weight:700;letter-spacing:.5px;color:#fff}
-.sidebar-logo p{font-size:.7rem;color:rgba(255,255,255,.5);margin-top:2px}
+#sidebar{width:var(--sidebar-w);background:#fff;color:var(--text);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s;box-shadow:3px 0 16px rgba(0,0,0,.10)}
+.sidebar-logo{padding:22px 18px 16px;border-bottom:1px solid var(--border)}
+.sidebar-logo h2{font-size:1rem;font-weight:700;letter-spacing:.5px;color:var(--navy)}
+.sidebar-logo p{font-size:.7rem;color:var(--muted);margin-top:2px}
 nav{flex:1;padding:14px 0}
-nav a{display:flex;align-items:center;gap:10px;padding:10px 18px;color:rgba(255,255,255,.65);text-decoration:none;font-size:.85rem;border-left:3px solid transparent;transition:all .2s;cursor:pointer}
-nav a:hover,nav a.active{color:#fff;background:rgba(255,255,255,.08);border-left-color:var(--teal2)}
+nav a{display:flex;align-items:center;gap:10px;padding:10px 18px;color:var(--muted);text-decoration:none;font-size:.85rem;border-left:3px solid transparent;transition:all .2s;cursor:pointer;font-weight:500}
+nav a:hover{color:var(--navy);background:rgba(42,63,94,.05);border-left-color:var(--teal2)}
+nav a.active{color:var(--navy);background:rgba(42,63,94,.06);border-left-color:var(--teal);font-weight:700}
 nav a .icon{font-size:1rem;width:18px;text-align:center}
-.sidebar-footer{padding:14px 18px;font-size:.68rem;color:rgba(255,255,255,.3);border-top:1px solid rgba(255,255,255,.08)}
+.sidebar-footer{padding:14px 18px;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border)}
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90}
 #overlay.show{display:block}
 .hamburger{display:none;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text)}
@@ -206,6 +207,28 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .summary-cell{text-align:center;padding:6px 10px;font-size:.8rem;font-weight:600}
 .summary-cell.no-data{color:var(--border);text-align:center;font-weight:400}
 .summary-total-row td{border-top:2px solid var(--border);background:rgba(42,63,94,.05);padding:7px 14px;font-weight:700}
+
+/* ── TREE FILTER BAR ─────────────────────────────────────────────────────── */
+.tree-filter-bar{display:flex;gap:12px;flex-wrap:wrap;padding:10px 0 14px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.filter-group{display:flex;align-items:center;gap:6px}
+.filter-group label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);white-space:nowrap}
+.filter-group select{padding:5px 10px;border:1px solid var(--border);border-radius:7px;font-size:.8rem;background:var(--bg);color:var(--text);cursor:pointer;outline:none;font-family:'Poppins',sans-serif;min-width:130px}
+.filter-group select:focus{border-color:var(--teal)}
+
+/* ── REFERENCE SUMMARY TABLE ─────────────────────────────────────────────── */
+.ref-summary-wrap{margin-bottom:0}
+.ref-summary-header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:.82rem;font-weight:700;letter-spacing:.3px}
+.ref-summary-table{width:100%;border-collapse:collapse;margin-bottom:0}
+.ref-summary-table th{background:var(--navy);color:#fff;padding:8px 14px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:center;border:1px solid rgba(255,255,255,.12)}
+.ref-summary-table th:first-child{text-align:left;min-width:140px}
+.ref-summary-table td{padding:9px 14px;font-size:.84rem;font-weight:500;border:1px solid var(--border);text-align:center}
+.ref-summary-table td:first-child{text-align:left;font-weight:600;color:var(--teal);background:rgba(61,122,110,.05)}
+.ref-summary-table td.rs-c{color:var(--green);font-weight:600}
+.ref-summary-table td.rs-nc{color:var(--red);font-weight:600}
+.ref-summary-table td.rs-an{color:var(--muted)}
+.ref-summary-table tr.rs-total td{font-weight:700;background:rgba(42,63,94,.05);border-top:2px solid var(--border)}
+.ref-summary-table tr.rs-total td:first-child{color:var(--navy)}
+.ref-summary-table tr:hover td{background:rgba(42,63,94,.03)}
 
 /* ── TTI BREAKDOWN TABLE ─────────────────────────────────────────────────── */
 .breakdown-wrap{overflow-x:auto;margin-top:6px}
@@ -722,48 +745,83 @@ function renderSummaryView(){
 }
 
 // ── ENTITY DETAIL VIEW ──
+const ENTITY_TARGETS_OVERRIDE = { TTI: 93.31 }; // hardcoded so all months use correct target
 function renderEntityView(entity, d){
-  const tgt = d.target || 95;
+  const tgt = ENTITY_TARGETS_OVERRIDE[entity] || d.target || 95;
   const clr = slaColor(d.sla_pct, tgt);
   const months = Object.keys(kpiData.months||{}).sort();
   const trendData = months.map(m=>(kpiData.months[m][entity]||{}).sla_pct||null);
   const trendLabels = months.map(m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;}});
 
-  // Build breakdown table HTML for TTI
+  // ── Reference summary (Manja/PI/RE) + detail breakdown for TTI ──
   let breakdownSection = '';
   if(entity === 'TTI'){
-    const CATS = [
-      {key:'manja',           label:'Manja'},
-      {key:'pi_manja_minus',  label:'PI Manja Minus'},
-      {key:'pi_manja_null',   label:'PI Manja Null'},
-      {key:'re_pi_minus',     label:'RE PI Minus'},
-      {key:'re_pi_null',      label:'RE PI Null'},
-    ];
     const bda = d.breakdown_by_area;
-    let tableHtml;
+    let refSummary = '', detailTable = '';
+
     if(!bda || !bda.length){
-      tableHtml = `<div class="breakdown-no-data">
-        📊 Breakdown data not yet available for this month.<br>
-        <span style="font-size:.76rem">Re-run <strong>update_dashboard.py</strong> after updating the script to generate this table.</span>
-      </div>`;
+      refSummary = `<div class="breakdown-no-data">📊 Breakdown data not yet available. Re-run <strong>update_dashboard.py</strong> to generate these tables.</div>`;
     } else {
+      // ─ Reference summary table (Manja / PI / RE) ─
+      const mC  = bda.reduce((s,r)=>s+(r.manja?.comply||0),0);
+      const mNC = bda.reduce((s,r)=>s+(r.manja?.not_comply||0),0);
+      const piC = bda.reduce((s,r)=>s+(r.pi_manja_minus?.comply||0)+(r.pi_manja_null?.comply||0),0);
+      const piNC= bda.reduce((s,r)=>s+(r.pi_manja_minus?.not_comply||0)+(r.pi_manja_null?.not_comply||0),0);
+      const reC = bda.reduce((s,r)=>s+(r.re_pi_minus?.comply||0)+(r.re_pi_null?.comply||0),0);
+      const reNC= bda.reduce((s,r)=>s+(r.re_pi_minus?.not_comply||0)+(r.re_pi_null?.not_comply||0),0);
+      const totAn = bda.reduce((s,r)=>s+(r.anomaly||0),0);
+      const fN = n => n > 0 ? n.toLocaleString() : '<span style="color:var(--muted)">-</span>';
+
+      refSummary = `
+        <div class="ref-summary-wrap">
+          <div class="ref-summary-header">TTI 3×24 Jam — Referensi Perhitungan</div>
+          <table class="ref-summary-table">
+            <thead>
+              <tr>
+                <th>Referensi</th>
+                <th style="color:#a7f3d0">Comply</th>
+                <th style="color:#fca5a5">Not Comply</th>
+                <th style="color:#d1d5db">Excl. PC Null</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Manja</td><td class="rs-c">${fN(mC)}</td><td class="rs-nc">${fN(mNC)}</td><td class="rs-an">-</td></tr>
+              <tr><td>PI</td><td class="rs-c">${fN(piC)}</td><td class="rs-nc">${fN(piNC)}</td><td class="rs-an">-</td></tr>
+              <tr><td>RE</td><td class="rs-c">${fN(reC)}</td><td class="rs-nc">${fN(reNC)}</td><td class="rs-an">-</td></tr>
+              <tr class="rs-total">
+                <td>Total</td>
+                <td class="rs-c">${(mC+piC+reC).toLocaleString()}</td>
+                <td class="rs-nc">${(mNC+piNC+reNC).toLocaleString()}</td>
+                <td class="rs-an">${fN(totAn)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>`;
+
+      // ─ Detail breakdown by area table ─
+      const CATS = [
+        {key:'manja',          label:'Manja'},
+        {key:'pi_manja_minus', label:'PI Manja Minus'},
+        {key:'pi_manja_null',  label:'PI Manja Null'},
+        {key:'re_pi_minus',    label:'RE PI Minus'},
+        {key:'re_pi_null',     label:'RE PI Null'},
+      ];
       const catHeaders = CATS.map(c=>`<th class="group-header" colspan="2">${c.label}</th>`).join('');
       const subHeaders = CATS.map(()=>`<th class="sub-comply">Comply</th><th class="sub-nc">Not Comply</th>`).join('');
       const bodyRows = bda.map(row=>{
         const cells = CATS.map(c=>{
           const cat = row[c.key]||{comply:0,not_comply:0};
-          return `<td class="bd-comply">${(cat.comply||0).toLocaleString()}</td><td class="bd-nc">${(cat.not_comply||0).toLocaleString()}</td>`;
+          return `<td class="bd-comply">${fN(cat.comply)}</td><td class="bd-nc">${fN(cat.not_comply)}</td>`;
         }).join('');
-        return `<tr><td class="bd-area">${row.area}</td>${cells}<td class="bd-anomaly">${(row.anomaly||0).toLocaleString()}</td></tr>`;
+        return `<tr><td class="bd-area">${row.area}</td>${cells}<td class="bd-anomaly">${fN(row.anomaly)}</td></tr>`;
       }).join('');
-      // Totals row
       const totCells = CATS.map(c=>{
         const tc = bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0);
-        const tnc = bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
-        return `<td class="bd-comply" style="border-top:2px solid var(--border);font-weight:700">${tc.toLocaleString()}</td><td class="bd-nc" style="border-top:2px solid var(--border);font-weight:700">${tnc.toLocaleString()}</td>`;
+        const tnc= bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
+        return `<td class="bd-comply" style="font-weight:700">${tc.toLocaleString()}</td><td class="bd-nc" style="font-weight:700">${tnc.toLocaleString()}</td>`;
       }).join('');
-      const totAnomaly = bda.reduce((s,r)=>s+(r.anomaly||0),0);
-      tableHtml = `<div class="breakdown-wrap">
+      detailTable = `<div class="breakdown-wrap" style="margin-top:14px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Detail Breakdown by Area</div>
         <table class="breakdown-table">
           <thead>
             <tr>
@@ -775,34 +833,50 @@ function renderEntityView(entity, d){
           </thead>
           <tbody>
             ${bodyRows}
-            <tr>
-              <td class="bd-area" style="border-top:2px solid var(--border)">Total</td>
+            <tr class="bd-total-row">
+              <td class="bd-area">Total</td>
               ${totCells}
-              <td class="bd-anomaly" style="border-top:2px solid var(--border);font-weight:700">${totAnomaly.toLocaleString()}</td>
+              <td class="bd-anomaly" style="font-weight:700">${fN(totAn)}</td>
             </tr>
           </tbody>
         </table>
       </div>`;
     }
+
     breakdownSection = `
     <div class="card section-gap">
-      <div class="card-title" style="margin-bottom:12px">TTI Reference Breakdown by Area</div>
-      <div style="font-size:.73rem;color:var(--muted);margin-bottom:10px">
-        How each order was timed: Manja → PI (Manja Minus/Null) → RE (PI Minus/Null) → Anomaly
-      </div>
-      ${tableHtml}
+      <div class="card-title" style="margin-bottom:12px">TTI Reference Breakdown</div>
+      ${refSummary}
+      ${detailTable}
     </div>`;
   }
 
+  // Store areas for filter rebuild
+  window._currentAreas = d.by_area || [];
+  window._currentTgt   = tgt;
+
   $('kpiBody').innerHTML=`
     <div class="grid-4" style="margin-bottom:18px">
-      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}" style="grid-column:span 2">
-        <div class="lbl">${entity} — SLA Compliance</div>
+      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}">
+        <div class="lbl">${entity} — SLA</div>
         <div class="val" style="color:${clr}">${d.sla_pct}%</div>
-        <div class="sub">Target: ${tgt}% &nbsp;|&nbsp; ${(d.comply||0).toLocaleString()} comply · ${(d.not_comply||0).toLocaleString()} not comply · ${d.anomaly||0} anomaly</div>
+        <div class="sub">Target: ${tgt}%</div>
       </div>
-      <div class="sla-stat"><div class="lbl">Total Orders</div><div class="val">${(d.total||0).toLocaleString()}</div></div>
-      <div class="sla-stat ${slaClass(d.sla_pct,tgt)==='green'?'red2':'red2'}"><div class="lbl">Not Comply</div><div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div></div>
+      <div class="sla-stat">
+        <div class="lbl">Total Orders</div>
+        <div class="val">${(d.total||0).toLocaleString()}</div>
+        <div class="sub">Incl. anomaly: ${d.anomaly||0}</div>
+      </div>
+      <div class="sla-stat green">
+        <div class="lbl">Comply</div>
+        <div class="val" style="color:var(--green)">${(d.comply||0).toLocaleString()}</div>
+        <div class="sub">≤ 72 hours</div>
+      </div>
+      <div class="sla-stat red2">
+        <div class="lbl">Not Comply</div>
+        <div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div>
+        <div class="sub">> 72 hours</div>
+      </div>
     </div>
 
     <div class="grid-2" style="margin-bottom:18px">
@@ -811,7 +885,7 @@ function renderEntityView(entity, d){
     </div>
 
     <div class="card">
-      <div class="card-title" style="margin-bottom:14px">Area → Regional → Branch Breakdown</div>
+      <div class="tree-filter-bar" id="treeFilterBar"></div>
       <div class="area-tree" id="areaTree"></div>
     </div>
     ${breakdownSection}`;
@@ -849,11 +923,105 @@ function renderEntityView(entity, d){
     }
   },50);
 
-  // Area tree
-  buildAreaTree(d.by_area||[], tgt);
+  // Area tree with filters
+  buildTreeFilters(d.by_area||[], tgt);
+  applyTreeFilter();
 }
 
-function buildAreaTree(areas, tgt=95){
+// ── TREE FILTERS ──
+function buildTreeFilters(areas, tgt){
+  const bar = $('treeFilterBar');
+  if(!bar) return;
+
+  // Collect all regionals and branches
+  const regMap = {}; // area -> regionals
+  const brMap  = {}; // regional -> branches
+  areas.forEach(a=>{
+    regMap[a.area] = (a.by_regional||[]).map(r=>r.regional);
+    (a.by_regional||[]).forEach(r=>{
+      brMap[r.regional] = (r.by_branch||[]).map(b=>b.branch);
+    });
+  });
+
+  const allRegs  = [...new Set(areas.flatMap(a=>(a.by_regional||[]).map(r=>r.regional)))].sort();
+  const allBrs   = [...new Set(areas.flatMap(a=>(a.by_regional||[]).flatMap(r=>(r.by_branch||[]).map(b=>b.branch))))].sort();
+
+  bar.innerHTML = `
+    <div class="filter-group">
+      <label>Area</label>
+      <select id="tf_area" onchange="onTreeAreaChange()">
+        <option value="">All Areas</option>
+        ${areas.map(a=>`<option value="${a.area}">${a.area}</option>`).join('')}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Regional</label>
+      <select id="tf_regional" onchange="onTreeRegChange()">
+        <option value="">All Regionals</option>
+        ${allRegs.map(r=>`<option value="${r}">${r}</option>`).join('')}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Branch</label>
+      <select id="tf_branch" onchange="applyTreeFilter()">
+        <option value="">All Branches</option>
+        ${allBrs.map(b=>`<option value="${b}">${b}</option>`).join('')}
+      </select>
+    </div>`;
+
+  window._treeRegMap = regMap;
+  window._treeBrMap  = brMap;
+  window._allRegs    = allRegs;
+  window._allBrs     = allBrs;
+}
+
+function onTreeAreaChange(){
+  const area = ($('tf_area')||{}).value;
+  const allRegs = area ? (window._treeRegMap[area]||[]) : (window._allRegs||[]);
+  const tf_reg = $('tf_regional');
+  if(tf_reg){
+    tf_reg.innerHTML = `<option value="">All Regionals</option>` +
+      allRegs.sort().map(r=>`<option value="${r}">${r}</option>`).join('');
+  }
+  onTreeRegChange();
+}
+
+function onTreeRegChange(){
+  const reg = ($('tf_regional')||{}).value;
+  const allBrs = reg ? (window._treeBrMap[reg]||[]) : (window._allBrs||[]);
+  const tf_br = $('tf_branch');
+  if(tf_br){
+    tf_br.innerHTML = `<option value="">All Branches</option>` +
+      allBrs.sort().map(b=>`<option value="${b}">${b}</option>`).join('');
+  }
+  applyTreeFilter();
+}
+
+function applyTreeFilter(){
+  const areaF = ($('tf_area')||{}).value    || '';
+  const regF  = ($('tf_regional')||{}).value || '';
+  const brF   = ($('tf_branch')||{}).value   || '';
+  const areas = window._currentAreas || [];
+  const tgt   = window._currentTgt   || 95;
+
+  let filtered = areas;
+  if(areaF) filtered = filtered.filter(a=>a.area===areaF);
+  if(regF || brF){
+    filtered = filtered.map(a=>({
+      ...a,
+      by_regional: (a.by_regional||[])
+        .filter(r => !regF || r.regional===regF)
+        .map(r=>({
+          ...r,
+          by_branch: (r.by_branch||[]).filter(b=> !brF || b.branch===brF)
+        }))
+        .filter(r => !brF || r.by_branch.length > 0)
+    })).filter(a=>a.by_regional.length > 0);
+  }
+  buildAreaTree(filtered, tgt, !areaF && !regF && !brF);
+}
+
+function buildAreaTree(areas, tgt=95, collapsed=true){
   const tree = $('areaTree');
   tree.innerHTML='';
   areas.forEach(area=>{
@@ -872,6 +1040,12 @@ function buildAreaTree(areas, tgt=95){
 
     const aChildren = document.createElement('div');
     aChildren.className='tree-children'; aChildren.id='ch_'+aId;
+
+    // Auto-expand when filter is active
+    if(!collapsed){
+      aChildren.classList.add('open');
+      // will set toggle below after appendChild
+    }
 
     aRow.onclick=()=>{
       const open=aChildren.classList.toggle('open');
@@ -924,6 +1098,9 @@ function buildAreaTree(areas, tgt=95){
 
     tree.appendChild(aRow);
     tree.appendChild(aChildren);
+    // Set toggle text after DOM insertion
+    const tglEl = $('tgl_'+aId);
+    if(tglEl) tglEl.textContent = aChildren.classList.contains('open') ? '−' : '+';
   });
 }
 
