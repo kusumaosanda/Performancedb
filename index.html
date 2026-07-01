@@ -744,7 +744,7 @@ function renderSummaryView(){
 }
 
 // ── ENTITY DETAIL VIEW ──
-const ENTITY_TARGETS_OVERRIDE = { TTI: 93.31 }; // hardcoded so all months use correct target
+const ENTITY_TARGETS_OVERRIDE = { TTI: 93.31, PSRE: 75.17 }; // hardcoded so all months use correct target
 function renderEntityView(entity, d){
   const tgt = ENTITY_TARGETS_OVERRIDE[entity] || d.target || 95;
   const clr = slaColor(d.sla_pct, tgt);
