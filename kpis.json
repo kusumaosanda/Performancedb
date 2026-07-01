@@ -1,0 +1,52 @@
+{
+  "period": "202605",
+  "period_label": "May 2026",
+  "generated_at": "2026-05-31T08:00:00",
+  "entities": [
+    {
+      "entity": "TTI",
+      "period": "202605",
+      "total": 155827,
+      "comply": 150326,
+      "not_comply": 5491,
+      "anomaly": 10,
+      "sla_pct": 96.48,
+      "by_area": [
+        { "area": "AREA 1", "comply": 37002, "not_comply": 2059, "anomaly": 0, "sla_pct": 94.7 },
+        { "area": "AREA 2", "comply": 40729, "not_comply": 637,  "anomaly": 10, "sla_pct": 98.5 },
+        { "area": "AREA 3", "comply": 36734, "not_comply": 1458, "anomaly": 0, "sla_pct": 96.2 },
+        { "area": "AREA 4", "comply": 35861, "not_comply": 1337, "anomaly": 0, "sla_pct": 96.4 }
+      ]
+    },
+    {
+      "entity": "FFG",
+      "period": "202605",
+      "total": 8000,
+      "comply": 7520,
+      "not_comply": 480,
+      "anomaly": 0,
+      "sla_pct": 94.0,
+      "by_area": [
+        { "area": "AREA 1", "comply": 1900, "not_comply": 150, "anomaly": 0, "sla_pct": 92.7 },
+        { "area": "AREA 2", "comply": 2100, "not_comply": 80,  "anomaly": 0, "sla_pct": 96.3 },
+        { "area": "AREA 3", "comply": 1800, "not_comply": 130, "anomaly": 0, "sla_pct": 93.3 },
+        { "area": "AREA 4", "comply": 1720, "not_comply": 120, "anomaly": 0, "sla_pct": 93.5 }
+      ]
+    },
+    {
+      "entity": "PSRE",
+      "period": "202605",
+      "total": 12000,
+      "comply": 11400,
+      "not_comply": 600,
+      "anomaly": 0,
+      "sla_pct": 95.0,
+      "by_area": [
+        { "area": "AREA 1", "comply": 2900, "not_comply": 200, "anomaly": 0, "sla_pct": 93.5 },
+        { "area": "AREA 2", "comply": 3100, "not_comply": 100, "anomaly": 0, "sla_pct": 96.9 },
+        { "area": "AREA 3", "comply": 2800, "not_comply": 150, "anomaly": 0, "sla_pct": 94.9 },
+        { "area": "AREA 4", "comply": 2600, "not_comply": 150, "anomaly": 0, "sla_pct": 94.5 }
+      ]
+    }
+  ]
+}

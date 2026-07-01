@@ -1,0 +1,20 @@
+{
+  "dashboardTitle": "My Dashboard",
+  "dashboardSub": "Management Portal",
+  "avatar": "🏢",
+  "name": "PROJECT / TEAM NAME",
+  "subtitle": "Division or Department Name",
+  "status": "Active",
+  "description": "Enter a brief description of this project, team, or entity here. This can span multiple sentences and gives visitors a quick overview of what this dashboard tracks.",
+  "fields": [
+    { "label": "Project Code",   "value": "PRJ-001" },
+    { "label": "Manager / PIC",  "value": "Your Name" },
+    { "label": "Location",       "value": "City, Country" },
+    { "label": "Start Date",     "value": "01 Jan 2025" },
+    { "label": "End Date",       "value": "31 Dec 2025" },
+    { "label": "Client / Owner", "value": "Client Name" },
+    { "label": "Contract Value", "value": "RM 0,000,000" },
+    { "label": "Phase",          "value": "Construction" }
+  ],
+  "tags": ["Construction", "Infrastructure", "Phase 1", "Government"]
+}
