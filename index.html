@@ -96,7 +96,6 @@ header h1{font-size:.95rem;font-weight:600}
 .month-tab.active{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 2px 8px rgba(42,63,94,.3)}
 .month-tab.has-data{border-color:var(--teal);color:var(--teal);background:rgba(61,122,110,.07)}
 .month-tab.no-data{opacity:.35;cursor:not-allowed}
-.month-tab.current::after{content:'*';color:var(--sandy);font-size:.8rem;font-weight:900}
 
 /* ── SLA SUMMARY CARDS ───────────────────────────────────────────────────── */
 .sla-stat{background:var(--card);border-radius:10px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-top:4px solid var(--teal)}
@@ -895,14 +894,24 @@ function renderEntityView(entity, d){
     const ct=document.getElementById('ch_trend_e');
     if(ct){
       if(chartInstances.trend_e) chartInstances.trend_e.destroy();
+      const _areaPalette=['#C4522A','#3D7A6E','#2A3F5E','#C8A044','#8B6E4E','#5B8C5A'];
+      const _areaNames=[...new Set(months.flatMap(m=>((kpiData.months[m]||{})[entity]?.by_area||[]).map(a=>a.area)))].sort();
+      const _areaDatasets=_areaNames.map((area,i)=>({
+        label:area,
+        data:months.map(m=>{const ar=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);return ar?ar.sla_pct:null;}),
+        borderColor:_areaPalette[i%_areaPalette.length],
+        borderWidth:1.5,tension:.35,pointRadius:4,fill:false,spanGaps:true,
+        borderDash:[],pointStyle:'circle'
+      }));
       chartInstances.trend_e=new Chart(ct,{type:'line',data:{
         labels:trendLabels,
         datasets:[
-          {label:entity,data:trendData,borderColor:clr,backgroundColor:clr+'22',borderWidth:2.5,tension:.35,pointRadius:5,fill:true},
-          {label:`Target (${tgt}%)`,data:months.map(()=>tgt),borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],tension:0,pointRadius:0}
+          {label:`${entity} Overall`,data:trendData,borderColor:clr,backgroundColor:clr+'22',borderWidth:2.5,tension:.35,pointRadius:5,fill:true},
+          ..._areaDatasets,
+          {label:`Target (${tgt}%)`,data:months.map(()=>tgt),borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],tension:0,pointRadius:0,fill:false}
         ]},
         options:{responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{position:'top',labels:{font:{size:11,family:'Poppins'}}}},
+          plugins:{legend:{position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}}},
           scales:{y:{min:Math.min(80,tgt-15),max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
     }
 
