@@ -4,29 +4,30 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Performance Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 /* ── PALETTE ──────────────────────────────────────────────────────────────── */
 :root{
-  --navy:    #1E3558;
-  --navy2:   #122640;
-  --teal:    #2D7E8A;
-  --teal2:   #4FA8B0;
+  --navy:    #2A3F5E;
+  --navy2:   #1A2D45;
+  --teal:    #3D7A6E;
+  --teal2:   #5A9E8E;
   --rust:    #C4522A;
-  --sandy:   #D4A87A;
-  --wine:    #6B2440;
-  --bg:      #F2EDE5;
-  --card:    #FFFFFF;
-  --text:    #1B2D3E;
-  --muted:   #6B7A8D;
-  --border:  #E0D5C5;
-  --green:   #2E8B57;
-  --amber:   #D4901A;
-  --red:     #C0392B;
+  --sandy:   #C8A044;
+  --wine:    #7A3020;
+  --bg:      #EDE8DC;
+  --card:    #F8F5EE;
+  --text:    #1E1A14;
+  --muted:   #6B5E52;
+  --border:  #D4C5A9;
+  --green:   #3A7848;
+  --amber:   #C89020;
+  --red:     #A83020;
   --sidebar-w: 220px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+body{font-family:'Poppins','Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
 
 /* ── SIDEBAR ─────────────────────────────────────────────────────────────── */
 #sidebar{width:var(--sidebar-w);background:var(--navy2);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
@@ -91,8 +92,8 @@ header h1{font-size:.95rem;font-weight:600}
 .month-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
 .month-tab{padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);font-size:.78rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all .18s}
 .month-tab:hover{border-color:var(--wine);color:var(--wine)}
-.month-tab.active{background:var(--wine);border-color:var(--wine);color:#fff;box-shadow:0 2px 8px rgba(107,36,64,.3)}
-.month-tab.has-data{border-color:var(--rust);color:var(--rust);background:rgba(196,82,42,.07)}
+.month-tab.active{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 2px 8px rgba(42,63,94,.3)}
+.month-tab.has-data{border-color:var(--teal);color:var(--teal);background:rgba(61,122,110,.07)}
 .month-tab.no-data{opacity:.35;cursor:not-allowed}
 .month-tab.current::after{content:'*';color:var(--sandy);font-size:.8rem;font-weight:900}
 
@@ -193,6 +194,34 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .save-bar{background:#eef9f5;border:1px solid #a7f3d0;border-radius:8px;padding:8px 14px;font-size:.78rem;color:#065f46;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .btn-export{padding:5px 12px;background:var(--teal);color:#fff;border:none;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer}
 .empty-state{text-align:center;padding:40px;color:var(--muted);font-size:.85rem}
+
+/* ── SUMMARY TABLE ───────────────────────────────────────────────────────── */
+.summary-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.summary-table th{background:var(--navy);color:#fff;padding:8px 12px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;position:sticky;top:0}
+.summary-table th:first-child{text-align:left;min-width:160px}
+.summary-entity-row td{background:var(--navy2);color:#fff;padding:7px 14px;font-size:.76rem;letter-spacing:.3px}
+.summary-area-row{border-bottom:1px solid var(--border);transition:background .12s}
+.summary-area-row:hover{background:rgba(42,63,94,.04)}
+.summary-area-name{padding:7px 14px;font-size:.8rem;white-space:nowrap;color:var(--text)}
+.summary-cell{text-align:center;padding:6px 10px;font-size:.8rem;font-weight:600}
+.summary-cell.no-data{color:var(--border);text-align:center;font-weight:400}
+.summary-total-row td{border-top:2px solid var(--border);background:rgba(42,63,94,.05);padding:7px 14px;font-weight:700}
+
+/* ── TTI BREAKDOWN TABLE ─────────────────────────────────────────────────── */
+.breakdown-wrap{overflow-x:auto;margin-top:6px}
+.breakdown-table{width:100%;border-collapse:collapse;font-size:.75rem;min-width:680px}
+.breakdown-table th{background:var(--navy);color:#fff;padding:7px 10px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.15)}
+.breakdown-table th.group-header{background:var(--navy2);font-size:.7rem;letter-spacing:.3px}
+.breakdown-table th.sub-comply{background:#1e5c3a;font-weight:600}
+.breakdown-table th.sub-nc{background:#7a1c1c;font-weight:600}
+.breakdown-table th.area-col{text-align:left;background:var(--navy2);min-width:90px}
+.breakdown-table td{padding:8px 10px;text-align:center;border:1px solid var(--border);font-weight:500;font-size:.78rem}
+.breakdown-table td.bd-area{text-align:left;font-weight:700;background:rgba(42,63,94,.05);color:var(--navy);white-space:nowrap}
+.breakdown-table td.bd-comply{color:var(--green)}
+.breakdown-table td.bd-nc{color:var(--red)}
+.breakdown-table td.bd-anomaly{color:var(--muted)}
+.breakdown-table tbody tr:hover td{background:rgba(42,63,94,.04)}
+.breakdown-no-data{text-align:center;padding:20px;color:var(--muted);font-size:.82rem;border:1px dashed var(--border);border-radius:8px;margin-top:6px}
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
 @media(max-width:768px){
@@ -381,8 +410,8 @@ function setDate(){
 setDate();
 
 // ─── SLA COLOR ───────────────────────────────────────────────────────────────
-function slaColor(pct){ return pct >= 95 ? '#2E8B57' : pct >= 90 ? '#D4901A' : '#C0392B'; }
-function slaClass(pct){ return pct >= 95 ? 'green' : pct >= 90 ? 'amber' : 'red2'; }
+function slaColor(pct, target=95){ return pct >= target ? '#2E8B57' : pct >= (target-5) ? '#D4901A' : '#C0392B'; }
+function slaClass(pct, target=95){ return pct >= target ? 'green' : pct >= (target-5) ? 'amber' : 'red2'; }
 
 // ─── HOME ID ─────────────────────────────────────────────────────────────────
 function renderHome(d){
@@ -406,13 +435,30 @@ function renderKPIs(data){
   kpiData = data;
   $('kpiLastUpdate').textContent = data.last_updated_label || data.last_updated || '—';
 
-  // Populate entity dropdown
+  // Populate entity dropdown — fixed ordered list with display names
+  const ENTITY_LIST = [
+    {key:'TTI',     label:'TTI'},
+    {key:'FFG',     label:'FFG'},
+    {key:'TTRFFG',  label:'TTR FFG'},
+    {key:'PSRE',    label:'PS-RE'},
+    {key:'FFGGAUL', label:'FFG GAUL'},
+  ];
+  const availableEntities = new Set();
+  Object.values(data.months||{}).forEach(m => Object.keys(m).forEach(e => availableEntities.add(e)));
   const sel = $('entitySelect');
   sel.innerHTML = '<option value="">All KPI</option>';
-  const entities = new Set();
-  Object.values(data.months||{}).forEach(m => Object.keys(m).forEach(e => entities.add(e)));
-  [...entities].sort().forEach(e => {
-    const opt = document.createElement('option'); opt.value=e; opt.textContent=e; sel.appendChild(opt);
+  ENTITY_LIST.forEach(({key, label}) => {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = availableEntities.has(key) ? label : label + ' (no data)';
+    if(!availableEntities.has(key)) opt.style.color='#aaa';
+    sel.appendChild(opt);
+  });
+  // Also add any entities from data not in our known list
+  availableEntities.forEach(e => {
+    if(!ENTITY_LIST.find(x=>x.key===e)){
+      const opt=document.createElement('option'); opt.value=e; opt.textContent=e; sel.appendChild(opt);
+    }
   });
 
   // Build month tabs (always show Jan–Dec of the latest year + Tgt)
@@ -422,10 +468,10 @@ function renderKPIs(data){
   const tabs = $('monthTabs');
   tabs.innerHTML = '';
 
-  // Tgt tab
+  // Summary tab
   const tgtBtn = document.createElement('button');
-  tgtBtn.className='month-tab'; tgtBtn.textContent='Tgt'; tgtBtn.dataset.month='tgt';
-  tgtBtn.onclick=()=>selectMonth('tgt',tgtBtn);
+  tgtBtn.className='month-tab'; tgtBtn.textContent='Summary'; tgtBtn.dataset.month='summary';
+  tgtBtn.onclick=()=>selectMonth('summary',tgtBtn);
   tabs.appendChild(tgtBtn);
 
   // Jan–Dec
@@ -464,7 +510,7 @@ function onEntityChange(){
 }
 
 function renderKPIBody(){
-  if(selectedMonth === 'tgt'){ renderTargetView(); return; }
+  if(selectedMonth === 'summary'){ renderSummaryView(); return; }
   if(!selectedEntity){ renderAllView(); return; }
   const monthData = (kpiData.months||{})[selectedMonth];
   const entityData = monthData && monthData[selectedEntity];
@@ -486,9 +532,11 @@ function renderAllView(){
 
   // Build month-to-month trend data for all entities
   const allMonths = Object.keys(kpiData.months||{}).sort();
-  const COLORS=['#2D7E8A','#C4522A','#1E3558','#4FA8B0','#D4901A','#2E8B57','#6B2440'];
+  const COLORS=['#2A3F5E','#C4522A','#3D7A6E','#C89020','#7A3020','#3A7848','#5A9E8E'];
 
   // Analysis insights
+  const ENL = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
+  const eln = e => ENL[e]||e;
   const aboveTarget = entities.filter(e=>monthData[e].sla_pct>=(monthData[e].target||95));
   const belowTarget = entities.filter(e=>monthData[e].sla_pct<(monthData[e].target||95));
   const bestEntity  = entities.reduce((a,b)=>monthData[a].sla_pct>monthData[b].sla_pct?a:b);
@@ -540,30 +588,33 @@ function renderAllView(){
         <div>
           <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📊 Current Status</div>
           <div style="font-size:.83rem;line-height:1.8;color:#374151">
-            ${aboveTarget.length} of ${entities.length} entities met the 95% SLA target this period.
-            ${belowTarget.length>0?`<br>⚠ Below target: <strong>${belowTarget.join(', ')}</strong>`:'<br>✅ All entities on target.'}
-            <br>Best performer: <strong style="color:var(--green)">${bestEntity} (${monthData[bestEntity].sla_pct}%)</strong>
-            ${entities.length>1?`<br>Needs attention: <strong style="color:var(--red)">${worstEntity} (${monthData[worstEntity].sla_pct}%)</strong>`:''}
+            ${aboveTarget.length} of ${entities.length} entities met their SLA target this period.
+            ${belowTarget.length>0?`<br>⚠ Below target: <strong>${belowTarget.map(eln).join(', ')}</strong>`:'<br>✅ All entities on target.'}
+            <br>Best performer: <strong style="color:var(--green)">${eln(bestEntity)} (${monthData[bestEntity].sla_pct}%)</strong>
+            ${entities.length>1?`<br>Needs attention: <strong style="color:var(--red)">${eln(worstEntity)} (${monthData[worstEntity].sla_pct}%)</strong>`:''}
           </div>
         </div>
         <div>
           <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📈 Trend Direction</div>
           <div style="font-size:.83rem;line-height:2;color:#374151">
-            ${entities.map(e=>`${trendArrow(e)} <strong>${e}</strong> — ${monthData[e].sla_pct}% ${monthData[e].sla_pct>=(monthData[e].target||95)?'<span style="color:var(--green);font-size:.72rem">▲ ON TARGET</span>':'<span style="color:var(--red);font-size:.72rem">▼ BELOW TARGET</span>'}`).join('<br>')}
+            ${entities.map(e=>`${trendArrow(e)} <strong>${eln(e)}</strong> — ${monthData[e].sla_pct}% (tgt ${monthData[e].target||95}%) ${monthData[e].sla_pct>=(monthData[e].target||95)?'<span style="color:var(--green);font-size:.72rem">▲ ON TARGET</span>':'<span style="color:var(--red);font-size:.72rem">▼ BELOW TARGET</span>'}`).join('<br>')}
           </div>
         </div>
       </div>
     </div>`;
 
   // Entity cards
+  const ENTITY_DISPLAY_NAMES = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
   const grid = $('entityOvGrid');
   entities.forEach(e => {
     const d = monthData[e];
-    const clr = slaColor(d.sla_pct);
+    const etgt = d.target || 95;
+    const clr = slaColor(d.sla_pct, etgt);
+    const label = ENTITY_DISPLAY_NAMES[e] || e;
     const card = document.createElement('div');
     card.className='entity-ov-card';
     card.style.borderLeftColor=clr;
-    card.innerHTML=`<div class="e-name">${e} ${trendArrow(e)}</div><div class="e-pct" style="color:${clr}">${d.sla_pct}%</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
+    card.innerHTML=`<div class="e-name">${label} ${trendArrow(e)}</div><div class="e-pct" style="color:${clr}">${d.sla_pct}%</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
     card.onclick=()=>{ $('entitySelect').value=e; selectedEntity=e; renderKPIBody(); };
     grid.appendChild(card);
   });
@@ -578,7 +629,8 @@ function renderAllView(){
           ...entities.map((e,i)=>({label:e,data:allMonths.map(m=>(kpiData.months[m]||{})[e]?.sla_pct||null),
             borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]+'18',
             borderWidth:2.5,tension:.35,pointRadius:5,pointHoverRadius:7,fill:false})),
-          {label:'Target (95%)',data:allMonths.map(()=>95),borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],tension:0,pointRadius:0,fill:false}
+          {label:'Target (95%)',data:allMonths.map(()=>95),borderColor:'#9ca3af',borderWidth:1,borderDash:[6,4],tension:0,pointRadius:0,fill:false},
+          {label:'TTI Target (93.31%)',data:allMonths.map(()=>93.31),borderColor:'#C4522A55',borderWidth:1,borderDash:[4,4],tension:0,pointRadius:0,fill:false}
         ]},
         options:{responsive:true,maintainAspectRatio:false,
           plugins:{legend:{position:'top',labels:{font:{size:11},padding:14}}},
@@ -612,55 +664,145 @@ function renderAllView(){
   },50);
 }
 
-// ── TARGET VIEW ──
-function renderTargetView(){
-  const months = Object.keys(kpiData.months||{}).sort();
-  const entities = new Set();
-  months.forEach(m=>Object.keys(kpiData.months[m]).forEach(e=>entities.add(e)));
+// ── SUMMARY VIEW ──
+function renderSummaryView(){
+  const allMonths = Object.keys(kpiData.months||{}).sort();
+  const entities  = new Set();
+  allMonths.forEach(m=>Object.keys(kpiData.months[m]).forEach(e=>entities.add(e)));
   const ents = [...entities].sort();
 
+  const mLabel = m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;} };
+  const cellStyle = (pct, target=95) => {
+    if(pct===undefined||pct===null) return `class="summary-cell no-data">—`;
+    const clr = pct>=target?'var(--green)':pct>=(target-5)?'var(--amber)':'var(--red)';
+    const bg  = pct>=target?'rgba(58,120,72,.09)':pct>=(target-5)?'rgba(200,144,32,.09)':'rgba(168,48,32,.09)';
+    return `class="summary-cell" style="color:${clr};background:${bg}">${pct}%`;
+  };
+
+  let rows='';
+  ents.forEach(entity=>{
+    const tgt=(Object.values(kpiData.months).find(m=>m[entity]))?.[entity]?.target||95;
+    rows+=`<tr class="summary-entity-row"><td colspan="${allMonths.length+1}" style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px">${entity} &nbsp;<span style="font-weight:400;opacity:.7">— Target: ${tgt}%</span></td></tr>`;
+
+    // Collect areas
+    const areaMap={};
+    allMonths.forEach(m=>{
+      ((kpiData.months[m]||{})[entity]?.by_area||[]).forEach(a=>{
+        if(!areaMap[a.area]) areaMap[a.area]={};
+        areaMap[a.area][m]=a.sla_pct;
+      });
+    });
+
+    Object.keys(areaMap).sort().forEach(area=>{
+      rows+=`<tr class="summary-area-row"><td class="summary-area-name">&nbsp;&nbsp;&nbsp;${area}</td>${allMonths.map(m=>`<td ${cellStyle(areaMap[area][m],tgt)}</td>`).join('')}</tr>`;
+    });
+
+    // Entity total
+    rows+=`<tr class="summary-total-row"><td style="padding-left:14px">↳ Total</td>${allMonths.map(m=>{const pct=(kpiData.months[m]||{})[entity]?.sla_pct;return`<td ${cellStyle(pct,tgt)}</td>`;}).join('')}</tr>`;
+  });
+
   $('kpiBody').innerHTML=`
-    <div class="card-title" style="margin-bottom:12px">SLA Target vs Actual — Month by Month</div>
-    <div class="card" style="margin-bottom:18px"><div class="chart-wrap tall"><canvas id="ch_trend"></canvas></div></div>
     <div class="card">
-      <div class="card-title">Target Reference</div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
-        ${ents.map(e=>{const tgt=(Object.values(kpiData.months).find(m=>m[e]))?.[e]?.target||95;return`<div style="background:var(--bg);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--muted)">${e}</div><div style="font-size:1.4rem;font-weight:800;color:var(--navy);margin-top:2px">${tgt}%</div></div>`;}).join('')}
+      <div class="card-title" style="margin-bottom:12px">Summary — All KPI by Area</div>
+      <div style="overflow-x:auto">
+        <table class="summary-table">
+          <thead><tr>
+            <th>KPI / Area</th>
+            ${allMonths.map(m=>`<th>${mLabel(m)}</th>`).join('')}
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div style="margin-top:12px;font-size:.72rem;color:var(--muted);display:flex;gap:18px">
+        <span style="color:var(--green);font-weight:700">■</span> ≥ 95% On target &nbsp;
+        <span style="color:var(--amber);font-weight:700">■</span> 90–94.9% Near target &nbsp;
+        <span style="color:var(--red);font-weight:700">■</span> &lt; 90% Below target
       </div>
     </div>`;
-
-  const COLORS=['#2D7E8A','#C45A38','#1B3252','#5BAAA8','#D4901A','#2E8B57','#8B5CF6'];
-  setTimeout(()=>{
-    const c=document.getElementById('ch_trend');
-    if(!c) return;
-    if(chartInstances.trend) chartInstances.trend.destroy();
-    chartInstances.trend=new Chart(c,{type:'line',data:{
-      labels:months.map(m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;}}),
-      datasets:ents.map((e,i)=>({label:e,data:months.map(m=>(kpiData.months[m][e]||{}).sla_pct||null),
-        borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]+'22',
-        borderWidth:2.5,tension:.35,pointRadius:5,pointHoverRadius:7,fill:false}))},
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{position:'top',labels:{font:{size:11}}}},
-        scales:{y:{min:80,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
-  },50);
 }
 
 // ── ENTITY DETAIL VIEW ──
 function renderEntityView(entity, d){
-  const clr = slaColor(d.sla_pct);
+  const tgt = d.target || 95;
+  const clr = slaColor(d.sla_pct, tgt);
   const months = Object.keys(kpiData.months||{}).sort();
   const trendData = months.map(m=>(kpiData.months[m][entity]||{}).sla_pct||null);
   const trendLabels = months.map(m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;}});
 
+  // Build breakdown table HTML for TTI
+  let breakdownSection = '';
+  if(entity === 'TTI'){
+    const CATS = [
+      {key:'manja',           label:'Manja'},
+      {key:'pi_manja_minus',  label:'PI Manja Minus'},
+      {key:'pi_manja_null',   label:'PI Manja Null'},
+      {key:'re_pi_minus',     label:'RE PI Minus'},
+      {key:'re_pi_null',      label:'RE PI Null'},
+    ];
+    const bda = d.breakdown_by_area;
+    let tableHtml;
+    if(!bda || !bda.length){
+      tableHtml = `<div class="breakdown-no-data">
+        📊 Breakdown data not yet available for this month.<br>
+        <span style="font-size:.76rem">Re-run <strong>update_dashboard.py</strong> after updating the script to generate this table.</span>
+      </div>`;
+    } else {
+      const catHeaders = CATS.map(c=>`<th class="group-header" colspan="2">${c.label}</th>`).join('');
+      const subHeaders = CATS.map(()=>`<th class="sub-comply">Comply</th><th class="sub-nc">Not Comply</th>`).join('');
+      const bodyRows = bda.map(row=>{
+        const cells = CATS.map(c=>{
+          const cat = row[c.key]||{comply:0,not_comply:0};
+          return `<td class="bd-comply">${(cat.comply||0).toLocaleString()}</td><td class="bd-nc">${(cat.not_comply||0).toLocaleString()}</td>`;
+        }).join('');
+        return `<tr><td class="bd-area">${row.area}</td>${cells}<td class="bd-anomaly">${(row.anomaly||0).toLocaleString()}</td></tr>`;
+      }).join('');
+      // Totals row
+      const totCells = CATS.map(c=>{
+        const tc = bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0);
+        const tnc = bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
+        return `<td class="bd-comply" style="border-top:2px solid var(--border);font-weight:700">${tc.toLocaleString()}</td><td class="bd-nc" style="border-top:2px solid var(--border);font-weight:700">${tnc.toLocaleString()}</td>`;
+      }).join('');
+      const totAnomaly = bda.reduce((s,r)=>s+(r.anomaly||0),0);
+      tableHtml = `<div class="breakdown-wrap">
+        <table class="breakdown-table">
+          <thead>
+            <tr>
+              <th class="area-col" rowspan="2">Area</th>
+              ${catHeaders}
+              <th class="group-header" rowspan="2">Anomaly</th>
+            </tr>
+            <tr>${subHeaders}</tr>
+          </thead>
+          <tbody>
+            ${bodyRows}
+            <tr>
+              <td class="bd-area" style="border-top:2px solid var(--border)">Total</td>
+              ${totCells}
+              <td class="bd-anomaly" style="border-top:2px solid var(--border);font-weight:700">${totAnomaly.toLocaleString()}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+    }
+    breakdownSection = `
+    <div class="card section-gap">
+      <div class="card-title" style="margin-bottom:12px">TTI Reference Breakdown by Area</div>
+      <div style="font-size:.73rem;color:var(--muted);margin-bottom:10px">
+        How each order was timed: Manja → PI (Manja Minus/Null) → RE (PI Minus/Null) → Anomaly
+      </div>
+      ${tableHtml}
+    </div>`;
+  }
+
   $('kpiBody').innerHTML=`
     <div class="grid-4" style="margin-bottom:18px">
-      <div class="sla-stat ${slaClass(d.sla_pct)}" style="grid-column:span 2">
+      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}" style="grid-column:span 2">
         <div class="lbl">${entity} — SLA Compliance</div>
         <div class="val" style="color:${clr}">${d.sla_pct}%</div>
-        <div class="sub">Target: ${d.target||95}% &nbsp;|&nbsp; ${(d.comply||0).toLocaleString()} comply · ${(d.not_comply||0).toLocaleString()} not comply · ${d.anomaly||0} anomaly</div>
+        <div class="sub">Target: ${tgt}% &nbsp;|&nbsp; ${(d.comply||0).toLocaleString()} comply · ${(d.not_comply||0).toLocaleString()} not comply · ${d.anomaly||0} anomaly</div>
       </div>
       <div class="sla-stat"><div class="lbl">Total Orders</div><div class="val">${(d.total||0).toLocaleString()}</div></div>
-      <div class="sla-stat red2"><div class="lbl">Not Comply</div><div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div></div>
+      <div class="sla-stat ${slaClass(d.sla_pct,tgt)==='green'?'red2':'red2'}"><div class="lbl">Not Comply</div><div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div></div>
     </div>
 
     <div class="grid-2" style="margin-bottom:18px">
@@ -671,7 +813,8 @@ function renderEntityView(entity, d){
     <div class="card">
       <div class="card-title" style="margin-bottom:14px">Area → Regional → Branch Breakdown</div>
       <div class="area-tree" id="areaTree"></div>
-    </div>`;
+    </div>
+    ${breakdownSection}`;
 
   // Trend chart
   setTimeout(()=>{
@@ -682,11 +825,11 @@ function renderEntityView(entity, d){
         labels:trendLabels,
         datasets:[
           {label:entity,data:trendData,borderColor:clr,backgroundColor:clr+'22',borderWidth:2.5,tension:.35,pointRadius:5,fill:true},
-          {label:'Target',data:months.map(()=>d.target||95),borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],tension:0,pointRadius:0}
+          {label:`Target (${tgt}%)`,data:months.map(()=>tgt),borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],tension:0,pointRadius:0}
         ]},
         options:{responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{position:'top',labels:{font:{size:11}}}},
-          scales:{y:{min:80,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
+          plugins:{legend:{position:'top',labels:{font:{size:11,family:'Poppins'}}}},
+          scales:{y:{min:Math.min(80,tgt-15),max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
     }
 
     // Area bar
@@ -697,31 +840,32 @@ function renderEntityView(entity, d){
       chartInstances.area_bar=new Chart(cab,{type:'bar',data:{
         labels:areas.map(a=>a.area),
         datasets:[{label:'SLA %',data:areas.map(a=>a.sla_pct),
-          backgroundColor:areas.map(a=>slaColor(a.sla_pct)+'bb'),
-          borderColor:areas.map(a=>slaColor(a.sla_pct)),
+          backgroundColor:areas.map(a=>slaColor(a.sla_pct,tgt)+'bb'),
+          borderColor:areas.map(a=>slaColor(a.sla_pct,tgt)),
           borderWidth:2,borderRadius:5}]},
         options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
           plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}}},
-          scales:{x:{min:80,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},y:{grid:{display:false}}}}});
+          scales:{x:{min:Math.min(80,tgt-15),max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},y:{grid:{display:false}}}}});
     }
   },50);
 
   // Area tree
-  buildAreaTree(d.by_area||[]);
+  buildAreaTree(d.by_area||[], tgt);
 }
 
-function buildAreaTree(areas){
+function buildAreaTree(areas, tgt=95){
   const tree = $('areaTree');
   tree.innerHTML='';
   areas.forEach(area=>{
-    const aClr = slaColor(area.sla_pct);
+    const aClr = slaColor(area.sla_pct, tgt);
     const aId  = 'area_'+area.area.replace(/\s+/g,'_');
+    const aBadge = area.sla_pct < tgt ? `<span style="font-size:.65rem;font-weight:700;background:rgba(168,48,32,.12);color:var(--red);border-radius:4px;padding:1px 5px;margin-left:6px">BELOW TARGET</span>` : '';
 
     const aRow = document.createElement('div');
     aRow.className='tree-row area-level';
     aRow.innerHTML=`
       <span class="tree-toggle" id="tgl_${aId}">+</span>
-      <span class="tree-name" style="font-weight:700">${area.area}</span>
+      <span class="tree-name" style="font-weight:700">${area.area}${aBadge}</span>
       <span class="tree-sla" style="color:${aClr}">${area.sla_pct}%</span>
       <div class="tree-bar"><div class="tree-bar-fill" style="width:${area.sla_pct}%;background:${aClr}"></div></div>
       <span class="tree-counts">${(area.comply||0).toLocaleString()} C / ${(area.not_comply||0).toLocaleString()} NC</span>`;
@@ -736,14 +880,15 @@ function buildAreaTree(areas){
 
     // Regional rows
     (area.by_regional||[]).forEach(reg=>{
-      const rClr = slaColor(reg.sla_pct);
+      const rClr = slaColor(reg.sla_pct, tgt);
       const rId  = aId+'_'+reg.regional.replace(/\s+/g,'_');
+      const rBadge = reg.sla_pct < tgt ? `<span style="font-size:.62rem;font-weight:600;color:var(--red);margin-left:5px">▼</span>` : '';
 
       const rRow = document.createElement('div');
       rRow.className='tree-row regional-level';
       rRow.innerHTML=`
         <span class="tree-toggle" id="tgl_${rId}">+</span>
-        <span class="tree-name">${reg.regional}</span>
+        <span class="tree-name">${reg.regional}${rBadge}</span>
         <span class="tree-sla" style="color:${rClr}">${reg.sla_pct}%</span>
         <div class="tree-bar"><div class="tree-bar-fill" style="width:${reg.sla_pct}%;background:${rClr}"></div></div>
         <span class="tree-counts">${(reg.comply||0).toLocaleString()} C / ${(reg.not_comply||0).toLocaleString()} NC</span>`;
@@ -759,12 +904,14 @@ function buildAreaTree(areas){
 
       // Branch rows
       (reg.by_branch||[]).forEach(br=>{
-        const bClr=slaColor(br.sla_pct);
+        const bClr=slaColor(br.sla_pct, tgt);
+        const bBadge = br.sla_pct < tgt ? `<span style="font-size:.6rem;font-weight:600;color:var(--red);margin-left:4px">▼</span>` : '';
         const bRow=document.createElement('div');
         bRow.className='tree-row branch-level';
+        bRow.style.background = br.sla_pct < tgt ? 'rgba(168,48,32,.04)' : '';
         bRow.innerHTML=`
           <span style="width:18px;flex-shrink:0;color:var(--muted);font-size:.75rem">·</span>
-          <span class="tree-name">${br.branch}</span>
+          <span class="tree-name">${br.branch}${bBadge}</span>
           <span class="tree-sla" style="color:${bClr}">${br.sla_pct}%</span>
           <div class="tree-bar"><div class="tree-bar-fill" style="width:${br.sla_pct}%;background:${bClr}"></div></div>
           <span class="tree-counts">${(br.comply||0).toLocaleString()} C / ${(br.not_comply||0).toLocaleString()} NC</span>`;
