@@ -1,7 +1,7 @@
 {
-  "last_updated": "202605",
-  "last_updated_label": "May 2026",
-  "generated_at": "2026-07-01T15:00:31",
+  "last_updated": "202601",
+  "last_updated_label": "January 2026",
+  "generated_at": "2026-07-01T15:37:20",
   "months": {
     "202601": {
       "TTI": {
@@ -10,7 +10,7 @@
         "not_comply": 14178,
         "anomaly": 19,
         "sla_pct": 90.78,
-        "target": 95.0,
+        "target": 93.31,
         "by_area": [
           {
             "area": "AREA 1",
@@ -658,6 +658,104 @@
                 ]
               }
             ]
+          }
+        ],
+        "breakdown_by_area": [
+          {
+            "area": "AREA 1",
+            "manja": {
+              "comply": 20206,
+              "not_comply": 7381
+            },
+            "pi_manja_minus": {
+              "comply": 10127,
+              "not_comply": 29
+            },
+            "pi_manja_null": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "re_pi_minus": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "re_pi_null": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "anomaly": 2
+          },
+          {
+            "area": "AREA 2",
+            "manja": {
+              "comply": 24642,
+              "not_comply": 1204
+            },
+            "pi_manja_minus": {
+              "comply": 14409,
+              "not_comply": 16
+            },
+            "pi_manja_null": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "re_pi_minus": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "re_pi_null": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "anomaly": 7
+          },
+          {
+            "area": "AREA 3",
+            "manja": {
+              "comply": 24735,
+              "not_comply": 3115
+            },
+            "pi_manja_minus": {
+              "comply": 8983,
+              "not_comply": 7
+            },
+            "pi_manja_null": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "re_pi_minus": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "re_pi_null": {
+              "comply": 1,
+              "not_comply": 0
+            },
+            "anomaly": 3
+          },
+          {
+            "area": "AREA 4",
+            "manja": {
+              "comply": 17607,
+              "not_comply": 2401
+            },
+            "pi_manja_minus": {
+              "comply": 18948,
+              "not_comply": 25
+            },
+            "pi_manja_null": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "re_pi_minus": {
+              "comply": 0,
+              "not_comply": 0
+            },
+            "re_pi_null": {
+              "comply": 2,
+              "not_comply": 0
+            },
+            "anomaly": 7
           }
         ]
       }
