@@ -405,6 +405,111 @@
       z-index: 90;
     }
     #overlay.show { display: block; }
+
+    /* ── ENTITY TABS ─────────────────────────────── */
+    .period-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+    }
+    .period-label {
+      font-size: 1rem; font-weight: 700; color: var(--text);
+    }
+    .period-meta { font-size: .78rem; color: var(--muted); }
+
+    .entity-tabs {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .entity-tab {
+      padding: 7px 18px;
+      border-radius: 99px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      font-size: .82rem; font-weight: 600;
+      cursor: pointer; color: var(--muted);
+      transition: all .2s;
+    }
+    .entity-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .entity-tab.active {
+      background: var(--accent); border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── SLA SUMMARY CARDS ───────────────────────── */
+    .sla-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      border-left: 5px solid var(--accent);
+    }
+    .sla-card .lbl {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .7px; color: var(--muted); margin-bottom: 6px;
+    }
+    .sla-card .val {
+      font-size: 1.9rem; font-weight: 800; color: var(--text); line-height: 1;
+    }
+    .sla-card .sub { font-size: .78rem; color: var(--muted); margin-top: 5px; }
+
+    /* Big SLA % ring */
+    .sla-ring-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      display: flex; align-items: center; gap: 24px;
+    }
+    .sla-ring { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
+    .sla-ring canvas { width: 110px !important; height: 110px !important; }
+    .sla-ring-pct {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 800; color: var(--text);
+    }
+    .sla-ring-info h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .sla-ring-info p  { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+
+    /* Entity grid (ALL view) */
+    .entity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .entity-summary-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      border-top: 3px solid var(--accent);
+      cursor: pointer;
+      transition: box-shadow .2s, transform .15s;
+    }
+    .entity-summary-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,.1);
+      transform: translateY(-2px);
+    }
+    .entity-summary-card .e-name {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .7px; color: var(--muted); margin-bottom: 6px;
+    }
+    .entity-summary-card .e-pct {
+      font-size: 1.7rem; font-weight: 800; color: var(--text);
+    }
+    .entity-summary-card .e-sub {
+      font-size: .75rem; color: var(--muted); margin-top: 4px;
+    }
+    .e-bar {
+      height: 4px; background: var(--border); border-radius: 99px;
+      margin-top: 10px; overflow: hidden;
+    }
+    .e-bar-fill {
+      height: 100%; border-radius: 99px; background: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .entity-grid { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -476,9 +581,15 @@
         <div class="spinner"></div> Loading KPIs…
       </div>
       <div id="kpiContent" style="display:none">
-        <div class="grid-4" id="kpiCards"></div>
-        <div class="section-gap"></div>
-        <div class="grid-2" id="kpiCharts"></div>
+        <!-- Period + generated time -->
+        <div class="period-bar">
+          <span class="period-label" id="kpiPeriodLabel">—</span>
+          <span class="period-meta" id="kpiGenAt">—</span>
+        </div>
+        <!-- Entity selector tabs -->
+        <div class="entity-tabs" id="entityTabs"></div>
+        <!-- Dynamic content area -->
+        <div id="kpiBody"></div>
       </div>
     </div>
 
@@ -523,29 +634,26 @@
 </div><!-- /main -->
 
 <script>
-// ─── CONFIG ──────────────────────────────────────────────────────────────────
-// To use OneDrive, replace each URL with your public OneDrive share download link.
-// Example: https://onedrive.live.com/download?resid=XXX&authkey=XXX
-const DATA_SOURCES = {
-  home:     './data/home.json',
+// ─── Data sources ────────────────────────────────────────────────────────────
+const DATA = {
   kpis:     './data/kpis.json',
+  home:     './data/home.json',
   projects: './data/projects.json',
 };
-// ─────────────────────────────────────────────────────────────────────────────
 
-let allProjects = [];
+let allProjects  = [];
 let activeFilter = 'All';
 let chartInstances = {};
+let kpiData = null;
+let selectedEntity = 'ALL';
 
-// Helpers
-const $ = id => document.getElementById(id);
-const fmt = v => v !== undefined && v !== null ? v : '—';
+const $   = id => document.getElementById(id);
+const fmt = v  => (v !== undefined && v !== null && v !== '') ? v : '—';
 
-function fetchJSON(url) {
-  return fetch(url + '?t=' + Date.now()).then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  });
+async function fetchJSON(url) {
+  const r = await fetch(url + '?t=' + Date.now());
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
@@ -559,169 +667,363 @@ function showPage(id) {
   $('pageTitle').textContent = pageTitles[id];
   closeSidebar();
 }
+function toggleSidebar() { $('sidebar').classList.toggle('open'); $('overlay').classList.toggle('show'); }
+function closeSidebar()   { $('sidebar').classList.remove('open'); $('overlay').classList.remove('show'); }
 
-function toggleSidebar() {
-  $('sidebar').classList.toggle('open');
-  $('overlay').classList.toggle('show');
-}
-function closeSidebar() {
-  $('sidebar').classList.remove('open');
-  $('overlay').classList.remove('show');
-}
-
-// ─── DATE ────────────────────────────────────────────────────────────────────
 function setDate() {
   const d = new Date();
-  $('headerDate').textContent = d.toLocaleDateString('en-GB', { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
+  $('headerDate').textContent  = d.toLocaleDateString('en-GB', { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
   $('lastUpdated').textContent = 'Updated: ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
 }
 setDate();
 
-// ─── HOME ID ──────────────────────────────────────────────────────────────────
+// ─── HOME ID ─────────────────────────────────────────────────────────────────
 function renderHome(data) {
-  $('sidebarTitle').textContent = data.dashboardTitle || 'Dashboard';
-  $('sidebarSub').textContent   = data.dashboardSub   || '';
-  $('homeAvatar').textContent   = data.avatar || '🏢';
-  $('homeName').textContent     = data.name || '—';
-  $('homeSubtitle').textContent = data.subtitle || '';
-  $('homeDescription').textContent = data.description || '';
+  $('sidebarTitle').textContent    = data.dashboardTitle;
+  $('sidebarSub').textContent      = data.dashboardSub;
+  $('homeAvatar').textContent      = data.avatar;
+  $('homeName').textContent        = data.name;
+  $('homeDescription').textContent = data.description;
 
-  // Status badge for subtitle area
+  let sub = data.subtitle || '';
   if (data.status) {
-    const cls = data.status.toLowerCase().replace(/\s+/g, '-');
-    const badge = `<span class="status-badge ${cls}">${data.status}</span>`;
-    $('homeSubtitle').innerHTML = (data.subtitle || '') + ' &nbsp; ' + badge;
+    const cls = data.status.toLowerCase().replace(/\s+/g,'-');
+    sub += ` &nbsp;<span class="status-badge ${cls}">${data.status}</span>`;
   }
+  $('homeSubtitle').innerHTML = sub;
 
-  // Info grid
-  const grid = $('homeInfoGrid');
-  grid.innerHTML = '';
-  (data.fields || []).forEach(f => {
-    grid.innerHTML += `<div class="info-item"><label>${f.label}</label><span>${fmt(f.value)}</span></div>`;
-  });
+  $('homeInfoGrid').innerHTML = (data.fields || []).map(f =>
+    `<div class="info-item"><label>${f.label}</label><span>${fmt(f.value)}</span></div>`
+  ).join('');
 
-  // Tags
-  const tagsEl = $('homeTags');
-  tagsEl.innerHTML = '';
-  (data.tags || []).forEach(t => {
-    tagsEl.innerHTML += `<span class="tag">${t}</span>`;
-  });
+  $('homeTags').innerHTML = (data.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
 
   $('homeLoading').style.display = 'none';
   $('homeContent').style.display = 'block';
 }
 
 // ─── KPI ─────────────────────────────────────────────────────────────────────
-const CARD_COLORS = ['#2d7dd2','#3ec6a6','#e74c3c','#f39c12','#8b5cf6','#1e3a5f'];
+const COLORS = ['#2d7dd2','#3ec6a6','#e74c3c','#f39c12','#8b5cf6','#06b6d4','#ec4899','#1e3a5f'];
+
+function slaColor(pct) {
+  if (pct >= 95) return '#10b981';
+  if (pct >= 90) return '#f59e0b';
+  return '#ef4444';
+}
 
 function renderKPIs(data) {
-  const container = $('kpiCards');
-  container.innerHTML = '';
+  kpiData = data;
 
-  const accentColors = data.accentColors || CARD_COLORS;
+  // Period labels
+  $('kpiPeriodLabel').textContent = data.period_label || data.period || '—';
+  $('kpiGenAt').textContent = data.generated_at
+    ? 'Generated: ' + new Date(data.generated_at).toLocaleString('en-GB')
+    : '';
 
-  (data.kpis || []).forEach((kpi, i) => {
-    const pct = kpi.target ? Math.min(100, Math.round((kpi.actual / kpi.target) * 100)) : null;
-    const deltaClass = kpi.trend === 'up' ? 'up' : kpi.trend === 'down' ? 'down' : 'flat';
-    const deltaArrow = kpi.trend === 'up' ? '▲' : kpi.trend === 'down' ? '▼' : '—';
-    const color = accentColors[i % accentColors.length];
-
-    container.innerHTML += `
-      <div class="kpi-card" style="border-top-color:${color}">
-        <div class="icon-bg">${kpi.icon || '📊'}</div>
-        <div class="kpi-label">${kpi.label}</div>
-        <div class="kpi-value">
-          ${kpi.prefix || ''}${(kpi.actual ?? '—').toLocaleString()}${kpi.suffix || ''}
-          ${kpi.trend ? `<span class="delta ${deltaClass}">${deltaArrow} ${kpi.delta || ''}</span>` : ''}
-        </div>
-        <div class="kpi-meta">Target: ${kpi.prefix || ''}${kpi.target !== undefined ? kpi.target.toLocaleString() : '—'}${kpi.suffix || ''}</div>
-        ${pct !== null ? `
-        <div class="kpi-progress">
-          <div class="kpi-progress-bar">
-            <div class="kpi-progress-fill" style="width:${pct}%;background:${color}"></div>
-          </div>
-          <div class="kpi-progress-label"><span>${kpi.progressLabel || 'Achieved'}</span><span>${pct}%</span></div>
-        </div>` : ''}
-      </div>`;
+  // Build entity tabs: ALL + one per entity
+  const tabs = $('entityTabs');
+  tabs.innerHTML = '';
+  ['ALL', ...(data.entities || []).map(e => e.entity)].forEach(code => {
+    const btn = document.createElement('button');
+    btn.className = 'entity-tab' + (code === 'ALL' ? ' active' : '');
+    btn.textContent = code;
+    btn.onclick = () => {
+      document.querySelectorAll('.entity-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedEntity = code;
+      if (code === 'ALL') renderAllView(data);
+      else renderEntityView(data.entities.find(e => e.entity === code));
+    };
+    tabs.appendChild(btn);
   });
 
-  // Charts
-  const chartsContainer = $('kpiCharts');
-  chartsContainer.innerHTML = '';
-
-  (data.charts || []).forEach((ch, i) => {
-    const id = 'chart_' + i;
-    chartsContainer.innerHTML += `
-      <div class="card">
-        <div class="card-title">${ch.title}</div>
-        <div class="chart-wrap"><canvas id="${id}"></canvas></div>
-      </div>`;
-  });
-
-  // Render charts after DOM update
-  setTimeout(() => {
-    (data.charts || []).forEach((ch, i) => {
-      const id = 'chart_' + i;
-      const ctx = document.getElementById(id);
-      if (!ctx) return;
-      if (chartInstances[id]) chartInstances[id].destroy();
-
-      chartInstances[id] = new Chart(ctx, {
-        type: ch.type || 'bar',
-        data: {
-          labels: ch.labels,
-          datasets: ch.datasets.map((ds, di) => ({
-            label: ds.label,
-            data: ds.data,
-            backgroundColor: ds.color || CARD_COLORS[di % CARD_COLORS.length] + '99',
-            borderColor: ds.color || CARD_COLORS[di % CARD_COLORS.length],
-            borderWidth: 2,
-            tension: 0.4,
-            fill: ch.type === 'line' ? false : undefined,
-            pointRadius: ch.type === 'line' ? 4 : undefined,
-          }))
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
-          scales: ch.type === 'pie' || ch.type === 'doughnut' ? {} : {
-            y: { beginAtZero: true, grid: { color: '#f0f2f6' } },
-            x: { grid: { display: false } }
-          }
-        }
-      });
-    });
-  }, 50);
+  renderAllView(data);
 
   $('kpiLoading').style.display = 'none';
   $('kpiContent').style.display = 'block';
 }
 
+// ── ALL VIEW: summary cards + entity comparison chart ────────────────────────
+function renderAllView(data) {
+  selectedEntity = 'ALL';
+  const entities = data.entities || [];
+
+  // Totals across all entities
+  const totalOrders    = entities.reduce((s,e) => s + e.total, 0);
+  const totalComply    = entities.reduce((s,e) => s + e.comply, 0);
+  const totalNotComply = entities.reduce((s,e) => s + e.not_comply, 0);
+  const totalAnomaly   = entities.reduce((s,e) => s + e.anomaly, 0);
+  const overallSla     = totalComply + totalNotComply > 0
+    ? (totalComply / (totalComply + totalNotComply) * 100).toFixed(2)
+    : '—';
+  const slaClr = slaColor(parseFloat(overallSla));
+
+  $('kpiBody').innerHTML = `
+    <!-- Summary cards -->
+    <div class="grid-4" style="margin-bottom:20px">
+      <div class="sla-card" style="border-left-color:${slaClr}">
+        <div class="lbl">Overall SLA</div>
+        <div class="val" style="color:${slaClr}">${overallSla}%</div>
+        <div class="sub">All entities combined</div>
+      </div>
+      <div class="sla-card" style="border-left-color:var(--accent)">
+        <div class="lbl">Total Orders</div>
+        <div class="val">${totalOrders.toLocaleString()}</div>
+        <div class="sub">Across all entities</div>
+      </div>
+      <div class="sla-card" style="border-left-color:#10b981">
+        <div class="lbl">Comply</div>
+        <div class="val" style="color:#10b981">${totalComply.toLocaleString()}</div>
+        <div class="sub">≤ 72 hours</div>
+      </div>
+      <div class="sla-card" style="border-left-color:#ef4444">
+        <div class="lbl">Not Comply</div>
+        <div class="val" style="color:#ef4444">${totalNotComply.toLocaleString()}</div>
+        <div class="sub">> 72 hours${totalAnomaly ? ` · ${totalAnomaly} anomaly` : ''}</div>
+      </div>
+    </div>
+
+    <!-- Entity summary cards (clickable) -->
+    <div class="card-title" style="margin-bottom:12px">SLA by Entity — click to drill down</div>
+    <div class="entity-grid" id="entityGrid"></div>
+
+    <!-- Charts -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">SLA % by Entity</div>
+        <div class="chart-wrap" style="height:${Math.max(180, entities.length * 44)}px">
+          <canvas id="ch_all_bar"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Comply vs Not Comply (All Entities)</div>
+        <div class="chart-wrap"><canvas id="ch_all_donut"></canvas></div>
+      </div>
+    </div>`;
+
+  // Entity summary mini-cards
+  const grid = $('entityGrid');
+  entities.forEach((e, i) => {
+    const clr = slaColor(e.sla_pct);
+    grid.innerHTML += `
+      <div class="entity-summary-card" style="border-top-color:${clr}"
+           onclick="document.querySelectorAll('.entity-tab').forEach(b=>b.classList.remove('active'));
+                    document.querySelectorAll('.entity-tab')[${i+1}].classList.add('active');
+                    renderEntityView(kpiData.entities[${i}])">
+        <div class="e-name">${e.entity}</div>
+        <div class="e-pct" style="color:${clr}">${e.sla_pct}%</div>
+        <div class="e-sub">${e.comply.toLocaleString()} comply · ${e.not_comply.toLocaleString()} not comply</div>
+        <div class="e-bar"><div class="e-bar-fill" style="width:${e.sla_pct}%;background:${clr}"></div></div>
+      </div>`;
+  });
+
+  setTimeout(() => {
+    // Bar chart: SLA % by entity
+    const c1 = document.getElementById('ch_all_bar');
+    if (c1) {
+      if (chartInstances.all_bar) chartInstances.all_bar.destroy();
+      chartInstances.all_bar = new Chart(c1, {
+        type: 'bar',
+        data: {
+          labels: entities.map(e => e.entity),
+          datasets: [{
+            label: 'SLA %',
+            data: entities.map(e => e.sla_pct),
+            backgroundColor: entities.map(e => slaColor(e.sla_pct) + 'cc'),
+            borderColor:     entities.map(e => slaColor(e.sla_pct)),
+            borderWidth: 2, borderRadius: 6,
+          }]
+        },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { min: 80, max: 100, grid: { color: '#f0f2f6' },
+                 ticks: { callback: v => v + '%' } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // Donut: comply vs not comply
+    const c2 = document.getElementById('ch_all_donut');
+    if (c2) {
+      if (chartInstances.all_donut) chartInstances.all_donut.destroy();
+      chartInstances.all_donut = new Chart(c2, {
+        type: 'doughnut',
+        data: {
+          labels: ['Comply', 'Not Comply', 'Anomaly'],
+          datasets: [{
+            data: [totalComply, totalNotComply, totalAnomaly],
+            backgroundColor: ['#10b981', '#ef4444', '#9ca3af'],
+            borderWidth: 2, borderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '65%',
+          plugins: { legend: { position: 'right', labels: { font: { size: 11 }, padding: 14 } } }
+        }
+      });
+    }
+  }, 50);
+}
+
+// ── ENTITY VIEW: detailed SLA + area breakdown ───────────────────────────────
+function renderEntityView(entity) {
+  if (!entity) return;
+  const clr = slaColor(entity.sla_pct);
+
+  $('kpiBody').innerHTML = `
+    <!-- Entity KPI cards -->
+    <div class="grid-4" style="margin-bottom:20px">
+      <div class="sla-ring-card" style="grid-column: span 2">
+        <div class="sla-ring">
+          <canvas id="ch_ring"></canvas>
+          <div class="sla-ring-pct">${entity.sla_pct}%</div>
+        </div>
+        <div class="sla-ring-info">
+          <h3>${entity.entity} — SLA Compliance</h3>
+          <p>
+            <b style="color:#10b981">${entity.comply.toLocaleString()}</b> Comply &nbsp;·&nbsp;
+            <b style="color:#ef4444">${entity.not_comply.toLocaleString()}</b> Not Comply<br>
+            ${entity.anomaly ? `<b style="color:#9ca3af">${entity.anomaly}</b> Anomaly &nbsp;·&nbsp;` : ''}
+            Total: <b>${entity.total.toLocaleString()}</b> orders
+          </p>
+        </div>
+      </div>
+      <div class="sla-card" style="border-left-color:#10b981">
+        <div class="lbl">Comply</div>
+        <div class="val" style="color:#10b981">${entity.comply.toLocaleString()}</div>
+        <div class="sub">≤ 72 hours TTI</div>
+      </div>
+      <div class="sla-card" style="border-left-color:#ef4444">
+        <div class="lbl">Not Comply</div>
+        <div class="val" style="color:#ef4444">${entity.not_comply.toLocaleString()}</div>
+        <div class="sub">> 72 hours TTI</div>
+      </div>
+    </div>
+
+    <!-- Area breakdown charts -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">SLA % by Area</div>
+        <div class="chart-wrap" style="height:${Math.max(180, (entity.by_area||[]).length * 54)}px">
+          <canvas id="ch_area_bar"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Comply vs Not Comply by Area</div>
+        <div class="chart-wrap"><canvas id="ch_area_stack"></canvas></div>
+      </div>
+    </div>`;
+
+  setTimeout(() => {
+    // Ring gauge
+    const ring = document.getElementById('ch_ring');
+    if (ring) {
+      if (chartInstances.ring) chartInstances.ring.destroy();
+      chartInstances.ring = new Chart(ring, {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [entity.sla_pct, 100 - entity.sla_pct],
+            backgroundColor: [clr, '#f3f4f6'],
+            borderWidth: 0,
+          }]
+        },
+        options: {
+          cutout: '78%', responsive: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } }
+        }
+      });
+    }
+
+    const areas  = (entity.by_area || []).map(a => a.area);
+    const slaPcts = (entity.by_area || []).map(a => a.sla_pct);
+    const comply  = (entity.by_area || []).map(a => a.comply);
+    const notC    = (entity.by_area || []).map(a => a.not_comply);
+
+    // SLA % horizontal bar by area
+    const c1 = document.getElementById('ch_area_bar');
+    if (c1 && areas.length) {
+      if (chartInstances.area_bar) chartInstances.area_bar.destroy();
+      chartInstances.area_bar = new Chart(c1, {
+        type: 'bar',
+        data: {
+          labels: areas,
+          datasets: [{
+            label: 'SLA %',
+            data: slaPcts,
+            backgroundColor: slaPcts.map(p => slaColor(p) + 'cc'),
+            borderColor:     slaPcts.map(p => slaColor(p)),
+            borderWidth: 2, borderRadius: 6,
+          }]
+        },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false },
+            tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.x}%` } } },
+          scales: {
+            x: { min: 80, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#f0f2f6' } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // Stacked bar: comply vs not comply by area
+    const c2 = document.getElementById('ch_area_stack');
+    if (c2 && areas.length) {
+      if (chartInstances.area_stack) chartInstances.area_stack.destroy();
+      chartInstances.area_stack = new Chart(c2, {
+        type: 'bar',
+        data: {
+          labels: areas,
+          datasets: [
+            { label: 'Comply',     data: comply, backgroundColor: '#10b98199', borderColor: '#10b981', borderWidth:1, borderRadius:4 },
+            { label: 'Not Comply', data: notC,   backgroundColor: '#ef444499', borderColor: '#ef4444', borderWidth:1, borderRadius:4 },
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position:'top', labels:{ font:{size:11} } } },
+          scales: {
+            x: { stacked: false, grid: { display: false } },
+            y: { stacked: false, beginAtZero: true, grid: { color: '#f0f2f6' },
+                 ticks: { callback: v => v.toLocaleString() } }
+          }
+        }
+      });
+    }
+  }, 50);
+}
+
 // ─── PROJECT TRACKER ─────────────────────────────────────────────────────────
 function renderTracker(data) {
   allProjects = data.projects || [];
-
-  // Stats
   const statuses = ['Not Started','In Progress','Completed','On Hold','Cancelled'];
+
+  const projects = allProjects;
+  // Summary stats
   const statsEl = $('ptStats');
-  statsEl.innerHTML = '';
-
-  const counts = { Total: allProjects.length };
-  statuses.forEach(s => { counts[s] = allProjects.filter(p => p.status === s).length; });
-
-  ['Total','In Progress','Completed','On Hold'].forEach(k => {
-    statsEl.innerHTML += `<div class="pt-stat"><div class="num">${counts[k] || 0}</div><div class="lbl">${k}</div></div>`;
-  });
+  const counts  = {};
+  statuses.forEach(s => { counts[s] = projects.filter(p => p.status === s).length; });
+  statsEl.innerHTML = [
+    { k:'Total',        v: projects.length },
+    { k:'In Progress',  v: counts['In Progress'] },
+    { k:'Completed',    v: counts['Completed']   },
+    { k:'On Hold',      v: counts['On Hold']     },
+  ].map(({ k, v }) =>
+    `<div class="pt-stat"><div class="num">${v||0}</div><div class="lbl">${k}</div></div>`
+  ).join('');
 
   // Filter buttons
-  const filtersEl = $('statusFilters');
-  filtersEl.innerHTML = '';
-  ['All', ...statuses].forEach(s => {
-    filtersEl.innerHTML += `<button class="filter-btn ${s==='All'?'active':''}" onclick="setFilter('${s}',this)">${s}</button>`;
-  });
+  $('statusFilters').innerHTML = ['All',...statuses].map(s =>
+    `<button class="filter-btn ${s==='All'?'active':''}" onclick="setFilter('${s}',this)">${s}</button>`
+  ).join('');
 
-  renderTable(allProjects);
+  renderTable(projects);
 
   $('trackerLoading').style.display = 'none';
   $('trackerContent').style.display = 'block';
@@ -731,12 +1033,9 @@ function setFilter(status, btn) {
   activeFilter = status;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const q = ($('.search-input') || {}).value || '';
-  applyFilter(q);
+  applyFilter((document.querySelector('.search-input')||{}).value || '');
 }
-
 function filterProjects(q) { applyFilter(q); }
-
 function applyFilter(q) {
   let list = allProjects;
   if (activeFilter !== 'All') list = list.filter(p => p.status === activeFilter);
@@ -744,7 +1043,7 @@ function applyFilter(q) {
     const lq = q.toLowerCase();
     list = list.filter(p =>
       (p.name||'').toLowerCase().includes(lq) ||
-      (p.pic||'').toLowerCase().includes(lq) ||
+      (p.pic||'').toLowerCase().includes(lq)  ||
       (p.category||'').toLowerCase().includes(lq)
     );
   }
@@ -757,22 +1056,29 @@ function renderTable(projects) {
   $('noProjects').style.display = projects.length ? 'none' : 'block';
 
   projects.forEach((p, i) => {
-    const cls = (p.status || '').toLowerCase().replace(/\s+/g, '-');
+    const cls = (p.status || '').toLowerCase().replace(/\s+/g,'-');
     const pri = (p.priority || 'medium').toLowerCase();
-    const pct = p.progress !== undefined ? p.progress : null;
-    const due = p.dueDate ? new Date(p.dueDate).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }) : '—';
-    const overdue = p.dueDate && new Date(p.dueDate) < new Date() && p.status !== 'Completed' && p.status !== 'Cancelled';
+    const pct = p.progress !== null ? p.progress : null;
+    let dueDisplay = '—', overdue = false;
+    if (p.dueDate) {
+      const d = new Date(p.dueDate);
+      if (!isNaN(d)) {
+        dueDisplay = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+        overdue = d < new Date() && p.status !== 'Completed' && p.status !== 'Cancelled';
+      } else { dueDisplay = p.dueDate; }
+    }
 
     tbody.innerHTML += `
       <tr>
-        <td style="color:var(--muted);font-size:.8rem">${i + 1}</td>
+        <td style="color:var(--muted);font-size:.8rem">${i+1}</td>
         <td style="font-weight:600">${fmt(p.name)}</td>
         <td><span class="pt-status ${cls}">${fmt(p.status)}</span></td>
         <td><span class="priority-dot ${pri}">${fmt(p.priority)}</span></td>
         <td>${fmt(p.pic)}</td>
-        <td style="color:${overdue ? 'var(--danger)' : 'inherit'};font-weight:${overdue?'600':'400'}">${due}${overdue?' ⚠':'  '}</td>
-        <td>
-          ${pct !== null ? `
+        <td style="color:${overdue?'var(--danger)':'inherit'};font-weight:${overdue?600:400}">
+          ${dueDisplay}${overdue?' ⚠':''}
+        </td>
+        <td>${pct !== null ? `
           <div style="display:flex;align-items:center;gap:8px">
             <div class="mini-progress"><div class="mini-progress-fill" style="width:${pct}%"></div></div>
             <span style="font-size:.78rem;color:var(--muted)">${pct}%</span>
@@ -783,23 +1089,26 @@ function renderTable(projects) {
   });
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+// ─── INIT ────────────────────────────────────────────────────────────────────
+function showErr(elId, msg) {
+  $(elId).innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">⚠ ${msg}</div>`;
+}
+
 async function init() {
-  // Fetch all data in parallel
-  const [homeData, kpiData, trackerData] = await Promise.allSettled([
-    fetchJSON(DATA_SOURCES.home),
-    fetchJSON(DATA_SOURCES.kpis),
-    fetchJSON(DATA_SOURCES.projects),
+  const [homeRes, kpiRes, projRes] = await Promise.allSettled([
+    fetchJSON(DATA.home),
+    fetchJSON(DATA.kpis),
+    fetchJSON(DATA.projects),
   ]);
 
-  if (homeData.status === 'fulfilled')    renderHome(homeData.value);
-  else { $('homeLoading').innerHTML = '⚠ Could not load Home ID data.'; }
+  if (homeRes.status === 'fulfilled') renderHome(homeRes.value);
+  else showErr('homeLoading', `Could not load home data: ${homeRes.reason?.message}`);
 
-  if (kpiData.status === 'fulfilled')     renderKPIs(kpiData.value);
-  else { $('kpiLoading').innerHTML = '⚠ Could not load KPI data.'; }
+  if (kpiRes.status === 'fulfilled') renderKPIs(kpiRes.value);
+  else showErr('kpiLoading', `Could not load KPI data: ${kpiRes.reason?.message}`);
 
-  if (trackerData.status === 'fulfilled') renderTracker(trackerData.value);
-  else { $('trackerLoading').innerHTML = '⚠ Could not load project data.'; }
+  if (projRes.status === 'fulfilled') renderTracker(projRes.value);
+  else showErr('trackerLoading', `Could not load project data: ${projRes.reason?.message}`);
 }
 
 init();
