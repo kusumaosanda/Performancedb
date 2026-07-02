@@ -1,7 +1,7 @@
 {
   "last_updated": "202606",
   "last_updated_label": "June 2026",
-  "generated_at": "2026-07-02T10:36:35",
+  "generated_at": "2026-07-02T10:57:20",
   "months": {
     "202603": {
       "PSRE": {
@@ -101161,32 +101161,32 @@
       },
       "TTRFFG": {
         "total": 9142,
-        "comply": 494,
-        "not_comply": 31,
-        "anomaly": 8617,
-        "sla_pct": 94.1,
+        "comply": 473,
+        "not_comply": 25,
+        "anomaly": 8644,
+        "sla_pct": 94.98,
         "target": 80.81,
         "by_area": [
           {
             "area": "AREA 1",
-            "comply": 98,
-            "not_comply": 12,
-            "anomaly": 2364,
-            "sla_pct": 89.09,
+            "comply": 85,
+            "not_comply": 9,
+            "anomaly": 2380,
+            "sla_pct": 90.43,
             "by_regional": [
               {
                 "regional": "SUMBAGSEL",
-                "comply": 24,
-                "not_comply": 5,
-                "anomaly": 585,
-                "sla_pct": 82.76,
+                "comply": 19,
+                "not_comply": 3,
+                "anomaly": 592,
+                "sla_pct": 86.36,
                 "by_branch": [
                   {
                     "branch": "BENGKULU",
-                    "comply": 3,
-                    "not_comply": 2,
-                    "anomaly": 151,
-                    "sla_pct": 60.0,
+                    "comply": 2,
+                    "not_comply": 1,
+                    "anomaly": 153,
+                    "sla_pct": 66.67,
                     "by_sto": [
                       {
                         "sto": "AGR",
@@ -101247,8 +101247,8 @@
                       {
                         "sto": "MKO",
                         "comply": 0,
-                        "not_comply": 1,
-                        "anomaly": 6,
+                        "not_comply": 0,
+                        "anomaly": 7,
                         "sla_pct": 0.0
                       },
                       {
@@ -101309,25 +101309,25 @@
                       },
                       {
                         "sto": "TSS",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 1,
-                        "sla_pct": 100.0
+                        "anomaly": 2,
+                        "sla_pct": 0.0
                       }
                     ]
                   },
                   {
                     "branch": "JAMBI",
                     "comply": 1,
-                    "not_comply": 1,
-                    "anomaly": 108,
-                    "sla_pct": 50.0,
+                    "not_comply": 0,
+                    "anomaly": 109,
+                    "sla_pct": 100.0,
                     "by_sto": [
                       {
                         "sto": "BKO",
                         "comply": 0,
-                        "not_comply": 1,
-                        "anomaly": 33,
+                        "not_comply": 0,
+                        "anomaly": 34,
                         "sla_pct": 0.0
                       },
                       {
@@ -101602,10 +101602,10 @@
                   },
                   {
                     "branch": "PALEMBANG",
-                    "comply": 10,
+                    "comply": 8,
                     "not_comply": 2,
-                    "anomaly": 133,
-                    "sla_pct": 83.33,
+                    "anomaly": 135,
+                    "sla_pct": 80.0,
                     "by_sto": [
                       {
                         "sto": "BET",
@@ -101637,10 +101637,10 @@
                       },
                       {
                         "sto": "IDL",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 3,
-                        "sla_pct": 100.0
+                        "anomaly": 4,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "KAG",
@@ -101658,10 +101658,10 @@
                       },
                       {
                         "sto": "MEM",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 6,
-                        "sla_pct": 100.0
+                        "anomaly": 7,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "MPA",
@@ -101786,9 +101786,9 @@
                   },
                   {
                     "branch": "PANGKAL PINANG",
-                    "comply": 5,
+                    "comply": 3,
                     "not_comply": 0,
-                    "anomaly": 96,
+                    "anomaly": 98,
                     "sla_pct": 100.0,
                     "by_sto": [
                       {
@@ -101842,9 +101842,9 @@
                       },
                       {
                         "sto": "TBI",
-                        "comply": 3,
+                        "comply": 1,
                         "not_comply": 0,
-                        "anomaly": 22,
+                        "anomaly": 24,
                         "sla_pct": 100.0
                       },
                       {
@@ -101867,10 +101867,10 @@
               },
               {
                 "regional": "SUMBAGTENG",
-                "comply": 23,
+                "comply": 20,
                 "not_comply": 2,
-                "anomaly": 766,
-                "sla_pct": 92.0,
+                "anomaly": 769,
+                "sla_pct": 90.91,
                 "by_branch": [
                   {
                     "branch": "BATAM",
@@ -102272,10 +102272,10 @@
                   },
                   {
                     "branch": "PADANG",
-                    "comply": 7,
+                    "comply": 6,
                     "not_comply": 1,
-                    "anomaly": 187,
-                    "sla_pct": 87.5,
+                    "anomaly": 188,
+                    "sla_pct": 85.71,
                     "by_sto": [
                       {
                         "sto": "ALH",
@@ -102377,10 +102377,10 @@
                       },
                       {
                         "sto": "SIE",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 1,
-                        "sla_pct": 100.0
+                        "anomaly": 2,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "SJJ",
@@ -102477,10 +102477,10 @@
                   },
                   {
                     "branch": "PEKANBARU",
-                    "comply": 2,
+                    "comply": 0,
                     "not_comply": 0,
-                    "anomaly": 187,
-                    "sla_pct": 100.0,
+                    "anomaly": 189,
+                    "sla_pct": 0.0,
                     "by_sto": [
                       {
                         "sto": "AMK",
@@ -102575,10 +102575,10 @@
                       },
                       {
                         "sto": "SLJ",
-                        "comply": 2,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 1,
-                        "sla_pct": 100.0
+                        "anomaly": 3,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "SOK",
@@ -102593,10 +102593,10 @@
               },
               {
                 "regional": "SUMBAGUT",
-                "comply": 51,
-                "not_comply": 5,
-                "anomaly": 1013,
-                "sla_pct": 91.07,
+                "comply": 46,
+                "not_comply": 4,
+                "anomaly": 1019,
+                "sla_pct": 92.0,
                 "by_branch": [
                   {
                     "branch": "BANDA ACEH",
@@ -102977,9 +102977,9 @@
                   },
                   {
                     "branch": "PEMATANG SIANTAR",
-                    "comply": 9,
+                    "comply": 7,
                     "not_comply": 0,
-                    "anomaly": 95,
+                    "anomaly": 97,
                     "sla_pct": 100.0,
                     "by_sto": [
                       {
@@ -103033,10 +103033,10 @@
                       },
                       {
                         "sto": "PDN",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 2,
-                        "sla_pct": 100.0
+                        "anomaly": 3,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "PER",
@@ -103117,26 +103117,26 @@
                       },
                       {
                         "sto": "TIB",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 0,
-                        "sla_pct": 100.0
+                        "anomaly": 1,
+                        "sla_pct": 0.0
                       }
                     ]
                   },
                   {
                     "branch": "RANTAU PRAPAT",
-                    "comply": 8,
-                    "not_comply": 2,
-                    "anomaly": 95,
-                    "sla_pct": 80.0,
+                    "comply": 6,
+                    "not_comply": 1,
+                    "anomaly": 98,
+                    "sla_pct": 85.71,
                     "by_sto": [
                       {
                         "sto": "ANP",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 6,
-                        "sla_pct": 100.0
+                        "anomaly": 7,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "ANR",
@@ -103154,10 +103154,10 @@
                       },
                       {
                         "sto": "KPI",
-                        "comply": 1,
-                        "not_comply": 1,
-                        "anomaly": 15,
-                        "sla_pct": 50.0
+                        "comply": 0,
+                        "not_comply": 0,
+                        "anomaly": 17,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "NGB",
@@ -103191,10 +103191,10 @@
                   },
                   {
                     "branch": "WESTERN MEDAN",
-                    "comply": 15,
+                    "comply": 14,
                     "not_comply": 1,
-                    "anomaly": 191,
-                    "sla_pct": 93.75,
+                    "anomaly": 192,
+                    "sla_pct": 93.33,
                     "by_sto": [
                       {
                         "sto": "BJI",
@@ -103247,9 +103247,9 @@
                       },
                       {
                         "sto": "LSM",
-                        "comply": 2,
+                        "comply": 1,
                         "not_comply": 0,
-                        "anomaly": 23,
+                        "anomaly": 24,
                         "sla_pct": 100.0
                       },
                       {
@@ -103310,9 +103310,9 @@
           {
             "area": "AREA 2",
             "comply": 133,
-            "not_comply": 6,
-            "anomaly": 1591,
-            "sla_pct": 95.68,
+            "not_comply": 5,
+            "anomaly": 1592,
+            "sla_pct": 96.38,
             "by_regional": [
               {
                 "regional": "CENTRAL JABOTABEK",
@@ -103624,9 +103624,9 @@
               {
                 "regional": "EASTERN JABOTABEK",
                 "comply": 37,
-                "not_comply": 4,
-                "anomaly": 393,
-                "sla_pct": 90.24,
+                "not_comply": 3,
+                "anomaly": 394,
+                "sla_pct": 92.5,
                 "by_branch": [
                   {
                     "branch": "BEKASI",
@@ -103710,9 +103710,9 @@
                   {
                     "branch": "BOGOR",
                     "comply": 23,
-                    "not_comply": 3,
-                    "anomaly": 172,
-                    "sla_pct": 88.46,
+                    "not_comply": 2,
+                    "anomaly": 173,
+                    "sla_pct": 92.0,
                     "by_sto": [
                       {
                         "sto": "BGL",
@@ -103822,8 +103822,8 @@
                       {
                         "sto": "JGL",
                         "comply": 0,
-                        "not_comply": 1,
-                        "anomaly": 1,
+                        "not_comply": 0,
+                        "anomaly": 2,
                         "sla_pct": 0.0
                       },
                       {
@@ -104909,17 +104909,17 @@
           },
           {
             "area": "AREA 3",
-            "comply": 140,
-            "not_comply": 6,
-            "anomaly": 2081,
-            "sla_pct": 95.89,
+            "comply": 136,
+            "not_comply": 5,
+            "anomaly": 2086,
+            "sla_pct": 96.45,
             "by_regional": [
               {
                 "regional": "BALI NUSRA",
-                "comply": 27,
-                "not_comply": 2,
-                "anomaly": 717,
-                "sla_pct": 93.1,
+                "comply": 25,
+                "not_comply": 1,
+                "anomaly": 720,
+                "sla_pct": 96.15,
                 "by_branch": [
                   {
                     "branch": "DENPASAR",
@@ -105265,10 +105265,10 @@
                   },
                   {
                     "branch": "MATARAM",
-                    "comply": 13,
-                    "not_comply": 1,
-                    "anomaly": 177,
-                    "sla_pct": 92.86,
+                    "comply": 11,
+                    "not_comply": 0,
+                    "anomaly": 180,
+                    "sla_pct": 100.0,
                     "by_sto": [
                       {
                         "sto": "ALA",
@@ -105356,10 +105356,10 @@
                       },
                       {
                         "sto": "SGG",
-                        "comply": 2,
-                        "not_comply": 1,
-                        "anomaly": 9,
-                        "sla_pct": 66.67
+                        "comply": 0,
+                        "not_comply": 0,
+                        "anomaly": 12,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "SIL",
@@ -105395,10 +105395,10 @@
               },
               {
                 "regional": "JATENG-DIY",
-                "comply": 44,
+                "comply": 43,
                 "not_comply": 2,
-                "anomaly": 706,
-                "sla_pct": 95.65,
+                "anomaly": 707,
+                "sla_pct": 95.56,
                 "by_branch": [
                   {
                     "branch": "MAGELANG",
@@ -105488,9 +105488,9 @@
                   },
                   {
                     "branch": "PEKALONGAN",
-                    "comply": 6,
+                    "comply": 5,
                     "not_comply": 0,
-                    "anomaly": 96,
+                    "anomaly": 97,
                     "sla_pct": 100.0,
                     "by_sto": [
                       {
@@ -105530,9 +105530,9 @@
                       },
                       {
                         "sto": "BMU",
-                        "comply": 2,
+                        "comply": 1,
                         "not_comply": 0,
-                        "anomaly": 1,
+                        "anomaly": 2,
                         "sla_pct": 100.0
                       },
                       {
@@ -106214,10 +106214,10 @@
               },
               {
                 "regional": "JATIM",
-                "comply": 69,
+                "comply": 68,
                 "not_comply": 2,
-                "anomaly": 658,
-                "sla_pct": 97.18,
+                "anomaly": 659,
+                "sla_pct": 97.14,
                 "by_branch": [
                   {
                     "branch": "JEMBER",
@@ -106328,10 +106328,10 @@
                   },
                   {
                     "branch": "LAMONGAN",
-                    "comply": 12,
+                    "comply": 11,
                     "not_comply": 1,
-                    "anomaly": 109,
-                    "sla_pct": 92.31,
+                    "anomaly": 110,
+                    "sla_pct": 91.67,
                     "by_sto": [
                       {
                         "sto": "BBA",
@@ -106377,10 +106377,10 @@
                       },
                       {
                         "sto": "BWN",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 0,
-                        "sla_pct": 100.0
+                        "anomaly": 1,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "CRM",
@@ -107063,17 +107063,17 @@
           },
           {
             "area": "AREA 4",
-            "comply": 123,
-            "not_comply": 7,
-            "anomaly": 2581,
-            "sla_pct": 94.62,
+            "comply": 119,
+            "not_comply": 6,
+            "anomaly": 2586,
+            "sla_pct": 95.2,
             "by_regional": [
               {
                 "regional": "KALIMANTAN",
-                "comply": 81,
-                "not_comply": 6,
-                "anomaly": 1046,
-                "sla_pct": 93.1,
+                "comply": 78,
+                "not_comply": 5,
+                "anomaly": 1050,
+                "sla_pct": 93.98,
                 "by_branch": [
                   {
                     "branch": "BALIKPAPAN",
@@ -107396,10 +107396,10 @@
                   },
                   {
                     "branch": "PALANGKARAYA",
-                    "comply": 6,
+                    "comply": 4,
                     "not_comply": 1,
-                    "anomaly": 84,
-                    "sla_pct": 85.71,
+                    "anomaly": 86,
+                    "sla_pct": 80.0,
                     "by_sto": [
                       {
                         "sto": "AMP",
@@ -107417,9 +107417,9 @@
                       },
                       {
                         "sto": "KKN",
-                        "comply": 2,
+                        "comply": 1,
                         "not_comply": 0,
-                        "anomaly": 19,
+                        "anomaly": 20,
                         "sla_pct": 100.0
                       },
                       {
@@ -107459,10 +107459,10 @@
                       },
                       {
                         "sto": "PRC",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 7,
-                        "sla_pct": 100.0
+                        "anomaly": 8,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "PYM",
@@ -107483,9 +107483,9 @@
                   {
                     "branch": "PANGKALAN BUN",
                     "comply": 12,
-                    "not_comply": 1,
-                    "anomaly": 87,
-                    "sla_pct": 92.31,
+                    "not_comply": 0,
+                    "anomaly": 88,
+                    "sla_pct": 100.0,
                     "by_sto": [
                       {
                         "sto": "HNU",
@@ -107546,8 +107546,8 @@
                       {
                         "sto": "PEA",
                         "comply": 0,
-                        "not_comply": 1,
-                        "anomaly": 6,
+                        "not_comply": 0,
+                        "anomaly": 7,
                         "sla_pct": 0.0
                       },
                       {
@@ -107568,10 +107568,10 @@
                   },
                   {
                     "branch": "PONTIANAK",
-                    "comply": 22,
+                    "comply": 21,
                     "not_comply": 1,
-                    "anomaly": 284,
-                    "sla_pct": 95.65,
+                    "anomaly": 285,
+                    "sla_pct": 95.45,
                     "by_sto": [
                       {
                         "sto": "ANJ",
@@ -107589,10 +107589,10 @@
                       },
                       {
                         "sto": "BIG",
-                        "comply": 1,
+                        "comply": 0,
                         "not_comply": 0,
-                        "anomaly": 1,
-                        "sla_pct": 100.0
+                        "anomaly": 2,
+                        "sla_pct": 0.0
                       },
                       {
                         "sto": "BKY",
@@ -108181,23 +108181,23 @@
               },
               {
                 "regional": "SULAWESI",
-                "comply": 28,
+                "comply": 27,
                 "not_comply": 1,
-                "anomaly": 1083,
-                "sla_pct": 96.55,
+                "anomaly": 1084,
+                "sla_pct": 96.43,
                 "by_branch": [
                   {
                     "branch": "BONE",
-                    "comply": 3,
+                    "comply": 2,
                     "not_comply": 0,
-                    "anomaly": 69,
+                    "anomaly": 70,
                     "sla_pct": 100.0,
                     "by_sto": [
                       {
                         "sto": "BLK",
-                        "comply": 2,
+                        "comply": 1,
                         "not_comply": 0,
-                        "anomaly": 12,
+                        "anomaly": 13,
                         "sla_pct": 100.0
                       },
                       {
