@@ -83,6 +83,10 @@ header h1{font-size:.95rem;font-weight:600}
 .last-update-box{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 14px;text-align:right}
 .last-update-box .lu-label{font-size:.68rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px}
 .last-update-box .lu-val{font-size:.88rem;font-weight:700;color:#fff;margin-top:2px}
+.kpi-banner-right{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.btn-download-kpi{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;padding:9px 15px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;white-space:nowrap}
+.btn-download-kpi:hover{background:rgba(255,255,255,.26);transform:translateY(-1px)}
+.btn-download-kpi:active{transform:translateY(0)}
 
 /* ── KPI CONTROLS ────────────────────────────────────────────────────────── */
 .kpi-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px;padding:14px 18px}
@@ -325,9 +329,12 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
             <h2>KPI Menu</h2>
             <p>SLA Compliance Dashboard</p>
           </div>
-          <div class="last-update-box">
-            <div class="lu-label">Last Update</div>
-            <div class="lu-val" id="kpiLastUpdate">—</div>
+          <div class="kpi-banner-right">
+            <div class="last-update-box">
+              <div class="lu-label">Last Update</div>
+              <div class="lu-val" id="kpiLastUpdate">—</div>
+            </div>
+            <button class="btn-download-kpi" onclick="downloadKPIData()" title="Download data KPI beserta flagging perhitungannya">⬇ Download Data</button>
           </div>
         </div>
 
@@ -741,6 +748,115 @@ function renderSummaryView(){
         <span style="color:var(--red);font-weight:700">■</span> &lt; 90% Below target
       </div>
     </div>`;
+}
+
+// ── DOWNLOAD DATA + FLAGGING PERHITUNGAN ──
+const REF_LABEL  = {manja:'Manja', pi_manja_minus:'PI (krn Manja Minus)', pi_manja_null:'PI (krn Manja Kosong)', re_pi_minus:'RE (krn PI Minus)', re_pi_null:'RE (krn PI Kosong)'};
+const REF_REASON = {
+  manja:          'Duration = tgl_pc - tgl_manja_awal (Manja awal terisi & tidak minus)',
+  pi_manja_minus: 'tgl_manja_awal minus → pakai Duration = tgl_pc - tgl_pi',
+  pi_manja_null:  'tgl_manja_awal kosong → pakai Duration = tgl_pc - tgl_pi',
+  re_pi_minus:    'tgl_pi minus → pakai Duration = tgl_pc - tgl_reg',
+  re_pi_null:     'tgl_pi kosong → pakai Duration = tgl_pc - tgl_reg',
+};
+
+function csvEscape(v){
+  if(v===null||v===undefined) v='';
+  v=String(v);
+  if(/[",\n]/.test(v)) v='"'+v.replace(/"/g,'""')+'"';
+  return v;
+}
+function rowsToCSV(headers, rows){
+  const lines=[headers.map(csvEscape).join(',')];
+  rows.forEach(r=>lines.push(headers.map(h=>csvEscape(r[h])).join(',')));
+  return lines.join('\n');
+}
+function triggerCSVDownload(filename, content){
+  const blob=new Blob(['\uFEFF'+content], {type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Flatten Area → Regional → Branch → STO tree into rows with a Compliance flag vs target
+function flattenAreaTree(areas, target){
+  const rows=[];
+  const flag = pct => (pct>=target ? 'Comply' : 'Not Comply');
+  const mk = (a,r,b,s,o) => ({
+    Area:a, Regional:r, Branch:b, STO:s,
+    Comply:o.comply||0, 'Not Comply':o.not_comply||0, Anomaly:o.anomaly||0,
+    Total:(o.comply||0)+(o.not_comply||0)+(o.anomaly||0),
+    'SLA %':o.sla_pct, 'Target %':target, 'Compliance Flag':flag(o.sla_pct)
+  });
+  (areas||[]).forEach(a=>{
+    rows.push(mk(a.area,'ALL','ALL','ALL',a));
+    (a.by_regional||[]).forEach(r=>{
+      rows.push(mk(a.area,r.regional,'ALL','ALL',r));
+      (r.by_branch||[]).forEach(b=>{
+        rows.push(mk(a.area,r.regional,b.branch,'ALL',b));
+        (b.by_sto||[]).forEach(s=>{
+          rows.push(mk(a.area,r.regional,b.branch,s.sto,s));
+        });
+      });
+    });
+  });
+  return rows;
+}
+
+// Build the reference-based calculation flagging table (Manja/PI/RE/Anomaly) per prompt_TTI_AO logic
+function buildReferenceFlaggingRows(bda){
+  const rows=[];
+  (bda||[]).forEach(row=>{
+    Object.keys(REF_LABEL).forEach(key=>{
+      const cat=row[key]||{comply:0,not_comply:0};
+      if(!(cat.comply||cat.not_comply)) return;
+      rows.push({Area:row.area, Referensi:REF_LABEL[key], Comply:cat.comply||0, 'Not Comply':cat.not_comply||0, Reason:REF_REASON[key]});
+    });
+    if(row.anomaly){
+      rows.push({Area:row.area, Referensi:'Anomaly', Comply:'-', 'Not Comply':row.anomaly, Reason:'Semua acuan (Manja/PI/RE) minus atau kosong → "anomaly all minus"; atau tgl_pc kosong → "anomaly pc empty"'});
+    }
+  });
+  return rows;
+}
+
+function downloadKPIData(){
+  if(!kpiData){ alert('Data KPI belum termuat.'); return; }
+  if(selectedMonth==='summary' || !selectedMonth){
+    alert('Pilih tab bulan tertentu (bukan Summary) untuk mengunduh data detail.');
+    return;
+  }
+  const monthData=(kpiData.months||{})[selectedMonth]||{};
+
+  // No entity selected → download a summary of all entities for this month
+  if(!selectedEntity){
+    const entities=Object.keys(monthData).sort();
+    if(!entities.length){ alert('Tidak ada data untuk bulan ini.'); return; }
+    const rows=entities.map(e=>{
+      const d=monthData[e];
+      const tgt=ENTITY_TARGETS_OVERRIDE[e]||d.target||95;
+      return {Entity:e, Total:d.total||0, Comply:d.comply||0, 'Not Comply':d.not_comply||0, Anomaly:d.anomaly||0, 'SLA %':d.sla_pct, 'Target %':tgt, 'Compliance Flag':(d.sla_pct>=tgt?'Comply':'Not Comply')};
+    });
+    const csv='=== KPI SUMMARY — ALL ENTITIES — '+selectedMonth+' ===\n'+rowsToCSV(['Entity','Total','Comply','Not Comply','Anomaly','SLA %','Target %','Compliance Flag'], rows);
+    triggerCSVDownload(`KPI_Summary_All_${selectedMonth}.csv`, csv);
+    return;
+  }
+
+  const d=monthData[selectedEntity];
+  if(!d){ alert('Tidak ada data untuk KPI ini pada bulan yang dipilih.'); return; }
+  const tgt=ENTITY_TARGETS_OVERRIDE[selectedEntity]||d.target||95;
+  const detailRows=flattenAreaTree(d.by_area||[], tgt);
+
+  let csv = `=== DETAIL DATA — ${selectedEntity} — ${selectedMonth} (Target: ${tgt}%) ===\n`;
+  csv += rowsToCSV(['Area','Regional','Branch','STO','Comply','Not Comply','Anomaly','Total','SLA %','Target %','Compliance Flag'], detailRows);
+
+  if(selectedEntity==='TTI' && d.breakdown_by_area && d.breakdown_by_area.length){
+    const flagRows=buildReferenceFlaggingRows(d.breakdown_by_area);
+    csv += `\n\n=== FLAGGING PERHITUNGAN DURASI (Referensi: Manja/PI/RE/Anomaly) — ${selectedEntity} — ${selectedMonth} ===\n`;
+    csv += rowsToCSV(['Area','Referensi','Comply','Not Comply','Reason'], flagRows);
+  }
+
+  triggerCSVDownload(`KPI_${selectedEntity}_${selectedMonth}.csv`, csv);
 }
 
 // ── ENTITY DETAIL VIEW ──
