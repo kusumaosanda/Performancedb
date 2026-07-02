@@ -83,10 +83,15 @@ header h1{font-size:.95rem;font-weight:600}
 .last-update-box{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 14px;text-align:right}
 .last-update-box .lu-label{font-size:.68rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px}
 .last-update-box .lu-val{font-size:.88rem;font-weight:700;color:#fff;margin-top:2px}
-.kpi-banner-right{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
-.btn-download-kpi{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;padding:9px 15px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;white-space:nowrap}
-.btn-download-kpi:hover{background:rgba(255,255,255,.26);transform:translateY(-1px)}
-.btn-download-kpi:active{transform:translateY(0)}
+.kpi-toolbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.btn-download-kpi,.btn-copy-kpi{display:flex;align-items:center;gap:6px;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;white-space:nowrap;font-family:'Poppins',sans-serif}
+.btn-download-kpi{background:var(--teal);border:none;color:#fff}
+.btn-download-kpi:hover{background:var(--navy);transform:translateY(-1px)}
+.btn-copy-kpi{background:var(--card);border:1px solid var(--border);color:var(--teal)}
+.btn-copy-kpi:hover{background:rgba(61,122,110,.1);border-color:var(--teal);transform:translateY(-1px)}
+.btn-download-kpi:active,.btn-copy-kpi:active{transform:translateY(0)}
+.copy-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy2);color:#fff;padding:9px 18px;border-radius:8px;font-size:.8rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:999}
+.copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ── KPI CONTROLS ────────────────────────────────────────────────────────── */
 .kpi-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px;padding:14px 18px}
@@ -329,12 +334,9 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
             <h2>KPI Menu</h2>
             <p>SLA Compliance Dashboard</p>
           </div>
-          <div class="kpi-banner-right">
-            <div class="last-update-box">
-              <div class="lu-label">Last Update</div>
-              <div class="lu-val" id="kpiLastUpdate">—</div>
-            </div>
-            <button class="btn-download-kpi" onclick="downloadKPIData()" title="Download data KPI beserta flagging perhitungannya">⬇ Download Data</button>
+          <div class="last-update-box">
+            <div class="lu-label">Last Update</div>
+            <div class="lu-val" id="kpiLastUpdate">—</div>
           </div>
         </div>
 
@@ -350,6 +352,10 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
         </div>
 
         <!-- Content area -->
+        <div class="kpi-toolbar">
+          <button class="btn-copy-kpi" onclick="copyKPITable()" title="Copy tabel raw data ke clipboard">📋 Copy Table</button>
+          <button class="btn-download-kpi" onclick="downloadKPIData()" title="Download raw data granular beserta flagging hasil perhitungannya">⬇ Download Data</button>
+        </div>
         <div id="kpiBody"></div>
       </div>
     </div>
@@ -820,43 +826,80 @@ function buildReferenceFlaggingRows(bda){
   return rows;
 }
 
-function downloadKPIData(){
-  if(!kpiData){ alert('Data KPI belum termuat.'); return; }
+// Builds the export package (raw data + calculation flagging) for the current selection.
+// Returns null (and alerts) if nothing valid is selected to export.
+function buildExportPackage(){
+  if(!kpiData){ alert('Data KPI belum termuat.'); return null; }
   if(selectedMonth==='summary' || !selectedMonth){
-    alert('Pilih tab bulan tertentu (bukan Summary) untuk mengunduh data detail.');
-    return;
+    alert('Pilih tab bulan tertentu (bukan Summary) untuk mengunduh/copy data raw.');
+    return null;
   }
   const monthData=(kpiData.months||{})[selectedMonth]||{};
 
-  // No entity selected → download a summary of all entities for this month
+  // No entity selected → summary of all entities for this month
   if(!selectedEntity){
     const entities=Object.keys(monthData).sort();
-    if(!entities.length){ alert('Tidak ada data untuk bulan ini.'); return; }
+    if(!entities.length){ alert('Tidak ada data untuk bulan ini.'); return null; }
     const rows=entities.map(e=>{
       const d=monthData[e];
       const tgt=ENTITY_TARGETS_OVERRIDE[e]||d.target||95;
       return {Entity:e, Total:d.total||0, Comply:d.comply||0, 'Not Comply':d.not_comply||0, Anomaly:d.anomaly||0, 'SLA %':d.sla_pct, 'Target %':tgt, 'Compliance Flag':(d.sla_pct>=tgt?'Comply':'Not Comply')};
     });
-    const csv='=== KPI SUMMARY — ALL ENTITIES — '+selectedMonth+' ===\n'+rowsToCSV(['Entity','Total','Comply','Not Comply','Anomaly','SLA %','Target %','Compliance Flag'], rows);
-    triggerCSVDownload(`KPI_Summary_All_${selectedMonth}.csv`, csv);
-    return;
+    return {
+      filenameBase:`KPI_Summary_All_${selectedMonth}`,
+      sections:[{title:`KPI SUMMARY — ALL ENTITIES — ${selectedMonth}`, headers:['Entity','Total','Comply','Not Comply','Anomaly','SLA %','Target %','Compliance Flag'], rows}]
+    };
   }
 
   const d=monthData[selectedEntity];
-  if(!d){ alert('Tidak ada data untuk KPI ini pada bulan yang dipilih.'); return; }
+  if(!d){ alert('Tidak ada data untuk KPI ini pada bulan yang dipilih.'); return null; }
   const tgt=ENTITY_TARGETS_OVERRIDE[selectedEntity]||d.target||95;
   const detailRows=flattenAreaTree(d.by_area||[], tgt);
-
-  let csv = `=== DETAIL DATA — ${selectedEntity} — ${selectedMonth} (Target: ${tgt}%) ===\n`;
-  csv += rowsToCSV(['Area','Regional','Branch','STO','Comply','Not Comply','Anomaly','Total','SLA %','Target %','Compliance Flag'], detailRows);
-
+  const sections=[{
+    title:`RAW DATA — ${selectedEntity} — ${selectedMonth} (Target: ${tgt}%)`,
+    headers:['Area','Regional','Branch','STO','Comply','Not Comply','Anomaly','Total','SLA %','Target %','Compliance Flag'],
+    rows:detailRows
+  }];
   if(selectedEntity==='TTI' && d.breakdown_by_area && d.breakdown_by_area.length){
-    const flagRows=buildReferenceFlaggingRows(d.breakdown_by_area);
-    csv += `\n\n=== FLAGGING PERHITUNGAN DURASI (Referensi: Manja/PI/RE/Anomaly) — ${selectedEntity} — ${selectedMonth} ===\n`;
-    csv += rowsToCSV(['Area','Referensi','Comply','Not Comply','Reason'], flagRows);
+    sections.push({
+      title:`FLAGGING PERHITUNGAN DURASI (Referensi: Manja/PI/RE/Anomaly) — ${selectedEntity} — ${selectedMonth}`,
+      headers:['Area','Referensi','Comply','Not Comply','Reason'],
+      rows:buildReferenceFlaggingRows(d.breakdown_by_area)
+    });
   }
+  return {filenameBase:`KPI_${selectedEntity}_${selectedMonth}`, sections};
+}
 
-  triggerCSVDownload(`KPI_${selectedEntity}_${selectedMonth}.csv`, csv);
+function downloadKPIData(){
+  const pkg=buildExportPackage(); if(!pkg) return;
+  const csv=pkg.sections.map(s=>`=== ${s.title} ===\n`+rowsToCSV(s.headers,s.rows)).join('\n\n');
+  triggerCSVDownload(`${pkg.filenameBase}.csv`, csv);
+}
+
+async function copyKPITable(){
+  const pkg=buildExportPackage(); if(!pkg) return;
+  const rowsToTSV=(headers,rows)=>[headers.join('\t')].concat(rows.map(r=>headers.map(h=>(r[h]===undefined||r[h]===null)?'':String(r[h])).join('\t'))).join('\n');
+  const text=pkg.sections.map(s=>`${s.title}\n`+rowsToTSV(s.headers,s.rows)).join('\n\n');
+  try{
+    await navigator.clipboard.writeText(text);
+    showCopyToast('✅ Tabel disalin ke clipboard — siap paste ke Excel/Sheets');
+  }catch(e){
+    // Fallback for browsers without Clipboard API permission
+    const ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try{ document.execCommand('copy'); showCopyToast('✅ Tabel disalin ke clipboard — siap paste ke Excel/Sheets'); }
+    catch(e2){ alert('Gagal menyalin ke clipboard. Silakan gunakan tombol Download.'); }
+    document.body.removeChild(ta);
+  }
+}
+
+function showCopyToast(msg){
+  let t=$('copyToast');
+  if(!t){ t=document.createElement('div'); t.id='copyToast'; t.className='copy-toast'; document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(window._copyToastTimer);
+  window._copyToastTimer=setTimeout(()=>t.classList.remove('show'), 2600);
 }
 
 // ── ENTITY DETAIL VIEW ──
@@ -1000,6 +1043,7 @@ function renderEntityView(entity, d){
     </div>
 
     <div class="card">
+      <div class="card-title">Area / Regional / Branch / STO Breakdown</div>
       <div class="tree-filter-bar" id="treeFilterBar"></div>
       <div class="area-tree" id="areaTree"></div>
     </div>
