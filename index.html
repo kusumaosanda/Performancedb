@@ -83,15 +83,6 @@ header h1{font-size:.95rem;font-weight:600}
 .last-update-box{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 14px;text-align:right}
 .last-update-box .lu-label{font-size:.68rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px}
 .last-update-box .lu-val{font-size:.88rem;font-weight:700;color:#fff;margin-top:2px}
-.kpi-toolbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.btn-download-kpi,.btn-copy-kpi{display:flex;align-items:center;gap:6px;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;white-space:nowrap;font-family:'Poppins',sans-serif}
-.btn-download-kpi{background:var(--teal);border:none;color:#fff}
-.btn-download-kpi:hover{background:var(--navy);transform:translateY(-1px)}
-.btn-copy-kpi{background:var(--card);border:1px solid var(--border);color:var(--teal)}
-.btn-copy-kpi:hover{background:rgba(61,122,110,.1);border-color:var(--teal);transform:translateY(-1px)}
-.btn-download-kpi:active,.btn-copy-kpi:active{transform:translateY(0)}
-.copy-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy2);color:#fff;padding:9px 18px;border-radius:8px;font-size:.8rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:999}
-.copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ── KPI CONTROLS ────────────────────────────────────────────────────────── */
 .kpi-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px;padding:14px 18px}
@@ -254,6 +245,43 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .breakdown-table tbody tr:hover td{background:rgba(42,63,94,.04)}
 .breakdown-no-data{text-align:center;padding:20px;color:var(--muted);font-size:.82rem;border:1px dashed var(--border);border-radius:8px;margin-top:6px}
 
+/* ── DOWNLOAD BUTTONS ────────────────────────────────────────────────────── */
+.kpi-toolbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.btn-download-kpi,.btn-copy-kpi{display:flex;align-items:center;gap:6px;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;white-space:nowrap;font-family:'Poppins',sans-serif}
+.btn-download-kpi{background:var(--teal);border:none;color:#fff}
+.btn-download-kpi:hover{background:var(--navy);transform:translateY(-1px)}
+.btn-copy-kpi{background:var(--card);border:1px solid var(--border);color:var(--teal)}
+.btn-copy-kpi:hover{background:rgba(61,122,110,.1);border-color:var(--teal);transform:translateY(-1px)}
+.btn-download-kpi:active,.btn-copy-kpi:active{transform:translateY(0)}
+.copy-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy2);color:#fff;padding:9px 18px;border-radius:8px;font-size:.8rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:999}
+.copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── DRILL PANEL ─────────────────────────────────────────────────────────── */
+.drill-overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.drill-overlay.show{opacity:1;pointer-events:all}
+.drill-panel{position:fixed;right:0;top:0;height:100vh;width:440px;max-width:95vw;background:var(--card);z-index:201;box-shadow:-4px 0 28px rgba(0,0,0,.18);transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.drill-panel.open{transform:translateX(0)}
+.drill-panel-head{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--navy);color:#fff;flex-shrink:0}
+.drill-panel-head h3{font-size:.85rem;font-weight:700;letter-spacing:.2px;line-height:1.3}
+.dp-close{background:none;border:none;font-size:1.2rem;cursor:pointer;color:rgba(255,255,255,.65);line-height:1;padding:2px 6px;transition:color .15s;flex-shrink:0}
+.dp-close:hover{color:#fff}
+.drill-panel-body{flex:1;overflow-y:auto;padding:16px 18px}
+.drill-reason{background:rgba(61,122,110,.1);border-left:3px solid var(--teal);border-radius:6px;padding:10px 14px;font-size:.77rem;color:var(--text);margin-bottom:14px;line-height:1.65}
+.drill-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.drill-table th{background:var(--navy);color:#fff;padding:8px 10px;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.drill-table th:not(:first-child){text-align:right}
+.drill-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:.82rem}
+.drill-table td:not(:first-child){text-align:right;font-weight:600}
+.drill-table tr:hover td{background:rgba(42,63,94,.04)}
+.drill-total td{font-weight:700!important;background:rgba(42,63,94,.06);border-top:2px solid var(--border)!important}
+.drill-section-head{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:16px 0 8px}
+
+/* ── CLICKABLE STAT CARD ─────────────────────────────────────────────────── */
+.sla-stat.clickable{cursor:pointer;transition:transform .15s,box-shadow .15s}
+.sla-stat.clickable:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.13)}
+.sla-stat.clickable:active{transform:translateY(0)}
+.drill-hint{font-size:.64rem;color:var(--teal);margin-top:7px;letter-spacing:.2px;opacity:.85}
+
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
 @media(max-width:768px){
   #sidebar{transform:translateX(-100%)}
@@ -351,11 +379,12 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
           <div class="month-tabs" id="monthTabs"></div>
         </div>
 
-        <!-- Content area -->
+        <!-- Download / Copy toolbar -->
         <div class="kpi-toolbar">
-          <button class="btn-copy-kpi" onclick="copyKPITable()" title="Copy tabel raw data ke clipboard">📋 Copy Table</button>
-          <button class="btn-download-kpi" onclick="downloadKPIData()" title="Download raw data granular beserta flagging hasil perhitungannya">⬇ Download Data</button>
+          <button class="btn-copy-kpi" onclick="copyKPITable()" title="Copy raw data table to clipboard">📋 Copy Table</button>
+          <button class="btn-download-kpi" onclick="downloadKPIData()" title="Download granular data as CSV">⬇ Download Data</button>
         </div>
+        <!-- Content area -->
         <div id="kpiBody"></div>
       </div>
     </div>
@@ -401,6 +430,16 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 
   </div><!-- /content -->
 </div><!-- /main -->
+
+<!-- ══ DRILL PANEL ══ -->
+<div class="drill-overlay" id="drillOverlay" onclick="closeDrillPanel()"></div>
+<div class="drill-panel" id="drillPanel">
+  <div class="drill-panel-head">
+    <h3 id="drillTitle">Detail Breakdown</h3>
+    <button class="dp-close" onclick="closeDrillPanel()">✕</button>
+  </div>
+  <div class="drill-panel-body" id="drillBody"></div>
+</div>
 
 <script>
 // ─── DATA SOURCES ────────────────────────────────────────────────────────────
@@ -554,9 +593,10 @@ function renderKPIBody(){
 }
 
 // ── DEFAULT: All entities overview ──
+const ENTITY_ORDER = ['TTI','FFG','TTRFFG','PSRE','FFGGAUL'];
 function renderAllView(){
   const monthData = (kpiData.months||{})[selectedMonth] || {};
-  const entities  = Object.keys(monthData).sort();
+  const entities  = ENTITY_ORDER.filter(e=>monthData[e]).concat(Object.keys(monthData).filter(e=>!ENTITY_ORDER.includes(e)).sort());
   if(!entities.length){ $('kpiBody').innerHTML='<div class="loading">No data for this month.</div>'; return; }
 
   const totalC   = entities.reduce((s,e)=>s+(monthData[e].comply||0),0);
@@ -704,7 +744,7 @@ function renderSummaryView(){
   const allMonths = Object.keys(kpiData.months||{}).sort();
   const entities  = new Set();
   allMonths.forEach(m=>Object.keys(kpiData.months[m]).forEach(e=>entities.add(e)));
-  const ents = [...entities].sort();
+  const ents = ENTITY_ORDER.filter(e=>entities.has(e)).concat([...entities].filter(e=>!ENTITY_ORDER.includes(e)).sort());
 
   const mLabel = m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;} };
   const cellStyle = (pct, target=95) => {
@@ -713,11 +753,13 @@ function renderSummaryView(){
     const bg  = pct>=target?'rgba(58,120,72,.09)':pct>=(target-5)?'rgba(200,144,32,.09)':'rgba(168,48,32,.09)';
     return `class="summary-cell" style="color:${clr};background:${bg}">${pct}%`;
   };
+  const ENTITY_DISPLAY_NAMES = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
 
   let rows='';
   ents.forEach(entity=>{
-    const tgt=(Object.values(kpiData.months).find(m=>m[entity]))?.[entity]?.target||95;
-    rows+=`<tr class="summary-entity-row"><td colspan="${allMonths.length+1}" style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px">${entity} &nbsp;<span style="font-weight:400;opacity:.7">— Target: ${tgt}%</span></td></tr>`;
+    const tgt = ENTITY_TARGETS_OVERRIDE[entity] || (Object.values(kpiData.months).find(m=>m[entity]))?.[entity]?.target || 95;
+    const dispName = ENTITY_DISPLAY_NAMES[entity]||entity;
+    rows+=`<tr class="summary-entity-row"><td colspan="${allMonths.length+1}" style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px">${dispName} &nbsp;<span style="font-weight:400;opacity:.7">— Target: ${tgt}%</span></td></tr>`;
 
     // Collect areas
     const areaMap={};
@@ -754,152 +796,6 @@ function renderSummaryView(){
         <span style="color:var(--red);font-weight:700">■</span> &lt; 90% Below target
       </div>
     </div>`;
-}
-
-// ── DOWNLOAD DATA + FLAGGING PERHITUNGAN ──
-const REF_LABEL  = {manja:'Manja', pi_manja_minus:'PI (krn Manja Minus)', pi_manja_null:'PI (krn Manja Kosong)', re_pi_minus:'RE (krn PI Minus)', re_pi_null:'RE (krn PI Kosong)'};
-const REF_REASON = {
-  manja:          'Duration = tgl_pc - tgl_manja_awal (Manja awal terisi & tidak minus)',
-  pi_manja_minus: 'tgl_manja_awal minus → pakai Duration = tgl_pc - tgl_pi',
-  pi_manja_null:  'tgl_manja_awal kosong → pakai Duration = tgl_pc - tgl_pi',
-  re_pi_minus:    'tgl_pi minus → pakai Duration = tgl_pc - tgl_reg',
-  re_pi_null:     'tgl_pi kosong → pakai Duration = tgl_pc - tgl_reg',
-};
-
-function csvEscape(v){
-  if(v===null||v===undefined) v='';
-  v=String(v);
-  if(/[",\n]/.test(v)) v='"'+v.replace(/"/g,'""')+'"';
-  return v;
-}
-function rowsToCSV(headers, rows){
-  const lines=[headers.map(csvEscape).join(',')];
-  rows.forEach(r=>lines.push(headers.map(h=>csvEscape(r[h])).join(',')));
-  return lines.join('\n');
-}
-function triggerCSVDownload(filename, content){
-  const blob=new Blob(['\uFEFF'+content], {type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download=filename;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-// Flatten Area → Regional → Branch → STO tree into rows with a Compliance flag vs target
-function flattenAreaTree(areas, target){
-  const rows=[];
-  const flag = pct => (pct>=target ? 'Comply' : 'Not Comply');
-  const mk = (a,r,b,s,o) => ({
-    Area:a, Regional:r, Branch:b, STO:s,
-    Comply:o.comply||0, 'Not Comply':o.not_comply||0, Anomaly:o.anomaly||0,
-    Total:(o.comply||0)+(o.not_comply||0)+(o.anomaly||0),
-    'SLA %':o.sla_pct, 'Target %':target, 'Compliance Flag':flag(o.sla_pct)
-  });
-  (areas||[]).forEach(a=>{
-    rows.push(mk(a.area,'ALL','ALL','ALL',a));
-    (a.by_regional||[]).forEach(r=>{
-      rows.push(mk(a.area,r.regional,'ALL','ALL',r));
-      (r.by_branch||[]).forEach(b=>{
-        rows.push(mk(a.area,r.regional,b.branch,'ALL',b));
-        (b.by_sto||[]).forEach(s=>{
-          rows.push(mk(a.area,r.regional,b.branch,s.sto,s));
-        });
-      });
-    });
-  });
-  return rows;
-}
-
-// Build the reference-based calculation flagging table (Manja/PI/RE/Anomaly) per prompt_TTI_AO logic
-function buildReferenceFlaggingRows(bda){
-  const rows=[];
-  (bda||[]).forEach(row=>{
-    Object.keys(REF_LABEL).forEach(key=>{
-      const cat=row[key]||{comply:0,not_comply:0};
-      if(!(cat.comply||cat.not_comply)) return;
-      rows.push({Area:row.area, Referensi:REF_LABEL[key], Comply:cat.comply||0, 'Not Comply':cat.not_comply||0, Reason:REF_REASON[key]});
-    });
-    if(row.anomaly){
-      rows.push({Area:row.area, Referensi:'Anomaly', Comply:'-', 'Not Comply':row.anomaly, Reason:'Semua acuan (Manja/PI/RE) minus atau kosong → "anomaly all minus"; atau tgl_pc kosong → "anomaly pc empty"'});
-    }
-  });
-  return rows;
-}
-
-// Builds the export package (raw data + calculation flagging) for the current selection.
-// Returns null (and alerts) if nothing valid is selected to export.
-function buildExportPackage(){
-  if(!kpiData){ alert('Data KPI belum termuat.'); return null; }
-  if(selectedMonth==='summary' || !selectedMonth){
-    alert('Pilih tab bulan tertentu (bukan Summary) untuk mengunduh/copy data raw.');
-    return null;
-  }
-  const monthData=(kpiData.months||{})[selectedMonth]||{};
-
-  // No entity selected → summary of all entities for this month
-  if(!selectedEntity){
-    const entities=Object.keys(monthData).sort();
-    if(!entities.length){ alert('Tidak ada data untuk bulan ini.'); return null; }
-    const rows=entities.map(e=>{
-      const d=monthData[e];
-      const tgt=ENTITY_TARGETS_OVERRIDE[e]||d.target||95;
-      return {Entity:e, Total:d.total||0, Comply:d.comply||0, 'Not Comply':d.not_comply||0, Anomaly:d.anomaly||0, 'SLA %':d.sla_pct, 'Target %':tgt, 'Compliance Flag':(d.sla_pct>=tgt?'Comply':'Not Comply')};
-    });
-    return {
-      filenameBase:`KPI_Summary_All_${selectedMonth}`,
-      sections:[{title:`KPI SUMMARY — ALL ENTITIES — ${selectedMonth}`, headers:['Entity','Total','Comply','Not Comply','Anomaly','SLA %','Target %','Compliance Flag'], rows}]
-    };
-  }
-
-  const d=monthData[selectedEntity];
-  if(!d){ alert('Tidak ada data untuk KPI ini pada bulan yang dipilih.'); return null; }
-  const tgt=ENTITY_TARGETS_OVERRIDE[selectedEntity]||d.target||95;
-  const detailRows=flattenAreaTree(d.by_area||[], tgt);
-  const sections=[{
-    title:`RAW DATA — ${selectedEntity} — ${selectedMonth} (Target: ${tgt}%)`,
-    headers:['Area','Regional','Branch','STO','Comply','Not Comply','Anomaly','Total','SLA %','Target %','Compliance Flag'],
-    rows:detailRows
-  }];
-  if(selectedEntity==='TTI' && d.breakdown_by_area && d.breakdown_by_area.length){
-    sections.push({
-      title:`FLAGGING PERHITUNGAN DURASI (Referensi: Manja/PI/RE/Anomaly) — ${selectedEntity} — ${selectedMonth}`,
-      headers:['Area','Referensi','Comply','Not Comply','Reason'],
-      rows:buildReferenceFlaggingRows(d.breakdown_by_area)
-    });
-  }
-  return {filenameBase:`KPI_${selectedEntity}_${selectedMonth}`, sections};
-}
-
-function downloadKPIData(){
-  const pkg=buildExportPackage(); if(!pkg) return;
-  const csv=pkg.sections.map(s=>`=== ${s.title} ===\n`+rowsToCSV(s.headers,s.rows)).join('\n\n');
-  triggerCSVDownload(`${pkg.filenameBase}.csv`, csv);
-}
-
-async function copyKPITable(){
-  const pkg=buildExportPackage(); if(!pkg) return;
-  const rowsToTSV=(headers,rows)=>[headers.join('\t')].concat(rows.map(r=>headers.map(h=>(r[h]===undefined||r[h]===null)?'':String(r[h])).join('\t'))).join('\n');
-  const text=pkg.sections.map(s=>`${s.title}\n`+rowsToTSV(s.headers,s.rows)).join('\n\n');
-  try{
-    await navigator.clipboard.writeText(text);
-    showCopyToast('✅ Tabel disalin ke clipboard — siap paste ke Excel/Sheets');
-  }catch(e){
-    // Fallback for browsers without Clipboard API permission
-    const ta=document.createElement('textarea');
-    ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
-    document.body.appendChild(ta); ta.focus(); ta.select();
-    try{ document.execCommand('copy'); showCopyToast('✅ Tabel disalin ke clipboard — siap paste ke Excel/Sheets'); }
-    catch(e2){ alert('Gagal menyalin ke clipboard. Silakan gunakan tombol Download.'); }
-    document.body.removeChild(ta);
-  }
-}
-
-function showCopyToast(msg){
-  let t=$('copyToast');
-  if(!t){ t=document.createElement('div'); t.id='copyToast'; t.className='copy-toast'; document.body.appendChild(t); }
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(window._copyToastTimer);
-  window._copyToastTimer=setTimeout(()=>t.classList.remove('show'), 2600);
 }
 
 // ── ENTITY DETAIL VIEW ──
@@ -1009,39 +905,66 @@ function renderEntityView(entity, d){
     </div>`;
   }
 
+  // Dynamic threshold label per entity
+  const ENTITY_THRESH = {
+    TTI:     {comply:'≤ 72 hours',          nc:'> 72 hours'},
+    TTRFFG:  {comply:'≤ 3 hours',           nc:'> 3 hours'},
+    FFG:     {comply:'Clean order (unique)', nc:'Non-clean order'},
+    FFGGAUL: {comply:'FFG (first ticket)',   nc:'GAUL (repeat ticket)'},
+    PSRE:    {comply:'Within SLA period',    nc:'Exceeds SLA period'},
+  };
+  const thresh = ENTITY_THRESH[entity] || {comply:'Within SLA',nc:'Exceeds SLA'};
+
   // Store areas for filter rebuild
   window._currentAreas = d.by_area || [];
   window._currentTgt   = tgt;
+  window._currentEntity = entity;
+  window._currentEntityData = d;
 
   $('kpiBody').innerHTML=`
+    <!-- ① Month-to-month trend — full width, top of view -->
+    <div class="card" style="margin-bottom:18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+        <div class="card-title" style="margin-bottom:0">${entity} — Month to Month Performance</div>
+        <span style="font-size:.68rem;color:var(--muted)">Overall + per area vs target (${tgt}%)</span>
+      </div>
+      <div class="chart-wrap tall"><canvas id="ch_trend_e"></canvas></div>
+    </div>
+
+    <!-- ② Stat cards — 3 clickable for drill-down -->
     <div class="grid-4" style="margin-bottom:18px">
       <div class="sla-stat ${slaClass(d.sla_pct,tgt)}">
         <div class="lbl">${entity} — SLA</div>
         <div class="val" style="color:${clr}">${d.sla_pct}%</div>
         <div class="sub">Target: ${tgt}%</div>
       </div>
-      <div class="sla-stat">
+      <div class="sla-stat clickable" onclick="openDrillPanel('anomaly')">
         <div class="lbl">Total Orders</div>
         <div class="val">${(d.total||0).toLocaleString()}</div>
-        <div class="sub">Incl. anomaly: ${d.anomaly||0}</div>
+        <div class="sub">Anomaly: ${(d.anomaly||0).toLocaleString()}</div>
+        <div class="drill-hint">↗ Click — anomaly detail</div>
       </div>
-      <div class="sla-stat green">
+      <div class="sla-stat green clickable" onclick="openDrillPanel('comply')">
         <div class="lbl">Comply</div>
         <div class="val" style="color:var(--green)">${(d.comply||0).toLocaleString()}</div>
-        <div class="sub">≤ 72 hours</div>
+        <div class="sub">${thresh.comply}</div>
+        <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
-      <div class="sla-stat red2">
+      <div class="sla-stat red2 clickable" onclick="openDrillPanel('nc')">
         <div class="lbl">Not Comply</div>
         <div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div>
-        <div class="sub">> 72 hours</div>
+        <div class="sub">${thresh.nc}</div>
+        <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
     </div>
 
-    <div class="grid-2" style="margin-bottom:18px">
-      <div class="card"><div class="card-title">${entity} — Month to Month Trend</div><div class="chart-wrap"><canvas id="ch_trend_e"></canvas></div></div>
-      <div class="card"><div class="card-title">SLA % by Area</div><div class="chart-wrap" style="height:${Math.max(180,(d.by_area||[]).length*55)}px"><canvas id="ch_area_bar"></canvas></div></div>
+    <!-- ③ Area bar chart — full width -->
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-title">SLA % by Area</div>
+      <div class="chart-wrap" style="height:${Math.max(200,(d.by_area||[]).length*52)}px"><canvas id="ch_area_bar"></canvas></div>
     </div>
 
+    <!-- ④ Area tree -->
     <div class="card">
       <div class="card-title">Area / Regional / Branch / STO Breakdown</div>
       <div class="tree-filter-bar" id="treeFilterBar"></div>
@@ -1532,6 +1455,208 @@ function getFiltered(q=''){
   if(activeFilter!=='All') list=list.filter(p=>p.status===activeFilter);
   if(q){ const lq=q.toLowerCase(); list=list.filter(p=>(p.name||'').toLowerCase().includes(lq)||(p.pic||'').toLowerCase().includes(lq)||(p.category||'').toLowerCase().includes(lq)); }
   return list;
+}
+
+// ─── DRILL PANEL ─────────────────────────────────────────────────────────────
+const ANOMALY_REASONS = {
+  TTI:     'Anomaly termasuk: (1) flag_exclude_all ≠ 0 — order dikecualikan dari perhitungan; (2) tgl_pc kosong — tanggal penyelesaian tidak tersedia. Baris ini tidak masuk denominator SLA.',
+  TTRFFG:  'Anomaly termasuk: (1) flag_exclude_all ≠ 0 — order dikecualikan; (2) first_cust_assign kosong (MANJA) — tidak ada data waktu assign; (3) f_ttr = WILSUS — Work In Location Suspend, dikecualikan dari SLA.',
+  FFG:     'Anomaly = flag_exclude_all ≠ 0. Order ini tidak dihitung sebagai gangguan (FFG). Denominator FFG berasal dari total order TTI periode N-2 (bukan dari file ini).',
+  FFGGAUL: 'Anomaly = flag_exclude_all ≠ 0. Hanya order dengan flag = 0 yang masuk ke perhitungan FFG vs Total (GAUL).',
+  PSRE:    'Anomaly = flag_exclude_all ≠ 0. Order dengan flag ini dikecualikan dari perhitungan SLA PS-RE.',
+};
+const ENTITY_DISPLAY = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
+const MONTH_NAMES_LONG = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function openDrillPanel(type){
+  const entity = window._currentEntity;
+  const d      = window._currentEntityData;
+  const tgt    = window._currentTgt || 95;
+  if(!entity || !d) return;
+
+  const areas  = d.by_area || [];
+  const label  = ENTITY_DISPLAY[entity] || entity;
+  const mo     = selectedMonth ? parseInt(selectedMonth.slice(4,6)) : 0;
+  const yr     = selectedMonth ? selectedMonth.slice(0,4) : '';
+  const period = (MONTH_NAMES_LONG[mo]||'') + (yr?' '+yr:'');
+
+  let title='', html='';
+
+  if(type === 'anomaly'){
+    title = `Anomaly Detail — ${label} — ${period}`;
+    const reason = ANOMALY_REASONS[entity] || 'Order yang dikecualikan dari perhitungan SLA.';
+    const totalAn = d.anomaly || 0;
+    const rows = areas.map(a=>{
+      const c = slaColor(a.sla_pct, tgt);
+      const pct = a.anomaly && a.total ? ((a.anomaly/a.total)*100).toFixed(1)+'%' : '—';
+      return `<tr>
+        <td style="font-weight:600;color:var(--navy)">${a.area}</td>
+        <td style="color:var(--muted);font-weight:700">${(a.anomaly||0).toLocaleString()}</td>
+        <td>${pct}</td>
+        <td style="color:${c};font-weight:700">${a.sla_pct}%</td>
+      </tr>`;
+    }).join('');
+    html = `
+      <div class="drill-reason">ℹ️ ${reason}</div>
+      <div class="drill-section-head">Per Area</div>
+      <table class="drill-table">
+        <thead><tr><th>Area</th><th>Anomaly</th><th>% of Total</th><th>SLA %</th></tr></thead>
+        <tbody>
+          ${rows}
+          <tr class="drill-total"><td>Total</td><td style="color:var(--muted)">${totalAn.toLocaleString()}</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>`;
+
+  } else if(type === 'comply'){
+    title = `Comply Breakdown — ${label} — ${period}`;
+    const totalC = d.comply || 0;
+    const rows = areas.map(a=>{
+      const c = slaColor(a.sla_pct, tgt);
+      const badge = a.sla_pct < tgt ? `<span style="font-size:.6rem;color:var(--red)"> ▼</span>` : `<span style="font-size:.6rem;color:var(--green)"> ✓</span>`;
+      return `<tr>
+        <td style="font-weight:600;color:var(--navy)">${a.area}${badge}</td>
+        <td style="color:var(--green);font-weight:700">${(a.comply||0).toLocaleString()}</td>
+        <td style="color:var(--muted)">${(a.not_comply||0).toLocaleString()}</td>
+        <td style="color:${c};font-weight:700">${a.sla_pct}%</td>
+      </tr>`;
+    }).join('');
+    html = `
+      <div class="drill-section-head">Comply per Area — target ${tgt}%</div>
+      <table class="drill-table">
+        <thead><tr><th>Area</th><th>Comply</th><th>Not Comply</th><th>SLA %</th></tr></thead>
+        <tbody>
+          ${rows}
+          <tr class="drill-total"><td>Total</td><td style="color:var(--green)">${totalC.toLocaleString()}</td><td style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</td><td style="color:${slaColor(d.sla_pct,tgt)}">${d.sla_pct}%</td></tr>
+        </tbody>
+      </table>`;
+
+  } else if(type === 'nc'){
+    title = `Not Comply Breakdown — ${label} — ${period}`;
+    const totalNC = d.not_comply || 0;
+    const sorted  = [...areas].sort((a,b)=>(b.not_comply||0)-(a.not_comply||0));
+    const rows = sorted.map(a=>{
+      const c = slaColor(a.sla_pct, tgt);
+      const share = totalNC > 0 ? ((a.not_comply||0)/totalNC*100).toFixed(1)+'%' : '—';
+      return `<tr>
+        <td style="font-weight:600;color:var(--navy)">${a.area}</td>
+        <td style="color:var(--red);font-weight:700">${(a.not_comply||0).toLocaleString()}</td>
+        <td style="color:var(--muted)">${share}</td>
+        <td style="color:${c};font-weight:700">${a.sla_pct}%</td>
+      </tr>`;
+    }).join('');
+    html = `
+      <div class="drill-section-head">Not Comply per Area — sorted by volume ↓</div>
+      <table class="drill-table">
+        <thead><tr><th>Area</th><th>Not Comply</th><th>% of Total NC</th><th>SLA %</th></tr></thead>
+        <tbody>
+          ${rows}
+          <tr class="drill-total"><td>Total</td><td style="color:var(--red)">${totalNC.toLocaleString()}</td><td>100%</td><td>—</td></tr>
+        </tbody>
+      </table>`;
+  }
+
+  $('drillTitle').textContent = title;
+  $('drillBody').innerHTML = html;
+  $('drillOverlay').classList.add('show');
+  $('drillPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrillPanel(){
+  $('drillOverlay').classList.remove('show');
+  $('drillPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ─── DOWNLOAD + COPY (merged from friend's version) ──────────────────────────
+const REF_LABEL  = {manja:'Manja', pi_manja_minus:'PI (krn Manja Minus)', pi_manja_null:'PI (krn Manja Kosong)', re_pi_minus:'RE (krn PI Minus)', re_pi_null:'RE (krn PI Kosong)'};
+const REF_REASON = {
+  manja:          'Duration = tgl_pc - tgl_manja_awal',
+  pi_manja_minus: 'tgl_manja_awal minus → Duration = tgl_pc - tgl_pi',
+  pi_manja_null:  'tgl_manja_awal kosong → Duration = tgl_pc - tgl_pi',
+  re_pi_minus:    'tgl_pi minus → Duration = tgl_pc - tgl_reg',
+  re_pi_null:     'tgl_pi kosong → Duration = tgl_pc - tgl_reg',
+};
+function csvEscape(v){
+  if(v===null||v===undefined) v=''; v=String(v);
+  if(/[",\n]/.test(v)) v='"'+v.replace(/"/g,'""')+'"';
+  return v;
+}
+function rowsToCSV(headers,rows){
+  return [headers.map(csvEscape).join(','),...rows.map(r=>headers.map(h=>csvEscape(r[h])).join(','))].join('\n');
+}
+function triggerCSVDownload(filename,content){
+  const blob=new Blob(['﻿'+content],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function flattenAreaTree(areas,target){
+  const rows=[]; const flag=pct=>(pct>=target?'Comply':'Not Comply');
+  const mk=(a,r,b,s,o)=>({Area:a,Regional:r,Branch:b,STO:s,Comply:o.comply||0,'Not Comply':o.not_comply||0,Anomaly:o.anomaly||0,Total:(o.comply||0)+(o.not_comply||0)+(o.anomaly||0),'SLA %':o.sla_pct,'Target %':target,'Compliance Flag':flag(o.sla_pct)});
+  (areas||[]).forEach(a=>{
+    rows.push(mk(a.area,'ALL','ALL','ALL',a));
+    (a.by_regional||[]).forEach(r=>{
+      rows.push(mk(a.area,r.regional,'ALL','ALL',r));
+      (r.by_branch||[]).forEach(b=>{
+        rows.push(mk(a.area,r.regional,b.branch,'ALL',b));
+        (b.by_sto||[]).forEach(s=>rows.push(mk(a.area,r.regional,b.branch,s.sto,s)));
+      });
+    });
+  });
+  return rows;
+}
+function buildReferenceFlaggingRows(bda){
+  const rows=[];
+  (bda||[]).forEach(row=>{
+    Object.keys(REF_LABEL).forEach(key=>{
+      const cat=row[key]||{comply:0,not_comply:0};
+      if(!(cat.comply||cat.not_comply)) return;
+      rows.push({Area:row.area,Referensi:REF_LABEL[key],Comply:cat.comply||0,'Not Comply':cat.not_comply||0,Reason:REF_REASON[key]});
+    });
+    if(row.anomaly) rows.push({Area:row.area,Referensi:'Anomaly',Comply:'-','Not Comply':row.anomaly,Reason:'flag_exclude_all ≠ 0 atau tgl_pc kosong'});
+  });
+  return rows;
+}
+function buildExportPackage(){
+  if(!kpiData){ alert('Data KPI belum termuat.'); return null; }
+  if(selectedMonth==='summary'||!selectedMonth){ alert('Pilih tab bulan tertentu (bukan Summary) untuk mengunduh data.'); return null; }
+  const monthData=(kpiData.months||{})[selectedMonth]||{};
+  if(!selectedEntity){
+    const entities=ENTITY_ORDER.filter(e=>monthData[e]).concat(Object.keys(monthData).filter(e=>!ENTITY_ORDER.includes(e)).sort());
+    if(!entities.length){ alert('Tidak ada data untuk bulan ini.'); return null; }
+    const rows=entities.map(e=>{ const d=monthData[e]; const tgt=ENTITY_TARGETS_OVERRIDE[e]||d.target||95; return {Entity:ENTITY_DISPLAY[e]||e,Total:d.total||0,Comply:d.comply||0,'Not Comply':d.not_comply||0,Anomaly:d.anomaly||0,'SLA %':d.sla_pct,'Target %':tgt,'Compliance Flag':(d.sla_pct>=tgt?'Comply':'Not Comply')}; });
+    return {filenameBase:`KPI_Summary_All_${selectedMonth}`,sections:[{title:`KPI SUMMARY — ALL ENTITIES — ${selectedMonth}`,headers:['Entity','Total','Comply','Not Comply','Anomaly','SLA %','Target %','Compliance Flag'],rows}]};
+  }
+  const d=monthData[selectedEntity]; if(!d){ alert('Tidak ada data untuk KPI ini.'); return null; }
+  const tgt=ENTITY_TARGETS_OVERRIDE[selectedEntity]||d.target||95;
+  const sections=[{title:`RAW DATA — ${selectedEntity} — ${selectedMonth} (Target: ${tgt}%)`,headers:['Area','Regional','Branch','STO','Comply','Not Comply','Anomaly','Total','SLA %','Target %','Compliance Flag'],rows:flattenAreaTree(d.by_area||[],tgt)}];
+  if(selectedEntity==='TTI' && d.breakdown_by_area?.length)
+    sections.push({title:`FLAGGING DURASI TTI — ${selectedMonth}`,headers:['Area','Referensi','Comply','Not Comply','Reason'],rows:buildReferenceFlaggingRows(d.breakdown_by_area)});
+  return {filenameBase:`KPI_${selectedEntity}_${selectedMonth}`,sections};
+}
+function downloadKPIData(){
+  const pkg=buildExportPackage(); if(!pkg) return;
+  const csv=pkg.sections.map(s=>`=== ${s.title} ===\n`+rowsToCSV(s.headers,s.rows)).join('\n\n');
+  triggerCSVDownload(`${pkg.filenameBase}.csv`,csv);
+}
+async function copyKPITable(){
+  const pkg=buildExportPackage(); if(!pkg) return;
+  const tsv=pkg.sections.map(s=>`${s.title}\n`+[s.headers.join('\t'),...s.rows.map(r=>s.headers.map(h=>(r[h]??'')+'' ).join('\t'))].join('\n')).join('\n\n');
+  try{ await navigator.clipboard.writeText(tsv); showCopyToast('✅ Tabel disalin ke clipboard — siap paste ke Excel/Sheets'); }
+  catch(e){
+    const ta=document.createElement('textarea'); ta.value=tsv; ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta); ta.focus(); ta.select();
+    try{ document.execCommand('copy'); showCopyToast('✅ Disalin ke clipboard'); } catch(e2){ alert('Gagal menyalin. Gunakan tombol Download.'); }
+    document.body.removeChild(ta);
+  }
+}
+function showCopyToast(msg){
+  let t=$('copyToast');
+  if(!t){ t=document.createElement('div'); t.id='copyToast'; t.className='copy-toast'; document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(window._copyToastTimer);
+  window._copyToastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
