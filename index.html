@@ -321,8 +321,9 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
       <button class="hamburger" onclick="toggleSidebar()">☰</button>
       <h1 id="pageTitle">Home ID</h1>
     </div>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px">
       <span class="header-meta" id="headerDate"></span>
+      <button onclick="clearDashboardCache()" title="Paksa reload data terbaru dari server" style="background:none;border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:99px;font-size:.68rem;font-weight:700;cursor:pointer;line-height:1.4">🔄 Clear Cache</button>
       <span class="live-badge">LIVE</span>
     </div>
   </header>
@@ -1466,6 +1467,29 @@ const ANOMALY_REASONS = {
   PSRE:    'Anomaly = flag_exclude_all ≠ 0. Order dengan flag ini dikecualikan dari perhitungan SLA PS-RE.',
 };
 const ENTITY_DISPLAY = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
+
+// ─── DOWNLOAD DETAIL COLUMNS ──────────────────────────────────────────────────
+const ENTITY_REASON_ANOMALY = {
+  TTI:     'flag_exclude_all ≠ 0 / tgl_pc kosong',
+  TTRFFG:  'flag_exclude_all ≠ 0 / first_cust_assign kosong / f_ttr = WILSUS',
+  FFG:     'flag_exclude_all ≠ 0',
+  FFGGAUL: 'flag_exclude_all ≠ 0',
+  PSRE:    'flag_exclude_all ≠ 0',
+};
+const ENTITY_DURATION_FORMULA = {
+  TTI:     'tgl_pc − tgl_manja_awal (atau tgl_pi / tgl_reg) ≤ 72 jam',
+  TTRFFG:  'date_close − first_cust_assign ≤ 3 jam',
+  FFG:     'Distinct trouble_no / Denominator TTI periode N-2',
+  FFGGAUL: 'First trouble_no per order_id (FFG) / Total flag=0 (Total)',
+  PSRE:    'Durasi dalam periode SLA yang ditetapkan',
+};
+const ENTITY_START_REF = {
+  TTI:     'Manja → PI → RE (fallback berurutan jika tgl_manja_awal / tgl_pi kosong)',
+  TTRFFG:  'first_cust_assign (waktu assign pertama ke pelanggan)',
+  FFG:     'N/A — denominator dari file TTI periode N-2',
+  FFGGAUL: 'N/A — berdasarkan keunikan order_id per periode',
+  PSRE:    'Tanggal mulai sesuai ketentuan SLA PS-RE',
+};
 const MONTH_NAMES_LONG = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function openDrillPanel(type){
@@ -1592,9 +1616,23 @@ function triggerCSVDownload(filename,content){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
-function flattenAreaTree(areas,target){
-  const rows=[]; const flag=pct=>(pct>=target?'Comply':'Not Comply');
-  const mk=(a,r,b,s,o)=>({Area:a,Regional:r,Branch:b,STO:s,Comply:o.comply||0,'Not Comply':o.not_comply||0,Anomaly:o.anomaly||0,Total:(o.comply||0)+(o.not_comply||0)+(o.anomaly||0),'SLA %':o.sla_pct,'Target %':target,'Compliance Flag':flag(o.sla_pct)});
+function flattenAreaTree(areas,target,entity){
+  const rows=[];
+  const flag=pct=>(pct>=target?'Comply':'Not Comply');
+  const reasonAnomaly = ENTITY_REASON_ANOMALY[entity]||'-';
+  const durationFormula = ENTITY_DURATION_FORMULA[entity]||'-';
+  const startRef = ENTITY_START_REF[entity]||'-';
+  const mk=(a,r,b,s,o)=>({
+    Area:a, Regional:r, Branch:b, STO:s,
+    'Comply':o.comply||0, 'Not Comply':o.not_comply||0,
+    'Anomaly':o.anomaly||0,
+    'Total':(o.comply||0)+(o.not_comply||0)+(o.anomaly||0),
+    'SLA %':o.sla_pct, 'Target %':target,
+    'Compliance Flag':flag(o.sla_pct),
+    'Start Reference':startRef,
+    'Reason Anomaly':reasonAnomaly,
+    'Duration Formula':durationFormula,
+  });
   (areas||[]).forEach(a=>{
     rows.push(mk(a.area,'ALL','ALL','ALL',a));
     (a.by_regional||[]).forEach(r=>{
@@ -1631,7 +1669,7 @@ function buildExportPackage(){
   }
   const d=monthData[selectedEntity]; if(!d){ alert('Tidak ada data untuk KPI ini.'); return null; }
   const tgt=ENTITY_TARGETS_OVERRIDE[selectedEntity]||d.target||95;
-  const sections=[{title:`RAW DATA — ${selectedEntity} — ${selectedMonth} (Target: ${tgt}%)`,headers:['Area','Regional','Branch','STO','Comply','Not Comply','Anomaly','Total','SLA %','Target %','Compliance Flag'],rows:flattenAreaTree(d.by_area||[],tgt)}];
+  const sections=[{title:`RAW DATA — ${selectedEntity} — ${selectedMonth} (Target: ${tgt}%)`,headers:['Area','Regional','Branch','STO','Comply','Not Comply','Anomaly','Total','SLA %','Target %','Compliance Flag','Start Reference','Reason Anomaly','Duration Formula'],rows:flattenAreaTree(d.by_area||[],tgt,selectedEntity)}];
   if(selectedEntity==='TTI' && d.breakdown_by_area?.length)
     sections.push({title:`FLAGGING DURASI TTI — ${selectedMonth}`,headers:['Area','Referensi','Comply','Not Comply','Reason'],rows:buildReferenceFlaggingRows(d.breakdown_by_area)});
   return {filenameBase:`KPI_${selectedEntity}_${selectedMonth}`,sections};
@@ -1657,6 +1695,23 @@ function showCopyToast(msg){
   t.textContent=msg; t.classList.add('show');
   clearTimeout(window._copyToastTimer);
   window._copyToastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ─── CLEAR CACHE ─────────────────────────────────────────────────────────────
+async function clearDashboardCache(){
+  const btn = document.querySelector('[onclick="clearDashboardCache()"]');
+  const orig = btn ? btn.textContent : '';
+  if(btn){ btn.textContent='⏳ Loading…'; btn.disabled=true; }
+  try {
+    const r = await fetch(DATA.kpis + '?_t=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    kpiData = await r.json();
+    renderKPIs(kpiData);
+    if(btn){ btn.textContent='✅ Updated'; setTimeout(()=>{ btn.textContent=orig; btn.disabled=false; },2000); }
+  } catch(e) {
+    if(btn){ btn.textContent=orig; btn.disabled=false; }
+    alert('❌ Gagal refresh: ' + e.message);
+  }
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
