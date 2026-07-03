@@ -6,6 +6,7 @@
 <title>Performance Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <style>
 /* ── PALETTE ──────────────────────────────────────────────────────────────── */
 :root{
@@ -602,23 +603,20 @@ function renderAllView(){
 
   const totalC   = entities.reduce((s,e)=>s+(monthData[e].comply||0),0);
   const totalNC  = entities.reduce((s,e)=>s+(monthData[e].not_comply||0),0);
-  const totalAll = entities.reduce((s,e)=>s+(monthData[e].total||0),0);
+  const totalAn  = entities.reduce((s,e)=>s+(monthData[e].anomaly||0),0);
   const overallSla = totalC+totalNC>0 ? (totalC/(totalC+totalNC)*100).toFixed(2) : '—';
   const oClr = slaColor(parseFloat(overallSla));
 
-  // Build month-to-month trend data for all entities
   const allMonths = Object.keys(kpiData.months||{}).sort();
   const COLORS=['#2A3F5E','#C4522A','#3D7A6E','#C89020','#7A3020','#3A7848','#5A9E8E'];
-
-  // Analysis insights
   const ENL = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
   const eln = e => ENL[e]||e;
-  const aboveTarget = entities.filter(e=>monthData[e].sla_pct>=(monthData[e].target||95));
-  const belowTarget = entities.filter(e=>monthData[e].sla_pct<(monthData[e].target||95));
+  const etgt = e => ENTITY_TARGETS_OVERRIDE[e] || monthData[e]?.target || 95;
+  const aboveTarget = entities.filter(e=>monthData[e].sla_pct>=etgt(e));
+  const belowTarget = entities.filter(e=>monthData[e].sla_pct<etgt(e));
   const bestEntity  = entities.reduce((a,b)=>monthData[a].sla_pct>monthData[b].sla_pct?a:b);
   const worstEntity = entities.reduce((a,b)=>monthData[a].sla_pct<monthData[b].sla_pct?a:b);
 
-  // Trend direction per entity (compare last 2 months)
   function trendArrow(e){
     const sorted=allMonths.filter(m=>kpiData.months[m][e]);
     if(sorted.length<2) return '';
@@ -629,51 +627,56 @@ function renderAllView(){
     return '<span style="color:var(--muted)">→</span>';
   }
 
+  // Dynamic y-axis mins so PSRE (and any low-SLA entity) stays visible
+  const curVals  = entities.map(e=>monthData[e].sla_pct).filter(v=>v!=null&&v>0);
+  const trendVals= entities.flatMap(e=>allMonths.map(m=>(kpiData.months[m]||{})[e]?.sla_pct).filter(v=>v!=null&&v>0));
+  const barMin   = curVals.length   ? Math.max(0, Math.floor(Math.min(...curVals)/5)*5-5)   : 70;
+  const trendMin = trendVals.length ? Math.max(0, Math.floor(Math.min(...trendVals)/5)*5-5) : 70;
+
   $('kpiBody').innerHTML = `
-    <div class="grid-4" style="margin-bottom:18px">
-      <div class="sla-stat ${slaClass(parseFloat(overallSla))}">
-        <div class="lbl">Overall SLA</div>
-        <div class="val" style="color:${oClr}">${overallSla}%</div>
-        <div class="sub">All entities combined</div>
+    <!-- TOP: Big Overall SLA left + Entity cards right -->
+    <div style="display:flex;gap:16px;margin-bottom:18px;align-items:stretch">
+      <div class="card" style="flex:0 0 36%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px 20px;min-height:190px;text-align:center">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px">Overall SLA</div>
+        <div style="font-size:3.8rem;font-weight:900;color:${oClr};line-height:1.05">${overallSla}%</div>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:10px">All entities combined</div>
+        <div style="font-size:.72rem;margin-top:5px;color:#374151">${aboveTarget.length}/${entities.length} entities on target</div>
       </div>
-      <div class="sla-stat"><div class="lbl">Total Orders</div><div class="val">${totalAll.toLocaleString()}</div><div class="sub">This period</div></div>
-      <div class="sla-stat green"><div class="lbl">Comply</div><div class="val" style="color:var(--green)">${totalC.toLocaleString()}</div><div class="sub">≤ 72 hours</div></div>
-      <div class="sla-stat red2"><div class="lbl">Not Comply</div><div class="val" style="color:var(--red)">${totalNC.toLocaleString()}</div><div class="sub">> 72 hours</div></div>
+      <div style="flex:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;align-content:start" id="entityOvGrid"></div>
     </div>
 
-    <!-- Entity cards -->
-    <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:10px">SLA by Entity — click to drill down</div>
-    <div class="entity-overview-grid" id="entityOvGrid"></div>
-
-    <!-- Month-to-month trend -->
-    <div class="card" style="margin-bottom:18px">
-      <div class="card-title">All KPI — Month to Month Performance</div>
-      <div class="chart-wrap tall"><canvas id="ch_all_trend"></canvas></div>
+    <!-- MIDDLE: Month-to-month trend + This Month bar chart side by side -->
+    <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:18px">
+      <div class="card">
+        <div class="card-title">All KPI — Month to Month Performance</div>
+        <div class="chart-wrap tall"><canvas id="ch_all_trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">This Month — SLA % by Entity</div>
+        <div class="chart-wrap tall"><canvas id="ch_ov_bar"></canvas></div>
+      </div>
     </div>
 
-    <!-- Charts row -->
-    <div class="grid-2" style="margin-bottom:18px">
-      <div class="card"><div class="card-title">This Month — SLA % by Entity</div><div class="chart-wrap"><canvas id="ch_ov_bar"></canvas></div></div>
-      <div class="card"><div class="card-title">Comply vs Not Comply</div><div class="chart-wrap"><canvas id="ch_ov_donut"></canvas></div></div>
-    </div>
-
-    <!-- Analysis -->
-    <div class="card">
-      <div class="card-title">Performance Analysis & Outlook</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:4px">
-        <div>
-          <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📊 Current Status</div>
-          <div style="font-size:.83rem;line-height:1.8;color:#374151">
-            ${aboveTarget.length} of ${entities.length} entities met their SLA target this period.
-            ${belowTarget.length>0?`<br>⚠ Below target: <strong>${belowTarget.map(eln).join(', ')}</strong>`:'<br>✅ All entities on target.'}
-            <br>Best performer: <strong style="color:var(--green)">${eln(bestEntity)} (${monthData[bestEntity].sla_pct}%)</strong>
-            ${entities.length>1?`<br>Needs attention: <strong style="color:var(--red)">${eln(worstEntity)} (${monthData[worstEntity].sla_pct}%)</strong>`:''}
+    <!-- BOTTOM: Donut + Analysis side by side -->
+    <div style="display:grid;grid-template-columns:5fr 7fr;gap:16px;margin-bottom:18px">
+      <div class="card"><div class="card-title">Comply vs Not Comply</div><div style="height:260px;position:relative"><canvas id="ch_ov_donut"></canvas></div></div>
+      <div class="card">
+        <div class="card-title">Performance Analysis & Outlook</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:4px">
+          <div>
+            <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📊 Current Status</div>
+            <div style="font-size:.83rem;line-height:1.8;color:#374151">
+              ${aboveTarget.length} of ${entities.length} entities met target.
+              ${belowTarget.length>0?`<br>⚠ Below target: <strong>${belowTarget.map(eln).join(', ')}</strong>`:'<br>✅ All entities on target.'}
+              <br>Best: <strong style="color:var(--green)">${eln(bestEntity)} (${monthData[bestEntity].sla_pct}%)</strong>
+              ${entities.length>1?`<br>Needs attention: <strong style="color:var(--red)">${eln(worstEntity)} (${monthData[worstEntity].sla_pct}%)</strong>`:''}
+            </div>
           </div>
-        </div>
-        <div>
-          <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📈 Trend Direction</div>
-          <div style="font-size:.83rem;line-height:2;color:#374151">
-            ${entities.map(e=>`${trendArrow(e)} <strong>${eln(e)}</strong> — ${monthData[e].sla_pct}% (tgt ${monthData[e].target||95}%) ${monthData[e].sla_pct>=(monthData[e].target||95)?'<span style="color:var(--green);font-size:.72rem">▲ ON TARGET</span>':'<span style="color:var(--red);font-size:.72rem">▼ BELOW TARGET</span>'}`).join('<br>')}
+          <div>
+            <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📈 Trend Direction</div>
+            <div style="font-size:.83rem;line-height:2;color:#374151">
+              ${entities.map(e=>`${trendArrow(e)} <strong>${eln(e)}</strong> — ${monthData[e].sla_pct}% ${monthData[e].sla_pct>=etgt(e)?'<span style="color:var(--green);font-size:.72rem">▲</span>':'<span style="color:var(--red);font-size:.72rem">▼</span>'}`).join('<br>')}
+            </div>
           </div>
         </div>
       </div>
@@ -683,59 +686,100 @@ function renderAllView(){
   const ENTITY_DISPLAY_NAMES = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
   const grid = $('entityOvGrid');
   entities.forEach(e => {
-    const d = monthData[e];
-    const etgt = d.target || 95;
-    const clr = slaColor(d.sla_pct, etgt);
-    const label = ENTITY_DISPLAY_NAMES[e] || e;
+    const d   = monthData[e];
+    const tg  = etgt(e);
+    const clr = slaColor(d.sla_pct, tg);
+    const lbl = ENTITY_DISPLAY_NAMES[e] || e;
     const card = document.createElement('div');
     card.className='entity-ov-card';
     card.style.borderLeftColor=clr;
-    card.innerHTML=`<div class="e-name">${label} ${trendArrow(e)}</div><div class="e-pct" style="color:${clr}">${d.sla_pct}%</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
+    card.innerHTML=`<div class="e-name">${lbl} ${trendArrow(e)}</div><div class="e-pct" style="color:${clr}">${d.sla_pct}%</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
     card.onclick=()=>{ $('entitySelect').value=e; selectedEntity=e; renderKPIBody(); };
     grid.appendChild(card);
   });
 
   setTimeout(()=>{
-    // Month-to-month trend all entities
+    // Register datalabels plugin once
+    if(window.ChartDataLabels && !Chart._dlRegistered){
+      Chart.register(ChartDataLabels); Chart._dlRegistered=true;
+    }
+    const DL = window.ChartDataLabels ? ChartDataLabels : null;
+
+    // ── Month-to-month trend (no target lines, dynamic min, bigger points) ──
     const ct=document.getElementById('ch_all_trend');
     if(ct){ if(chartInstances.all_trend) chartInstances.all_trend.destroy();
       chartInstances.all_trend=new Chart(ct,{type:'line',data:{
         labels:allMonths.map(m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;}}),
-        datasets:[
-          ...entities.map((e,i)=>({label:e,data:allMonths.map(m=>(kpiData.months[m]||{})[e]?.sla_pct||null),
-            borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]+'18',
-            borderWidth:2.5,tension:.35,pointRadius:5,pointHoverRadius:7,fill:false})),
-          {label:'Target (95%)',data:allMonths.map(()=>95),borderColor:'#9ca3af',borderWidth:1,borderDash:[6,4],tension:0,pointRadius:0,fill:false},
-          {label:'TTI Target (93.31%)',data:allMonths.map(()=>93.31),borderColor:'#C4522A55',borderWidth:1,borderDash:[4,4],tension:0,pointRadius:0,fill:false}
-        ]},
+        datasets:entities.map((e,i)=>({
+          label:eln(e),
+          data:allMonths.map(m=>(kpiData.months[m]||{})[e]?.sla_pct||null),
+          borderColor:COLORS[i%COLORS.length], backgroundColor:COLORS[i%COLORS.length]+'18',
+          borderWidth:2.5, tension:.35, pointRadius:6, pointHoverRadius:9, fill:false
+        }))},
         options:{responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{position:'top',labels:{font:{size:11},padding:14}}},
-          scales:{y:{min:80,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},padding:14}},
+            datalabels:{display:false}
+          },
+          scales:{y:{min:trendMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
     }
 
-    // Bar chart
+    // ── Bar chart — data labels inside each bar ──
     const c1=document.getElementById('ch_ov_bar');
     if(c1){ if(chartInstances.ov_bar) chartInstances.ov_bar.destroy();
-      chartInstances.ov_bar=new Chart(c1,{type:'bar',data:{
-        labels:entities,
-        datasets:[{label:'SLA %',data:entities.map(e=>monthData[e].sla_pct),
-          backgroundColor:entities.map(e=>slaColor(monthData[e].sla_pct)+'bb'),
-          borderColor:entities.map(e=>slaColor(monthData[e].sla_pct)),
-          borderWidth:2,borderRadius:6}]},
+      const barData = entities.map(e=>monthData[e].sla_pct);
+      const barColors = entities.map(e=>slaColor(monthData[e].sla_pct, etgt(e)));
+      chartInstances.ov_bar=new Chart(c1,{
+        type:'bar',
+        plugins: DL?[DL]:[],
+        data:{
+          labels:entities.map(e=>eln(e)),
+          datasets:[{
+            label:'SLA %', data:barData,
+            backgroundColor:barColors.map(c=>c+'bb'),
+            borderColor:barColors, borderWidth:2, borderRadius:6
+          }]},
         options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}}},
-          scales:{x:{min:80,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},y:{grid:{display:false}}}}});
+          plugins:{
+            legend:{display:false},
+            tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}},
+            datalabels:{
+              anchor:'end', align:'start', offset:6,
+              formatter:v=>v+'%',
+              color:'#fff', font:{size:12,weight:'700'}
+            }
+          },
+          scales:{
+            x:{min:barMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},
+            y:{grid:{display:false}}
+          }}});
     }
 
-    // Donut
+    // ── Donut — bigger ring, data labels with counts + % ──
     const c2=document.getElementById('ch_ov_donut');
     if(c2){ if(chartInstances.ov_donut) chartInstances.ov_donut.destroy();
-      chartInstances.ov_donut=new Chart(c2,{type:'doughnut',data:{
-        labels:['Comply','Not Comply','Anomaly'],
-        datasets:[{data:[totalC,totalNC,entities.reduce((s,e)=>s+(monthData[e].anomaly||0),0)],
-          backgroundColor:['#2E8B57','#C0392B','#9ca3af'],borderWidth:2,borderColor:'#fff'}]},
-        options:{responsive:true,maintainAspectRatio:false,cutout:'65%',
-          plugins:{legend:{position:'right',labels:{font:{size:11},padding:12}}}}});
+      chartInstances.ov_donut=new Chart(c2,{
+        type:'doughnut',
+        plugins: DL?[DL]:[],
+        data:{
+          labels:['Comply','Not Comply','Anomaly'],
+          datasets:[{
+            data:[totalC,totalNC,totalAn],
+            backgroundColor:['#2E8B57','#C0392B','#9ca3af'],
+            borderWidth:2, borderColor:'#fff'
+          }]},
+        options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
+          plugins:{
+            legend:{position:'right',labels:{font:{size:11},padding:14}},
+            datalabels:{
+              display:ctx=>ctx.dataset.data[ctx.dataIndex]>0,
+              formatter:(v,ctx)=>{
+                const tot=ctx.dataset.data.reduce((a,b)=>a+b,0);
+                return v.toLocaleString()+'\n'+(tot?((v/tot)*100).toFixed(1)+'%':'');
+              },
+              color:'#fff', font:{size:11,weight:'700'}, textAlign:'center'
+            }
+          }}});
     }
   },50);
 }
@@ -984,19 +1028,25 @@ function renderEntityView(entity, d){
         label:area,
         data:months.map(m=>{const ar=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);return ar?ar.sla_pct:null;}),
         borderColor:_areaPalette[i%_areaPalette.length],
-        borderWidth:1.5,tension:.35,pointRadius:4,fill:false,spanGaps:true,
+        borderWidth:1.8,tension:.35,pointRadius:5,pointHoverRadius:8,fill:false,spanGaps:true,
         borderDash:[],pointStyle:'circle'
       }));
+      // Dynamic min so no entity gets cut off
+      const _trendVals=[...trendData,..._areaDatasets.flatMap(ds=>ds.data)].filter(v=>v!=null&&v>0);
+      const _tMin=_trendVals.length?Math.max(0,Math.floor(Math.min(..._trendVals)/5)*5-5):Math.max(0,tgt-20);
       chartInstances.trend_e=new Chart(ct,{type:'line',data:{
         labels:trendLabels,
         datasets:[
-          {label:`${entity} Overall`,data:trendData,borderColor:clr,backgroundColor:clr+'22',borderWidth:2.5,tension:.35,pointRadius:5,fill:true},
+          {label:`${entity} Overall`,data:trendData,borderColor:clr,backgroundColor:clr+'22',borderWidth:2.5,tension:.35,pointRadius:7,pointHoverRadius:10,fill:true},
           ..._areaDatasets,
           {label:`Target (${tgt}%)`,data:months.map(()=>tgt),borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],tension:0,pointRadius:0,fill:false}
         ]},
         options:{responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}}},
-          scales:{y:{min:Math.min(80,tgt-15),max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
+          plugins:{
+            legend:{position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}},
+            datalabels:{display:false}
+          },
+          scales:{y:{min:_tMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
     }
 
     // Area bar
@@ -1004,15 +1054,30 @@ function renderEntityView(entity, d){
     const areas=d.by_area||[];
     if(cab && areas.length){
       if(chartInstances.area_bar) chartInstances.area_bar.destroy();
-      chartInstances.area_bar=new Chart(cab,{type:'bar',data:{
-        labels:areas.map(a=>a.area),
-        datasets:[{label:'SLA %',data:areas.map(a=>a.sla_pct),
-          backgroundColor:areas.map(a=>slaColor(a.sla_pct,tgt)+'bb'),
-          borderColor:areas.map(a=>slaColor(a.sla_pct,tgt)),
-          borderWidth:2,borderRadius:5}]},
+      const DL2 = window.ChartDataLabels ? ChartDataLabels : null;
+      chartInstances.area_bar=new Chart(cab,{
+        type:'bar',
+        plugins:DL2?[DL2]:[],
+        data:{
+          labels:areas.map(a=>a.area),
+          datasets:[{label:'SLA %',data:areas.map(a=>a.sla_pct),
+            backgroundColor:areas.map(a=>slaColor(a.sla_pct,tgt)+'bb'),
+            borderColor:areas.map(a=>slaColor(a.sla_pct,tgt)),
+            borderWidth:2,borderRadius:5}]},
         options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}}},
-          scales:{x:{min:Math.min(80,tgt-15),max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},y:{grid:{display:false}}}}});
+          plugins:{
+            legend:{display:false},
+            tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}},
+            datalabels:{
+              anchor:'end', align:'start', offset:6,
+              formatter:v=>v+'%',
+              color:'#fff', font:{size:11,weight:'700'}
+            }
+          },
+          scales:{
+            x:{min:areas.length?Math.max(0,Math.floor(Math.min(...areas.map(a=>a.sla_pct))/5)*5-5):Math.max(0,tgt-20),max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},
+            y:{grid:{display:false}}
+          }}});
     }
   },50);
 
