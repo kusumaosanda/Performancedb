@@ -383,8 +383,8 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 
         <!-- Download / Copy toolbar -->
         <div class="kpi-toolbar">
-          <button class="btn-copy-kpi" onclick="copyKPITable()" title="Copy raw data table to clipboard">📋 Copy Table</button>
-          <button class="btn-download-kpi" onclick="downloadKPIData()" title="Download granular data as CSV">⬇ Download Data</button>
+          <button class="btn-copy-kpi" id="btnCopyKPI" onclick="copyKPITable()" title="Copy raw data table to clipboard">📋 Copy Table</button>
+          <button class="btn-download-kpi" id="btnDownloadKPI" onclick="downloadKPIData()" title="Download row-level TTI data as CSV" style="display:none">⬇ Download TTI Data</button>
         </div>
         <!-- Content area -->
         <div id="kpiBody"></div>
@@ -586,6 +586,10 @@ function onEntityChange(){
 }
 
 function renderKPIBody(){
+  // Show download button only on TTI entity view
+  const dlBtn = $('btnDownloadKPI');
+  if(dlBtn) dlBtn.style.display = (selectedEntity==='TTI' && selectedMonth && selectedMonth!=='summary') ? '' : 'none';
+
   if(selectedMonth === 'summary'){ renderSummaryView(); return; }
   if(!selectedEntity){ renderAllView(); return; }
   const monthData = (kpiData.months||{})[selectedMonth];
@@ -657,12 +661,11 @@ function renderAllView(){
       </div>
     </div>
 
-    <!-- BOTTOM: Donut + Analysis side by side -->
-    <div style="display:grid;grid-template-columns:5fr 7fr;gap:16px;margin-bottom:18px">
-      <div class="card"><div class="card-title">Comply vs Not Comply</div><div style="height:260px;position:relative"><canvas id="ch_ov_donut"></canvas></div></div>
+    <!-- BOTTOM: Analysis card full width -->
+    <div style="margin-bottom:18px">
       <div class="card">
         <div class="card-title">Performance Analysis & Outlook</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:4px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:4px">
           <div>
             <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📊 Current Status</div>
             <div style="font-size:.83rem;line-height:1.8;color:#374151">
@@ -755,32 +758,7 @@ function renderAllView(){
           }}});
     }
 
-    // ── Donut — bigger ring, data labels with counts + % ──
-    const c2=document.getElementById('ch_ov_donut');
-    if(c2){ if(chartInstances.ov_donut) chartInstances.ov_donut.destroy();
-      chartInstances.ov_donut=new Chart(c2,{
-        type:'doughnut',
-        plugins: DL?[DL]:[],
-        data:{
-          labels:['Comply','Not Comply','Anomaly'],
-          datasets:[{
-            data:[totalC,totalNC,totalAn],
-            backgroundColor:['#2E8B57','#C0392B','#9ca3af'],
-            borderWidth:2, borderColor:'#fff'
-          }]},
-        options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
-          plugins:{
-            legend:{position:'right',labels:{font:{size:11},padding:14}},
-            datalabels:{
-              display:ctx=>ctx.dataset.data[ctx.dataIndex]>0,
-              formatter:(v,ctx)=>{
-                const tot=ctx.dataset.data.reduce((a,b)=>a+b,0);
-                return v.toLocaleString()+'\n'+(tot?((v/tot)*100).toFixed(1)+'%':'');
-              },
-              color:'#fff', font:{size:11,weight:'700'}, textAlign:'center'
-            }
-          }}});
-    }
+    // (donut removed from All KPI view — visible per-entity in entity view)
   },50);
 }
 
@@ -1739,10 +1717,25 @@ function buildExportPackage(){
     sections.push({title:`FLAGGING DURASI TTI — ${selectedMonth}`,headers:['Area','Referensi','Comply','Not Comply','Reason'],rows:buildReferenceFlaggingRows(d.breakdown_by_area)});
   return {filenameBase:`KPI_${selectedEntity}_${selectedMonth}`,sections};
 }
-function downloadKPIData(){
-  const pkg=buildExportPackage(); if(!pkg) return;
-  const csv=pkg.sections.map(s=>`=== ${s.title} ===\n`+rowsToCSV(s.headers,s.rows)).join('\n\n');
-  triggerCSVDownload(`${pkg.filenameBase}.csv`,csv);
+async function downloadKPIData(){
+  // Only TTI has row-level export; fetch the pre-built CSV from GitHub Pages
+  if(selectedEntity !== 'TTI' || !selectedMonth || selectedMonth==='summary') return;
+
+  const btn = $('btnDownloadKPI');
+  const orig = btn ? btn.textContent : '';
+  if(btn){ btn.textContent='⏳ Preparing…'; btn.disabled=true; }
+
+  const detailUrl = `data/tti_detail_${selectedMonth}.csv?_t=${Date.now()}`;
+  try {
+    const r = await fetch(detailUrl, {cache:'no-store'});
+    if(!r.ok) throw new Error(`File not found (${r.status}). Run update_dashboard.py to generate TTI detail.`);
+    const csv = await r.text();
+    triggerCSVDownload(`TTI_Detail_${selectedMonth}.csv`, csv);
+    if(btn){ btn.textContent=orig; btn.disabled=false; }
+  } catch(e) {
+    if(btn){ btn.textContent=orig; btn.disabled=false; }
+    alert('❌ ' + e.message);
+  }
 }
 async function copyKPITable(){
   const pkg=buildExportPackage(); if(!pkg) return;
