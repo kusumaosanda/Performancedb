@@ -92,11 +92,31 @@ header h1{font-size:.95rem;font-weight:600}
 .kpi-select{padding:7px 14px;border:1px solid var(--border);border-radius:8px;font-size:.85rem;background:var(--bg);color:var(--text);cursor:pointer;outline:none;min-width:140px;font-weight:600}
 .kpi-select:focus{border-color:var(--teal)}
 .month-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
-.month-tab{padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);font-size:.78rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all .18s}
-.month-tab:hover{border-color:var(--wine);color:var(--wine)}
-.month-tab.active{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 2px 8px rgba(42,63,94,.3)}
-.month-tab.has-data{border-color:var(--teal);color:var(--teal);background:rgba(61,122,110,.07)}
-.month-tab.no-data{opacity:.35;cursor:not-allowed}
+.month-tab{
+  padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);
+  background:var(--bg);font-size:.78rem;font-weight:600;cursor:pointer;
+  color:var(--muted);
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.month-tab:hover:not(.no-data):not(.active){
+  border-color:var(--teal);color:var(--teal);
+  background:rgba(61,122,110,.1);
+  transform:translateY(-3px) scale(1.06);
+  box-shadow:0 6px 16px rgba(61,122,110,.22);
+}
+.month-tab.active{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+  border-color:transparent;color:#fff;
+  box-shadow:0 4px 14px rgba(42,63,94,.45);
+  transform:scale(1.08);
+  font-weight:700;letter-spacing:.3px;
+}
+.month-tab.has-data:not(.active){
+  border-color:var(--teal);color:var(--teal);
+  background:rgba(61,122,110,.07);
+}
+.month-tab.no-data{opacity:.32;cursor:not-allowed}
 
 /* ── SLA SUMMARY CARDS ───────────────────────────────────────────────────── */
 .sla-stat{background:var(--card);border-radius:10px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-top:4px solid var(--teal)}
@@ -383,8 +403,17 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 
         <!-- Download / Copy toolbar -->
         <div class="kpi-toolbar">
-          <button class="btn-copy-kpi" id="btnCopyKPI" onclick="copyKPITable()" title="Copy raw data table to clipboard">📋 Copy Table</button>
-          <button class="btn-download-kpi" id="btnDownloadKPI" onclick="downloadKPIData()" title="Download row-level TTI data as CSV" style="display:none">⬇ Download TTI Data</button>
+          <button class="btn-copy-kpi" id="btnCopyKPI" onclick="copyKPITable()" title="Copy table to clipboard">📋 Copy Table</button>
+          <button id="btnDownloadRaw" onclick="downloadTTIRaw()"
+            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(90,10,120,.45)'"
+            onmouseout="this.style.transform='';this.style.boxShadow=''"
+            title="Download original DB columns (semicolon CSV)"
+            style="display:none;background:linear-gradient(135deg,#3D0A5C,#7A1A1A);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">🗄 Download Raw</button>
+          <button id="btnDownloadKPI" onclick="downloadKPIData()"
+            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(20,100,70,.4)'"
+            onmouseout="this.style.transform='';this.style.boxShadow=''"
+            title="Download processed TTI data (semicolon CSV, EU format)"
+            style="display:none;background:linear-gradient(135deg,#1A6B5A,#1A4A2E);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Processed</button>
         </div>
         <!-- Content area -->
         <div id="kpiBody"></div>
@@ -586,9 +615,12 @@ function onEntityChange(){
 }
 
 function renderKPIBody(){
-  // Show download button only on TTI entity view
-  const dlBtn = $('btnDownloadKPI');
-  if(dlBtn) dlBtn.style.display = (selectedEntity==='TTI' && selectedMonth && selectedMonth!=='summary') ? '' : 'none';
+  // Show TTI download buttons only when TTI entity is selected on a specific month
+  const isTTIMonth = selectedEntity==='TTI' && selectedMonth && selectedMonth!=='summary';
+  const dlRaw  = $('btnDownloadRaw');
+  const dlProc = $('btnDownloadKPI');
+  if(dlRaw)  dlRaw.style.display  = isTTIMonth ? '' : 'none';
+  if(dlProc) dlProc.style.display = isTTIMonth ? '' : 'none';
 
   if(selectedMonth === 'summary'){ renderSummaryView(); return; }
   if(!selectedEntity){ renderAllView(); return; }
@@ -1717,25 +1749,37 @@ function buildExportPackage(){
     sections.push({title:`FLAGGING DURASI TTI — ${selectedMonth}`,headers:['Area','Referensi','Comply','Not Comply','Reason'],rows:buildReferenceFlaggingRows(d.breakdown_by_area)});
   return {filenameBase:`KPI_${selectedEntity}_${selectedMonth}`,sections};
 }
-async function downloadKPIData(){
-  // Only TTI has row-level export; fetch the pre-built CSV from GitHub Pages
-  if(selectedEntity !== 'TTI' || !selectedMonth || selectedMonth==='summary') return;
-
-  const btn = $('btnDownloadKPI');
+async function _fetchAndDownload(url, filename, btn){
   const orig = btn ? btn.textContent : '';
-  if(btn){ btn.textContent='⏳ Preparing…'; btn.disabled=true; }
-
-  const detailUrl = `data/tti_detail_${selectedMonth}.csv?_t=${Date.now()}`;
+  if(btn){ btn.textContent='⏳ Menyiapkan…'; btn.disabled=true; btn.style.opacity='.7'; }
   try {
-    const r = await fetch(detailUrl, {cache:'no-store'});
-    if(!r.ok) throw new Error(`File not found (${r.status}). Run update_dashboard.py to generate TTI detail.`);
+    const r = await fetch(url + '?_t=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) throw new Error(`File tidak ditemukan (${r.status}). Jalankan update_dashboard.py terlebih dahulu.`);
     const csv = await r.text();
-    triggerCSVDownload(`TTI_Detail_${selectedMonth}.csv`, csv);
-    if(btn){ btn.textContent=orig; btn.disabled=false; }
+    triggerCSVDownload(filename, csv);
   } catch(e) {
-    if(btn){ btn.textContent=orig; btn.disabled=false; }
     alert('❌ ' + e.message);
+  } finally {
+    if(btn){ btn.textContent=orig; btn.disabled=false; btn.style.opacity=''; }
   }
+}
+
+async function downloadTTIRaw(){
+  if(selectedEntity!=='TTI'||!selectedMonth||selectedMonth==='summary') return;
+  await _fetchAndDownload(
+    `data/tti_raw_${selectedMonth}.csv`,
+    `TTI_Raw_${selectedMonth}.csv`,
+    $('btnDownloadRaw')
+  );
+}
+
+async function downloadKPIData(){
+  if(selectedEntity!=='TTI'||!selectedMonth||selectedMonth==='summary') return;
+  await _fetchAndDownload(
+    `data/tti_detail_${selectedMonth}.csv`,
+    `TTI_Processed_${selectedMonth}.csv`,
+    $('btnDownloadKPI')
+  );
 }
 async function copyKPITable(){
   const pkg=buildExportPackage(); if(!pkg) return;
