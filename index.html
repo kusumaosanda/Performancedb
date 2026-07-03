@@ -41,6 +41,16 @@ nav a:hover{color:var(--navy);background:rgba(42,63,94,.05);border-left-color:va
 nav a.active{color:var(--navy);background:rgba(42,63,94,.06);border-left-color:var(--teal);font-weight:700}
 nav a .icon{font-size:1rem;width:18px;text-align:center}
 .sidebar-footer{padding:14px 18px;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border)}
+
+/* ── NAV SUB-MENU ─────────────────────────────────────────────────────────── */
+.nav-grp-toggle{display:flex;align-items:center;gap:10px;padding:10px 18px;color:var(--muted);font-size:.85rem;border-left:3px solid transparent;transition:all .2s;cursor:pointer;font-weight:500;user-select:none}
+.nav-grp-toggle:hover{color:var(--navy);background:rgba(42,63,94,.05);border-left-color:var(--teal2)}
+.nav-grp-toggle.expanded{color:var(--navy);background:rgba(42,63,94,.04);border-left-color:var(--teal2)}
+.nav-chevron{margin-left:auto;font-size:.55rem;transition:transform .22s;opacity:.55;font-style:normal}
+.nav-grp-toggle.expanded .nav-chevron{transform:rotate(90deg);opacity:.8}
+.nav-submenu{display:none}
+.nav-submenu.open{display:block}
+.nav-submenu a{padding:8px 18px 8px 46px!important;font-size:.8rem;font-weight:500}
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90}
 #overlay.show{display:block}
 .hamburger{display:none;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text)}
@@ -328,7 +338,15 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
   </div>
   <nav>
     <a class="active" onclick="showPage('home')" id="nav-home"><span class="icon">🏠</span> Home ID</a>
-    <a onclick="showPage('kpi')"     id="nav-kpi"><span class="icon">📊</span> KPI Menu</a>
+    <div>
+      <div class="nav-grp-toggle" id="nav-grp-kpi" onclick="toggleNavGroup('kpi')">
+        <span class="icon">📊</span> KPI <em class="nav-chevron">▶</em>
+      </div>
+      <div class="nav-submenu" id="nav-sub-kpi">
+        <a onclick="showPage('kpi')" id="nav-kpi">KPI 2025</a>
+        <a onclick="showPage('kpi2026')" id="nav-kpi2026">KPI 2026</a>
+      </div>
+    </div>
     <a onclick="showPage('tracker')" id="nav-tracker"><span class="icon">📋</span> Project Tracker</a>
   </nav>
   <div class="sidebar-footer" id="sidebarFooter">Loading…</div>
@@ -381,7 +399,7 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
         <!-- Banner -->
         <div class="kpi-banner">
           <div class="kpi-banner-left">
-            <h2>KPI Menu</h2>
+            <h2>KPI 2025</h2>
             <p>SLA Compliance Dashboard</p>
           </div>
           <div class="last-update-box">
@@ -401,14 +419,13 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
           <div class="month-tabs" id="monthTabs"></div>
         </div>
 
-        <!-- Download / Copy toolbar -->
+        <!-- Download toolbar -->
         <div class="kpi-toolbar">
-          <button class="btn-copy-kpi" id="btnCopyKPI" onclick="copyKPITable()" title="Copy table to clipboard">📋 Copy Table</button>
           <button id="btnDownloadRaw" onclick="downloadTTIRaw()"
             onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(90,10,120,.45)'"
             onmouseout="this.style.transform='';this.style.boxShadow=''"
             title="Download original DB columns (semicolon CSV)"
-            style="display:none;background:linear-gradient(135deg,#3D0A5C,#7A1A1A);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">🗄 Download Raw</button>
+            style="display:none;background:linear-gradient(135deg,#3D0A5C,#7A1A1A);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Raw</button>
           <button id="btnDownloadKPI" onclick="downloadKPIData()"
             onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(20,100,70,.4)'"
             onmouseout="this.style.transform='';this.style.boxShadow=''"
@@ -417,6 +434,21 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
         </div>
         <!-- Content area -->
         <div id="kpiBody"></div>
+      </div>
+    </div>
+
+    <!-- ══ KPI 2026 ══ -->
+    <div class="page" id="page-kpi2026">
+      <div class="kpi-banner">
+        <div class="kpi-banner-left">
+          <h2>KPI 2026</h2>
+          <p>SLA Compliance Dashboard</p>
+        </div>
+      </div>
+      <div class="card section-gap" style="padding:60px 24px;text-align:center">
+        <div style="font-size:2.5rem;margin-bottom:16px">🚧</div>
+        <div style="font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:10px">Content Coming Soon</div>
+        <div style="color:var(--muted);font-size:.84rem;line-height:1.7">Add 2026 data files to the Performancedb folder<br>and run <code style="background:rgba(42,63,94,.08);padding:2px 7px;border-radius:5px;font-size:.82rem">update_dashboard.py</code> to populate this page.</div>
       </div>
     </div>
 
@@ -495,14 +527,23 @@ async function fetchJSON(url){
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
-const pageTitles = { home:'Home ID', kpi:'KPI Menu', tracker:'Project Tracker' };
+const pageTitles = { home:'Home ID', kpi:'KPI 2025', kpi2026:'KPI 2026', tracker:'Project Tracker' };
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-  $('page-'+id).classList.add('active');
-  $('nav-'+id).classList.add('active');
-  $('pageTitle').textContent = pageTitles[id];
+  const pg=$('page-'+id); if(pg) pg.classList.add('active');
+  const nav=$('nav-'+id); if(nav) nav.classList.add('active');
+  // Auto-expand KPI group when a KPI sub-page is active
+  if(id==='kpi'||id==='kpi2026'){
+    $('nav-sub-kpi').classList.add('open');
+    $('nav-grp-kpi').classList.add('expanded');
+  }
+  $('pageTitle').textContent = pageTitles[id] || id;
   closeSidebar();
+}
+function toggleNavGroup(id){
+  $('nav-sub-'+id).classList.toggle('open');
+  $('nav-grp-'+id).classList.toggle('expanded');
 }
 function toggleSidebar(){ $('sidebar').classList.toggle('open'); $('overlay').classList.toggle('show'); }
 function closeSidebar(){ $('sidebar').classList.remove('open'); $('overlay').classList.remove('show'); }
