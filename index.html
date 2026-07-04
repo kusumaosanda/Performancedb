@@ -1553,12 +1553,17 @@ function renderSummaryView(){
 
   $('kpiBody').innerHTML=`
     <div class="card">
-      <div class="card-title" style="margin-bottom:12px">Summary — All KPI by Area</div>
-      <div style="overflow-x:auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+        <div class="card-title" style="margin-bottom:0">Summary — All KPI by Area</div>
+        <button onclick="downloadSummaryCSV()" style="background:linear-gradient(135deg,#38bdf8,#0284c7);color:#fff;border:none;padding:7px 16px;border-radius:8px;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(2,132,199,.3);letter-spacing:.2px">
+          ⬇ Summary Download
+        </button>
+      </div>
+      <div style="overflow:auto;max-height:70vh">
         <table class="summary-table">
           <thead><tr>
-            <th>KPI / Area</th>
-            ${allMonths.map(m=>`<th>${mLabel(m)}</th>`).join('')}
+            <th style="position:sticky;top:0;z-index:3;left:0">KPI / Area</th>
+            ${allMonths.map(m=>`<th style="position:sticky;top:0;z-index:2">${mLabel(m)}</th>`).join('')}
           </tr></thead>
           <tbody>${rows}</tbody>
         </table>
@@ -1569,6 +1574,56 @@ function renderSummaryView(){
         <span style="color:var(--red);font-weight:700">■</span> &lt; 90% Below target
       </div>
     </div>`;
+}
+
+function downloadSummaryCSV(){
+  const mLabel = m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;} };
+  const rows = [['Period','KPI','Area','Branch','STO','Comply','Not Comply','Total','Realization (%)']];
+  const allMonths = Object.keys(kpiData.months||{}).sort();
+  const entities  = new Set();
+  allMonths.forEach(m=>Object.keys(kpiData.months[m]).forEach(e=>entities.add(e)));
+  const ents = ENTITY_ORDER.filter(e=>entities.has(e)).concat([...entities].filter(e=>!ENTITY_ORDER.includes(e)).sort());
+
+  ents.forEach(entity=>{
+    allMonths.forEach(m=>{
+      const period = mLabel(m);
+      const byArea = (kpiData.months[m]||{})[entity]?.by_area||[];
+      byArea.forEach(ao=>{
+        const area = ao.area;
+        const regs = ao.by_regional||[];
+        if(!regs.length){
+          // area-level only
+          rows.push([period,entity,area,'—','—',ao.comply||0,ao.not_comply||0,(ao.comply||0)+(ao.not_comply||0),fmtSla(ao.sla_pct)+'%']);
+          return;
+        }
+        regs.forEach(ro=>{
+          const brs = ro.by_branch||[];
+          if(!brs.length){
+            rows.push([period,entity,area,'—','—',ro.comply||0,ro.not_comply||0,(ro.comply||0)+(ro.not_comply||0),fmtSla(ro.sla_pct)+'%']);
+            return;
+          }
+          brs.forEach(bo=>{
+            const branch = bo.branch;
+            const stos = bo.by_sto||[];
+            if(!stos.length){
+              rows.push([period,entity,area,branch,'—',bo.comply||0,bo.not_comply||0,(bo.comply||0)+(bo.not_comply||0),fmtSla(bo.sla_pct)+'%']);
+              return;
+            }
+            stos.forEach(so=>{
+              rows.push([period,entity,area,branch,so.sto,so.comply||0,so.not_comply||0,(so.comply||0)+(so.not_comply||0),fmtSla(so.sla_pct)+'%']);
+            });
+          });
+        });
+      });
+    });
+  });
+
+  const csv = rows.map(r=>r.join(';')).join('\n');
+  const blob = new Blob(['﻿'+csv,],{type:'text/csv;charset=utf-8;'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'kpi_summary_all.csv'; a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ── ENTITY DETAIL VIEW ──
@@ -2616,6 +2671,8 @@ const DP_ITEMS = {
     { id:'kpi-cache',     title:'Clear cache button error fixed',  desc:'No longer shows ❌ Gagal refresh when re-render succeeds. Errors during render are caught separately and logged to console.' },
     { id:'kpi-tabs',      title:'All KPI → month tabs fixed',      desc:'Was showing blank when switching month tabs. Root cause: JS const hoisting bug (etgt used before definition). Fixed.' },
     { id:'kpi-ttrffg-dl', title:'TTRFFG Download Raw + Processed', desc:'Download buttons added when TTRFFG entity is selected. Files served from data/ttrffg_raw_{period}.csv and data/ttrffg_detail_{period}.csv — populated when update_dashboard.py runs.' },
+    { id:'kpi-sticky-hdr', title:'Sticky KPI/AREA header row',        desc:'In All KPI → Summary, the KPI/AREA and month columns now stay frozen as you scroll down the table.' },
+    { id:'kpi-summary-dl', title:'Summary Download button',            desc:'Sky blue gradient button on All KPI → Summary. Downloads kpi_summary_all.csv with columns: Period | KPI | Area | Branch | STO | Comply | Not Comply | Total | Realization (%).' },
   ],
   homeid: [
     { id:'hid-banner',    title:'Page banner header',             desc:'Gradient banner at top of Home ID page showing Total RE, PS Rate, Valid Rate, and Fallout % key stats.' },
