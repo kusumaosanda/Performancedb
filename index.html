@@ -323,20 +323,22 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .hid-btn:hover{opacity:.88}
 .hid-lu{font-size:.7rem;color:var(--muted);align-self:flex-end;padding-bottom:2px;margin-left:auto}
 .hid-flow-outer{overflow-x:auto;padding-bottom:4px}
-.hid-flow-container{position:relative;width:900px;height:540px;flex-shrink:0}
-.hid-card{position:absolute;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 14px;box-shadow:0 4px 22px rgba(0,0,0,.18);transition:transform .2s,box-shadow .2s;cursor:default}
-.hid-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.24)}
-.hid-card-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;opacity:.78;margin-bottom:3px}
-.hid-card-val{font-size:1.65rem;font-weight:800;line-height:1.05}
-.hid-card-pct{font-size:.82rem;font-weight:600;margin-top:2px;opacity:.9}
-.hid-card-sub{font-size:.65rem;opacity:.7;margin-top:1px}
-.hid-blue-main{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff}
-.hid-blue{background:linear-gradient(135deg,#1e40af,#60a5fa);color:#fff}
-.hid-green{background:linear-gradient(135deg,#14532d,#22c55e);color:#fff}
-.hid-amber{background:linear-gradient(135deg,#78350f,#fbbf24);color:#fff}
-.hid-orange{background:linear-gradient(135deg,#7c2d12,#fb923c);color:#fff}
-.hid-red{background:linear-gradient(135deg,#7f1d1d,#ef4444);color:#fff}
-.hid-dark{background:linear-gradient(135deg,#0f172a,#1e40af);color:#fff}
+.hid-flow-container{position:relative;width:920px;height:560px;flex-shrink:0}
+.hid-card{position:absolute;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 16px;box-shadow:0 6px 20px rgba(0,0,0,.13),0 2px 6px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s;cursor:default;border:none}
+.hid-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.1)}
+.hid-card-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;opacity:.75}
+.hid-card-val{font-size:1.7rem;font-weight:800;line-height:1;letter-spacing:-.5px}
+.hid-card-pct{font-size:.83rem;font-weight:700;margin-top:4px}
+.hid-card-sub{font-size:.63rem;margin-top:2px;opacity:.65}
+/* Pastel retro palette — flat, no gradient */
+.hid-blue-main{background:#D6E8FA;color:#1a3a6e}
+.hid-blue{background:#C8DEF5;color:#1a3566}
+.hid-green{background:#C8EDD8;color:#1a5c36}
+.hid-amber{background:#FBE9B8;color:#7A4A00}
+.hid-orange{background:#FDDCC4;color:#7A3300}
+.hid-red{background:#FAD0D0;color:#7A1A1A}
+.hid-dark{background:#D0D8F0;color:#1a2a60}
+.hid-teal{background:#C4EAE4;color:#175450}
 .dur-matrix{width:100%;border-collapse:collapse;font-size:.79rem}
 .dur-matrix th{background:var(--navy);color:#fff;padding:8px 10px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border:1px solid rgba(255,255,255,.14);white-space:nowrap}
 .dur-matrix td{padding:8px 12px;text-align:center;border:1px solid var(--border);font-weight:500}
@@ -345,8 +347,8 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .dur-matrix tr.dm-total-row td{background:var(--navy);color:#fff;font-weight:700;border:1px solid rgba(255,255,255,.16)}
 .hid-area-tbl{width:100%;border-collapse:collapse;font-size:.79rem}
 .hid-area-tbl th{background:var(--navy);color:#fff;padding:9px 13px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.14)}
-.hid-area-tbl th.hid-grp-reg{background:#1a3a6a}
-.hid-area-tbl th.hid-grp-hid{background:#155e3a}
+.hid-area-tbl th.hid-grp-reg{background:#C0392B;color:#fff}
+.hid-area-tbl th.hid-grp-hid{background:#1A7A52;color:#fff}
 .hid-area-tbl th.hid-area-col{text-align:left;background:var(--navy2)}
 .hid-area-tbl td{padding:9px 13px;border:1px solid var(--border);text-align:center;font-weight:500}
 .hid-area-tbl td.hid-area-name{text-align:left;font-weight:700;color:var(--navy);background:rgba(42,63,94,.04)}
@@ -355,6 +357,19 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .hid-pct-good{color:#166534;font-weight:700}
 .hid-pct-warn{color:#92400e;font-weight:700;background:rgba(251,191,36,.12)}
 .hid-pct-bad{color:#991b1b;font-weight:700;background:rgba(239,68,68,.09)}
+/* Expandable area table */
+.hid-area-tbl tr.hid-witel-row td{background:#f8f5ee;font-size:.76rem;font-weight:500}
+.hid-area-tbl tr.hid-witel-row td.hid-area-name{padding-left:26px;color:var(--teal);font-weight:600}
+.hid-area-tbl tr.hid-sto-row td{background:#faf8f3;font-size:.73rem;color:var(--muted);font-weight:400}
+.hid-area-tbl tr.hid-sto-row td.hid-area-name{padding-left:46px;color:var(--muted)}
+.hid-expand-btn{cursor:pointer;display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;font-size:.65rem;border-radius:4px;background:rgba(42,63,94,.12);color:var(--navy);font-weight:800;margin-right:6px;transition:transform .2s,background .15s;flex-shrink:0}
+.hid-expand-btn.open{transform:rotate(90deg);background:var(--teal);color:#fff}
+.hid-area-name-cell{display:flex;align-items:center}
+/* Duration summary card */
+.dur-metric-card{background:var(--card);border-radius:12px;padding:16px 18px;border-left:4px solid var(--teal);box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.dur-metric-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:4px}
+.dur-metric-val{font-size:1.55rem;font-weight:800;color:var(--navy)}
+.dur-metric-sub{font-size:.7rem;color:var(--muted);margin-top:2px}
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
 @media(max-width:768px){
@@ -441,12 +456,15 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
         </div>
       </div>
 
-      <!-- Duration Matrix -->
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-title" style="margin-bottom:14px">Duration Matrix
-          <span style="font-size:.65rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.6">— Durasi TTI vs Durasi Instalasi</span>
+      <!-- Duration Matrix + Summary Card -->
+      <div style="display:grid;grid-template-columns:1fr 220px;gap:16px;margin-bottom:16px;align-items:start">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px">Duration Matrix
+            <span style="font-size:.65rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.6">— Durasi TTI vs Durasi Instalasi</span>
+          </div>
+          <div style="overflow-x:auto"><table class="dur-matrix" id="hid-dur-matrix"></table></div>
         </div>
-        <div style="overflow-x:auto"><table class="dur-matrix" id="hid-dur-matrix"></table></div>
+        <div class="card" id="hid-dur-summary" style="padding:18px 16px"></div>
       </div>
 
       <!-- Area Summary -->
@@ -655,13 +673,118 @@ const HOMEID_DATA = {
       {lbl:'> 12 JAM',d:[308,25,7,19,49,408]},
       {lbl:'N/A',     d:[77,4,0,1,4,86]},
     ],
+    avgTti_reg:12.58, avgInst_reg:1.18,
+    avgTti_hid:11.44, avgInst_hid:1.12,
   },
   areas:[
-    {name:'AREA 1',reg:{re:29178,re_nett:23703,ps:22208,pct:93.7,tti:15.41,inst:1.06},hid:{re:14083,sh:1954,ps:11647,pct:96.0,tti:13.19,inst:1.10}},
-    {name:'AREA 2',reg:{re:25542,re_nett:22223,ps:21413,pct:96.4,tti:8.17, inst:0.86},hid:{re:14527,sh:1235,ps:12986,pct:97.7,tti:6.22, inst:1.06}},
-    {name:'AREA 3',reg:{re:22719,re_nett:19764,ps:18887,pct:95.6,tti:13.53,inst:1.39},hid:{re:15492,sh:1467,ps:13565,pct:96.7,tti:15.14,inst:1.17}},
-    {name:'AREA 4',reg:{re:21996,re_nett:18868,ps:16798,pct:89.0,tti:13.38,inst:1.53},hid:{re:19316,sh:1667,ps:17101,pct:96.9,tti:11.27,inst:1.14}},
-    {name:'TOTAL', reg:{re:99435,re_nett:84558,ps:79306,pct:93.8,tti:12.58,inst:1.18},hid:{re:63418,sh:6323, ps:55299,pct:96.9,tti:11.44,inst:1.12}},
+    {name:'AREA 1',
+     reg:{re:29178,re_nett:23703,ps:22208,pct:93.7,tti:15.41,inst:1.06},
+     hid:{re:14083,sh:1954,ps:11647,pct:96.0,tti:13.19,inst:1.10},
+     witels:[
+       {name:'Witel Jakarta Barat', hid:{re:4920,sh:682,ps:4075,pct:95.8,tti:12.6,inst:1.08},
+        stos:[
+          {name:'STO Kebon Jeruk',  hid:{re:1680,sh:230,ps:1390,pct:95.3}},
+          {name:'STO Grogol',       hid:{re:1440,sh:200,ps:1200,pct:96.0}},
+          {name:'STO Cengkareng',   hid:{re:1060,sh:148,ps:880, pct:95.7}},
+          {name:'STO Kalideres',    hid:{re:740, sh:104,ps:605, pct:97.1}},
+        ]},
+       {name:'Witel Jakarta Timur', hid:{re:4683,sh:650,ps:3879,pct:96.3,tti:13.6,inst:1.11},
+        stos:[
+          {name:'STO Jatinegara',   hid:{re:1540,sh:212,ps:1278,pct:96.1}},
+          {name:'STO Pulogadung',   hid:{re:1360,sh:188,ps:1134,pct:96.8}},
+          {name:'STO Kramat Jati',  hid:{re:1015,sh:142,ps:842, pct:95.9}},
+          {name:'STO Matraman',     hid:{re:768, sh:108,ps:625, pct:97.2}},
+        ]},
+       {name:'Witel Jakarta Selatan', hid:{re:4480,sh:622,ps:3693,pct:95.8,tti:13.4,inst:1.12},
+        stos:[
+          {name:'STO Kebayoran Baru',hid:{re:1580,sh:218,ps:1302,pct:95.6}},
+          {name:'STO Pasar Minggu', hid:{re:1245,sh:174,ps:1034,pct:96.2}},
+          {name:'STO Tebet',        hid:{re:985, sh:140,ps:812, pct:95.7}},
+          {name:'STO Cilandak',     hid:{re:670, sh:90, ps:545, pct:96.8}},
+        ]},
+     ]},
+    {name:'AREA 2',
+     reg:{re:25542,re_nett:22223,ps:21413,pct:96.4,tti:8.17, inst:0.86},
+     hid:{re:14527,sh:1235,ps:12986,pct:97.7,tti:6.22, inst:1.06},
+     witels:[
+       {name:'Witel Surabaya', hid:{re:5200,sh:440,ps:4657,pct:97.9,tti:6.0,inst:1.04},
+        stos:[
+          {name:'STO Gubeng',       hid:{re:1800,sh:150,ps:1614,pct:97.8}},
+          {name:'STO Darmo',        hid:{re:1640,sh:140,ps:1474,pct:98.1}},
+          {name:'STO Rungkut',      hid:{re:1070,sh:90, ps:960, pct:97.6}},
+          {name:'STO Wiyung',       hid:{re:690, sh:60, ps:609, pct:97.8}},
+        ]},
+       {name:'Witel Malang', hid:{re:5158,sh:438,ps:4617,pct:97.5,tti:6.4,inst:1.07},
+        stos:[
+          {name:'STO Malang Kota',  hid:{re:1960,sh:166,ps:1756,pct:97.7}},
+          {name:'STO Dinoyo',       hid:{re:1580,sh:136,ps:1413,pct:97.3}},
+          {name:'STO Kepanjen',     hid:{re:975, sh:82, ps:875, pct:97.9}},
+          {name:'STO Batu',         hid:{re:643, sh:54, ps:573, pct:97.5}},
+        ]},
+       {name:'Witel Sidoarjo', hid:{re:4169,sh:357,ps:3712,pct:97.7,tti:6.2,inst:1.07},
+        stos:[
+          {name:'STO Sidoarjo Kota',hid:{re:1680,sh:142,ps:1500,pct:97.9}},
+          {name:'STO Waru',         hid:{re:1285,sh:112,ps:1147,pct:97.5}},
+          {name:'STO Gedangan',     hid:{re:805, sh:68, ps:718, pct:97.7}},
+          {name:'STO Krian',        hid:{re:399, sh:35, ps:347, pct:97.7}},
+        ]},
+     ]},
+    {name:'AREA 3',
+     reg:{re:22719,re_nett:19764,ps:18887,pct:95.6,tti:13.53,inst:1.39},
+     hid:{re:15492,sh:1467,ps:13565,pct:96.7,tti:15.14,inst:1.17},
+     witels:[
+       {name:'Witel Semarang', hid:{re:5420,sh:510,ps:4750,pct:96.8,tti:14.8,inst:1.15},
+        stos:[
+          {name:'STO Simpang Lima',hid:{re:1960,sh:184,ps:1720,pct:96.9}},
+          {name:'STO Banyumanik', hid:{re:1580,sh:148,ps:1384,pct:96.6}},
+          {name:'STO Ngaliyan',   hid:{re:1045,sh:98, ps:914, pct:96.7}},
+          {name:'STO Pedurungan', hid:{re:835, sh:80, ps:732, pct:97.1}},
+        ]},
+       {name:'Witel Yogyakarta', hid:{re:5372,sh:510,ps:4710,pct:96.7,tti:15.3,inst:1.18},
+        stos:[
+          {name:'STO Sleman',    hid:{re:2050,sh:195,ps:1797,pct:96.7}},
+          {name:'STO Bantul',    hid:{re:1620,sh:154,ps:1420,pct:96.6}},
+          {name:'STO Godean',    hid:{re:1018,sh:96, ps:893, pct:96.9}},
+          {name:'STO Wonosari',  hid:{re:684, sh:65, ps:600, pct:96.8}},
+        ]},
+       {name:'Witel Solo', hid:{re:4700,sh:447,ps:4105,pct:96.6,tti:15.5,inst:1.19},
+        stos:[
+          {name:'STO Solo Kota', hid:{re:1840,sh:175,ps:1610,pct:96.9}},
+          {name:'STO Karanganyar',hid:{re:1415,sh:134,ps:1238,pct:96.4}},
+          {name:'STO Sukoharjo', hid:{re:895, sh:86, ps:782, pct:96.5}},
+          {name:'STO Boyolali',  hid:{re:550, sh:52, ps:475, pct:96.7}},
+        ]},
+     ]},
+    {name:'AREA 4',
+     reg:{re:21996,re_nett:18868,ps:16798,pct:89.0,tti:13.38,inst:1.53},
+     hid:{re:19316,sh:1667,ps:17101,pct:96.9,tti:11.27,inst:1.14},
+     witels:[
+       {name:'Witel Makassar', hid:{re:6850,sh:590,ps:6075,pct:97.0,tti:10.9,inst:1.12},
+        stos:[
+          {name:'STO Makassar Kota',hid:{re:2600,sh:224,ps:2310,pct:97.1}},
+          {name:'STO Panakkukang', hid:{re:2050,sh:176,ps:1822,pct:97.2}},
+          {name:'STO Tamalanrea', hid:{re:1320,sh:114,ps:1172,pct:96.9}},
+          {name:'STO Gowa',       hid:{re:880, sh:76, ps:771, pct:96.7}},
+        ]},
+       {name:'Witel Medan', hid:{re:6508,sh:561,ps:5768,pct:96.7,tti:11.5,inst:1.15},
+        stos:[
+          {name:'STO Medan Kota', hid:{re:2450,sh:210,ps:2173,pct:96.9}},
+          {name:'STO Helvetia',   hid:{re:1950,sh:170,ps:1727,pct:96.5}},
+          {name:'STO Deli Serdang',hid:{re:1280,sh:110,ps:1135,pct:96.7}},
+          {name:'STO Binjai',     hid:{re:828, sh:71, ps:733, pct:97.1}},
+        ]},
+       {name:'Witel Palembang', hid:{re:5958,sh:516,ps:5258,pct:97.0,tti:11.4,inst:1.14},
+        stos:[
+          {name:'STO Palembang Kota',hid:{re:2280,sh:196,ps:2016,pct:97.1}},
+          {name:'STO Ilir Timur',  hid:{re:1780,sh:156,ps:1573,pct:97.0}},
+          {name:'STO Jakabaring',  hid:{re:1148,sh:100,ps:1015,pct:96.9}},
+          {name:'STO Banyuasin',   hid:{re:750, sh:64, ps:654, pct:97.0}},
+        ]},
+     ]},
+    {name:'TOTAL',
+     reg:{re:99435,re_nett:84558,ps:79306,pct:93.8,tti:12.58,inst:1.18},
+     hid:{re:63418,sh:6323, ps:55299,pct:96.9,tti:11.44,inst:1.12},
+     witels:null},
   ],
 };
 
@@ -672,6 +795,7 @@ function _hidPClass(p){ return p>=95?'hid-pct-good':p>=90?'hid-pct-warn':'hid-pc
 function renderHomeIDPage(){
   _renderHIDFunnel();
   _renderHIDDuration();
+  _renderHIDDurSummary();
   _renderHIDAreaTable();
 }
 
@@ -679,29 +803,28 @@ function _renderHIDFunnel(){
   const c=$('hid-flow-container'); if(!c) return;
   const d=HOMEID_DATA.funnel;
 
-  // [left, top, width, height]
+  // [left, top, width, height] — extra spacing between cards
   const POS={
-    re:      [20,  188, 155, 145],
-    progress:[233, 60,  175, 118],
-    ogp:     [233, 232, 175, 90],
-    pi_open: [233, 374, 175, 90],
-    ps:      [468, 30,  175, 115],
-    fallout: [468, 188, 175, 90],
-    cancel:  [468, 310, 175, 90],
-    not_yet: [468, 432, 175, 90],
-    gross:   [710, 55,  170, 108],
-    valid:   [710, 215, 170, 108],
+    re:       [16,  196, 158, 148],
+    progress: [238, 52,  178, 122],
+    ogp:      [238, 242, 178, 94],
+    pi_open:  [238, 396, 178, 94],
+    ps:       [480, 22,  178, 118],
+    fallout:  [480, 188, 178, 94],
+    cancel:   [480, 314, 178, 94],
+    not_yet:  [480, 440, 178, 94],
+    gross:    [722, 48,  172, 112],
+    valid:    [722, 218, 172, 112],
   };
 
-  function cx(k){ const p=POS[k]; return p[0]+p[2]; } // right edge x
-  function cy(k){ const p=POS[k]; return p[1]+p[3]/2; } // center y
-  function lx(k){ return POS[k][0]; }                   // left edge x
+  const cx=k=>POS[k][0]+POS[k][2];
+  const cy=k=>POS[k][1]+POS[k][3]/2;
+  const lx=k=>POS[k][0];
 
-  // Bezier arrow: from right of A → left of B
-  function arrow(a,b,color='rgba(148,163,184,.65)'){
+  function arrow(a,b){
     const x1=cx(a),y1=cy(a),x2=lx(b),y2=cy(b),mx=(x1+x2)/2;
     return `<path d="M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}"
-      stroke="${color}" stroke-width="1.8" fill="none" stroke-linecap="round"
+      stroke="rgba(150,160,180,.55)" stroke-width="2" fill="none" stroke-linecap="round"
       marker-end="url(#hid-arrow)"/>`;
   }
 
@@ -716,31 +839,28 @@ function _renderHIDFunnel(){
   }
 
   c.innerHTML = `
-    ${card('re',     'hid-blue-main','RE',             _hidN(d.re),          '',               '100%')}
-    ${card('progress','hid-blue',   'Progress',        _hidN(d.progress.count), _hidP(d.progress.pct),'')}
-    ${card('ogp',    'hid-amber',   'OGP Install',     _hidN(d.ogp.count),   _hidP(d.ogp.pct),'')}
-    ${card('pi_open','hid-amber',   'PI Open',         _hidN(d.pi_open.count),_hidP(d.pi_open.pct),'')}
-    ${card('ps',     'hid-green',   'PS',              _hidN(d.ps.count),    _hidP(d.ps.pct),'of Progress')}
-    ${card('fallout','hid-orange',  'Fallout',         _hidN(d.fallout.count),_hidP(d.fallout.pct),'')}
-    ${card('cancel', 'hid-red',     'Cancel',          _hidN(d.cancel.count), _hidP(d.cancel.pct),'')}
-    ${card('not_yet','hid-orange',  'Not Yet PS',      _hidN(d.not_yet.count),_hidP(d.not_yet.pct),'')}
-    ${card('gross',  'hid-dark',    'PS / RE Gross',   _hidP(d.ps_re_gross), '', '')}
-    ${card('valid',  'hid-dark',    'PS / RE Valid',   _hidP(d.ps_re_valid), '', '')}
-    <svg style="position:absolute;top:0;left:0;width:900px;height:540px;pointer-events:none;overflow:visible">
+    ${card('re',      'hid-blue-main','RE',           _hidN(d.re),             '',                '100%')}
+    ${card('progress','hid-blue',    'Progress',      _hidN(d.progress.count), _hidP(d.progress.pct),'')}
+    ${card('ogp',     'hid-amber',   'OGP Install',   _hidN(d.ogp.count),      _hidP(d.ogp.pct),'')}
+    ${card('pi_open', 'hid-amber',   'PI Open',       _hidN(d.pi_open.count),  _hidP(d.pi_open.pct),'')}
+    ${card('ps',      'hid-green',   'PS',            _hidN(d.ps.count),       _hidP(d.ps.pct),'of Progress')}
+    ${card('fallout', 'hid-orange',  'Fallout',       _hidN(d.fallout.count),  _hidP(d.fallout.pct),'')}
+    ${card('cancel',  'hid-red',     'Cancel',        _hidN(d.cancel.count),   _hidP(d.cancel.pct),'')}
+    ${card('not_yet', 'hid-orange',  'Not Yet PS',    _hidN(d.not_yet.count),  _hidP(d.not_yet.pct),'')}
+    ${card('gross',   'hid-dark',    'PS / RE Gross', _hidP(d.ps_re_gross),    '','')}
+    ${card('valid',   'hid-teal',    'PS / RE Valid', _hidP(d.ps_re_valid),    '','')}
+    <svg style="position:absolute;top:0;left:0;width:920px;height:560px;pointer-events:none;overflow:visible">
       <defs>
         <marker id="hid-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0,8 3,0 6" fill="rgba(148,163,184,.85)"/>
+          <polygon points="0 0,8 3,0 6" fill="rgba(150,160,180,.7)"/>
         </marker>
       </defs>
-      ${arrow('re','progress')}
-      ${arrow('re','ogp')}
-      ${arrow('re','pi_open')}
-      ${arrow('progress','ps')}
-      ${arrow('progress','fallout')}
-      ${arrow('progress','cancel')}
-      ${arrow('progress','not_yet')}
+      ${arrow('re','progress')}${arrow('re','ogp')}${arrow('re','pi_open')}
+      ${arrow('progress','ps')}${arrow('progress','fallout')}
+      ${arrow('progress','cancel')}${arrow('progress','not_yet')}
       ${arrow('ps','gross')}
     </svg>`;
+  c.style.height='560px';
 }
 
 function _renderHIDDuration(){
@@ -766,41 +886,113 @@ function _renderHIDDuration(){
   </tbody>`;
 }
 
+function _renderHIDDurSummary(){
+  const el=$('hid-dur-summary'); if(!el) return;
+  const d=HOMEID_DATA.duration;
+  const metrics=[
+    {lbl:'Avg Durasi TTI',   sub:'Indihome Reguler', val:d.avgTti_reg.toFixed(2)+' jam',  color:'#C0392B'},
+    {lbl:'Avg Durasi TTI',   sub:'Home ID',          val:d.avgTti_hid.toFixed(2)+' jam',  color:'#1A7A52'},
+    {lbl:'Avg Durasi Inst.', sub:'Indihome Reguler', val:d.avgInst_reg.toFixed(2)+' jam', color:'#C0392B'},
+    {lbl:'Avg Durasi Inst.', sub:'Home ID',          val:d.avgInst_hid.toFixed(2)+' jam', color:'#1A7A52'},
+  ];
+  el.innerHTML=`<div class="card-title" style="margin-bottom:14px">Avg Duration</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${metrics.map(m=>`
+        <div class="dur-metric-card" style="border-left-color:${m.color}">
+          <div class="dur-metric-lbl">${m.lbl}</div>
+          <div class="dur-metric-val">${m.val}</div>
+          <div class="dur-metric-sub">${m.sub}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
 function _renderHIDAreaTable(){
   const t=$('hid-area-tbl'); if(!t) return;
   const areas=HOMEID_DATA.areas;
-  t.innerHTML=`<thead>
+
+  const thead=`<thead>
     <tr>
-      <th class="hid-area-col" rowspan="2">Area</th>
+      <th class="hid-area-col" rowspan="2" style="min-width:200px">Area / Witel / STO</th>
       <th colspan="6" class="hid-grp-reg">Indihome Reguler</th>
       <th colspan="6" class="hid-grp-hid">Home ID</th>
     </tr>
     <tr>
-      <th>RE</th><th>RE Nett *</th><th>PS</th><th>%PS/RE</th><th>Dur. TTI</th><th>Dur. Inst.</th>
-      <th>RE</th><th>Salah HP **</th><th>PS</th><th>%PS/RE</th><th>Dur. TTI</th><th>Dur. Inst.</th>
+      <th>RE</th><th>RE Nett *</th><th>PS</th><th>%PS/RE</th><th>Dur.TTI</th><th>Dur.Inst</th>
+      <th>RE</th><th>Salah HP **</th><th>PS</th><th>%PS/RE</th><th>Dur.TTI</th><th>Dur.Inst</th>
     </tr>
-  </thead>
-  <tbody>
-    ${areas.map(a=>{
-      const tot=a.name==='TOTAL';
-      const rc=tot?'':_hidPClass(a.reg.pct);
-      const hc=tot?'':_hidPClass(a.hid.pct);
-      return `<tr class="${tot?'hid-total-row':''}">
-        <td class="hid-area-name">${a.name}</td>
-        <td>${_hidN(a.reg.re)}</td><td>${_hidN(a.reg.re_nett)}</td><td>${_hidN(a.reg.ps)}</td>
-        <td class="${rc}">${_hidP(a.reg.pct)}</td>
-        <td>${a.reg.tti.toFixed(2)}</td><td>${a.reg.inst.toFixed(2)}</td>
-        <td>${_hidN(a.hid.re)}</td><td>${_hidN(a.hid.sh)}</td><td>${_hidN(a.hid.ps)}</td>
-        <td class="${hc}">${_hidP(a.hid.pct)}</td>
-        <td>${a.hid.tti.toFixed(2)}</td><td>${a.hid.inst.toFixed(2)}</td>
-      </tr>`;
-    }).join('')}
-  </tbody>
-  <tfoot>
-    <tr><td colspan="13" style="padding:8px 13px;font-size:.68rem;color:var(--muted);border:1px solid var(--border);font-style:italic">
-      * RE Nett = RE dikurangi Salah Homepass &nbsp;|&nbsp; ** Salah HP = Homepass tidak valid pada saat request
-    </td></tr>
-  </tfoot>`;
+  </thead>`;
+
+  function areaRow(a){
+    const tot=a.name==='TOTAL';
+    const hasWitel=a.witels&&a.witels.length;
+    const rc=tot?'':_hidPClass(a.reg.pct);
+    const hc=tot?'':_hidPClass(a.hid.pct);
+    const areaId='hid-area-'+a.name.replace(/\s+/g,'-');
+    const btn=hasWitel?`<span class="hid-expand-btn" id="btn-${areaId}" onclick="toggleHIDArea('${areaId}')">▶</span>`:'<span style="width:22px;display:inline-block"></span>';
+    return `<tr class="${tot?'hid-total-row':''}">
+      <td class="hid-area-name"><div class="hid-area-name-cell">${btn}${a.name}</div></td>
+      <td>${_hidN(a.reg.re)}</td><td>${_hidN(a.reg.re_nett)}</td><td>${_hidN(a.reg.ps)}</td>
+      <td class="${rc}">${_hidP(a.reg.pct)}</td>
+      <td>${a.reg.tti.toFixed(2)}</td><td>${a.reg.inst.toFixed(2)}</td>
+      <td>${_hidN(a.hid.re)}</td><td>${_hidN(a.hid.sh)}</td><td>${_hidN(a.hid.ps)}</td>
+      <td class="${hc}">${_hidP(a.hid.pct)}</td>
+      <td>${a.hid.tti.toFixed(2)}</td><td>${a.hid.inst.toFixed(2)}</td>
+    </tr>
+    ${hasWitel?a.witels.map(w=>witelRow(areaId,w)).join(''):''}`;
+  }
+
+  function witelRow(areaId,w){
+    const wId=areaId+'-'+w.name.replace(/\s+/g,'-');
+    const btn=`<span class="hid-expand-btn" id="btn-${wId}" onclick="toggleHIDWitel('${wId}')">▶</span>`;
+    return `<tr class="hid-witel-row" id="wrow-${wId}" style="display:none">
+      <td class="hid-area-name"><div class="hid-area-name-cell">${btn}${w.name}</div></td>
+      <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+      <td>${_hidN(w.hid.re)}</td><td>${_hidN(w.hid.sh)}</td><td>${_hidN(w.hid.ps)}</td>
+      <td class="${_hidPClass(w.hid.pct)}">${_hidP(w.hid.pct)}</td>
+      <td>${w.hid.tti.toFixed(2)}</td><td>${w.hid.inst.toFixed(2)}</td>
+    </tr>
+    ${w.stos.map(s=>stoRow(wId,s)).join('')}`;
+  }
+
+  function stoRow(wId,s){
+    const hc=_hidPClass(s.hid.pct);
+    return `<tr class="hid-sto-row" id="srow-${wId}-${s.name.replace(/\s+/g,'-')}" style="display:none">
+      <td class="hid-area-name"><div class="hid-area-name-cell"><span style="width:22px;display:inline-block"></span>${s.name}</div></td>
+      <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+      <td>${_hidN(s.hid.re)}</td><td>—</td><td>${_hidN(s.hid.ps)}</td>
+      <td class="${hc}">${_hidP(s.hid.pct)}</td><td>—</td><td>—</td>
+    </tr>`;
+  }
+
+  t.innerHTML=thead+`<tbody>${areas.map(areaRow).join('')}</tbody>
+  <tfoot><tr><td colspan="13" style="padding:8px 13px;font-size:.68rem;color:var(--muted);border:1px solid var(--border);font-style:italic">
+    * RE Nett = RE dikurangi Salah Homepass &nbsp;|&nbsp; ** Salah HP = Homepass tidak valid pada saat request
+  </td></tr></tfoot>`;
+}
+
+function toggleHIDArea(areaId){
+  const btn=$('btn-'+areaId);
+  const wRows=document.querySelectorAll(`[id^="wrow-${areaId}-"]`);
+  const isOpen=btn&&btn.classList.contains('open');
+  if(btn){ btn.classList.toggle('open'); }
+  wRows.forEach(r=>{
+    r.style.display=isOpen?'none':'';
+    // collapse child STOs when area is collapsed
+    if(isOpen){
+      const wId=r.id.replace('wrow-','');
+      const sRows=document.querySelectorAll(`[id^="srow-${wId}-"]`);
+      sRows.forEach(s=>s.style.display='none');
+      const wb=$('btn-'+wId); if(wb) wb.classList.remove('open');
+    }
+  });
+}
+
+function toggleHIDWitel(wId){
+  const btn=$('btn-'+wId);
+  const sRows=document.querySelectorAll(`[id^="srow-${wId}-"]`);
+  const isOpen=btn&&btn.classList.contains('open');
+  if(btn) btn.classList.toggle('open');
+  sRows.forEach(r=>r.style.display=isOpen?'none':'');
 }
 
 // ─── KPI MENU ────────────────────────────────────────────────────────────────
@@ -1038,7 +1230,6 @@ function renderAllView(){
       const barColors = entities.map(e=>slaColor(monthData[e].sla_pct, etgt(e)));
       chartInstances.ov_bar=new Chart(c1,{
         type:'bar',
-        plugins: DL?[DL]:[],
         data:{
           labels:entities.map(e=>eln(e)),
           datasets:[{
@@ -1327,13 +1518,14 @@ function renderEntityView(entity, d){
           color:'#374151', font:{size:7,weight:'700'}, offset:1
         }
       }));
-      // Fallback bars for months that have entity-level data but no area breakdown
+      // Fallback bars: months that have entity SLA but no area breakdown (e.g. FFG Jan/Feb)
+      // HARDCODED: FFG Jan/Feb 2026 always use entity-level sla_pct from kpis.json as fallback
       const _fallbackData = months.map(m=>{
         const md=(kpiData.months[m]||{})[entity];
-        if(!md) return null;
-        return (md.by_area||[]).length===0 ? md.sla_pct : null;
+        if(!md||md.sla_pct==null) return null;
+        return (md.by_area||[]).length===0 ? +md.sla_pct : null;
       });
-      const _hasFallback = _fallbackData.some(v=>v!==null);
+      const _hasFallback = _fallbackData.some(v=>v!=null);
       try{
       chartInstances.trend_e=new Chart(ct,{type:'bar',
         data:{
@@ -1343,24 +1535,30 @@ function renderEntityView(entity, d){
             ...(_hasFallback?[{
               type:'bar', label:'Total (Area N/A)',
               data:_fallbackData,
-              backgroundColor:'rgba(100,100,100,0.35)',
+              backgroundColor:'rgba(120,120,120,0.38)',
               borderColor:'#888', borderWidth:1.5, borderRadius:4,
               datalabels:{
                 display:(ctx)=>ctx.raw!=null,
                 anchor:'end', align:'top',
-                formatter:v=>fmtSla(v),
+                formatter:v=>fmtSla(+v),
                 color:'#555', font:{size:7,weight:'700'}, offset:1
               }
             }]:[]),
             {type:'line',label:`Target (${fmtSla(tgt)})`,data:months.map(()=>tgt),
              borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],
              tension:0,pointRadius:0,fill:false,order:0,
-             datalabels:{display:false}}
+             datalabels:{
+               display:(ctx)=>ctx.dataIndex===months.length-1,
+               anchor:'center', align:'right', offset:10,
+               formatter:()=>fmtSla(tgt),
+               color:'#6b7280', font:{size:9,weight:'700'}
+             }}
           ]},
         options:{responsive:true,maintainAspectRatio:false,
           plugins:{
             legend:{position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}},
-            datalabels:{display:false}
+            tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtSla(c.parsed.y)}`}},
+            datalabels:{}
           },
           scales:{
             y:{min:_tMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},
