@@ -245,6 +245,20 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .filter-group select{padding:5px 10px;border:1px solid var(--border);border-radius:7px;font-size:.8rem;background:var(--bg);color:var(--text);cursor:pointer;outline:none;font-family:'Poppins',sans-serif;min-width:130px}
 .filter-group select:focus{border-color:var(--teal)}
 
+/* ── KPI MATRIX TABLE ────────────────────────────────────────────────────── */
+.kpi-matrix{width:100%;border-collapse:collapse;font-size:.82rem}
+.kpi-matrix th{background:var(--navy);color:#fff;padding:9px 13px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.14)}
+.kpi-matrix th.km-name{text-align:left;background:var(--navy2);min-width:100px}
+.kpi-matrix th.km-tgt{background:#1B3252}
+.kpi-matrix td{padding:9px 13px;text-align:center;border:1px solid var(--border);font-weight:600}
+.kpi-matrix td.km-name{text-align:left;font-weight:700;color:var(--navy);background:rgba(42,63,94,.04);white-space:nowrap;border-right:2px solid var(--border)}
+.kpi-matrix td.km-tgt{color:var(--muted);font-weight:500;font-size:.78rem;border-right:1px solid var(--border)}
+.kpi-matrix td.km-ok{background:rgba(22,101,52,.1);color:#166534}
+.kpi-matrix td.km-nc{background:rgba(153,27,27,.08);color:#991b1b}
+.kpi-matrix td.km-na{color:var(--border);font-weight:400}
+.kpi-matrix td.km-trend{font-size:1rem;font-weight:800;border-left:2px solid var(--border)}
+.kpi-matrix tbody tr:hover td{filter:brightness(.97)}
+
 /* ── REFERENCE SUMMARY TABLE ─────────────────────────────────────────────── */
 .ref-summary-wrap{margin-bottom:0}
 .ref-summary-header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:.82rem;font-weight:700;letter-spacing:.3px}
@@ -261,7 +275,7 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .ref-summary-table tr:hover td{background:rgba(42,63,94,.03)}
 
 /* ── TTI BREAKDOWN TABLE ─────────────────────────────────────────────────── */
-.breakdown-wrap{overflow-x:auto;margin-top:0}
+.breakdown-wrap{overflow-x:auto;margin-top:0;display:flex;flex-direction:column}
 .breakdown-table{width:100%;border-collapse:collapse;font-size:.75rem;min-width:680px}
 .breakdown-table th{background:var(--navy);color:#fff;padding:7px 10px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.15)}
 .breakdown-table th.group-header{background:var(--navy2);font-size:.7rem;letter-spacing:.3px}
@@ -1188,6 +1202,40 @@ function renderAllView(){
   const allMonths = Object.keys(kpiData.months||{}).sort();
   const COLORS=['#2A3F5E','#C4522A','#3D7A6E','#C89020','#7A3020','#3A7848','#5A9E8E'];
   const ENL = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
+  const mLbl = m=>{try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m}};
+  const ENL2 = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
+  // ── Build KPI matrix table HTML ──
+  const matrixRows = entities.map(e=>{
+    const tg=etgt(e);
+    const vals=allMonths.map(m=>(kpiData.months[m]||{})[e]?.sla_pct??null);
+    const validVals=vals.filter(v=>v!==null);
+    const last2=validVals.slice(-2);
+    const trendCh=last2.length>=2?(last2[1]>=last2[0]?'↑':'↓'):'—';
+    const trendClr=last2.length>=2?(last2[1]>=last2[0]?'#166534':'#991b1b'):'var(--muted)';
+    const cells=allMonths.map((m,i)=>{
+      const v=vals[i];
+      if(v===null) return `<td class="km-na">—</td>`;
+      return `<td class="${v>=tg?'km-ok':'km-nc'}">${fmtSla(v)}</td>`;
+    }).join('');
+    return `<tr><td class="km-name">${ENL2[e]||e}</td><td class="km-tgt">${fmtSla(tg)}%</td>${cells}<td class="km-trend" style="color:${trendClr}">${trendCh}</td></tr>`;
+  }).join('');
+  const matrixHtml = `
+    <div class="card" style="margin-bottom:18px;overflow-x:auto">
+      <div class="card-title" style="margin-bottom:14px">KPI Performance Matrix
+        <span style="font-size:.68rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.65"> — Month to Month</span>
+      </div>
+      <table class="kpi-matrix">
+        <thead>
+          <tr>
+            <th class="km-name">KPI</th>
+            <th class="km-tgt">Target</th>
+            ${allMonths.map(m=>`<th>${mLbl(m)}</th>`).join('')}
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody>${matrixRows}</tbody>
+      </table>
+    </div>`;
   const eln = e => ENL[e]||e;
   const etgt = e => ENTITY_TARGETS_OVERRIDE[e] || monthData[e]?.target || 95;
   const aboveTarget = entities.filter(e=>monthData[e].sla_pct>=etgt(e));
@@ -1235,6 +1283,7 @@ function renderAllView(){
       </div>
     </div>
 
+    ${matrixHtml}
     <!-- BOTTOM: Analysis card full width -->
     <div style="margin-bottom:18px">
       <div class="card">
@@ -1472,7 +1521,7 @@ function renderEntityView(entity, d){
         return `<td class="bd-comply" style="font-weight:700">${tc.toLocaleString()}</td><td class="bd-nc" style="font-weight:700">${tnc.toLocaleString()}</td>`;
       }).join('');
       detailTable = `<div class="breakdown-wrap">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Detail Breakdown by Area</div>
+        <div class="ref-summary-header" style="border-radius:8px 8px 0 0">Detail Breakdown by Area</div>
         <table class="breakdown-table">
           <thead>
             <tr>
