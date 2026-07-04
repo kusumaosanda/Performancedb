@@ -366,10 +366,21 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .hid-expand-btn.open{transform:rotate(90deg);background:var(--teal);color:#fff}
 .hid-area-name-cell{display:flex;align-items:center}
 /* Duration summary card */
-.dur-metric-card{background:var(--card);border-radius:12px;padding:16px 18px;border-left:4px solid var(--teal);box-shadow:0 1px 6px rgba(0,0,0,.07)}
-.dur-metric-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:4px}
-.dur-metric-val{font-size:1.55rem;font-weight:800;color:var(--navy)}
-.dur-metric-sub{font-size:.7rem;color:var(--muted);margin-top:2px}
+.dur-metric-card{background:var(--bg);border-radius:10px;padding:10px 12px;border-left:3px solid var(--teal);box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:0}
+.dur-metric-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:2px}
+.dur-metric-val{font-size:1.25rem;font-weight:800;color:var(--navy)}
+.dur-metric-sub{font-size:.67rem;color:var(--muted);margin-top:1px}
+/* Home ID page banner */
+.hid-page-banner{background:linear-gradient(135deg,#1B3252 0%,#1A7A52 100%);border-radius:14px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;overflow:hidden}
+.hid-page-banner::before{content:'';position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.05)}
+.hid-banner-icon{font-size:1.8rem;background:rgba(255,255,255,.15);border-radius:12px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hid-banner-title{font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:.3px}
+.hid-banner-sub{font-size:.73rem;color:rgba(255,255,255,.6);margin-top:3px}
+.hid-banner-stats{display:flex;gap:10px;flex-shrink:0}
+.hid-banner-stat{text-align:center;background:rgba(255,255,255,.12);border-radius:8px;padding:8px 16px;border:1px solid rgba(255,255,255,.15);min-width:80px}
+.hid-bs-lbl{font-size:.62rem;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.5px}
+.hid-bs-val{font-size:1.05rem;font-weight:800;color:#fff;margin-top:2px}
+.hid-bs-warn{color:#FCD34D}
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
 @media(max-width:768px){
@@ -430,6 +441,23 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
     <!-- ══ HOME ID ══ -->
     <div class="page active" id="page-home">
 
+      <!-- Banner -->
+      <div class="hid-page-banner">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="hid-banner-icon">🏠</div>
+          <div>
+            <div class="hid-banner-title">Home ID Dashboard</div>
+            <div class="hid-banner-sub">Installation Performance Monitor</div>
+          </div>
+        </div>
+        <div class="hid-banner-stats">
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Total RE</div><div class="hid-bs-val" id="hid-bn-re">—</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">PS Rate</div><div class="hid-bs-val" id="hid-bn-ps">—</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Valid Rate</div><div class="hid-bs-val" id="hid-bn-valid">—</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Fallout</div><div class="hid-bs-val hid-bs-warn" id="hid-bn-fallout">—</div></div>
+        </div>
+      </div>
+
       <!-- Filters -->
       <div class="card" style="margin-bottom:16px;padding:16px 20px">
         <div class="hid-filter-bar">
@@ -448,23 +476,24 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
         </div>
       </div>
 
-      <!-- Funnel Flow -->
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-title" style="margin-bottom:18px">Installation Flow</div>
-        <div class="hid-flow-outer">
-          <div class="hid-flow-container" id="hid-flow-container"></div>
-        </div>
-      </div>
-
-      <!-- Duration Matrix + Summary Card -->
-      <div style="display:grid;grid-template-columns:1fr 220px;gap:16px;margin-bottom:16px;align-items:start">
+      <!-- 3-card row: Installation Flow | Avg Duration | Fallout Breakdown -->
+      <div style="display:grid;grid-template-columns:1fr 220px 220px;gap:16px;margin-bottom:16px;align-items:start">
         <div class="card">
-          <div class="card-title" style="margin-bottom:14px">Duration Matrix
-            <span style="font-size:.65rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.6">— Durasi TTI vs Durasi Instalasi</span>
+          <div class="card-title" style="margin-bottom:14px">Installation Flow</div>
+          <div class="hid-flow-outer">
+            <div class="hid-flow-container" id="hid-flow-container"></div>
           </div>
-          <div style="overflow-x:auto"><table class="dur-matrix" id="hid-dur-matrix"></table></div>
         </div>
         <div class="card" id="hid-dur-summary" style="padding:18px 16px"></div>
+        <div class="card" id="hid-fallout-breakdown" style="padding:18px 16px"></div>
+      </div>
+
+      <!-- Duration Matrix -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title" style="margin-bottom:14px">Duration Matrix
+          <span style="font-size:.65rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.6">— Durasi TTI vs Durasi Instalasi</span>
+        </div>
+        <div style="overflow-x:auto"><table class="dur-matrix" id="hid-dur-matrix"></table></div>
       </div>
 
       <!-- Area Summary -->
@@ -659,6 +688,13 @@ const HOMEID_DATA = {
     pi_open:{count:33,pct:0.37},
     ps:{count:6028,pct:68.36},
     fallout:{count:943,pct:10.69},
+    fallout_breakdown:{
+      teknik:    {count:412, pct:43.7},
+      pelanggan: {count:298, pct:31.6},
+      lainnya:   {count:125, pct:13.3},
+      other:     {count:68,  pct:7.2},
+      blank:     {count:40,  pct:4.2},
+    },
     cancel:{count:222,pct:2.52},
     not_yet:{count:1625,pct:18.43},
     ps_re_gross:67.81,
@@ -793,9 +829,11 @@ function _hidP(p){ return p.toFixed(2)+'%'; }
 function _hidPClass(p){ return p>=95?'hid-pct-good':p>=90?'hid-pct-warn':'hid-pct-bad'; }
 
 function renderHomeIDPage(){
+  _renderHIDBanner();
   _renderHIDFunnel();
   _renderHIDDuration();
   _renderHIDDurSummary();
+  _renderHIDFallout();
   _renderHIDAreaTable();
 }
 
@@ -886,17 +924,25 @@ function _renderHIDDuration(){
   </tbody>`;
 }
 
+function _renderHIDBanner(){
+  const d=HOMEID_DATA.funnel;
+  const r=$('hid-bn-re');    if(r) r.textContent=_hidN(d.re);
+  const p=$('hid-bn-ps');    if(p) p.textContent=d.ps.pct.toFixed(1)+'%';
+  const v=$('hid-bn-valid'); if(v) v.textContent=d.ps_re_valid.toFixed(1)+'%';
+  const f=$('hid-bn-fallout');if(f) f.textContent=d.fallout.pct.toFixed(1)+'%';
+}
+
 function _renderHIDDurSummary(){
   const el=$('hid-dur-summary'); if(!el) return;
   const d=HOMEID_DATA.duration;
   const metrics=[
-    {lbl:'Avg Durasi TTI',   sub:'Indihome Reguler', val:d.avgTti_reg.toFixed(2)+' jam',  color:'#C0392B'},
-    {lbl:'Avg Durasi TTI',   sub:'Home ID',          val:d.avgTti_hid.toFixed(2)+' jam',  color:'#1A7A52'},
-    {lbl:'Avg Durasi Inst.', sub:'Indihome Reguler', val:d.avgInst_reg.toFixed(2)+' jam', color:'#C0392B'},
-    {lbl:'Avg Durasi Inst.', sub:'Home ID',          val:d.avgInst_hid.toFixed(2)+' jam', color:'#1A7A52'},
+    {lbl:'Avg Durasi TTI',   sub:'Indihome Reg', val:d.avgTti_reg.toFixed(2)+' jam',  color:'#C0392B'},
+    {lbl:'Avg Durasi TTI',   sub:'Home ID',       val:d.avgTti_hid.toFixed(2)+' jam',  color:'#1A7A52'},
+    {lbl:'Avg Durasi Inst.', sub:'Indihome Reg', val:d.avgInst_reg.toFixed(2)+' jam', color:'#C0392B'},
+    {lbl:'Avg Durasi Inst.', sub:'Home ID',       val:d.avgInst_hid.toFixed(2)+' jam', color:'#1A7A52'},
   ];
-  el.innerHTML=`<div class="card-title" style="margin-bottom:14px">Avg Duration</div>
-    <div style="display:flex;flex-direction:column;gap:10px">
+  el.innerHTML=`<div class="card-title" style="margin-bottom:12px;font-size:.8rem">Avg Duration</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
       ${metrics.map(m=>`
         <div class="dur-metric-card" style="border-left-color:${m.color}">
           <div class="dur-metric-lbl">${m.lbl}</div>
@@ -904,6 +950,39 @@ function _renderHIDDurSummary(){
           <div class="dur-metric-sub">${m.sub}</div>
         </div>`).join('')}
     </div>`;
+}
+
+function _renderHIDFallout(){
+  const el=$('hid-fallout-breakdown'); if(!el) return;
+  const fb=HOMEID_DATA.funnel.fallout_breakdown;
+  const total=HOMEID_DATA.funnel.fallout.count;
+  const items=[
+    {lbl:'Fallout Teknik',    key:'teknik',    color:'#2563EB'},
+    {lbl:'Fallout Pelanggan', key:'pelanggan', color:'#D97706'},
+    {lbl:'Fallout Lainnya',   key:'lainnya',   color:'#059669'},
+    {lbl:'Other',             key:'other',     color:'#7C3AED'},
+    {lbl:'Blank',             key:'blank',     color:'#6B7280'},
+  ];
+  el.innerHTML=`<div class="card-title" style="margin-bottom:12px;font-size:.8rem">Fallout Breakdown
+    <span style="font-size:.67rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.65">— ${_hidN(total)} total</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    ${items.map(it=>{
+      const v=fb[it.key]||{count:0,pct:0};
+      return `<div style="background:var(--bg);border-radius:9px;padding:9px 11px;border-left:3px solid ${it.color}">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+          <span style="font-size:.69rem;font-weight:600;color:var(--text)">${it.lbl}</span>
+          <span style="font-size:.75rem;font-weight:700;color:${it.color}">${_hidN(v.count)}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px">
+          <div style="flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden">
+            <div style="width:${Math.round(v.pct)}%;height:100%;background:${it.color};border-radius:99px;opacity:.85"></div>
+          </div>
+          <span style="font-size:.67rem;color:var(--muted);font-weight:600;min-width:32px;text-align:right">${v.pct.toFixed(1)}%</span>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
 }
 
 function _renderHIDAreaTable(){
@@ -1545,13 +1624,16 @@ function renderEntityView(entity, d){
               }
             }]:[]),
             {type:'line',label:`Target (${fmtSla(tgt)})`,data:months.map(()=>tgt),
-             borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],
+             borderColor:'#e11d48',borderWidth:2.5,borderDash:[8,4],
              tension:0,pointRadius:0,fill:false,order:0,
              datalabels:{
                display:(ctx)=>ctx.dataIndex===months.length-1,
-               anchor:'center', align:'right', offset:10,
-               formatter:()=>fmtSla(tgt),
-               color:'#6b7280', font:{size:9,weight:'700'}
+               anchor:'center', align:'right', offset:14,
+               formatter:()=>fmtSla(tgt)+'%',
+               color:'#fff', font:{size:10,weight:'800'},
+               backgroundColor:'#e11d48',
+               borderRadius:5,
+               padding:{top:3,bottom:3,left:7,right:7}
              }}
           ]},
         options:{responsive:true,maintainAspectRatio:false,
