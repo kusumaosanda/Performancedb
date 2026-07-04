@@ -246,18 +246,25 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .filter-group select:focus{border-color:var(--teal)}
 
 /* ── KPI MATRIX TABLE ────────────────────────────────────────────────────── */
-.kpi-matrix{width:100%;border-collapse:collapse;font-size:.82rem}
-.kpi-matrix th{background:var(--navy);color:#fff;padding:9px 13px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.14)}
-.kpi-matrix th.km-name{text-align:left;background:var(--navy2);min-width:100px}
-.kpi-matrix th.km-tgt{background:#1B3252}
-.kpi-matrix td{padding:9px 13px;text-align:center;border:1px solid var(--border);font-weight:600}
-.kpi-matrix td.km-name{text-align:left;font-weight:700;color:var(--navy);background:rgba(42,63,94,.04);white-space:nowrap;border-right:2px solid var(--border)}
-.kpi-matrix td.km-tgt{color:var(--muted);font-weight:500;font-size:.78rem;border-right:1px solid var(--border)}
-.kpi-matrix td.km-ok{background:rgba(22,101,52,.1);color:#166534}
-.kpi-matrix td.km-nc{background:rgba(153,27,27,.08);color:#991b1b}
+.kpi-matrix{width:100%;border-collapse:collapse;font-size:.8rem}
+.kpi-matrix th{background:var(--navy);color:#fff;padding:7px 10px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.14)}
+.kpi-matrix th.km-entity{background:var(--navy2);font-size:.78rem;letter-spacing:.2px;padding:9px 14px;border-right:2px solid rgba(255,255,255,.2)}
+.kpi-matrix th.km-month{text-align:left;background:#1a3252;min-width:80px;border-right:2px solid rgba(255,255,255,.2)}
+.kpi-matrix th.km-val{background:var(--navy)}
+.kpi-matrix th.km-mom{background:#162840}
+.kpi-matrix td{padding:7px 9px;text-align:center;border:1px solid var(--border);border-right:1px solid var(--border)}
+.kpi-matrix td.km-month{text-align:left;font-weight:700;color:var(--navy);background:rgba(42,63,94,.04);white-space:nowrap;padding:8px 12px;border-right:2px solid var(--border)}
+.kpi-matrix td.km-ok{color:#166534;font-weight:700}
+.kpi-matrix td.km-nc{color:#991b1b;font-weight:700}
 .kpi-matrix td.km-na{color:var(--border);font-weight:400}
-.kpi-matrix td.km-trend{font-size:1rem;font-weight:800;border-left:2px solid var(--border)}
-.kpi-matrix tbody tr:hover td{filter:brightness(.97)}
+.kpi-matrix td.km-sep{border-right:2px solid var(--border)}
+.km-pill{display:inline-block;padding:2px 7px;border-radius:99px;font-size:.7rem;font-weight:700;white-space:nowrap}
+.km-pill.up{background:rgba(22,101,52,.18);color:#166534}
+.km-pill.dn{background:rgba(153,27,27,.14);color:#991b1b}
+.km-pill.nt{background:rgba(100,100,100,.1);color:var(--muted)}
+.kpi-matrix tr.km-tgt-row td{background:#f0ece4;font-size:.72rem;color:var(--muted);border-top:2px solid var(--border)}
+.kpi-matrix tr.km-tgt-row td.km-month{color:var(--muted);font-size:.72rem;font-weight:600}
+.kpi-matrix tbody tr:hover td:not(.km-month){background:rgba(42,63,94,.04)}
 
 /* ── REFERENCE SUMMARY TABLE ─────────────────────────────────────────────── */
 .ref-summary-wrap{margin-bottom:0}
@@ -1161,6 +1168,11 @@ function selectMonth(period, btn){
   document.querySelectorAll('.month-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   selectedMonth = period;
+  // Summary tab is always "All KPI" context — reset any entity selection
+  if(period === 'summary'){
+    selectedEntity = '';
+    const sel = $('entitySelect'); if(sel) sel.value = '';
+  }
   renderKPIBody();
 }
 
@@ -1186,7 +1198,7 @@ function renderKPIBody(){
   else $('kpiBody').innerHTML = '<div class="loading">No data for this selection.</div>';
 }
 
-// ── DEFAULT: All entities overview ──
+/// ── DEFAULT: All entities overview ──
 const ENTITY_ORDER = ['TTI','FFG','TTRFFG','PSRE','FFGGAUL'];
 function renderAllView(){
   const monthData = (kpiData.months||{})[selectedMonth] || {};
@@ -1204,37 +1216,63 @@ function renderAllView(){
   const ENL = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
   const mLbl = m=>{try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m}};
   const ENL2 = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
-  // ── Build KPI matrix table HTML ──
-  const matrixRows = entities.map(e=>{
-    const tg=etgt(e);
-    const vals=allMonths.map(m=>(kpiData.months[m]||{})[e]?.sla_pct??null);
-    const validVals=vals.filter(v=>v!==null);
-    const last2=validVals.slice(-2);
-    const trendCh=last2.length>=2?(last2[1]>=last2[0]?'↑':'↓'):'—';
-    const trendClr=last2.length>=2?(last2[1]>=last2[0]?'#166534':'#991b1b'):'var(--muted)';
-    const cells=allMonths.map((m,i)=>{
-      const v=vals[i];
-      if(v===null) return `<td class="km-na">—</td>`;
-      return `<td class="${v>=tg?'km-ok':'km-nc'}">${fmtSla(v)}</td>`;
-    }).join('');
-    return `<tr><td class="km-name">${ENL2[e]||e}</td><td class="km-tgt">${fmtSla(tg)}%</td>${cells}<td class="km-trend" style="color:${trendClr}">${trendCh}</td></tr>`;
-  }).join('');
+  // ── Build KPI matrix: rows=months, col-groups=entities (Value + MoM) ──
+  const matrixEnts = ENTITY_ORDER.filter(e=>{
+    // include entity if it has data in ANY month
+    return allMonths.some(m=>(kpiData.months[m]||{})[e]?.sla_pct!=null);
+  });
+  const pill=(v,prev)=>{
+    if(v==null||prev==null) return `<span class="km-pill nt">—</span>`;
+    const d=v-prev;
+    const cls=d>0?'up':d<0?'dn':'nt';
+    const sign=d>0?'+':'';
+    return `<span class="km-pill ${cls}">${sign}${d.toFixed(2)}</span>`;
+  };
+  // entity-group headers
+  const entityHeaders = matrixEnts.map((e,i)=>
+    `<th class="km-entity" colspan="2">${ENL2[e]||e}</th>`
+  ).join('');
+  // target sub-row cells
+  const tgtCells = matrixEnts.map(e=>
+    `<td colspan="2" class="km-month" style="text-align:center;font-weight:600;color:var(--teal);font-size:.73rem">Target: ${fmtSla(etgt(e))}%</td>`
+  ).join('');
+  // sub-column headers (Val | MoM per entity)
+  const subHeaders = matrixEnts.map(()=>
+    `<th class="km-val">Value</th><th class="km-mom">MoM</th>`
+  ).join('');
+  // data rows — one per month
+  const dataRows = allMonths.map((m,mi)=>
+    `<tr>
+      <td class="km-month">${mLbl(m)}</td>
+      ${matrixEnts.map(e=>{
+        const v=(kpiData.months[m]||{})[e]?.sla_pct??null;
+        const prev=mi>0?((kpiData.months[allMonths[mi-1]]||{})[e]?.sla_pct??null):null;
+        const tg=etgt(e);
+        const valCell=v==null?`<td class="km-na">—</td>`:`<td class="${v>=tg?'km-ok':'km-nc'}">${fmtSla(v)}</td>`;
+        return `${valCell}<td class="km-sep" style="background:transparent">${pill(v,prev)}</td>`;
+      }).join('')}
+    </tr>`
+  ).join('');
   const matrixHtml = `
-    <div class="card" style="margin-bottom:18px;overflow-x:auto">
+    <div class="card" style="margin-bottom:18px">
       <div class="card-title" style="margin-bottom:14px">KPI Performance Matrix
-        <span style="font-size:.68rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.65"> — Month to Month</span>
+        <span style="font-size:.68rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.65"> — Month to Month with MoM Change</span>
       </div>
+      <div style="overflow-x:auto">
       <table class="kpi-matrix">
         <thead>
           <tr>
-            <th class="km-name">KPI</th>
-            <th class="km-tgt">Target</th>
-            ${allMonths.map(m=>`<th>${mLbl(m)}</th>`).join('')}
-            <th>Trend</th>
+            <th class="km-month" rowspan="2" style="min-width:70px">Month</th>
+            ${entityHeaders}
           </tr>
+          <tr>${subHeaders}</tr>
         </thead>
-        <tbody>${matrixRows}</tbody>
+        <tbody>
+          <tr class="km-tgt-row"><td class="km-month">Target</td>${tgtCells}</tr>
+          ${dataRows}
+        </tbody>
       </table>
+      </div>
     </div>`;
   const eln = e => ENL[e]||e;
   const etgt = e => ENTITY_TARGETS_OVERRIDE[e] || monthData[e]?.target || 95;
@@ -2453,12 +2491,14 @@ async function clearDashboardCache(){
     const r = await fetch(DATA.kpis + '?_t=' + Date.now(), {cache:'no-store'});
     if(!r.ok) throw new Error('HTTP ' + r.status);
     kpiData = await r.json();
-    renderKPIs(kpiData);
     if(btn){ btn.textContent='✅ Updated'; setTimeout(()=>{ btn.textContent=orig; btn.disabled=false; },2000); }
   } catch(e) {
     if(btn){ btn.textContent=orig; btn.disabled=false; }
     alert('❌ Gagal refresh: ' + e.message);
+    return;
   }
+  // Render separately — rendering errors should not show as "cache failed"
+  try { renderKPIs(kpiData); } catch(e){ console.warn('renderKPIs error after cache refresh:', e); }
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
