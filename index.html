@@ -344,13 +344,13 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .hid-btn:hover{opacity:.88}
 .hid-lu{font-size:.7rem;color:var(--muted);align-self:flex-end;padding-bottom:2px;margin-left:auto}
 .hid-flow-outer{overflow-x:auto;padding-bottom:4px}
-.hid-flow-container{position:relative;width:920px;height:560px;flex-shrink:0}
+.hid-flow-container{position:relative;width:720px;height:440px;flex-shrink:0}
 .hid-card{position:absolute;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 16px;box-shadow:0 6px 20px rgba(0,0,0,.13),0 2px 6px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s;cursor:default;border:none}
 .hid-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.1)}
-.hid-card-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;opacity:.75}
-.hid-card-val{font-size:1.7rem;font-weight:800;line-height:1;letter-spacing:-.5px}
-.hid-card-pct{font-size:.83rem;font-weight:700;margin-top:4px}
-.hid-card-sub{font-size:.63rem;margin-top:2px;opacity:.65}
+.hid-card-lbl{font-size:.56rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px;opacity:.75}
+.hid-card-val{font-size:1.45rem;font-weight:800;line-height:1;letter-spacing:-.5px}
+.hid-card-pct{font-size:.76rem;font-weight:700;margin-top:3px}
+.hid-card-sub{font-size:.6rem;margin-top:1px;opacity:.65}
 /* Pastel retro palette — flat, no gradient */
 .hid-blue-main{background:#D6E8FA;color:#1a3a6e}
 .hid-blue{background:#C8DEF5;color:#1a3566}
@@ -391,6 +391,10 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .dur-metric-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:2px}
 .dur-metric-val{font-size:1.25rem;font-weight:800;color:var(--navy)}
 .dur-metric-sub{font-size:.67rem;color:var(--muted);margin-top:1px}
+/* Duration package filter buttons */
+.dur-pkg-btn{padding:4px 12px;border:1.5px solid var(--border);border-radius:99px;background:var(--bg);font-size:.72rem;font-weight:600;cursor:pointer;color:var(--muted);font-family:'Poppins',sans-serif;transition:all .15s}
+.dur-pkg-btn:hover{border-color:var(--teal);color:var(--teal)}
+.dur-pkg-btn.active{background:var(--teal);border-color:var(--teal);color:#fff}
 /* Home ID page banner */
 .hid-page-banner{background:linear-gradient(135deg,#1B3252 0%,#1A7A52 100%);border-radius:14px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;overflow:hidden}
 .hid-page-banner::before{content:'';position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.05)}
@@ -511,8 +515,16 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 
       <!-- Duration Matrix -->
       <div class="card" style="margin-bottom:16px">
-        <div class="card-title" style="margin-bottom:14px">Duration Matrix
-          <span style="font-size:.65rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.6">— Durasi TTI vs Durasi Instalasi</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+          <div class="card-title" style="margin-bottom:0">Duration Matrix
+            <span style="font-size:.65rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.6">— Durasi TTI vs Durasi Instalasi</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <span style="font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Filter:</span>
+            <button class="dur-pkg-btn active" id="durPkgAll"   onclick="setDurPkg('all')"  >All</button>
+            <button class="dur-pkg-btn"        id="durPkgReg"   onclick="setDurPkg('reg')"  >Indihome Reg</button>
+            <button class="dur-pkg-btn"        id="durPkgHid"   onclick="setDurPkg('hid')"  >Home ID</button>
+          </div>
         </div>
         <div style="overflow-x:auto"><table class="dur-matrix" id="hid-dur-matrix"></table></div>
       </div>
@@ -732,6 +744,27 @@ const HOMEID_DATA = {
     ],
     avgTti_reg:12.58, avgInst_reg:1.18,
     avgTti_hid:11.44, avgInst_hid:1.12,
+    // Per-package breakdowns
+    reg:{
+      cols:['< 2 JAM','2–5 JAM','5–12 JAM','> 12 JAM','N/A','Total'],
+      rows:[
+        {lbl:'< 2 JAM', d:[2210,88,13,12,0,2323]},
+        {lbl:'2–5 JAM', d:[556,46,7,1,2,612]},
+        {lbl:'5–12 JAM',d:[435,68,18,1,3,525]},
+        {lbl:'> 12 JAM',d:[193,16,4,12,31,256]},
+        {lbl:'N/A',     d:[48,3,0,1,3,55]},
+      ],
+    },
+    hid:{
+      cols:['< 2 JAM','2–5 JAM','5–12 JAM','> 12 JAM','N/A','Total'],
+      rows:[
+        {lbl:'< 2 JAM', d:[1327,54,8,7,0,1396]},
+        {lbl:'2–5 JAM', d:[334,27,3,1,1,366]},
+        {lbl:'5–12 JAM',d:[260,40,11,0,1,312]},
+        {lbl:'> 12 JAM',d:[115,9,3,7,18,152]},
+        {lbl:'N/A',     d:[29,1,0,0,1,31]},
+      ],
+    },
   },
   areas:[
     {name:'AREA 1',
@@ -862,18 +895,18 @@ function _renderHIDFunnel(){
   const c=$('hid-flow-container'); if(!c) return;
   const d=HOMEID_DATA.funnel;
 
-  // [left, top, width, height] — extra spacing between cards
+  // [left, top, width, height] — compact layout ~740×400
   const POS={
-    re:       [16,  196, 158, 148],
-    progress: [238, 52,  178, 122],
-    ogp:      [238, 242, 178, 94],
-    pi_open:  [238, 396, 178, 94],
-    ps:       [480, 22,  178, 118],
-    fallout:  [480, 188, 178, 94],
-    cancel:   [480, 314, 178, 94],
-    not_yet:  [480, 440, 178, 94],
-    gross:    [722, 48,  172, 112],
-    valid:    [722, 218, 172, 112],
+    re:       [10,  138, 130, 120],
+    progress: [178, 36,  148, 100],
+    ogp:      [178, 172, 148, 76],
+    pi_open:  [178, 278, 148, 76],
+    ps:       [368, 14,  148, 96],
+    fallout:  [368, 144, 148, 76],
+    cancel:   [368, 246, 148, 76],
+    not_yet:  [368, 346, 148, 76],
+    gross:    [558, 36,  144, 92],
+    valid:    [558, 174, 144, 92],
   };
 
   const cx=k=>POS[k][0]+POS[k][2];
@@ -908,7 +941,7 @@ function _renderHIDFunnel(){
     ${card('not_yet', 'hid-orange',  'Not Yet PS',    _hidN(d.not_yet.count),  _hidP(d.not_yet.pct),'')}
     ${card('gross',   'hid-dark',    'PS / RE Gross', _hidP(d.ps_re_gross),    '','')}
     ${card('valid',   'hid-teal',    'PS / RE Valid', _hidP(d.ps_re_valid),    '','')}
-    <svg style="position:absolute;top:0;left:0;width:920px;height:560px;pointer-events:none;overflow:visible">
+    <svg style="position:absolute;top:0;left:0;width:720px;height:440px;pointer-events:none;overflow:visible">
       <defs>
         <marker id="hid-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0,8 3,0 6" fill="rgba(150,160,180,.7)"/>
@@ -919,16 +952,26 @@ function _renderHIDFunnel(){
       ${arrow('progress','cancel')}${arrow('progress','not_yet')}
       ${arrow('ps','gross')}
     </svg>`;
-  c.style.height='560px';
+  c.style.height='440px';
 }
 
+let _durPkg = 'all';
+function setDurPkg(pkg){
+  _durPkg = pkg;
+  ['All','Reg','Hid'].forEach(x=>{ const b=$('durPkg'+x); if(b) b.classList.toggle('active', x.toLowerCase()===pkg||(pkg==='all'&&x==='All')); });
+  _renderHIDDuration();
+}
 function _renderHIDDuration(){
   const t=$('hid-dur-matrix'); if(!t) return;
-  const {cols,rows}=HOMEID_DATA.duration;
+  const src = _durPkg==='reg' ? HOMEID_DATA.duration.reg :
+              _durPkg==='hid' ? HOMEID_DATA.duration.hid :
+              HOMEID_DATA.duration;
+  const {cols,rows}=src;
   const totals=cols.map((_,ci)=>rows.reduce((s,r)=>s+r.d[ci],0));
+  const pkgLabel = _durPkg==='reg'?' — Indihome Reguler':_durPkg==='hid'?' — Home ID':'';
   t.innerHTML=`<thead>
     <tr>
-      <th rowspan="2" style="text-align:left;background:var(--navy2);min-width:90px">Durasi TTI</th>
+      <th rowspan="2" style="text-align:left;background:var(--navy2);min-width:90px">Durasi TTI${pkgLabel}</th>
       <th colspan="${cols.length-1}" style="background:#1a4a7a">Durasi Instalasi</th>
     </tr>
     <tr>${cols.slice(0,-1).map(c=>`<th>${c}</th>`).join('')}<th style="background:#0f3460">Total</th></tr>
@@ -1182,8 +1225,8 @@ function onEntityChange(){
 }
 
 function renderKPIBody(){
-  // Show TTI download buttons only when TTI entity is selected on a specific month
-  const _dlEntities = ['TTI','FFG'];
+  // Show download buttons for entities that push raw/detail CSVs
+  const _dlEntities = ['TTI','FFG','TTRFFG'];
   const isDownloadMonth = _dlEntities.includes(selectedEntity) && selectedMonth && selectedMonth!=='summary';
   const dlRaw  = $('btnDownloadRaw');
   const dlProc = $('btnDownloadKPI');
@@ -1214,6 +1257,9 @@ function renderAllView(){
   const allMonths = Object.keys(kpiData.months||{}).sort();
   const COLORS=['#2A3F5E','#C4522A','#3D7A6E','#C89020','#7A3020','#3A7848','#5A9E8E'];
   const ENL = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
+  // ── Define eln/etgt FIRST so matrix code can use them ──
+  const eln  = e => ENL[e]||e;
+  const etgt = e => ENTITY_TARGETS_OVERRIDE[e] || monthData[e]?.target || 95;
   const mLbl = m=>{try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m}};
   const ENL2 = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
   // ── Build KPI matrix: rows=months, col-groups=entities (Value + MoM) ──
@@ -1274,8 +1320,6 @@ function renderAllView(){
       </table>
       </div>
     </div>`;
-  const eln = e => ENL[e]||e;
-  const etgt = e => ENTITY_TARGETS_OVERRIDE[e] || monthData[e]?.target || 95;
   const aboveTarget = entities.filter(e=>monthData[e].sla_pct>=etgt(e));
   const belowTarget = entities.filter(e=>monthData[e].sla_pct<etgt(e));
   const bestEntity  = entities.reduce((a,b)=>monthData[a].sla_pct>monthData[b].sla_pct?a:b);
@@ -2439,8 +2483,8 @@ async function _fetchAndDownload(url, filename, btn){
   }
 }
 
-// Generic download: works for any entity that pushes raw/detail CSVs (TTI, FFG, …)
-const _DL_ENTITIES = ['TTI','FFG'];
+// Generic download: works for any entity that pushes raw/detail CSVs (TTI, FFG, TTRFFG, …)
+const _DL_ENTITIES = ['TTI','FFG','TTRFFG'];
 async function downloadRaw(){
   const e = selectedEntity;
   if(!_DL_ENTITIES.includes(e)||!selectedMonth||selectedMonth==='summary') return;
