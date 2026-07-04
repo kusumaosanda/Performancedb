@@ -442,6 +442,7 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
       </div>
     </div>
     <a onclick="showPage('tracker')" id="nav-tracker"><span class="icon">📋</span> Project Tracker</a>
+    <a onclick="showPage('devprogress')" id="nav-devprogress"><span class="icon">🛠️</span> Dev Progress</a>
   </nav>
   <div class="sidebar-footer" id="sidebarFooter">Loading…</div>
 </div>
@@ -636,6 +637,49 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
       </div>
     </div>
 
+    <!-- ══ DEV PROGRESS ══ -->
+    <div class="page" id="page-devprogress">
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="font-size:1rem;font-weight:700;color:var(--navy2)">Development Progress</div>
+            <div style="font-size:.78rem;color:var(--muted);margin-top:2px">Check items after you've reviewed them in the dashboard</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div id="dp-progress-label" style="font-size:.82rem;font-weight:600;color:var(--teal)"></div>
+            <button onclick="dpResetAll()" style="padding:5px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-size:.75rem;font-weight:600;cursor:pointer;color:var(--muted);font-family:'Poppins',sans-serif">Reset All</button>
+          </div>
+        </div>
+        <div style="margin-top:12px;height:6px;border-radius:99px;background:rgba(0,0,0,.08);overflow:hidden">
+          <div id="dp-progress-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),#1A7A52);transition:width .4s ease"></div>
+        </div>
+      </div>
+
+      <!-- KPI Page items -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+          <span style="background:var(--navy2);color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem">KPI Page</span>
+        </div>
+        <div id="dp-group-kpi"></div>
+      </div>
+
+      <!-- Home ID Page items -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+          <span style="background:#1A7A52;color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem">Home ID Page</span>
+        </div>
+        <div id="dp-group-homeid"></div>
+      </div>
+
+      <!-- Backend items -->
+      <div class="card">
+        <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+          <span style="background:#4A4A6A;color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem">Backend / Scripts</span>
+        </div>
+        <div id="dp-group-backend"></div>
+      </div>
+    </div>
+
   </div><!-- /content -->
 </div><!-- /main -->
 
@@ -673,7 +717,7 @@ async function fetchJSON(url){
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
-const pageTitles = { home:'Home ID', kpi:'KPI 2025', kpi2026:'KPI 2026', tracker:'Project Tracker' };
+const pageTitles = { home:'Home ID', kpi:'KPI 2025', kpi2026:'KPI 2026', tracker:'Project Tracker', devprogress:'Dev Progress' };
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
@@ -686,6 +730,7 @@ function showPage(id){
   }
   $('pageTitle').textContent = pageTitles[id] || id;
   closeSidebar();
+  if(id==='devprogress') renderDevProgress();
 }
 function toggleNavGroup(id){
   $('nav-sub-'+id).classList.toggle('open');
@@ -2562,6 +2607,89 @@ async function init(){
   } else showErr('trackerLoading','Could not load project data.');
 }
 
+// ─── DEV PROGRESS ─────────────────────────────────────────────────────────────
+const DP_ITEMS = {
+  kpi: [
+    { id:'kpi-target',    title:'Target line redesign',           desc:'Replaced thin dashed line with a red (#e11d48) pill badge label — easier to spot on month-to-month chart.' },
+    { id:'kpi-matrix',    title:'Month-to-month performance matrix', desc:'New table in All KPI view (select a month tab, not Summary). Shows entity × month grid with green/red MoM pills.' },
+    { id:'kpi-align',     title:'TTI Reference Breakdown alignment', desc:'Left (Manja/PI/RE summary) and right (Detail Breakdown by Area) tables now start at the same vertical position.' },
+    { id:'kpi-cache',     title:'Clear cache button error fixed',  desc:'No longer shows ❌ Gagal refresh when re-render succeeds. Errors during render are caught separately and logged to console.' },
+    { id:'kpi-tabs',      title:'All KPI → month tabs fixed',      desc:'Was showing blank when switching month tabs. Root cause: JS const hoisting bug (etgt used before definition). Fixed.' },
+    { id:'kpi-ttrffg-dl', title:'TTRFFG Download Raw + Processed', desc:'Download buttons added when TTRFFG entity is selected. Files served from data/ttrffg_raw_{period}.csv and data/ttrffg_detail_{period}.csv — populated when update_dashboard.py runs.' },
+  ],
+  homeid: [
+    { id:'hid-banner',    title:'Page banner header',             desc:'Gradient banner at top of Home ID page showing Total RE, PS Rate, Valid Rate, and Fallout % key stats.' },
+    { id:'hid-layout',    title:'3-card row layout',              desc:'Installation Flow, Avg Duration, and Fallout Breakdown now appear side-by-side in one row.' },
+    { id:'hid-fallout',   title:'Fallout Breakdown card',         desc:'New card showing Fallout split: Teknik / Pelanggan / Lainnya / Other / Blank with count and percentage.' },
+    { id:'hid-compact',   title:'Installation Flow compacted',    desc:'Resized from 920×560 to 720×440. Card no longer dominates the screen.' },
+    { id:'hid-durfilter', title:'Duration Matrix package filter',  desc:'Filter buttons — All / Indihome Reg / Home ID — above the duration matrix table. Each shows its own data set.' },
+  ],
+  backend: [
+    { id:'be-pushui',     title:'push_ui.py created',             desc:'Standalone script to push only index.html to GitHub (~3 sec). Run after UI edits: python3 push_ui.py' },
+    { id:'be-ttrffg-csv', title:'TTRFFG CSV export in update_dashboard.py', desc:'Added build_ttrffg_raw_csv() and build_ttrffg_detail_csv(). Pushes data/ttrffg_raw_{period}.csv and data/ttrffg_detail_{period}.csv during monthly update run.' },
+  ],
+};
+
+const DP_STORAGE_KEY = 'devprogress_checked_v1';
+
+function dpLoad(){ try{ return JSON.parse(localStorage.getItem(DP_STORAGE_KEY)||'{}'); }catch(e){ return {}; } }
+function dpSave(state){ localStorage.setItem(DP_STORAGE_KEY, JSON.stringify(state)); }
+
+function dpRenderGroup(containerId, items){
+  const state = dpLoad();
+  const container = $(containerId);
+  if(!container) return;
+  container.innerHTML = items.map((item,i)=>{
+    const checked = state[item.id] ? 'checked' : '';
+    const doneStyle = state[item.id] ? 'opacity:.5;text-decoration:line-through;' : '';
+    return `<div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;${i>0?'border-top:1px solid var(--border)':''}">
+      <input type="checkbox" id="dpchk-${item.id}" ${checked}
+        style="width:17px;height:17px;accent-color:var(--teal);cursor:pointer;flex-shrink:0;margin-top:2px"
+        onchange="dpToggle('${item.id}',this.checked)">
+      <label for="dpchk-${item.id}" style="cursor:pointer;${doneStyle}">
+        <div style="font-size:.84rem;font-weight:600;color:var(--navy2)">${item.title}</div>
+        <div style="font-size:.76rem;color:var(--muted);margin-top:2px;line-height:1.5">${item.desc}</div>
+      </label>
+    </div>`;
+  }).join('');
+}
+
+function dpUpdateProgress(){
+  const state = dpLoad();
+  const allItems = [...DP_ITEMS.kpi, ...DP_ITEMS.homeid, ...DP_ITEMS.backend];
+  const total = allItems.length;
+  const done  = allItems.filter(i=>state[i.id]).length;
+  const lbl = $('dp-progress-label');
+  const bar = $('dp-progress-bar');
+  if(lbl) lbl.textContent = `${done} / ${total} reviewed`;
+  if(bar) bar.style.width = (done/total*100)+'%';
+}
+
+function dpToggle(id, checked){
+  const state = dpLoad();
+  if(checked) state[id]=true; else delete state[id];
+  dpSave(state);
+  // Re-render just the label style without full rebuild
+  const lbl = document.querySelector(`label[for="dpchk-${id}"]`);
+  if(lbl) lbl.style.cssText = `cursor:pointer;${checked?'opacity:.5;text-decoration:line-through;':''}`;
+  dpUpdateProgress();
+}
+
+function dpResetAll(){
+  if(!confirm('Reset all checkboxes?')) return;
+  localStorage.removeItem(DP_STORAGE_KEY);
+  dpRenderGroup('dp-group-kpi',     DP_ITEMS.kpi);
+  dpRenderGroup('dp-group-homeid',  DP_ITEMS.homeid);
+  dpRenderGroup('dp-group-backend', DP_ITEMS.backend);
+  dpUpdateProgress();
+}
+
+function renderDevProgress(){
+  dpRenderGroup('dp-group-kpi',     DP_ITEMS.kpi);
+  dpRenderGroup('dp-group-homeid',  DP_ITEMS.homeid);
+  dpRenderGroup('dp-group-backend', DP_ITEMS.backend);
+  dpUpdateProgress();
+}
 init();
 </script>
 </body>
