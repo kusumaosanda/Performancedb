@@ -313,6 +313,49 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .sla-stat.clickable:active{transform:translateY(0)}
 .drill-hint{font-size:.64rem;color:var(--teal);margin-top:7px;letter-spacing:.2px;opacity:.85}
 
+/* ── HOME ID DASHBOARD ───────────────────────────────────────────────────── */
+.hid-filter-bar{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.hid-fg{display:flex;flex-direction:column;gap:4px}
+.hid-fg label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.hid-sel,.hid-inp{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;background:var(--bg);color:var(--text);outline:none;font-family:'Poppins',sans-serif}
+.hid-sel:focus,.hid-inp:focus{border-color:var(--teal)}
+.hid-btn{padding:8px 22px;background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;align-self:flex-end;transition:opacity .15s}
+.hid-btn:hover{opacity:.88}
+.hid-lu{font-size:.7rem;color:var(--muted);align-self:flex-end;padding-bottom:2px;margin-left:auto}
+.hid-flow-outer{overflow-x:auto;padding-bottom:4px}
+.hid-flow-container{position:relative;width:900px;height:540px;flex-shrink:0}
+.hid-card{position:absolute;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 14px;box-shadow:0 4px 22px rgba(0,0,0,.18);transition:transform .2s,box-shadow .2s;cursor:default}
+.hid-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.24)}
+.hid-card-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;opacity:.78;margin-bottom:3px}
+.hid-card-val{font-size:1.65rem;font-weight:800;line-height:1.05}
+.hid-card-pct{font-size:.82rem;font-weight:600;margin-top:2px;opacity:.9}
+.hid-card-sub{font-size:.65rem;opacity:.7;margin-top:1px}
+.hid-blue-main{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff}
+.hid-blue{background:linear-gradient(135deg,#1e40af,#60a5fa);color:#fff}
+.hid-green{background:linear-gradient(135deg,#14532d,#22c55e);color:#fff}
+.hid-amber{background:linear-gradient(135deg,#78350f,#fbbf24);color:#fff}
+.hid-orange{background:linear-gradient(135deg,#7c2d12,#fb923c);color:#fff}
+.hid-red{background:linear-gradient(135deg,#7f1d1d,#ef4444);color:#fff}
+.hid-dark{background:linear-gradient(135deg,#0f172a,#1e40af);color:#fff}
+.dur-matrix{width:100%;border-collapse:collapse;font-size:.79rem}
+.dur-matrix th{background:var(--navy);color:#fff;padding:8px 10px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border:1px solid rgba(255,255,255,.14);white-space:nowrap}
+.dur-matrix td{padding:8px 12px;text-align:center;border:1px solid var(--border);font-weight:500}
+.dur-matrix td.dm-hdr{background:rgba(42,63,94,.06);font-weight:700;text-align:left;color:var(--navy);white-space:nowrap}
+.dur-matrix td.dm-tot{font-weight:700;background:rgba(42,63,94,.06)}
+.dur-matrix tr.dm-total-row td{background:var(--navy);color:#fff;font-weight:700;border:1px solid rgba(255,255,255,.16)}
+.hid-area-tbl{width:100%;border-collapse:collapse;font-size:.79rem}
+.hid-area-tbl th{background:var(--navy);color:#fff;padding:9px 13px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.14)}
+.hid-area-tbl th.hid-grp-reg{background:#1a3a6a}
+.hid-area-tbl th.hid-grp-hid{background:#155e3a}
+.hid-area-tbl th.hid-area-col{text-align:left;background:var(--navy2)}
+.hid-area-tbl td{padding:9px 13px;border:1px solid var(--border);text-align:center;font-weight:500}
+.hid-area-tbl td.hid-area-name{text-align:left;font-weight:700;color:var(--navy);background:rgba(42,63,94,.04)}
+.hid-area-tbl tr:hover td{background:rgba(42,63,94,.04)}
+.hid-area-tbl tr.hid-total-row td{background:var(--navy2);color:#fff;font-weight:700;border:1px solid rgba(255,255,255,.16)}
+.hid-pct-good{color:#166534;font-weight:700}
+.hid-pct-warn{color:#92400e;font-weight:700;background:rgba(251,191,36,.12)}
+.hid-pct-bad{color:#991b1b;font-weight:700;background:rgba(239,68,68,.09)}
+
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
 @media(max-width:768px){
   #sidebar{transform:translateX(-100%)}
@@ -371,25 +414,47 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 
     <!-- ══ HOME ID ══ -->
     <div class="page active" id="page-home">
-      <div class="card">
-        <div class="loading" id="homeLoading"><div class="spinner"></div> Loading…</div>
-        <div id="homeContent" style="display:none">
-          <div class="home-id-header">
-            <div class="home-id-avatar" id="homeAvatar">🏢</div>
-            <div class="home-id-title">
-              <h2 id="homeName">—</h2>
-              <p id="homeSubtitle">—</p>
-            </div>
-          </div>
-          <div class="info-grid" id="homeInfoGrid"></div>
-          <div class="section-gap"></div>
-          <div class="card-title">Tags</div>
-          <div id="homeTags"></div>
-          <div class="section-gap"></div>
-          <div class="card-title">Description</div>
-          <p id="homeDescription" style="font-size:.88rem;line-height:1.65;color:#374151"></p>
+
+      <!-- Filters -->
+      <div class="card" style="margin-bottom:16px;padding:16px 20px">
+        <div class="hid-filter-bar">
+          <div class="hid-fg"><label>Area</label>
+            <select class="hid-sel" id="hid-area"><option>ALL</option><option>AREA 1</option><option>AREA 2</option><option>AREA 3</option><option>AREA 4</option></select></div>
+          <div class="hid-fg"><label>Witel</label>
+            <select class="hid-sel" id="hid-witel"><option>ALL</option></select></div>
+          <div class="hid-fg"><label>Periode</label>
+            <input class="hid-inp" id="hid-period" type="text" value="Juli 2026" style="width:130px"></div>
+          <div class="hid-fg"><label>Package</label>
+            <select class="hid-sel" id="hid-pkg"><option>ALL</option><option>Reguler</option><option>Home ID</option></select></div>
+          <div class="hid-fg"><label>Exc FO Kend. Plgn</label>
+            <select class="hid-sel" id="hid-exc"><option>NONE</option><option>YES</option></select></div>
+          <button class="hid-btn" onclick="renderHomeIDPage()">Submit</button>
+          <span class="hid-lu" id="hid-last-update"></span>
         </div>
       </div>
+
+      <!-- Funnel Flow -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title" style="margin-bottom:18px">Installation Flow</div>
+        <div class="hid-flow-outer">
+          <div class="hid-flow-container" id="hid-flow-container"></div>
+        </div>
+      </div>
+
+      <!-- Duration Matrix -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title" style="margin-bottom:14px">Duration Matrix
+          <span style="font-size:.65rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.6">— Durasi TTI vs Durasi Instalasi</span>
+        </div>
+        <div style="overflow-x:auto"><table class="dur-matrix" id="hid-dur-matrix"></table></div>
+      </div>
+
+      <!-- Area Summary -->
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">Area Summary</div>
+        <div style="overflow-x:auto"><table class="hid-area-tbl" id="hid-area-tbl"></table></div>
+      </div>
+
     </div>
 
     <!-- ══ KPI PAGE ══ -->
@@ -562,17 +627,180 @@ function slaClass(pct, target=95){ return pct >= target ? 'green' : pct >= (targ
 
 // ─── HOME ID ─────────────────────────────────────────────────────────────────
 function renderHome(d){
-  $('sidebarTitle').textContent    = d.dashboardTitle || 'Performance DB';
-  $('sidebarSub').textContent      = d.dashboardSub   || '';
-  $('homeAvatar').textContent      = d.avatar || '🏢';
-  $('homeName').textContent        = d.name || '—';
-  $('homeDescription').textContent = d.description || '';
-  let sub = d.subtitle || '';
-  if(d.status){ const cls=d.status.toLowerCase().replace(/\s+/g,'-'); sub+=` &nbsp;<span class="status-badge ${cls}">${d.status}</span>`; }
-  $('homeSubtitle').innerHTML = sub;
-  $('homeInfoGrid').innerHTML = (d.fields||[]).map(f=>`<div class="info-item"><label>${f.label}</label><span>${fmt(f.value)}</span></div>`).join('');
-  $('homeTags').innerHTML = (d.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
-  $('homeLoading').style.display='none'; $('homeContent').style.display='block';
+  if(d.dashboardTitle) $('sidebarTitle').textContent = d.dashboardTitle;
+  if(d.dashboardSub)   $('sidebarSub').textContent   = d.dashboardSub;
+  renderHomeIDPage();
+}
+
+// ─── HOME ID STATIC DATA ──────────────────────────────────────────────────────
+const HOMEID_DATA = {
+  funnel:{
+    re:8890,
+    progress:{count:8818,pct:99.19},
+    ogp:{count:39,pct:0.44},
+    pi_open:{count:33,pct:0.37},
+    ps:{count:6028,pct:68.36},
+    fallout:{count:943,pct:10.69},
+    cancel:{count:222,pct:2.52},
+    not_yet:{count:1625,pct:18.43},
+    ps_re_gross:67.81,
+    ps_re_valid:69.54,
+  },
+  duration:{
+    cols:['< 2 JAM','2–5 JAM','5–12 JAM','> 12 JAM','N/A','Total'],
+    rows:[
+      {lbl:'< 2 JAM', d:[3537,142,21,19,0,3719]},
+      {lbl:'2–5 JAM', d:[890,73,10,2,3,978]},
+      {lbl:'5–12 JAM',d:[695,108,29,1,4,837]},
+      {lbl:'> 12 JAM',d:[308,25,7,19,49,408]},
+      {lbl:'N/A',     d:[77,4,0,1,4,86]},
+    ],
+  },
+  areas:[
+    {name:'AREA 1',reg:{re:29178,re_nett:23703,ps:22208,pct:93.7,tti:15.41,inst:1.06},hid:{re:14083,sh:1954,ps:11647,pct:96.0,tti:13.19,inst:1.10}},
+    {name:'AREA 2',reg:{re:25542,re_nett:22223,ps:21413,pct:96.4,tti:8.17, inst:0.86},hid:{re:14527,sh:1235,ps:12986,pct:97.7,tti:6.22, inst:1.06}},
+    {name:'AREA 3',reg:{re:22719,re_nett:19764,ps:18887,pct:95.6,tti:13.53,inst:1.39},hid:{re:15492,sh:1467,ps:13565,pct:96.7,tti:15.14,inst:1.17}},
+    {name:'AREA 4',reg:{re:21996,re_nett:18868,ps:16798,pct:89.0,tti:13.38,inst:1.53},hid:{re:19316,sh:1667,ps:17101,pct:96.9,tti:11.27,inst:1.14}},
+    {name:'TOTAL', reg:{re:99435,re_nett:84558,ps:79306,pct:93.8,tti:12.58,inst:1.18},hid:{re:63418,sh:6323, ps:55299,pct:96.9,tti:11.44,inst:1.12}},
+  ],
+};
+
+function _hidN(n){ return n.toLocaleString('id-ID'); }
+function _hidP(p){ return p.toFixed(2)+'%'; }
+function _hidPClass(p){ return p>=95?'hid-pct-good':p>=90?'hid-pct-warn':'hid-pct-bad'; }
+
+function renderHomeIDPage(){
+  _renderHIDFunnel();
+  _renderHIDDuration();
+  _renderHIDAreaTable();
+}
+
+function _renderHIDFunnel(){
+  const c=$('hid-flow-container'); if(!c) return;
+  const d=HOMEID_DATA.funnel;
+
+  // [left, top, width, height]
+  const POS={
+    re:      [20,  188, 155, 145],
+    progress:[233, 60,  175, 118],
+    ogp:     [233, 232, 175, 90],
+    pi_open: [233, 374, 175, 90],
+    ps:      [468, 30,  175, 115],
+    fallout: [468, 188, 175, 90],
+    cancel:  [468, 310, 175, 90],
+    not_yet: [468, 432, 175, 90],
+    gross:   [710, 55,  170, 108],
+    valid:   [710, 215, 170, 108],
+  };
+
+  function cx(k){ const p=POS[k]; return p[0]+p[2]; } // right edge x
+  function cy(k){ const p=POS[k]; return p[1]+p[3]/2; } // center y
+  function lx(k){ return POS[k][0]; }                   // left edge x
+
+  // Bezier arrow: from right of A → left of B
+  function arrow(a,b,color='rgba(148,163,184,.65)'){
+    const x1=cx(a),y1=cy(a),x2=lx(b),y2=cy(b),mx=(x1+x2)/2;
+    return `<path d="M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}"
+      stroke="${color}" stroke-width="1.8" fill="none" stroke-linecap="round"
+      marker-end="url(#hid-arrow)"/>`;
+  }
+
+  function card(key,cls,lbl,val,pct='',sub=''){
+    const [l,t,w,h]=POS[key];
+    return `<div class="hid-card ${cls}" style="left:${l}px;top:${t}px;width:${w}px;height:${h}px">
+      <div class="hid-card-lbl">${lbl}</div>
+      <div class="hid-card-val">${val}</div>
+      ${pct?`<div class="hid-card-pct">${pct}</div>`:''}
+      ${sub?`<div class="hid-card-sub">${sub}</div>`:''}
+    </div>`;
+  }
+
+  c.innerHTML = `
+    ${card('re',     'hid-blue-main','RE',             _hidN(d.re),          '',               '100%')}
+    ${card('progress','hid-blue',   'Progress',        _hidN(d.progress.count), _hidP(d.progress.pct),'')}
+    ${card('ogp',    'hid-amber',   'OGP Install',     _hidN(d.ogp.count),   _hidP(d.ogp.pct),'')}
+    ${card('pi_open','hid-amber',   'PI Open',         _hidN(d.pi_open.count),_hidP(d.pi_open.pct),'')}
+    ${card('ps',     'hid-green',   'PS',              _hidN(d.ps.count),    _hidP(d.ps.pct),'of Progress')}
+    ${card('fallout','hid-orange',  'Fallout',         _hidN(d.fallout.count),_hidP(d.fallout.pct),'')}
+    ${card('cancel', 'hid-red',     'Cancel',          _hidN(d.cancel.count), _hidP(d.cancel.pct),'')}
+    ${card('not_yet','hid-orange',  'Not Yet PS',      _hidN(d.not_yet.count),_hidP(d.not_yet.pct),'')}
+    ${card('gross',  'hid-dark',    'PS / RE Gross',   _hidP(d.ps_re_gross), '', '')}
+    ${card('valid',  'hid-dark',    'PS / RE Valid',   _hidP(d.ps_re_valid), '', '')}
+    <svg style="position:absolute;top:0;left:0;width:900px;height:540px;pointer-events:none;overflow:visible">
+      <defs>
+        <marker id="hid-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0,8 3,0 6" fill="rgba(148,163,184,.85)"/>
+        </marker>
+      </defs>
+      ${arrow('re','progress')}
+      ${arrow('re','ogp')}
+      ${arrow('re','pi_open')}
+      ${arrow('progress','ps')}
+      ${arrow('progress','fallout')}
+      ${arrow('progress','cancel')}
+      ${arrow('progress','not_yet')}
+      ${arrow('ps','gross')}
+    </svg>`;
+}
+
+function _renderHIDDuration(){
+  const t=$('hid-dur-matrix'); if(!t) return;
+  const {cols,rows}=HOMEID_DATA.duration;
+  const totals=cols.map((_,ci)=>rows.reduce((s,r)=>s+r.d[ci],0));
+  t.innerHTML=`<thead>
+    <tr>
+      <th rowspan="2" style="text-align:left;background:var(--navy2);min-width:90px">Durasi TTI</th>
+      <th colspan="${cols.length-1}" style="background:#1a4a7a">Durasi Instalasi</th>
+    </tr>
+    <tr>${cols.slice(0,-1).map(c=>`<th>${c}</th>`).join('')}<th style="background:#0f3460">Total</th></tr>
+  </thead>
+  <tbody>
+    ${rows.map(r=>`<tr>
+      <td class="dm-hdr">${r.lbl}</td>
+      ${r.d.map((v,i)=>`<td class="${i===r.d.length-1?'dm-tot':''}">${_hidN(v)}</td>`).join('')}
+    </tr>`).join('')}
+    <tr class="dm-total-row">
+      <td style="text-align:left">Total</td>
+      ${totals.map(v=>`<td>${_hidN(v)}</td>`).join('')}
+    </tr>
+  </tbody>`;
+}
+
+function _renderHIDAreaTable(){
+  const t=$('hid-area-tbl'); if(!t) return;
+  const areas=HOMEID_DATA.areas;
+  t.innerHTML=`<thead>
+    <tr>
+      <th class="hid-area-col" rowspan="2">Area</th>
+      <th colspan="6" class="hid-grp-reg">Indihome Reguler</th>
+      <th colspan="6" class="hid-grp-hid">Home ID</th>
+    </tr>
+    <tr>
+      <th>RE</th><th>RE Nett *</th><th>PS</th><th>%PS/RE</th><th>Dur. TTI</th><th>Dur. Inst.</th>
+      <th>RE</th><th>Salah HP **</th><th>PS</th><th>%PS/RE</th><th>Dur. TTI</th><th>Dur. Inst.</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${areas.map(a=>{
+      const tot=a.name==='TOTAL';
+      const rc=tot?'':_hidPClass(a.reg.pct);
+      const hc=tot?'':_hidPClass(a.hid.pct);
+      return `<tr class="${tot?'hid-total-row':''}">
+        <td class="hid-area-name">${a.name}</td>
+        <td>${_hidN(a.reg.re)}</td><td>${_hidN(a.reg.re_nett)}</td><td>${_hidN(a.reg.ps)}</td>
+        <td class="${rc}">${_hidP(a.reg.pct)}</td>
+        <td>${a.reg.tti.toFixed(2)}</td><td>${a.reg.inst.toFixed(2)}</td>
+        <td>${_hidN(a.hid.re)}</td><td>${_hidN(a.hid.sh)}</td><td>${_hidN(a.hid.ps)}</td>
+        <td class="${hc}">${_hidP(a.hid.pct)}</td>
+        <td>${a.hid.tti.toFixed(2)}</td><td>${a.hid.inst.toFixed(2)}</td>
+      </tr>`;
+    }).join('')}
+  </tbody>
+  <tfoot>
+    <tr><td colspan="13" style="padding:8px 13px;font-size:.68rem;color:var(--muted);border:1px solid var(--border);font-style:italic">
+      * RE Nett = RE dikurangi Salah Homepass &nbsp;|&nbsp; ** Salah HP = Homepass tidak valid pada saat request
+    </td></tr>
+  </tfoot>`;
 }
 
 // ─── KPI MENU ────────────────────────────────────────────────────────────────
@@ -1085,7 +1313,6 @@ function renderEntityView(entity, d){
       const _trendVals=[...trendData,..._allAreaVals].filter(v=>v!=null&&v>0);
       const _tMin=_trendVals.length?Math.max(0,Math.floor(Math.min(..._trendVals)/5)*5-5):Math.max(0,tgt-20);
       // Grouped bar chart with target reference line
-      const DL2e = window.ChartDataLabels ? ChartDataLabels : null;
       const _barDatasets = _areaNames.map((area,i)=>({
         type:'bar',
         label:area,
@@ -1094,9 +1321,9 @@ function renderEntityView(entity, d){
         borderColor:_areaPalette[i%_areaPalette.length],
         borderWidth:1.5, borderRadius:4, spanGaps:true,
         datalabels:{
-          display:(ctx)=>ctx.parsed.y!=null,
+          display:(ctx)=>ctx.raw!=null,
           anchor:'end', align:'top',
-          formatter:v=>v!=null?(+v===100?'100%':(+v).toFixed(2)+'%'):'',
+          formatter:v=>fmtSla(v),
           color:'#374151', font:{size:7,weight:'700'}, offset:1
         }
       }));
@@ -1107,19 +1334,8 @@ function renderEntityView(entity, d){
         return (md.by_area||[]).length===0 ? md.sla_pct : null;
       });
       const _hasFallback = _fallbackData.some(v=>v!==null);
-      const _targetDatasets = [{
-        type:'line',label:`Target (${fmtSla(tgt)})`,data:months.map(()=>tgt),
-        borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],
-        tension:0,pointRadius:0,fill:false,order:0,
-        datalabels:{
-          display:(ctx)=>ctx.dataIndex===months.length-1,
-          anchor:'center', align:'right',
-          formatter:()=>fmtSla(tgt),
-          color:'#9ca3af', font:{size:9,weight:'700'}, offset:8
-        }
-      }];
+      try{
       chartInstances.trend_e=new Chart(ct,{type:'bar',
-        plugins:DL2e?[DL2e]:[],
         data:{
           labels:trendLabels,
           datasets:[
@@ -1130,23 +1346,27 @@ function renderEntityView(entity, d){
               backgroundColor:'rgba(100,100,100,0.35)',
               borderColor:'#888', borderWidth:1.5, borderRadius:4,
               datalabels:{
-                display:(ctx)=>ctx.parsed.y!=null,
+                display:(ctx)=>ctx.raw!=null,
                 anchor:'end', align:'top',
-                formatter:v=>v!=null?(+v===100?'100%':(+v).toFixed(2)+'%'):'',
+                formatter:v=>fmtSla(v),
                 color:'#555', font:{size:7,weight:'700'}, offset:1
               }
             }]:[]),
-            ..._targetDatasets
+            {type:'line',label:`Target (${fmtSla(tgt)})`,data:months.map(()=>tgt),
+             borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],
+             tension:0,pointRadius:0,fill:false,order:0,
+             datalabels:{display:false}}
           ]},
         options:{responsive:true,maintainAspectRatio:false,
           plugins:{
             legend:{position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}},
-            datalabels:{}
+            datalabels:{display:false}
           },
           scales:{
             y:{min:_tMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},
             x:{grid:{display:false}}
           }}})
+      }catch(e){console.warn('trend_e chart error:',e)}
     }
 
     // Area bar
@@ -1154,10 +1374,8 @@ function renderEntityView(entity, d){
     const areas=d.by_area||[];
     if(cab && areas.length){
       if(chartInstances.area_bar) chartInstances.area_bar.destroy();
-      const DL2 = window.ChartDataLabels ? ChartDataLabels : null;
       chartInstances.area_bar=new Chart(cab,{
         type:'bar',
-        plugins:DL2?[DL2]:[],
         data:{
           labels:areas.map(a=>a.area),
           datasets:[{label:'SLA %',data:areas.map(a=>a.sla_pct),
@@ -1915,12 +2133,12 @@ async function clearDashboardCache(){
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
-function showErr(elId,msg){ $(elId).innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">⚠ ${msg}</div>`; }
+function showErr(elId,msg){ const el=$(elId); if(el) el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">⚠ ${msg}</div>`; }
 
 async function init(){
   const [homeRes,kpiRes,projRes]=await Promise.allSettled([fetchJSON(DATA.home),fetchJSON(DATA.kpis),fetchJSON(DATA.projects)]);
   if(homeRes.status==='fulfilled') renderHome(homeRes.value);
-  else showErr('homeLoading','Could not load home data.');
+  else renderHomeIDPage(); // static data always available
   if(kpiRes.status==='fulfilled') renderKPIs(kpiRes.value);
   else showErr('kpiLoading','Could not load KPI data. Run update_dashboard.py first.');
   if(projRes.status==='fulfilled'){
