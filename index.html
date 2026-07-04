@@ -261,7 +261,7 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .ref-summary-table tr:hover td{background:rgba(42,63,94,.03)}
 
 /* ── TTI BREAKDOWN TABLE ─────────────────────────────────────────────────── */
-.breakdown-wrap{overflow-x:auto;margin-top:6px}
+.breakdown-wrap{overflow-x:auto;margin-top:0}
 .breakdown-table{width:100%;border-collapse:collapse;font-size:.75rem;min-width:680px}
 .breakdown-table th{background:var(--navy);color:#fff;padding:7px 10px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.15)}
 .breakdown-table th.group-header{background:var(--navy2);font-size:.7rem;letter-spacing:.3px}
@@ -421,12 +421,12 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 
         <!-- Download toolbar -->
         <div class="kpi-toolbar">
-          <button id="btnDownloadRaw" onclick="downloadTTIRaw()"
+          <button id="btnDownloadRaw" onclick="downloadRaw()"
             onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(90,10,120,.45)'"
             onmouseout="this.style.transform='';this.style.boxShadow=''"
             title="Download original DB columns (semicolon CSV)"
             style="display:none;background:linear-gradient(135deg,#3D0A5C,#7A1A1A);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Raw</button>
-          <button id="btnDownloadKPI" onclick="downloadKPIData()"
+          <button id="btnDownloadKPI" onclick="downloadProcessed()"
             onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(20,100,70,.4)'"
             onmouseout="this.style.transform='';this.style.boxShadow=''"
             title="Download processed TTI data (semicolon CSV, EU format)"
@@ -519,6 +519,7 @@ let projectsDirty  = false;
 
 const $   = id => document.getElementById(id);
 const fmt = v  => (v !== undefined && v !== null && v !== '') ? v : '—';
+function fmtSla(v){ if(v==null||isNaN(+v)) return '—'; const n=+v; return n===100?'100%':n.toFixed(2)+'%'; }
 
 async function fetchJSON(url){
   const r = await fetch(url + '?t=' + Date.now());
@@ -657,11 +658,12 @@ function onEntityChange(){
 
 function renderKPIBody(){
   // Show TTI download buttons only when TTI entity is selected on a specific month
-  const isTTIMonth = selectedEntity==='TTI' && selectedMonth && selectedMonth!=='summary';
+  const _dlEntities = ['TTI','FFG'];
+  const isDownloadMonth = _dlEntities.includes(selectedEntity) && selectedMonth && selectedMonth!=='summary';
   const dlRaw  = $('btnDownloadRaw');
   const dlProc = $('btnDownloadKPI');
-  if(dlRaw)  dlRaw.style.display  = isTTIMonth ? '' : 'none';
-  if(dlProc) dlProc.style.display = isTTIMonth ? '' : 'none';
+  if(dlRaw)  dlRaw.style.display  = isDownloadMonth ? '' : 'none';
+  if(dlProc) dlProc.style.display = isDownloadMonth ? '' : 'none';
 
   if(selectedMonth === 'summary'){ renderSummaryView(); return; }
   if(!selectedEntity){ renderAllView(); return; }
@@ -744,14 +746,14 @@ function renderAllView(){
             <div style="font-size:.83rem;line-height:1.8;color:#374151">
               ${aboveTarget.length} of ${entities.length} entities met target.
               ${belowTarget.length>0?`<br>⚠ Below target: <strong>${belowTarget.map(eln).join(', ')}</strong>`:'<br>✅ All entities on target.'}
-              <br>Best: <strong style="color:var(--green)">${eln(bestEntity)} (${monthData[bestEntity].sla_pct}%)</strong>
-              ${entities.length>1?`<br>Needs attention: <strong style="color:var(--red)">${eln(worstEntity)} (${monthData[worstEntity].sla_pct}%)</strong>`:''}
+              <br>Best: <strong style="color:var(--green)">${eln(bestEntity)} (${fmtSla(monthData[bestEntity].sla_pct)})</strong>
+              ${entities.length>1?`<br>Needs attention: <strong style="color:var(--red)">${eln(worstEntity)} (${fmtSla(monthData[worstEntity].sla_pct)})</strong>`:''}
             </div>
           </div>
           <div>
             <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📈 Trend Direction</div>
             <div style="font-size:.83rem;line-height:2;color:#374151">
-              ${entities.map(e=>`${trendArrow(e)} <strong>${eln(e)}</strong> — ${monthData[e].sla_pct}% ${monthData[e].sla_pct>=etgt(e)?'<span style="color:var(--green);font-size:.72rem">▲</span>':'<span style="color:var(--red);font-size:.72rem">▼</span>'}`).join('<br>')}
+              ${entities.map(e=>`${trendArrow(e)} <strong>${eln(e)}</strong> — ${fmtSla(monthData[e].sla_pct)} ${monthData[e].sla_pct>=etgt(e)?'<span style="color:var(--green);font-size:.72rem">▲</span>':'<span style="color:var(--red);font-size:.72rem">▼</span>'}`).join('<br>')}
             </div>
           </div>
         </div>
@@ -769,7 +771,7 @@ function renderAllView(){
     const card = document.createElement('div');
     card.className='entity-ov-card';
     card.style.borderLeftColor=clr;
-    card.innerHTML=`<div class="e-name">${lbl} ${trendArrow(e)}</div><div class="e-pct" style="color:${clr}">${d.sla_pct}%</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
+    card.innerHTML=`<div class="e-name">${lbl} ${trendArrow(e)}</div><div class="e-pct" style="color:${clr}">${fmtSla(d.sla_pct)}</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
     card.onclick=()=>{ $('entitySelect').value=e; selectedEntity=e; renderKPIBody(); };
     grid.appendChild(card);
   });
@@ -795,6 +797,7 @@ function renderAllView(){
         options:{responsive:true,maintainAspectRatio:false,
           plugins:{
             legend:{position:'top',labels:{font:{size:11},padding:14}},
+            tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtSla(c.parsed.y)}`}},
             datalabels:{display:false}
           },
           scales:{y:{min:trendMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
@@ -818,10 +821,10 @@ function renderAllView(){
         options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
           plugins:{
             legend:{display:false},
-            tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}},
+            tooltip:{callbacks:{label:c=>` ${fmtSla(c.parsed.x)}`}},
             datalabels:{
               anchor:'end', align:'start', offset:6,
-              formatter:v=>v+'%',
+              formatter:v=>fmtSla(v),
               color:'#fff', font:{size:12,weight:'700'}
             }
           },
@@ -847,7 +850,7 @@ function renderSummaryView(){
     if(pct===undefined||pct===null) return `class="summary-cell no-data">—`;
     const clr = pct>=target?'var(--green)':pct>=(target-5)?'var(--amber)':'var(--red)';
     const bg  = pct>=target?'rgba(58,120,72,.09)':pct>=(target-5)?'rgba(200,144,32,.09)':'rgba(168,48,32,.09)';
-    return `class="summary-cell" style="color:${clr};background:${bg}">${pct}%`;
+    return `class="summary-cell" style="color:${clr};background:${bg}">${fmtSla(pct)}`;
   };
   const ENTITY_DISPLAY_NAMES = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
 
@@ -855,7 +858,7 @@ function renderSummaryView(){
   ents.forEach(entity=>{
     const tgt = ENTITY_TARGETS_OVERRIDE[entity] || (Object.values(kpiData.months).find(m=>m[entity]))?.[entity]?.target || 95;
     const dispName = ENTITY_DISPLAY_NAMES[entity]||entity;
-    rows+=`<tr class="summary-entity-row"><td colspan="${allMonths.length+1}" style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px">${dispName} &nbsp;<span style="font-weight:400;opacity:.7">— Target: ${tgt}%</span></td></tr>`;
+    rows+=`<tr class="summary-entity-row"><td colspan="${allMonths.length+1}" style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px">${dispName} &nbsp;<span style="font-weight:400;opacity:.7">— Target: ${fmtSla(tgt)}</span></td></tr>`;
 
     // Collect areas
     const areaMap={};
@@ -1024,8 +1027,8 @@ function renderEntityView(entity, d){
     <div class="grid-4" style="margin-bottom:18px">
       <div class="sla-stat ${slaClass(d.sla_pct,tgt)}">
         <div class="lbl">${entity} — SLA</div>
-        <div class="val" style="color:${clr}">${d.sla_pct}%</div>
-        <div class="sub">Target: ${tgt}%</div>
+        <div class="val" style="color:${clr}">${fmtSla(d.sla_pct)}</div>
+        <div class="sub">Target: ${fmtSla(tgt)}</div>
       </div>
       <div class="sla-stat clickable" onclick="openDrillPanel('anomaly')">
         <div class="lbl">Total Orders</div>
@@ -1052,7 +1055,7 @@ function renderEntityView(entity, d){
       <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
           <div class="card-title" style="margin-bottom:0">${entity} — Month to Month Performance</div>
-          <span style="font-size:.68rem;color:var(--muted)">vs target (${tgt}%)</span>
+          <span style="font-size:.68rem;color:var(--muted)">vs target (${fmtSla(tgt)})</span>
         </div>
         <div style="height:300px;position:relative"><canvas id="ch_trend_e"></canvas></div>
       </div>
@@ -1082,27 +1085,63 @@ function renderEntityView(entity, d){
       const _trendVals=[...trendData,..._allAreaVals].filter(v=>v!=null&&v>0);
       const _tMin=_trendVals.length?Math.max(0,Math.floor(Math.min(..._trendVals)/5)*5-5):Math.max(0,tgt-20);
       // Grouped bar chart with target reference line
+      const DL2e = window.ChartDataLabels ? ChartDataLabels : null;
       const _barDatasets = _areaNames.map((area,i)=>({
         type:'bar',
         label:area,
         data:months.map(m=>{const ar=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);return ar?ar.sla_pct:null;}),
         backgroundColor:_areaPalette[i%_areaPalette.length]+'cc',
         borderColor:_areaPalette[i%_areaPalette.length],
-        borderWidth:1.5, borderRadius:4, spanGaps:true
+        borderWidth:1.5, borderRadius:4, spanGaps:true,
+        datalabels:{
+          display:(ctx)=>ctx.parsed.y!=null,
+          anchor:'end', align:'top',
+          formatter:v=>v!=null?(+v===100?'100%':(+v).toFixed(2)+'%'):'',
+          color:'#374151', font:{size:7,weight:'700'}, offset:1
+        }
       }));
-      chartInstances.trend_e=new Chart(ct,{type:'bar',data:{
-        labels:trendLabels,
-        datasets:[
-          ..._barDatasets,
-          // Target as an overlay line
-          {type:'line',label:`Target (${tgt}%)`,data:months.map(()=>tgt),
-           borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],
-           tension:0,pointRadius:0,fill:false,order:0}
-        ]},
+      // Fallback bars for months that have entity-level data but no area breakdown
+      const _fallbackData = months.map(m=>{
+        const md=(kpiData.months[m]||{})[entity];
+        if(!md) return null;
+        return (md.by_area||[]).length===0 ? md.sla_pct : null;
+      });
+      const _hasFallback = _fallbackData.some(v=>v!==null);
+      const _targetDatasets = [{
+        type:'line',label:`Target (${fmtSla(tgt)})`,data:months.map(()=>tgt),
+        borderColor:'#9ca3af',borderWidth:1.5,borderDash:[6,4],
+        tension:0,pointRadius:0,fill:false,order:0,
+        datalabels:{
+          display:(ctx)=>ctx.dataIndex===months.length-1,
+          anchor:'center', align:'right',
+          formatter:()=>fmtSla(tgt),
+          color:'#9ca3af', font:{size:9,weight:'700'}, offset:8
+        }
+      }];
+      chartInstances.trend_e=new Chart(ct,{type:'bar',
+        plugins:DL2e?[DL2e]:[],
+        data:{
+          labels:trendLabels,
+          datasets:[
+            ..._barDatasets,
+            ...(_hasFallback?[{
+              type:'bar', label:'Total (Area N/A)',
+              data:_fallbackData,
+              backgroundColor:'rgba(100,100,100,0.35)',
+              borderColor:'#888', borderWidth:1.5, borderRadius:4,
+              datalabels:{
+                display:(ctx)=>ctx.parsed.y!=null,
+                anchor:'end', align:'top',
+                formatter:v=>v!=null?(+v===100?'100%':(+v).toFixed(2)+'%'):'',
+                color:'#555', font:{size:7,weight:'700'}, offset:1
+              }
+            }]:[]),
+            ..._targetDatasets
+          ]},
         options:{responsive:true,maintainAspectRatio:false,
           plugins:{
             legend:{position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}},
-            datalabels:{display:false}
+            datalabels:{}
           },
           scales:{
             y:{min:_tMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},
@@ -1128,10 +1167,10 @@ function renderEntityView(entity, d){
         options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
           plugins:{
             legend:{display:false},
-            tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}},
+            tooltip:{callbacks:{label:c=>` ${fmtSla(c.parsed.x)}`}},
             datalabels:{
               anchor:'end', align:'start', offset:6,
-              formatter:v=>v+'%',
+              formatter:v=>fmtSla(v),
               color:'#fff', font:{size:11,weight:'700'}
             }
           },
@@ -1288,7 +1327,7 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
     aRow.innerHTML=`
       <span class="tree-toggle" id="tgl_${aId}">+</span>
       <span class="tree-name" style="font-weight:700">${area.area}${aBadge}</span>
-      <span class="tree-sla" style="color:${aClr}">${area.sla_pct}%</span>
+      <span class="tree-sla" style="color:${aClr}">${fmtSla(area.sla_pct)}</span>
       <div class="tree-bar"><div class="tree-bar-fill" style="width:${area.sla_pct}%;background:${aClr}"></div></div>
       <span class="tree-counts">${(area.comply||0).toLocaleString()} C / ${(area.not_comply||0).toLocaleString()} NC</span>`;
 
@@ -1317,7 +1356,7 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
       rRow.innerHTML=`
         <span class="tree-toggle" id="tgl_${rId}">+</span>
         <span class="tree-name">${reg.regional}${rBadge}</span>
-        <span class="tree-sla" style="color:${rClr}">${reg.sla_pct}%</span>
+        <span class="tree-sla" style="color:${rClr}">${fmtSla(reg.sla_pct)}</span>
         <div class="tree-bar"><div class="tree-bar-fill" style="width:${reg.sla_pct}%;background:${rClr}"></div></div>
         <span class="tree-counts">${(reg.comply||0).toLocaleString()} C / ${(reg.not_comply||0).toLocaleString()} NC</span>`;
 
@@ -1344,7 +1383,7 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
         bRow.innerHTML=`
           <span class="tree-toggle" id="tgl_${bId}" style="font-size:.75rem;color:var(--muted)">${hasSto?'+':' '}</span>
           <span class="tree-name">${br.branch}${bBadge}</span>
-          <span class="tree-sla" style="color:${bClr}">${br.sla_pct}%</span>
+          <span class="tree-sla" style="color:${bClr}">${fmtSla(br.sla_pct)}</span>
           <div class="tree-bar"><div class="tree-bar-fill" style="width:${br.sla_pct}%;background:${bClr}"></div></div>
           <span class="tree-counts">${(br.comply||0).toLocaleString()} C / ${(br.not_comply||0).toLocaleString()} NC</span>`;
 
@@ -1367,7 +1406,7 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
             sRow.innerHTML=`
               <span style="width:18px;flex-shrink:0;color:var(--border);font-size:.7rem">◦</span>
               <span class="tree-name" style="font-size:.75rem;color:var(--muted)">${sto.sto}${sBadge}</span>
-              <span class="tree-sla" style="color:${sClr};font-size:.76rem">${sto.sla_pct}%</span>
+              <span class="tree-sla" style="color:${sClr};font-size:.76rem">${fmtSla(sto.sla_pct)}</span>
               <div class="tree-bar"><div class="tree-bar-fill" style="width:${sto.sla_pct}%;background:${sClr}"></div></div>
               <span class="tree-counts">${(sto.comply||0).toLocaleString()} C / ${(sto.not_comply||0).toLocaleString()} NC</span>`;
             bChildren.appendChild(sRow);
@@ -1643,7 +1682,7 @@ function openDrillPanel(type){
         <td style="font-weight:600;color:var(--navy)">${a.area}</td>
         <td style="color:var(--muted);font-weight:700">${(a.anomaly||0).toLocaleString()}</td>
         <td>${pct}</td>
-        <td style="color:${c};font-weight:700">${a.sla_pct}%</td>
+        <td style="color:${c};font-weight:700">${fmtSla(a.sla_pct)}</td>
       </tr>`;
     }).join('');
     html = `
@@ -1667,16 +1706,16 @@ function openDrillPanel(type){
         <td style="font-weight:600;color:var(--navy)">${a.area}${badge}</td>
         <td style="color:var(--green);font-weight:700">${(a.comply||0).toLocaleString()}</td>
         <td style="color:var(--muted)">${(a.not_comply||0).toLocaleString()}</td>
-        <td style="color:${c};font-weight:700">${a.sla_pct}%</td>
+        <td style="color:${c};font-weight:700">${fmtSla(a.sla_pct)}</td>
       </tr>`;
     }).join('');
     html = `
-      <div class="drill-section-head">Comply per Area — target ${tgt}%</div>
+      <div class="drill-section-head">Comply per Area — target ${fmtSla(tgt)}</div>
       <table class="drill-table">
         <thead><tr><th>Area</th><th>Comply</th><th>Not Comply</th><th>SLA %</th></tr></thead>
         <tbody>
           ${rows}
-          <tr class="drill-total"><td>Total</td><td style="color:var(--green)">${totalC.toLocaleString()}</td><td style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</td><td style="color:${slaColor(d.sla_pct,tgt)}">${d.sla_pct}%</td></tr>
+          <tr class="drill-total"><td>Total</td><td style="color:var(--green)">${totalC.toLocaleString()}</td><td style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</td><td style="color:${slaColor(d.sla_pct,tgt)}">${fmtSla(d.sla_pct)}</td></tr>
         </tbody>
       </table>`;
 
@@ -1691,7 +1730,7 @@ function openDrillPanel(type){
         <td style="font-weight:600;color:var(--navy)">${a.area}</td>
         <td style="color:var(--red);font-weight:700">${(a.not_comply||0).toLocaleString()}</td>
         <td style="color:var(--muted)">${share}</td>
-        <td style="color:${c};font-weight:700">${a.sla_pct}%</td>
+        <td style="color:${c};font-weight:700">${fmtSla(a.sla_pct)}</td>
       </tr>`;
     }).join('');
     html = `
@@ -1815,23 +1854,31 @@ async function _fetchAndDownload(url, filename, btn){
   }
 }
 
-async function downloadTTIRaw(){
-  if(selectedEntity!=='TTI'||!selectedMonth||selectedMonth==='summary') return;
+// Generic download: works for any entity that pushes raw/detail CSVs (TTI, FFG, …)
+const _DL_ENTITIES = ['TTI','FFG'];
+async function downloadRaw(){
+  const e = selectedEntity;
+  if(!_DL_ENTITIES.includes(e)||!selectedMonth||selectedMonth==='summary') return;
+  const key = e.toLowerCase();
   await _fetchAndDownload(
-    `data/tti_raw_${selectedMonth}.csv`,
-    `TTI_Raw_${selectedMonth}.csv`,
+    `data/${key}_raw_${selectedMonth}.csv`,
+    `${e}_Raw_${selectedMonth}.csv`,
     $('btnDownloadRaw')
   );
 }
-
-async function downloadKPIData(){
-  if(selectedEntity!=='TTI'||!selectedMonth||selectedMonth==='summary') return;
+async function downloadProcessed(){
+  const e = selectedEntity;
+  if(!_DL_ENTITIES.includes(e)||!selectedMonth||selectedMonth==='summary') return;
+  const key = e.toLowerCase();
   await _fetchAndDownload(
-    `data/tti_detail_${selectedMonth}.csv`,
-    `TTI_Processed_${selectedMonth}.csv`,
+    `data/${key}_detail_${selectedMonth}.csv`,
+    `${e}_Processed_${selectedMonth}.csv`,
     $('btnDownloadKPI')
   );
 }
+// Legacy aliases kept for safety
+async function downloadTTIRaw(){ await downloadRaw(); }
+async function downloadKPIData(){ await downloadProcessed(); }
 async function copyKPITable(){
   const pkg=buildExportPackage(); if(!pkg) return;
   const tsv=pkg.sections.map(s=>`${s.title}\n`+[s.headers.join('\t'),...s.rows.map(r=>s.headers.map(h=>(r[h]??'')+'' ).join('\t'))].join('\n')).join('\n\n');
