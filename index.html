@@ -1551,6 +1551,37 @@ function renderSummaryView(){
     rows+=`<tr class="summary-total-row"><td style="padding-left:14px">↳ Total</td>${allMonths.map(m=>{const pct=(kpiData.months[m]||{})[entity]?.sla_pct;return`<td ${cellStyle(pct,tgt)}</td>`;}).join('')}</tr>`;
   });
 
+  // ── Fulfillment Score (FFG 40% + TTI 60%) ──────────────────────────────────
+  const FL_WEIGHTS = { FFG:{bobot:40,tgt:98.29,label:'Fulfillment Guarantee'}, TTI:{bobot:60,tgt:93.31,label:'TTI Comply'} };
+  const FL_TIERS = [{t:'T0',op:'≥',score:85,sc:0},{t:'T1',op:'<',score:85,sc:0.10},{t:'T2',op:'<',score:80,sc:0.20},{t:'T3',op:'<',score:75,sc:0.40},{t:'T4',op:'<',score:70,sc:0.75}];
+  function flTier(score){ return FL_TIERS.find((t,i)=>i===0?score>=t.score:score<t.score) || FL_TIERS[FL_TIERS.length-1]; }
+  const flScoreRow = allMonths.map(m=>{
+    const ffgSla = (kpiData.months[m]||{}).FFG?.sla_pct;
+    const ttiSla = (kpiData.months[m]||{}).TTI?.sla_pct;
+    if(ffgSla==null && ttiSla==null) return null;
+    const ffgScore = ffgSla!=null ? (ffgSla / FL_WEIGHTS.FFG.tgt) * FL_WEIGHTS.FFG.bobot : 0;
+    const ttiScore = ttiSla!=null ? (ttiSla / FL_WEIGHTS.TTI.tgt) * FL_WEIGHTS.TTI.bobot : 0;
+    const total    = ffgScore + ttiScore;
+    const tier     = flTier(total);
+    return { ffgSla, ttiSla, ffgScore, ttiScore, total, tier };
+  });
+  const flScoreCells = allMonths.map((m,i)=>{
+    const s = flScoreRow[i];
+    if(!s) return `<td style="text-align:center;color:var(--muted)">—</td>`;
+    const tierClr = s.tier.t==='T0'?'#166534':s.tier.t==='T1'?'#D4901A':'#991b1b';
+    return `<td style="text-align:center;cursor:pointer;background:rgba(56,189,248,.09);padding:6px 8px" onclick="openFulfillmentModal('${m}')" title="Click for formula detail">
+      <div style="font-weight:800;font-size:.85rem;color:${tierClr}">${s.total.toFixed(2)}%</div>
+      <div style="font-size:.65rem;font-weight:700;background:${tierClr};color:#fff;border-radius:4px;padding:1px 5px;display:inline-block;margin-top:1px">${s.tier.t}</div>
+    </td>`;
+  }).join('');
+  const flRow = `
+    <tr style="border-top:2.5px solid #0284c7">
+      <td style="background:linear-gradient(135deg,#0369a1,#0284c7);color:#fff;font-weight:700;font-size:.78rem;padding:8px 12px;white-space:nowrap">
+        📊 Fulfillment Score<br><span style="font-weight:400;font-size:.68rem;opacity:.85">FFG 40% + TTI 60% — Click cell for detail</span>
+      </td>
+      ${flScoreCells}
+    </tr>`;
+
   $('kpiBody').innerHTML=`
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
@@ -1565,7 +1596,7 @@ function renderSummaryView(){
             <th style="position:sticky;top:0;z-index:3;left:0">KPI / Area</th>
             ${allMonths.map(m=>`<th style="position:sticky;top:0;z-index:2">${mLabel(m)}</th>`).join('')}
           </tr></thead>
-          <tbody>${rows}</tbody>
+          <tbody>${rows}${flRow}</tbody>
         </table>
       </div>
       <div style="margin-top:12px;font-size:.72rem;color:var(--muted);display:flex;gap:18px">
@@ -1624,6 +1655,98 @@ function downloadSummaryCSV(){
   const a    = document.createElement('a');
   a.href = url; a.download = 'kpi_summary_all.csv'; a.click();
   URL.revokeObjectURL(url);
+}
+
+function openFulfillmentModal(period){
+  const mLabel = m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'long',year:'numeric'})}catch{return m;} };
+  const FL_W = { FFG:{bobot:40,tgt:98.29,label:'Fulfillment Guarantee'}, TTI:{bobot:60,tgt:93.31,label:'TTI Comply'} };
+  const FL_T = [{t:'T0',op:'≥',score:85,sc:0},{t:'T1',op:'<',score:85,sc:0.10},{t:'T2',op:'<',score:80,sc:0.20},{t:'T3',op:'<',score:75,sc:0.40},{t:'T4',op:'<',score:70,sc:0.75}];
+  const flTier2 = score => FL_T.find((t,i)=>i===0?score>=t.score:score<t.score) || FL_T[FL_T.length-1];
+
+  const ffgSla = (kpiData.months[period]||{}).FFG?.sla_pct;
+  const ttiSla = (kpiData.months[period]||{}).TTI?.sla_pct;
+  const ffgScore = ffgSla!=null ? (ffgSla/FL_W.FFG.tgt)*FL_W.FFG.bobot : null;
+  const ttiScore = ttiSla!=null ? (ttiSla/FL_W.TTI.tgt)*FL_W.TTI.bobot : null;
+  const total = (ffgScore||0)+(ttiScore||0);
+  const tier  = flTier2(total);
+  const tierClr = tier.t==='T0'?'#166534':tier.t==='T1'?'#D4901A':'#991b1b';
+
+  const fmtRow = (lbl,bobot,tgt,real,score)=>
+    `<tr>
+      <td style="padding:9px 14px;font-size:.82rem;font-weight:600;color:var(--navy)">${lbl}</td>
+      <td style="text-align:center;padding:9px 14px">${bobot}%</td>
+      <td style="text-align:center;padding:9px 14px">${fmtSla(tgt)}%</td>
+      <td style="text-align:center;padding:9px 14px;font-weight:700;color:${real!=null?(real>=tgt?'#166534':'#991b1b'):'var(--muted)'}">${real!=null?fmtSla(real)+'%':'—'}</td>
+      <td style="text-align:center;padding:9px 14px;font-weight:700;color:var(--teal)">${score!=null?score.toFixed(2)+'%':'—'}</td>
+    </tr>`;
+
+  const tierRows = FL_T.map(t=>{
+    const active = t.t===tier.t;
+    return `<tr style="${active?'background:rgba(56,189,248,.12);font-weight:700;':''}">
+      <td style="padding:7px 14px;text-align:center;font-weight:700;color:${active?tierClr:'var(--navy)'}">${t.t}</td>
+      <td style="padding:7px 14px;text-align:center">${t.op}</td>
+      <td style="padding:7px 14px;text-align:center">${t.score}%</td>
+      <td style="padding:7px 14px;text-align:center">${t.sc===0?'0':t.sc.toFixed(2)+'%'}</td>
+      <td style="padding:7px 14px;text-align:center">${t.sc===0?'0':t.sc.toFixed(2)+'%'}</td>
+    </tr>`;
+  }).join('');
+
+  const html = `
+    <div style="margin-bottom:18px">
+      <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Periode: ${mLabel(period)}</div>
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+        <thead>
+          <tr style="background:var(--navy);color:#fff">
+            <th style="padding:9px 14px;text-align:left">KPI / Sub KPI</th>
+            <th style="padding:9px 14px;text-align:center">Bobot</th>
+            <th style="padding:9px 14px;text-align:center">Target</th>
+            <th style="padding:9px 14px;text-align:center">Realisasi</th>
+            <th style="padding:9px 14px;text-align:center">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:var(--navy2);color:#fff">
+            <td colspan="5" style="padding:7px 14px;font-size:.76rem;font-weight:700;letter-spacing:.3px">Fulfillment</td>
+          </tr>
+          ${fmtRow(FL_W.FFG.label,FL_W.FFG.bobot,FL_W.FFG.tgt,ffgSla,ffgScore)}
+          ${fmtRow(FL_W.TTI.label,FL_W.TTI.bobot,FL_W.TTI.tgt,ttiSla,ttiScore)}
+          <tr style="background:rgba(42,63,94,.06);border-top:2px solid var(--border)">
+            <td colspan="3" style="padding:9px 14px;font-weight:700;font-size:.82rem">Total Score Kinerja</td>
+            <td style="text-align:center;padding:9px 14px"></td>
+            <td style="text-align:center;padding:9px 14px;font-weight:800;font-size:.95rem;color:${tierClr}">${total.toFixed(2)}%</td>
+          </tr>
+          <tr style="background:rgba(42,63,94,.06)">
+            <td colspan="3" style="padding:9px 14px;font-weight:700">Performance Tier</td>
+            <td style="text-align:center;padding:9px 14px"></td>
+            <td style="text-align:center;padding:9px 14px"><span style="font-weight:800;font-size:1rem;color:${tierClr};background:${tierClr}22;border-radius:6px;padding:2px 12px">${tier.t}</span></td>
+          </tr>
+          <tr style="background:rgba(42,63,94,.06)">
+            <td colspan="3" style="padding:9px 14px;font-weight:700">SC Fulfillment</td>
+            <td style="text-align:center;padding:9px 14px"></td>
+            <td style="text-align:center;padding:9px 14px;font-weight:700;color:${tier.sc>0?'#991b1b':'#166534'}">${tier.sc===0?'0,00%':tier.sc.toFixed(2)+'%'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Referensi Performance Tier</div>
+    <table style="width:100%;border-collapse:collapse;font-size:.8rem">
+      <thead>
+        <tr style="background:var(--navy);color:#fff">
+          <th style="padding:7px 14px;text-align:center">Tier</th>
+          <th style="padding:7px 14px;text-align:center">Op</th>
+          <th style="padding:7px 14px;text-align:center">Score Kinerja</th>
+          <th style="padding:7px 14px;text-align:center">SC Fulfillment</th>
+          <th style="padding:7px 14px;text-align:center">SC QA</th>
+        </tr>
+      </thead>
+      <tbody>${tierRows}</tbody>
+    </table>`;
+
+  $('drillTitle').textContent = `📊 Fulfillment Score — ${mLabel(period)}`;
+  $('drillBody').innerHTML = html;
+  $('drillOverlay').classList.add('show');
+  $('drillPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 // ── ENTITY DETAIL VIEW ──
@@ -1824,8 +1947,10 @@ function renderEntityView(entity, d){
         datalabels:{
           display:(ctx)=>ctx.raw!=null,
           anchor:'end', align:'top',
-          formatter:v=>fmtSla(v),
-          color:'#374151', font:{size:7,weight:'700'}, offset:1
+          formatter:v=>fmtSla(v)+'%',
+          color:'#1e293b', font:{size:9,weight:'800'}, offset:2,
+          backgroundColor:'rgba(255,255,255,.75)', borderRadius:3,
+          padding:{top:1,bottom:1,left:3,right:3}
         }
       }));
       // Fallback bars: months that have entity SLA but no area breakdown (e.g. FFG Jan/Feb)
@@ -1850,8 +1975,10 @@ function renderEntityView(entity, d){
               datalabels:{
                 display:(ctx)=>ctx.raw!=null,
                 anchor:'end', align:'top',
-                formatter:v=>fmtSla(+v),
-                color:'#555', font:{size:7,weight:'700'}, offset:1
+                formatter:v=>fmtSla(+v)+'%',
+                color:'#1e293b', font:{size:9,weight:'800'}, offset:2,
+                backgroundColor:'rgba(255,255,255,.75)', borderRadius:3,
+                padding:{top:1,bottom:1,left:3,right:3}
               }
             }]:[]),
             {type:'line',label:`Target (${fmtSla(tgt)})`,data:months.map(()=>tgt),
@@ -2463,7 +2590,13 @@ function openDrillPanel(type){
       </tr>`;
     }).join('');
     html = `
-      <div class="drill-section-head">Not Comply per Area — sorted by volume ↓</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div class="drill-section-head" style="margin-bottom:0">Not Comply per Area — sorted by volume ↓</div>
+        <button onclick="downloadNCPanel('${entity}','${selectedMonth}')"
+          style="background:linear-gradient(135deg,#1B3252,#3D7A6E);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
+          ⬇ Download NC
+        </button>
+      </div>
       <table class="drill-table">
         <thead><tr><th>Area</th><th>Not Comply</th><th>% of Total NC</th><th>SLA %</th></tr></thead>
         <tbody>
@@ -2484,6 +2617,33 @@ function closeDrillPanel(){
   $('drillOverlay').classList.remove('show');
   $('drillPanel').classList.remove('open');
   document.body.style.overflow = '';
+}
+
+function downloadNCPanel(entity, period){
+  const d = window._currentEntityData;
+  const tgt = window._currentTgt || 95;
+  if(!d) return;
+  const mLabel = m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;} };
+  const rows = [['Period','KPI','Area','Regional','Branch','STO','Comply','Not Comply','Total','SLA%','Target%','Status']];
+  const periodLabel = mLabel(period);
+  (d.by_area||[]).forEach(ao=>{
+    (ao.by_regional||[]).forEach(ro=>{
+      (ro.by_branch||[]).forEach(bo=>{
+        const stos = bo.by_sto||[];
+        if(stos.length){
+          stos.forEach(so=>{
+            const tot=(so.comply||0)+(so.not_comply||0);
+            rows.push([periodLabel,entity,ao.area,ro.regional,bo.branch,so.sto,so.comply||0,so.not_comply||0,tot,fmtSla(so.sla_pct)+'%',fmtSla(tgt)+'%',so.sla_pct>=tgt?'On Target':'Below Target']);
+          });
+        } else {
+          const tot=(bo.comply||0)+(bo.not_comply||0);
+          rows.push([periodLabel,entity,ao.area,ro.regional,bo.branch,'—',bo.comply||0,bo.not_comply||0,tot,fmtSla(bo.sla_pct)+'%',fmtSla(tgt)+'%',bo.sla_pct>=tgt?'On Target':'Below Target']);
+        }
+      });
+    });
+  });
+  const csv = rows.map(r=>r.join(';')).join('\n');
+  triggerCSVDownload(`NC_${entity}_${period}.csv`, '﻿'+csv);
 }
 
 // ─── DOWNLOAD + COPY (merged from friend's version) ──────────────────────────
@@ -2568,6 +2728,14 @@ function buildExportPackage(){
     sections.push({title:`FLAGGING DURASI TTI — ${selectedMonth}`,headers:['Area','Referensi','Comply','Not Comply','Reason'],rows:buildReferenceFlaggingRows(d.breakdown_by_area)});
   return {filenameBase:`KPI_${selectedEntity}_${selectedMonth}`,sections};
 }
+function showToast(msg, type='error'){
+  const t = document.createElement('div');
+  const bg = type==='error' ? '#7f1d1d' : '#166534';
+  t.style.cssText = `position:fixed;bottom:24px;right:24px;background:${bg};color:#fff;padding:12px 18px;border-radius:10px;font-size:.82rem;font-family:'Poppins',sans-serif;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.35);max-width:340px;line-height:1.4;animation:fadeIn .2s`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .4s'; setTimeout(()=>t.remove(),400); }, 4000);
+}
 async function _fetchAndDownload(url, filename, btn){
   const orig = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳ Menyiapkan…'; btn.disabled=true; btn.style.opacity='.7'; }
@@ -2577,7 +2745,7 @@ async function _fetchAndDownload(url, filename, btn){
     const csv = await r.text();
     triggerCSVDownload(filename, csv);
   } catch(e) {
-    alert('❌ ' + e.message);
+    showToast('❌ ' + e.message);
   } finally {
     if(btn){ btn.textContent=orig; btn.disabled=false; btn.style.opacity=''; }
   }
@@ -2671,8 +2839,13 @@ const DP_ITEMS = {
     { id:'kpi-cache',     title:'Clear cache button error fixed',  desc:'No longer shows ❌ Gagal refresh when re-render succeeds. Errors during render are caught separately and logged to console.' },
     { id:'kpi-tabs',      title:'All KPI → month tabs fixed',      desc:'Was showing blank when switching month tabs. Root cause: JS const hoisting bug (etgt used before definition). Fixed.' },
     { id:'kpi-ttrffg-dl', title:'TTRFFG Download Raw + Processed', desc:'Download buttons added when TTRFFG entity is selected. Files served from data/ttrffg_raw_{period}.csv and data/ttrffg_detail_{period}.csv — populated when update_dashboard.py runs.' },
-    { id:'kpi-sticky-hdr', title:'Sticky KPI/AREA header row',        desc:'In All KPI → Summary, the KPI/AREA and month columns now stay frozen as you scroll down the table.' },
-    { id:'kpi-summary-dl', title:'Summary Download button',            desc:'Sky blue gradient button on All KPI → Summary. Downloads kpi_summary_all.csv with columns: Period | KPI | Area | Branch | STO | Comply | Not Comply | Total | Realization (%).' },
+    { id:'kpi-sticky-hdr',   title:'Sticky KPI/AREA header row',          desc:'In All KPI → Summary, the KPI/AREA and month columns now stay frozen as you scroll down the table.' },
+    { id:'kpi-summary-dl',   title:'Summary Download button',              desc:'Sky blue gradient button on All KPI → Summary. Downloads kpi_summary_all.csv with columns: Period | KPI | Area | Branch | STO | Comply | Not Comply | Total | Realization (%).' },
+    { id:'kpi-fl-score',     title:'Fulfillment Score row in Summary',      desc:'Bottom row of Summary table shows weighted Fulfillment Score: FFG×40% + TTI×60%. Shows total score, Performance Tier (T0–T4), and SC Fulfillment per month.' },
+    { id:'kpi-fl-modal',     title:'Click Fulfillment Score → formula modal', desc:'Clicking any month cell in the Fulfillment Score row opens a panel showing the full formula breakdown table + Performance Tier reference table.' },
+    { id:'kpi-dl-toast',     title:'Raw download 404 → toast notification',  desc:'When raw/processed CSV is not found on GitHub, error now shows as a non-blocking bottom-right toast instead of a browser alert().' },
+    { id:'kpi-nc-dl',        title:'NC download button in Not Comply panel', desc:'Download NC button added to the Not Comply Breakdown panel. Downloads NC_{KPI}_{period}.csv with full hierarchy: Area | Regional | Branch | STO | Comply | Not Comply | Total | SLA% | Status.' },
+    { id:'kpi-bar-labels',   title:'Bar chart values always visible',        desc:'Month-to-month trend chart bars now show SLA% values permanently (size 9 bold, white background), not only on hover.' },
   ],
   homeid: [
     { id:'hid-banner',    title:'Page banner header',             desc:'Gradient banner at top of Home ID page showing Total RE, PS Rate, Valid Rate, and Fallout % key stats.' },
