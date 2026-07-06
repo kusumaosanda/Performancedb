@@ -1938,7 +1938,7 @@ function renderEntityView(entity, d){
         datalabels:{
           display:(ctx)=>ctx.dataset.data[ctx.dataIndex]!=null,
           anchor:'end', align:'top',
-          formatter:v=>fmtSla(v)+'%',
+          formatter:v=>{ if(v==null||isNaN(+v)) return ''; const n=+v; return (n===100?'100':n.toFixed(1).replace('.',','))+'%'; },
           color:'#1e293b', font:{size:9,weight:'800'}, offset:2,
           backgroundColor:'rgba(255,255,255,.75)', borderRadius:3,
           padding:{top:1,bottom:1,left:3,right:3}
@@ -2559,10 +2559,10 @@ function openDrillPanel(type){
     html = `
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="drill-section-head" style="margin-bottom:0">Comply per Area — target ${fmtSla(tgt)}</div>
-        <button id="btnDlComply" onclick="downloadComplyPanel('${entity}','${selectedMonth}')"
+        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlComply" onclick="downloadComplyPanel('${entity}','${selectedMonth}')"
           style="background:linear-gradient(135deg,#166534,#3D7A6E);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download Comply
-        </button>
+        </button>`:''}
       </div>
       <table class="drill-table">
         <thead><tr><th>Area</th><th>Comply</th><th>Not Comply</th><th>SLA %</th></tr></thead>
@@ -2589,10 +2589,10 @@ function openDrillPanel(type){
     html = `
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="drill-section-head" style="margin-bottom:0">Not Comply per Area — sorted by volume ↓</div>
-        <button id="btnDlNC" onclick="downloadNCPanel('${entity}','${selectedMonth}')"
+        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlNC" onclick="downloadNCPanel('${entity}','${selectedMonth}')"
           style="background:linear-gradient(135deg,#1B3252,#3D7A6E);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download NC
-        </button>
+        </button>`:''}
       </div>
       <table class="drill-table">
         <thead><tr><th>Area</th><th>Not Comply</th><th>% of Total NC</th><th>SLA %</th></tr></thead>
