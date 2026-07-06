@@ -1389,12 +1389,34 @@ function renderAllView(){
   $('kpiBody').innerHTML = `
     <!-- TOP: Big Overall SLA left + Entity cards right -->
     <div style="display:flex;gap:16px;margin-bottom:18px;align-items:stretch">
-      <div class="card" style="flex:0 0 36%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px 20px;min-height:190px;text-align:center">
-        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px">Overall SLA</div>
-        <div style="font-size:3.8rem;font-weight:900;color:${oClr};line-height:1.05">${overallSla}%</div>
-        <div style="font-size:.75rem;color:var(--muted);margin-top:10px">All entities combined</div>
-        <div style="font-size:.72rem;margin-top:5px;color:#374151">${aboveTarget.length}/${entities.length} entities on target</div>
-      </div>
+      ${(()=>{
+        const FL_W2={FFG:{b:40,t:98.29,l:'Fulfillment Guarantee'},TTI:{b:60,t:93.31,l:'TTI Comply'}};
+        const FL_T2=[{t:'T0',s:85,sc:0},{t:'T1',s:85,sc:0.10,lt:true},{t:'T2',s:80,sc:0.20,lt:true},{t:'T3',s:75,sc:0.40,lt:true},{t:'T4',s:70,sc:0.75,lt:true}];
+        const ffgS=monthData.FFG?.sla_pct, ttiS=monthData.TTI?.sla_pct;
+        if(ffgS==null&&ttiS==null) return `
+          <div class="card" style="flex:0 0 36%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px 20px;min-height:190px;text-align:center">
+            <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px">Fulfillment Score</div>
+            <div style="font-size:1.5rem;color:var(--muted)">No FFG / TTI data</div>
+          </div>`;
+        const ffgScore=ffgS!=null?(ffgS/FL_W2.FFG.t)*FL_W2.FFG.b:0;
+        const ttiScore=ttiS!=null?(ttiS/FL_W2.TTI.t)*FL_W2.TTI.b:0;
+        const flTotal=ffgScore+ttiScore;
+        const flT=FL_T2.find((t,i)=>i===0?flTotal>=t.s:(t.lt&&flTotal<t.s))||FL_T2[FL_T2.length-1];
+        const tClr=flT.t==='T0'?'#166534':flT.t==='T1'?'#D4901A':'#991b1b';
+        const tBg =flT.t==='T0'?'rgba(22,101,52,.12)':flT.t==='T1'?'rgba(212,144,26,.12)':'rgba(153,27,27,.12)';
+        return `
+          <div class="card" onclick="openFulfillmentModal('${selectedMonth}')"
+            style="flex:0 0 36%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px 20px;min-height:190px;text-align:center;cursor:pointer;border:2px solid #0284c7;transition:box-shadow .2s"
+            onmouseover="this.style.boxShadow='0 4px 20px rgba(2,132,199,.25)'" onmouseout="this.style.boxShadow=''">
+            <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#0284c7;margin-bottom:6px">📊 Fulfillment Score <span style="opacity:.7">↗ Click for detail</span></div>
+            <div style="font-size:3.4rem;font-weight:900;color:${tClr};line-height:1.05">${flTotal.toFixed(2)}%</div>
+            <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center">
+              <span style="font-size:.72rem;background:${tBg};color:${tClr};font-weight:800;padding:3px 12px;border-radius:99px;border:1.5px solid ${tClr}">${flT.t}</span>
+              <span style="font-size:.72rem;color:var(--muted)">SC: <strong style="color:${flT.sc>0?'#991b1b':'#166534'}">${flT.sc===0?'0%':flT.sc.toFixed(2)+'%'}</strong></span>
+            </div>
+            <div style="margin-top:8px;font-size:.68rem;color:var(--muted)">FFG ${fmtSla(ffgS)}% × 40 &nbsp;+&nbsp; TTI ${fmtSla(ttiS)}% × 60</div>
+          </div>`;
+      })()}
       <div style="flex:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;align-content:start" id="entityOvGrid"></div>
     </div>
 
@@ -1551,37 +1573,6 @@ function renderSummaryView(){
     rows+=`<tr class="summary-total-row"><td style="padding-left:14px">↳ Total</td>${allMonths.map(m=>{const pct=(kpiData.months[m]||{})[entity]?.sla_pct;return`<td ${cellStyle(pct,tgt)}</td>`;}).join('')}</tr>`;
   });
 
-  // ── Fulfillment Score (FFG 40% + TTI 60%) ──────────────────────────────────
-  const FL_WEIGHTS = { FFG:{bobot:40,tgt:98.29,label:'Fulfillment Guarantee'}, TTI:{bobot:60,tgt:93.31,label:'TTI Comply'} };
-  const FL_TIERS = [{t:'T0',op:'≥',score:85,sc:0},{t:'T1',op:'<',score:85,sc:0.10},{t:'T2',op:'<',score:80,sc:0.20},{t:'T3',op:'<',score:75,sc:0.40},{t:'T4',op:'<',score:70,sc:0.75}];
-  function flTier(score){ return FL_TIERS.find((t,i)=>i===0?score>=t.score:score<t.score) || FL_TIERS[FL_TIERS.length-1]; }
-  const flScoreRow = allMonths.map(m=>{
-    const ffgSla = (kpiData.months[m]||{}).FFG?.sla_pct;
-    const ttiSla = (kpiData.months[m]||{}).TTI?.sla_pct;
-    if(ffgSla==null && ttiSla==null) return null;
-    const ffgScore = ffgSla!=null ? (ffgSla / FL_WEIGHTS.FFG.tgt) * FL_WEIGHTS.FFG.bobot : 0;
-    const ttiScore = ttiSla!=null ? (ttiSla / FL_WEIGHTS.TTI.tgt) * FL_WEIGHTS.TTI.bobot : 0;
-    const total    = ffgScore + ttiScore;
-    const tier     = flTier(total);
-    return { ffgSla, ttiSla, ffgScore, ttiScore, total, tier };
-  });
-  const flScoreCells = allMonths.map((m,i)=>{
-    const s = flScoreRow[i];
-    if(!s) return `<td style="text-align:center;color:var(--muted)">—</td>`;
-    const tierClr = s.tier.t==='T0'?'#166534':s.tier.t==='T1'?'#D4901A':'#991b1b';
-    return `<td style="text-align:center;cursor:pointer;background:rgba(56,189,248,.09);padding:6px 8px" onclick="openFulfillmentModal('${m}')" title="Click for formula detail">
-      <div style="font-weight:800;font-size:.85rem;color:${tierClr}">${s.total.toFixed(2)}%</div>
-      <div style="font-size:.65rem;font-weight:700;background:${tierClr};color:#fff;border-radius:4px;padding:1px 5px;display:inline-block;margin-top:1px">${s.tier.t}</div>
-    </td>`;
-  }).join('');
-  const flRow = `
-    <tr style="border-top:2.5px solid #0284c7">
-      <td style="background:linear-gradient(135deg,#0369a1,#0284c7);color:#fff;font-weight:700;font-size:.78rem;padding:8px 12px;white-space:nowrap">
-        📊 Fulfillment Score<br><span style="font-weight:400;font-size:.68rem;opacity:.85">FFG 40% + TTI 60% — Click cell for detail</span>
-      </td>
-      ${flScoreCells}
-    </tr>`;
-
   $('kpiBody').innerHTML=`
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
@@ -1596,7 +1587,7 @@ function renderSummaryView(){
             <th style="position:sticky;top:0;z-index:3;left:0">KPI / Area</th>
             ${allMonths.map(m=>`<th style="position:sticky;top:0;z-index:2">${mLabel(m)}</th>`).join('')}
           </tr></thead>
-          <tbody>${rows}${flRow}</tbody>
+          <tbody>${rows}</tbody>
         </table>
       </div>
       <div style="margin-top:12px;font-size:.72rem;color:var(--muted);display:flex;gap:18px">
@@ -1945,7 +1936,7 @@ function renderEntityView(entity, d){
         borderColor:_areaPalette[i%_areaPalette.length],
         borderWidth:1.5, borderRadius:4, spanGaps:true,
         datalabels:{
-          display:(ctx)=>ctx.raw!=null,
+          display:(ctx)=>ctx.dataset.data[ctx.dataIndex]!=null,
           anchor:'end', align:'top',
           formatter:v=>fmtSla(v)+'%',
           color:'#1e293b', font:{size:9,weight:'800'}, offset:2,
@@ -1973,7 +1964,7 @@ function renderEntityView(entity, d){
               backgroundColor:'rgba(120,120,120,0.38)',
               borderColor:'#888', borderWidth:1.5, borderRadius:4,
               datalabels:{
-                display:(ctx)=>ctx.raw!=null,
+                display:(ctx)=>ctx.dataset.data[ctx.dataIndex]!=null,
                 anchor:'end', align:'top',
                 formatter:v=>fmtSla(+v)+'%',
                 color:'#1e293b', font:{size:9,weight:'800'}, offset:2,
@@ -2566,7 +2557,13 @@ function openDrillPanel(type){
       </tr>`;
     }).join('');
     html = `
-      <div class="drill-section-head">Comply per Area — target ${fmtSla(tgt)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div class="drill-section-head" style="margin-bottom:0">Comply per Area — target ${fmtSla(tgt)}</div>
+        <button id="btnDlComply" onclick="downloadComplyPanel('${entity}','${selectedMonth}')"
+          style="background:linear-gradient(135deg,#166534,#3D7A6E);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
+          ⬇ Download Comply
+        </button>
+      </div>
       <table class="drill-table">
         <thead><tr><th>Area</th><th>Comply</th><th>Not Comply</th><th>SLA %</th></tr></thead>
         <tbody>
@@ -2592,7 +2589,7 @@ function openDrillPanel(type){
     html = `
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="drill-section-head" style="margin-bottom:0">Not Comply per Area — sorted by volume ↓</div>
-        <button onclick="downloadNCPanel('${entity}','${selectedMonth}')"
+        <button id="btnDlNC" onclick="downloadNCPanel('${entity}','${selectedMonth}')"
           style="background:linear-gradient(135deg,#1B3252,#3D7A6E);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download NC
         </button>
@@ -2619,31 +2616,44 @@ function closeDrillPanel(){
   document.body.style.overflow = '';
 }
 
-function downloadNCPanel(entity, period){
-  const d = window._currentEntityData;
-  const tgt = window._currentTgt || 95;
-  if(!d) return;
-  const mLabel = m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;} };
-  const rows = [['Period','KPI','Area','Regional','Branch','STO','Comply','Not Comply','Total','SLA%','Target%','Status']];
-  const periodLabel = mLabel(period);
-  (d.by_area||[]).forEach(ao=>{
-    (ao.by_regional||[]).forEach(ro=>{
-      (ro.by_branch||[]).forEach(bo=>{
-        const stos = bo.by_sto||[];
-        if(stos.length){
-          stos.forEach(so=>{
-            const tot=(so.comply||0)+(so.not_comply||0);
-            rows.push([periodLabel,entity,ao.area,ro.regional,bo.branch,so.sto,so.comply||0,so.not_comply||0,tot,fmtSla(so.sla_pct)+'%',fmtSla(tgt)+'%',so.sla_pct>=tgt?'On Target':'Below Target']);
-          });
-        } else {
-          const tot=(bo.comply||0)+(bo.not_comply||0);
-          rows.push([periodLabel,entity,ao.area,ro.regional,bo.branch,'—',bo.comply||0,bo.not_comply||0,tot,fmtSla(bo.sla_pct)+'%',fmtSla(tgt)+'%',bo.sla_pct>=tgt?'On Target':'Below Target']);
-        }
-      });
+async function _downloadFilteredDetailCSV(entity, period, filterStatus, filenamePrefix, btn){
+  const key = entity.toLowerCase();
+  const url = `data/${key}_detail_${period}.csv?_t=`+Date.now();
+  const origText = btn ? btn.textContent : '';
+  if(btn){ btn.textContent='⏳…'; btn.disabled=true; }
+  try {
+    const r = await fetch(url, {cache:'no-store'});
+    if(!r.ok) throw new Error(`File tidak ditemukan (${r.status}). Jalankan update_dashboard.py terlebih dahulu.`);
+    const text = await r.text();
+    const lines = text.trim().split('\n');
+    const header = lines[0];
+    // Find SLA_Status column index
+    const cols = header.split(';');
+    const statusIdx = cols.findIndex(c=>c.trim().toLowerCase()==='sla_status');
+    const filtered = lines.slice(1).filter(l=>{
+      if(!l.trim()) return false;
+      if(statusIdx<0) return true; // no status col, keep all
+      const parts = l.split(';');
+      return parts[statusIdx]?.trim() === filterStatus;
     });
-  });
-  const csv = rows.map(r=>r.join(';')).join('\n');
-  triggerCSVDownload(`NC_${entity}_${period}.csv`, '﻿'+csv);
+    if(!filtered.length){ showToast(`⚠ Tidak ada data "${filterStatus}" untuk ${entity} ${period}`,'error'); return; }
+    const csv = [header, ...filtered].join('\n');
+    triggerCSVDownload(`${filenamePrefix}_${entity}_${period}.csv`, '﻿'+csv);
+  } catch(e){
+    showToast('❌ '+e.message);
+  } finally {
+    if(btn){ btn.textContent=origText; btn.disabled=false; }
+  }
+}
+
+function downloadNCPanel(entity, period){
+  const btn = document.getElementById('btnDlNC');
+  _downloadFilteredDetailCSV(entity, period, 'Not Comply', 'NC', btn);
+}
+
+function downloadComplyPanel(entity, period){
+  const btn = document.getElementById('btnDlComply');
+  _downloadFilteredDetailCSV(entity, period, 'Comply', 'Comply', btn);
 }
 
 // ─── DOWNLOAD + COPY (merged from friend's version) ──────────────────────────
