@@ -1892,10 +1892,11 @@ function renderEntityView(entity, d){
         <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
       ${entity==='TTRFFG'?`
-      <div class="sla-stat" style="border-left:4px solid #f59e0b">
+      <div class="sla-stat clickable" style="border-left:4px solid #f59e0b" onclick="openDrillPanel('wilsus')">
         <div class="lbl">WILSUS</div>
         <div class="val" style="color:#d97706">${(d.wilsus||0).toLocaleString()}</div>
         <div class="sub">Dengan first assign</div>
+        <div class="drill-hint">↗ Click — detail & download</div>
       </div>`:''}
     </div>
 
@@ -1920,15 +1921,43 @@ function renderEntityView(entity, d){
             ${r.val!=null?(+r.val).toLocaleString():'—'}
           </td>
         </tr>`).join('');
-      return `<div class="card" style="margin-bottom:18px;max-width:420px">
-        <div style="background:linear-gradient(135deg,#7f1d1d,#1e1b4b);color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;margin:-16px -16px 0;font-weight:700;text-align:center;font-size:.9rem;letter-spacing:.05em">PS/RE</div>
-        <table style="width:100%;border-collapse:collapse;margin-top:12px">
-          <thead><tr style="background:#7f1d1d">
-            <th style="padding:7px 12px;text-align:left;color:#fff;font-size:.78rem;font-weight:700">Status</th>
-            <th style="padding:7px 12px;text-align:right;color:#fff;font-size:.78rem;font-weight:700">Jumlah</th>
-          </tr></thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
+      const legend = [
+        {icon:'📋', label:'RE Total',          color:'#374151', desc:'Semua transaksi (AO + non-AO) sebelum filter.'},
+        {icon:'🔵', label:'RE AO',             color:'#1e40af', desc:'Transaksi bertipe AO (Activation Order) — dasar perhitungan PS/RE.'},
+        {icon:'🟡', label:'RE AO NETT',        color:'#854d0e', desc:'RE AO dikurangi Exclude AO. Ini adalah denominator efektif SLA PS/RE.'},
+        {icon:'🔴', label:'Cancel <7 hari AO', color:'#991b1b', desc:'AO yang di-cancel dalam 7 hari. Dikecualikan dari SLA (anomaly).'},
+        {icon:'✅', label:'PS AO',             color:'#166534', desc:'AO yang sudah PS (tgl_ps / tgl_ps_complete terisi, tidak cancel). = Comply.'},
+        {icon:'⚠️', label:'Not PS AO',         color:'#92400e', desc:'AO yang belum PS atau cancel >7 hari. = Not Comply.'},
+        {icon:'⛔', label:'Exclude AO',        color:'#6b21a8', desc:'AO dengan tgl_pc terisi tapi belum PS — dikecualikan dari denominator (anomaly complete exclude).'},
+      ];
+      const legendHtml = legend.map(l=>`
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid #f1f5f9">
+          <span style="font-size:1rem;flex-shrink:0;margin-top:1px">${l.icon}</span>
+          <div>
+            <div style="font-weight:700;font-size:.78rem;color:${l.color}">${l.label}</div>
+            <div style="font-size:.73rem;color:var(--muted);line-height:1.4;margin-top:2px">${l.desc}</div>
+          </div>
+        </div>`).join('');
+      return `<div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap">
+        <div class="card" style="min-width:300px;flex:0 0 auto">
+          <div style="background:linear-gradient(135deg,#7f1d1d,#1e1b4b);color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;margin:-16px -16px 0;font-weight:700;text-align:center;font-size:.9rem;letter-spacing:.05em">PS/RE</div>
+          <table style="width:100%;border-collapse:collapse;margin-top:12px">
+            <thead><tr style="background:#7f1d1d">
+              <th style="padding:7px 12px;text-align:left;color:#fff;font-size:.78rem;font-weight:700">Status</th>
+              <th style="padding:7px 12px;text-align:right;color:#fff;font-size:.78rem;font-weight:700">Jumlah</th>
+            </tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+        <div class="card" style="flex:1;min-width:260px">
+          <div class="card-title">📖 Keterangan</div>
+          ${legendHtml}
+          <div style="margin-top:10px;background:#f0fdf4;border-radius:8px;padding:10px 12px;font-size:.73rem;color:#166534;line-height:1.5">
+            <strong>Formula SLA PS/RE:</strong><br>
+            SLA = PS AO / RE AO NETT × 100%<br>
+            <span style="color:var(--muted)">(RE AO NETT = RE AO − Exclude AO)</span>
+          </div>
+        </div>
       </div>`;
     })():''}
 
@@ -2646,6 +2675,20 @@ function openDrillPanel(type){
           <tr class="drill-total"><td>Total</td><td style="color:var(--red)">${totalNC.toLocaleString()}</td><td>100%</td><td>—</td></tr>
         </tbody>
       </table>`;
+
+  } else if(type === 'wilsus'){
+    title = `WILSUS — ${label} — ${period}`;
+    html = `
+      <div class="drill-reason">ℹ️ WILSUS (Wilayah Suspend): tiket f_ttr = WILSUS yang memiliki first_cust_assign. Dikecualikan dari perhitungan SLA TTR FFG.</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 8px">
+        <div class="drill-section-head" style="margin-bottom:0">
+          Total WILSUS dengan first assign: <strong style="color:#d97706">${(d.wilsus||0).toLocaleString()}</strong>
+        </div>
+        <button id="btnDlWilsus" onclick="downloadWilsusPanel('${entity}','${selectedMonth}')"
+          style="background:linear-gradient(135deg,#d97706,#b45309);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
+          ⬇ Download WILSUS
+        </button>
+      </div>`;
   }
 
   $('drillTitle').textContent = title;
@@ -2726,6 +2769,37 @@ async function downloadAnomalyPanel(entity, period){
     if(!filtered.length){ showToast(`⚠ Tidak ada data anomaly untuk ${entity} ${period}`,'error'); return; }
     const csv = [outCols.join(';'), ...filtered].join('\n');
     triggerCSVDownload(`Anomaly_${entity}_${period}.csv`, '﻿'+csv);
+  } catch(e){
+    showToast('❌ '+e.message);
+  } finally {
+    if(btn){ btn.textContent=origText; btn.disabled=false; }
+  }
+}
+
+async function downloadWilsusPanel(entity, period){
+  const btn = document.getElementById('btnDlWilsus');
+  const origText = btn ? btn.textContent : '';
+  if(btn){ btn.textContent='⏳…'; btn.disabled=true; }
+  try {
+    const key = entity.toLowerCase();
+    const url = `data/${key}_raw_${period}.csv?_t=`+Date.now();
+    const r = await fetch(url, {cache:'no-store'});
+    if(!r.ok) throw new Error(`File tidak ditemukan (${r.status}). Jalankan update_dashboard.py terlebih dahulu.`);
+    const text = await r.text();
+    const lines = text.trim().split('\n');
+    const cols = lines[0].split(';');
+    const fTtrIdx   = cols.findIndex(c=>c.trim().toLowerCase()==='f_ttr');
+    const assignIdx = cols.findIndex(c=>c.trim().toLowerCase()==='first_cust_assign');
+    const filtered = lines.slice(1).filter(l=>{
+      if(!l.trim()) return false;
+      const parts = l.split(';');
+      const fttr  = (parts[fTtrIdx]||'').trim().toUpperCase();
+      const assign = (parts[assignIdx]||'').trim();
+      return fttr === 'WILSUS' && assign !== '';
+    });
+    if(!filtered.length){ showToast(`⚠ Tidak ada data WILSUS untuk ${entity} ${period}`,'error'); return; }
+    const csv = [lines[0], ...filtered].join('\n');
+    triggerCSVDownload(`WILSUS_${entity}_${period}.csv`, '﻿'+csv);
   } catch(e){
     showToast('❌ '+e.message);
   } finally {
