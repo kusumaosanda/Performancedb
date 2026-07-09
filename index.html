@@ -1868,31 +1868,31 @@ function renderEntityView(entity, d){
   $('kpiBody').innerHTML=`
     <!-- ① Stat cards — 4 across (5 for TTRFFG) -->
     <div class="grid-4" style="margin-bottom:18px;${entity==='TTRFFG'?'grid-template-columns:repeat(5,1fr)':''}">
-      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}">
+      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}" style="background:#f5f3ff;border-top-color:#7c3aed">
         <div class="lbl">${entity} — SLA</div>
         <div class="val" style="color:${clr}">${fmtSla(d.sla_pct)}</div>
         <div class="sub">Target: ${fmtSla(tgt)}</div>
       </div>
-      <div class="sla-stat clickable" onclick="openDrillPanel('anomaly')">
+      <div class="sla-stat clickable" style="background:#eff6ff;border-top-color:#3b82f6" onclick="openDrillPanel('anomaly')">
         <div class="lbl">Total Orders</div>
-        <div class="val">${(d.total||0).toLocaleString()}</div>
+        <div class="val" style="color:#1d4ed8">${(d.total||0).toLocaleString()}</div>
         <div class="sub">Anomaly: ${(d.anomaly||0).toLocaleString()}</div>
         <div class="drill-hint">↗ Click — anomaly detail</div>
       </div>
-      <div class="sla-stat green clickable" onclick="openDrillPanel('comply')">
+      <div class="sla-stat green clickable" style="background:#f0fdf4;border-top-color:#22c55e" onclick="openDrillPanel('comply')">
         <div class="lbl">Comply</div>
         <div class="val" style="color:var(--green)">${(d.comply||0).toLocaleString()}</div>
         <div class="sub">${thresh.comply}</div>
         <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
-      <div class="sla-stat red2 clickable" onclick="openDrillPanel('nc')">
+      <div class="sla-stat red2 clickable" style="background:#fff1f2;border-top-color:#e11d48" onclick="openDrillPanel('nc')">
         <div class="lbl">Not Comply</div>
         <div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div>
         <div class="sub">${thresh.nc}</div>
         <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
       ${entity==='TTRFFG'?`
-      <div class="sla-stat clickable" style="border-left:4px solid #f59e0b" onclick="openDrillPanel('wilsus')">
+      <div class="sla-stat clickable" style="background:#fffbeb;border-top-color:#f59e0b" onclick="openDrillPanel('wilsus')">
         <div class="lbl">WILSUS</div>
         <div class="val" style="color:#d97706">${(d.wilsus||0).toLocaleString()}</div>
         <div class="sub">Dengan first assign</div>
@@ -2678,17 +2678,38 @@ function openDrillPanel(type){
 
   } else if(type === 'wilsus'){
     title = `WILSUS — ${label} — ${period}`;
+    const totalWAll  = d.wilsus || 0;
+    const totalWFlag0 = d.wilsus_flag0 || 0;
+    const wByArea = (d.wilsus_by_area || []).slice().sort((a,b)=>(b.wilsus_all||0)-(a.wilsus_all||0));
+    const wRows = wByArea.map(a=>`<tr>
+        <td style="font-weight:600;color:var(--navy)">${a.area}</td>
+        <td style="color:#3b82f6;font-weight:700;text-align:center">${(a.wilsus_flag0||0).toLocaleString()}</td>
+        <td style="color:#d97706;font-weight:700;text-align:center">${(a.wilsus_all||0).toLocaleString()}</td>
+      </tr>`).join('');
     html = `
       <div class="drill-reason">ℹ️ WILSUS (Wilayah Suspend): tiket f_ttr = WILSUS yang memiliki first_cust_assign. Dikecualikan dari perhitungan SLA TTR FFG.</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 8px">
-        <div class="drill-section-head" style="margin-bottom:0">
-          Total WILSUS dengan first assign: <strong style="color:#d97706">${(d.wilsus||0).toLocaleString()}</strong>
-        </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 8px">
+        <div class="drill-section-head" style="margin-bottom:0">Per Area</div>
         <button id="btnDlWilsus" onclick="downloadWilsusPanel('${entity}','${selectedMonth}')"
           style="background:linear-gradient(135deg,#d97706,#b45309);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download WILSUS
         </button>
-      </div>`;
+      </div>
+      <table class="drill-table">
+        <thead><tr>
+          <th>Area</th>
+          <th style="text-align:center;color:#3b82f6">WILSUS Flag Exclude 0</th>
+          <th style="text-align:center;color:#d97706">WILSUS Flag Exclude All</th>
+        </tr></thead>
+        <tbody>
+          ${wRows}
+          <tr class="drill-total">
+            <td>Total</td>
+            <td style="color:#3b82f6;text-align:center">${totalWFlag0.toLocaleString()}</td>
+            <td style="color:#d97706;text-align:center">${totalWAll.toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>`;
   }
 
   $('drillTitle').textContent = title;
