@@ -1899,6 +1899,39 @@ function renderEntityView(entity, d){
       </div>`:''}
     </div>
 
+    <!-- ① PS/RE breakdown card (PSRE only) -->
+    ${entity==='PSRE' && d.psre_breakdown ? (()=>{
+      const b = d.psre_breakdown;
+      const rows = [
+        {label:'RE Total',        val:b.re_total,    highlight:false},
+        {label:'RE AO',           val:b.re_ao,       highlight:true},
+        {label:'RE AO NETT',      val:b.re_ao_nett,  highlight:false, formula:true},
+        {label:'Cancel <7 hari AO', val:b.cancel_7hari, highlight:false},
+        {label:'PS AO',           val:b.ps_ao,       highlight:false},
+        {label:'Not PS AO',       val:b.not_ps_ao,   highlight:false},
+        {label:'Exclude AO',      val:b.exclude_ao,  highlight:false},
+      ];
+      const rowsHtml = rows.map(r=>`
+        <tr style="${r.highlight?'background:#fef9c3':''}${r.formula?';border-top:2px solid #e2e8f0':''}">
+          <td style="padding:7px 12px;font-weight:${r.formula?'700':'500'};color:${r.formula?'var(--navy)':'inherit'};font-size:.82rem">
+            ${r.label}${r.formula?` <span style="font-size:.68rem;color:var(--muted);font-weight:400">(RE AO − Exclude AO)</span>`:''}
+          </td>
+          <td style="padding:7px 12px;text-align:right;font-weight:700;font-size:.9rem;color:${r.formula?'var(--navy)':'var(--muted)'}">
+            ${r.val!=null?(+r.val).toLocaleString():'—'}
+          </td>
+        </tr>`).join('');
+      return `<div class="card" style="margin-bottom:18px;max-width:420px">
+        <div style="background:linear-gradient(135deg,#7f1d1d,#1e1b4b);color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;margin:-16px -16px 0;font-weight:700;text-align:center;font-size:.9rem;letter-spacing:.05em">PS/RE</div>
+        <table style="width:100%;border-collapse:collapse;margin-top:12px">
+          <thead><tr style="background:#7f1d1d">
+            <th style="padding:7px 12px;text-align:left;color:#fff;font-size:.78rem;font-weight:700">Status</th>
+            <th style="padding:7px 12px;text-align:right;color:#fff;font-size:.78rem;font-weight:700">Jumlah</th>
+          </tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </div>`;
+    })():''}
+
     <!-- ② Trend bar chart + Area bar chart side by side -->
     <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:18px">
       <div class="card">
