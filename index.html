@@ -1866,8 +1866,8 @@ function renderEntityView(entity, d){
   window._currentEntityData = d;
 
   $('kpiBody').innerHTML=`
-    <!-- ① Stat cards — 4 across -->
-    <div class="grid-4" style="margin-bottom:18px">
+    <!-- ① Stat cards — 4 across (5 for TTRFFG) -->
+    <div class="grid-4" style="margin-bottom:18px;${entity==='TTRFFG'?'grid-template-columns:repeat(5,1fr)':''}">
       <div class="sla-stat ${slaClass(d.sla_pct,tgt)}">
         <div class="lbl">${entity} — SLA</div>
         <div class="val" style="color:${clr}">${fmtSla(d.sla_pct)}</div>
@@ -1891,6 +1891,12 @@ function renderEntityView(entity, d){
         <div class="sub">${thresh.nc}</div>
         <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
+      ${entity==='TTRFFG'?`
+      <div class="sla-stat" style="border-left:4px solid #f59e0b">
+        <div class="lbl">WILSUS</div>
+        <div class="val" style="color:#d97706">${(d.wilsus||0).toLocaleString()}</div>
+        <div class="sub">Dengan first assign</div>
+      </div>`:''}
     </div>
 
     <!-- ② Trend bar chart + Area bar chart side by side -->
@@ -2534,7 +2540,13 @@ function openDrillPanel(type){
     }).join('');
     html = `
       <div class="drill-reason">ℹ️ ${reason}</div>
-      <div class="drill-section-head">Per Area</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div class="drill-section-head" style="margin-bottom:0">Per Area</div>
+        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlAnomaly" onclick="downloadAnomalyPanel('${entity}','${selectedMonth}')"
+          style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
+          ⬇ Download Anomaly
+        </button>`:''}
+      </div>
       <table class="drill-table">
         <thead><tr><th>Area</th><th>Anomaly</th><th>% of Total</th><th>SLA %</th></tr></thead>
         <tbody>
@@ -2654,6 +2666,38 @@ function downloadNCPanel(entity, period){
 function downloadComplyPanel(entity, period){
   const btn = document.getElementById('btnDlComply');
   _downloadFilteredDetailCSV(entity, period, 'Comply', 'Comply', btn);
+}
+
+async function downloadAnomalyPanel(entity, period){
+  const btn = document.getElementById('btnDlAnomaly');
+  const origText = btn ? btn.textContent : '';
+  if(btn){ btn.textContent='⏳…'; btn.disabled=true; }
+  try {
+    const key = entity.toLowerCase();
+    const url = `data/${key}_detail_${period}.csv?_t=`+Date.now();
+    const r = await fetch(url, {cache:'no-store'});
+    if(!r.ok) throw new Error(`File tidak ditemukan (${r.status}). Jalankan update_dashboard.py terlebih dahulu.`);
+    const text = await r.text();
+    const lines = text.trim().split('\n');
+    const cols = lines[0].split(';');
+    const statusIdx = cols.findIndex(c=>c.trim().toLowerCase()==='sla_status');
+    const reasonIdx = cols.findIndex(c=>c.trim().toLowerCase()==='reason_of_reference');
+    // Rename reason_of_reference → keterangan in header
+    const outCols = cols.map((c,i)=> i===reasonIdx ? 'keterangan' : c);
+    const filtered = lines.slice(1).filter(l=>{
+      if(!l.trim()) return false;
+      if(statusIdx<0) return false;
+      const val = l.split(';')[statusIdx]?.trim().toLowerCase() || '';
+      return val.startsWith('anomaly');
+    });
+    if(!filtered.length){ showToast(`⚠ Tidak ada data anomaly untuk ${entity} ${period}`,'error'); return; }
+    const csv = [outCols.join(';'), ...filtered].join('\n');
+    triggerCSVDownload(`Anomaly_${entity}_${period}.csv`, '﻿'+csv);
+  } catch(e){
+    showToast('❌ '+e.message);
+  } finally {
+    if(btn){ btn.textContent=origText; btn.disabled=false; }
+  }
 }
 
 // ─── DOWNLOAD + COPY (merged from friend's version) ──────────────────────────
