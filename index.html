@@ -190,8 +190,8 @@ table{width:100%;border-collapse:collapse}
 thead th{text-align:left;padding:9px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap}
 tbody tr.main-row{border-bottom:1px solid var(--border);transition:background .12s}
 tbody tr.main-row:hover{background:#f8f5f0}
-tbody tr.sub-row{border-bottom:1px solid rgba(224,216,206,.5);background:#faf8f5}
-tbody tr.sub-row:hover{background:#f5f0e8}
+tbody tr.sub-row{border-bottom:1px solid rgba(224,216,206,.5);background:#ede8dc}
+tbody tr.sub-row:hover{background:#e5dfd4}
 tbody td{padding:10px 12px;font-size:.85rem;vertical-align:middle}
 tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .sub-indent{padding-left:32px!important}
@@ -205,7 +205,8 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .row-expand.open{display:inline-block;transform:rotate(90deg)}
 .btn-add-sub{background:none;border:1px dashed var(--border);color:var(--muted);border-radius:5px;padding:2px 8px;font-size:.72rem;cursor:pointer;margin-left:4px;transition:all .15s}
 .btn-add-sub:hover{border-color:var(--teal);color:var(--teal)}
-.btn-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:1rem;padding:2px 5px;transition:color .15s}
+.btn-del{background:none;border:none;color:#bbb;cursor:pointer;font-size:1.1rem;padding:4px 6px;transition:all .15s;opacity:.5;border-radius:6px}
+.btn-del:hover{color:#dc2626;opacity:1;background:rgba(220,38,38,.08);transform:scale(1.15)}
 .btn-del:hover{color:var(--red)}
 
 .pt-status,.pt-priority{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:.72rem;font-weight:600;white-space:nowrap}
@@ -2503,6 +2504,18 @@ function renderTracker(){
 
 function _fmtDate(val){ if(!val) return '—'; const d=new Date(val); return isNaN(d)?val:d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
 function _isOverdue(val,status){ if(!val||status==='Completed'||status==='Cancelled') return false; return new Date(val)<new Date(); }
+function _progressSlider(id, val, isSub, parentId){
+  const v=val!=null?val:0;
+  const color=v>=100?'#16a34a':v>=50?'var(--teal)':'#d97706';
+  const subArgs=isSub?`,true,'${parentId}'`:'';
+  return `<div style="display:flex;align-items:center;gap:6px;min-width:120px">
+    <input type="range" min="0" max="100" value="${v}"
+      style="width:72px;cursor:pointer;accent-color:${color}"
+      oninput="this.nextElementSibling.textContent=this.value+'%';this.style.accentColor=this.value>=100?'#16a34a':this.value>=50?'var(--teal)':'#d97706'"
+      onchange="updateField('${id}','progress',parseInt(this.value)${subArgs});saveLocal()">
+    <span style="font-size:.72rem;font-weight:600;color:${color};min-width:30px">${v}%</span>
+  </div>`;
+}
 
 function renderTable(projects){
   const tbody=$('projectTable');
@@ -2540,7 +2553,7 @@ function renderTable(projects){
       <td style="color:${overdue?'var(--red)':'inherit'};font-weight:${overdue?600:400};font-size:.8rem">
         <span class="editable" onclick="editDateCell(this,'${p.id}','dueDate')" title="Click to edit due date">${_fmtDate(p.dueDate)}${overdue?' ⚠':''}</span>${histIcon}
       </td>
-      <td>${pct!==null?`<div style="display:flex;align-items:center;gap:6px"><div class="mini-prog"><div class="mini-prog-fill" style="width:${pct}%"></div></div><span class="editable" style="font-size:.75rem;color:var(--muted)" onclick="editProgress(this,'${p.id}')">${pct}%</span></div>`:'<span class="editable" onclick="editProgress(this,\''+p.id+'\')">—</span>'}</td>
+      <td>${_progressSlider(p.id, pct, false, '')}</td>
       <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${p.id}','category')">${fmt(p.category)}</span></td>
       <td><button class="btn-del" onclick="deleteProject('${p.id}')" title="Delete">🗑️</button></td>`;
     tbody.appendChild(mainRow);
@@ -2571,7 +2584,7 @@ function renderTable(projects){
         <td style="color:${sOverdue?'var(--red)':'inherit'};font-weight:${sOverdue?600:400};font-size:.8rem">
           <span class="editable" onclick="editDateCell(this,'${s.id}','dueDate',true,'${p.id}')" title="Click to edit">${_fmtDate(s.dueDate)}${sOverdue?' ⚠':''}</span>${sHistIcon}
         </td>
-        <td>${sPct!==null?`<div style="display:flex;align-items:center;gap:6px"><div class="mini-prog"><div class="mini-prog-fill" style="width:${sPct}%"></div></div><span class="editable" style="font-size:.75rem;color:var(--muted)" onclick="editProgress(this,'${s.id}',true,'${p.id}')">${sPct}%</span></div>`:'<span class="editable" onclick="editProgress(this,\''+s.id+'\',true,\''+p.id+'\')">—</span>'}</td>
+        <td>${_progressSlider(s.id, sPct, true, p.id)}</td>
         <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${s.id}','category',true,'${p.id}')">${fmt(s.category)}</span></td>
         <td><button class="btn-del" onclick="deleteSubtask('${p.id}','${s.id}')" title="Delete subtask">🗑️</button></td>`;
       tbody.appendChild(sr);
@@ -2600,11 +2613,16 @@ function editCell(el, id, field, isSub=false, parentId=null){
 function editSelect(el, id, field, options, isSub=false, parentId=null){
   const cur=getFieldValue(id,field,isSub,parentId)||'';
   const sel=document.createElement('select');
-  sel.style.cssText='border:1px solid var(--teal);border-radius:5px;padding:3px 6px;font-size:.8rem;outline:none';
+  sel.style.cssText='border:1px solid var(--teal);border-radius:5px;padding:3px 6px;font-size:.8rem;outline:none;cursor:pointer;background:#fff';
   options.forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o;if(o===cur)opt.selected=true;sel.appendChild(opt);});
   el.innerHTML=''; el.appendChild(sel); sel.focus();
-  const save=()=>{ updateField(id,field,sel.value,isSub,parentId); saveLocal(); renderTable(getFiltered()); };
-  sel.onblur=save; sel.onchange=save;
+  // Stop propagation so parent onclick doesn't re-trigger editSelect while dropdown is open
+  sel.onclick=e=>e.stopPropagation();
+  let saved=false;
+  const save=()=>{ if(saved) return; saved=true; updateField(id,field,sel.value,isSub,parentId); saveLocal(); renderTable(getFiltered()); };
+  sel.onchange=save;
+  sel.onkeydown=e=>{ if(e.key==='Enter') save(); if(e.key==='Escape') renderTable(getFiltered()); };
+  sel.onblur=()=>setTimeout(save, 150); // delay so onchange fires first
 }
 
 function editDateCell(el, id, field, isSub=false, parentId=null){
@@ -2681,7 +2699,7 @@ function addProject(){ openAddProjectModal(); }
 function addSubtask(pid){
   const p=allProjects.find(p=>p.id===pid); if(!p) return;
   p.subtasks=p.subtasks||[];
-  p.subtasks.push({id:'s'+(++projectIdCounter),name:'New Subtask',status:'Not Started',priority:'Medium',pic:'',dueDate:'',progress:0,category:''});
+  p.subtasks.push({id:'s'+(++projectIdCounter),name:'New Subtask',status:'Not Started',priority:p.priority||'Medium',pic:p.pic||'',startDate:p.startDate||'',dueDate:p.dueDate||'',progress:0,category:p.category||''});
   p._open=true; projectsDirty=true; saveLocal(); renderTable(getFiltered());
 }
 
