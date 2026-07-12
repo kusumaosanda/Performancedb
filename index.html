@@ -205,7 +205,7 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .row-expand.open{display:inline-block;transform:rotate(90deg)}
 .btn-add-sub{background:none;border:1px dashed var(--border);color:var(--muted);border-radius:5px;padding:2px 8px;font-size:.72rem;cursor:pointer;margin-left:4px;transition:all .15s}
 .btn-add-sub:hover{border-color:var(--teal);color:var(--teal)}
-.btn-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:.8rem;padding:2px 5px;transition:color .15s}
+.btn-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:1rem;padding:2px 5px;transition:color .15s}
 .btn-del:hover{color:var(--red)}
 
 .pt-status,.pt-priority{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:.72rem;font-weight:600;white-space:nowrap}
@@ -2501,86 +2501,88 @@ function renderTracker(){
   renderTable(allProjects);
 }
 
+function _fmtDate(val){ if(!val) return '—'; const d=new Date(val); return isNaN(d)?val:d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+function _isOverdue(val,status){ if(!val||status==='Completed'||status==='Cancelled') return false; return new Date(val)<new Date(); }
+
 function renderTable(projects){
   const tbody=$('projectTable');
   tbody.innerHTML='';
   $('noProjects').style.display=projects.length?'none':'block';
 
-  projects.forEach((p,i)=>{
+  projects.forEach(p=>{
     const cls=(p.status||'').toLowerCase().replace(/\s+/g,'-');
     const priCls=(p.priority||'medium').toLowerCase();
     const pct=p.progress!=null?p.progress:null;
-    let due='—',overdue=false;
-    if(p.dueDate){ const d=new Date(p.dueDate); if(!isNaN(d)){ due=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); overdue=d<new Date()&&p.status!=='Completed'&&p.status!=='Cancelled'; } else due=p.dueDate; }
+    const overdue=_isOverdue(p.dueDate,p.status);
+    const subCount=p.subtasks?.length||0;
+    const hasSubs=subCount>0;
+    const histIcon = (p.dueDateHistory?.length) ? `<span title="Due date changed ${p.dueDateHistory.length} time(s). Previous: ${p.dueDateHistory.slice(-1)[0]}" style="cursor:help;font-size:.7rem;margin-left:3px">🕐</span>` : '';
 
-    const hasSubs=p.subtasks&&p.subtasks.length>0;
     const mainRow=document.createElement('tr');
     mainRow.className='main-row'; mainRow.id='row_'+p.id;
-    let startDisp = '—';
-    if(p.startDate){ const d=new Date(p.startDate); if(!isNaN(d)) startDisp=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); else startDisp=p.startDate; }
-    const subCount = p.subtasks?.length||0;
     mainRow.innerHTML=`
-      <td style="text-align:center">
-        ${hasSubs?`<button class="row-expand ${p._open?'open':''}" onclick="toggleSubs('${p.id}')" title="Show subtasks">▶</button>`:''}
+      <td style="text-align:center;width:28px">
+        ${hasSubs?`<button class="row-expand ${p._open?'open':''}" onclick="toggleSubs('${p.id}')" title="Toggle subtasks">▶</button>`:''}
       </td>
       <td style="font-weight:600">
         <span class="editable" onclick="editCell(this,'${p.id}','name')">${fmt(p.name)}</span>
-        <span style="margin-left:4px;font-size:.7rem;color:var(--muted);font-weight:400">[<span class="pt-status ${cls}" style="font-size:.68rem;padding:1px 6px">${fmt(p.status)}</span>]</span>
+        <span class="editable" onclick="editSelect(this,'${p.id}','status',STATUS_OPTIONS)" title="Click to change status" style="margin-left:6px;cursor:pointer">
+          <span class="pt-status ${cls}" style="font-size:.68rem;padding:2px 7px">${fmt(p.status)}</span>
+        </span>
       </td>
       <td>
-        <button class="btn-add-sub" onclick="addSubtask('${p.id}')" title="Add subtask" style="font-size:.72rem;padding:3px 8px">+ Add</button>
+        <button class="btn-add-sub" onclick="addSubtask('${p.id}')" style="font-size:.72rem;padding:3px 8px">+ Add</button>
         ${subCount?`<span style="font-size:.72rem;color:var(--muted);margin-left:4px">${subCount} task${subCount>1?'s':''}</span>`:''}
       </td>
       <td><span class="editable" onclick="editCell(this,'${p.id}','pic')">${fmt(p.pic)}</span></td>
       <td><span class="editable" onclick="editSelect(this,'${p.id}','priority',PRIORITY_OPTIONS)"><span class="pt-priority ${priCls}">● ${fmt(p.priority)}</span></span></td>
-      <td style="font-size:.8rem;color:var(--muted)"><span class="editable" onclick="editCell(this,'${p.id}','startDate')">${startDisp}</span></td>
-      <td style="color:${overdue?'var(--red)':'inherit'};font-weight:${overdue?600:400};font-size:.8rem">${due}${overdue?' ⚠':''}</td>
+      <td style="font-size:.8rem;color:var(--muted)">${_fmtDate(p.startDate)}</td>
+      <td style="color:${overdue?'var(--red)':'inherit'};font-weight:${overdue?600:400};font-size:.8rem">
+        <span class="editable" onclick="editDateCell(this,'${p.id}','dueDate')" title="Click to edit due date">${_fmtDate(p.dueDate)}${overdue?' ⚠':''}</span>${histIcon}
+      </td>
       <td>${pct!==null?`<div style="display:flex;align-items:center;gap:6px"><div class="mini-prog"><div class="mini-prog-fill" style="width:${pct}%"></div></div><span class="editable" style="font-size:.75rem;color:var(--muted)" onclick="editProgress(this,'${p.id}')">${pct}%</span></div>`:'<span class="editable" onclick="editProgress(this,\''+p.id+'\')">—</span>'}</td>
       <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${p.id}','category')">${fmt(p.category)}</span></td>
-      <td><button class="btn-del" onclick="deleteProject('${p.id}')" title="Delete">✕</button></td>`;
+      <td><button class="btn-del" onclick="deleteProject('${p.id}')" title="Delete">🗑️</button></td>`;
     tbody.appendChild(mainRow);
 
-    // Subtask rows
-    if(hasSubs){
-      const subGroup=document.createElement('tr');
-      subGroup.id='subs_'+p.id;
-      subGroup.style.display=p._open?'':'none';
-      const td=document.createElement('td'); td.colSpan=10; td.style.padding='0';
-      const subTable=document.createElement('table'); subTable.style.width='100%';
-      const subBody=document.createElement('tbody');
-      p.subtasks.forEach(s=>{
-        const sCls=(s.status||'').toLowerCase().replace(/\s+/g,'-');
-        const sPriCls=(s.priority||'medium').toLowerCase();
-        const sPct=s.progress!=null?s.progress:null;
-        let sDue='—';
-        if(s.dueDate){const d=new Date(s.dueDate);if(!isNaN(d))sDue=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});else sDue=s.dueDate;}
-        const sr=document.createElement('tr'); sr.className='sub-row';
-        let sStartDisp='—'; if(s.startDate){const d=new Date(s.startDate);if(!isNaN(d))sStartDisp=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});else sStartDisp=s.startDate;}
-        sr.innerHTML=`
-          <td style="width:28px"></td>
-          <td class="sub-indent" style="font-size:.8rem;color:var(--muted)">
-            ↳ <span class="editable" onclick="editCell(this,'${s.id}','name',true,'${p.id}')">${fmt(s.name)}</span>
-          </td>
-          <td></td>
-          <td><span class="editable" onclick="editCell(this,'${s.id}','pic',true,'${p.id}')">${fmt(s.pic)}</span></td>
-          <td><span class="editable" onclick="editSelect(this,'${s.id}','priority',PRIORITY_OPTIONS,true,'${p.id}')"><span class="pt-priority ${sPriCls}">● ${fmt(s.priority)}</span></span></td>
-          <td style="font-size:.8rem;color:var(--muted)"><span class="editable" onclick="editCell(this,'${s.id}','startDate',true,'${p.id}')">${sStartDisp}</span></td>
-          <td style="font-size:.8rem">${sDue}</td>
-          <td>${sPct!==null?`<div style="display:flex;align-items:center;gap:6px"><div class="mini-prog"><div class="mini-prog-fill" style="width:${sPct}%"></div></div><span class="editable" style="font-size:.75rem;color:var(--muted)" onclick="editProgress(this,'${s.id}',true,'${p.id}')">${sPct}%</span></div>`:'<span class="editable" onclick="editProgress(this,\''+s.id+'\',true,\''+p.id+'\')">—</span>'}</td>
-          <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${s.id}','category',true,'${p.id}')">${fmt(s.category)}</span></td>
-          <td><button class="btn-del" onclick="deleteSubtask('${p.id}','${s.id}')" title="Delete subtask">✕</button></td>`;
-        subBody.appendChild(sr);
-      });
-      subTable.appendChild(subBody); td.appendChild(subTable); subGroup.appendChild(td);
-      tbody.appendChild(subGroup);
-    }
+    // Subtask rows — direct <tr> in same tbody (fixes column alignment)
+    (p.subtasks||[]).forEach(s=>{
+      const sCls=(s.status||'').toLowerCase().replace(/\s+/g,'-');
+      const sPriCls=(s.priority||'medium').toLowerCase();
+      const sPct=s.progress!=null?s.progress:null;
+      const sOverdue=_isOverdue(s.dueDate,s.status);
+      const sHistIcon=(s.dueDateHistory?.length)?`<span title="Previous: ${s.dueDateHistory.slice(-1)[0]}" style="cursor:help;font-size:.7rem;margin-left:3px">🕐</span>`:'';
+
+      const sr=document.createElement('tr');
+      sr.className='sub-row'; sr.dataset.parent=p.id;
+      sr.style.display=p._open?'':'none';
+      sr.innerHTML=`
+        <td style="width:28px"></td>
+        <td class="sub-indent">
+          ↳ <span class="editable" onclick="editCell(this,'${s.id}','name',true,'${p.id}')">${fmt(s.name)}</span>
+          <span class="editable" onclick="editSelect(this,'${s.id}','status',STATUS_OPTIONS,true,'${p.id}')" title="Click to change status" style="margin-left:4px;cursor:pointer">
+            <span class="pt-status ${sCls}" style="font-size:.62rem;padding:1px 5px">${fmt(s.status)}</span>
+          </span>
+        </td>
+        <td></td>
+        <td><span class="editable" onclick="editCell(this,'${s.id}','pic',true,'${p.id}')">${fmt(s.pic)}</span></td>
+        <td><span class="editable" onclick="editSelect(this,'${s.id}','priority',PRIORITY_OPTIONS,true,'${p.id}')"><span class="pt-priority ${sPriCls}">● ${fmt(s.priority)}</span></span></td>
+        <td style="font-size:.8rem;color:var(--muted)">${_fmtDate(s.startDate)}</td>
+        <td style="color:${sOverdue?'var(--red)':'inherit'};font-weight:${sOverdue?600:400};font-size:.8rem">
+          <span class="editable" onclick="editDateCell(this,'${s.id}','dueDate',true,'${p.id}')" title="Click to edit">${_fmtDate(s.dueDate)}${sOverdue?' ⚠':''}</span>${sHistIcon}
+        </td>
+        <td>${sPct!==null?`<div style="display:flex;align-items:center;gap:6px"><div class="mini-prog"><div class="mini-prog-fill" style="width:${sPct}%"></div></div><span class="editable" style="font-size:.75rem;color:var(--muted)" onclick="editProgress(this,'${s.id}',true,'${p.id}')">${sPct}%</span></div>`:'<span class="editable" onclick="editProgress(this,\''+s.id+'\',true,\''+p.id+'\')">—</span>'}</td>
+        <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${s.id}','category',true,'${p.id}')">${fmt(s.category)}</span></td>
+        <td><button class="btn-del" onclick="deleteSubtask('${p.id}','${s.id}')" title="Delete subtask">🗑️</button></td>`;
+      tbody.appendChild(sr);
+    });
   });
 }
 
 function toggleSubs(pid){
   const p=allProjects.find(p=>p.id===pid); if(!p) return;
   p._open=!p._open;
-  const sub=$('subs_'+pid); if(sub) sub.style.display=p._open?'':'none';
+  document.querySelectorAll(`[data-parent="${pid}"]`).forEach(r=>r.style.display=p._open?'':'none');
   const btn=document.querySelector(`#row_${pid} .row-expand`);
   if(btn) btn.classList.toggle('open',p._open);
 }
@@ -2603,6 +2605,26 @@ function editSelect(el, id, field, options, isSub=false, parentId=null){
   el.innerHTML=''; el.appendChild(sel); sel.focus();
   const save=()=>{ updateField(id,field,sel.value,isSub,parentId); saveLocal(); renderTable(getFiltered()); };
   sel.onblur=save; sel.onchange=save;
+}
+
+function editDateCell(el, id, field, isSub=false, parentId=null){
+  const cur=getFieldValue(id,field,isSub,parentId)||'';
+  const input=document.createElement('input');
+  input.type='date'; input.value=cur;
+  input.style.cssText='border:1px solid var(--teal);border-radius:5px;padding:3px 6px;font-size:.8rem;outline:none;width:140px';
+  el.innerHTML=''; el.appendChild(input); input.focus();
+  const save=()=>{
+    const newVal=input.value;
+    if(newVal!==cur && cur){
+      // keep history of old value
+      const obj = isSub
+        ? allProjects.find(p=>p.id===parentId)?.subtasks?.find(s=>s.id===id)
+        : allProjects.find(p=>p.id===id);
+      if(obj){ obj.dueDateHistory=obj.dueDateHistory||[]; obj.dueDateHistory.push(_fmtDate(cur)); }
+    }
+    updateField(id,field,newVal,isSub,parentId); saveLocal(); renderTable(getFiltered());
+  };
+  input.onblur=save; input.onkeydown=e=>{if(e.key==='Enter')save();if(e.key==='Escape')renderTable(getFiltered());};
 }
 
 function editProgress(el, id, isSub=false, parentId=null){
