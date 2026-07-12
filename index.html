@@ -603,37 +603,90 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
     <div class="page" id="page-tracker">
       <div class="loading" id="trackerLoading"><div class="spinner"></div> Loading…</div>
       <div id="trackerContent" style="display:none">
-        <div id="saveBanner" style="display:none" class="save-bar">
-          ✏️ You have unsaved changes (stored locally).
-          <button class="btn-export" onclick="exportProjects()">⬇ Export JSON</button>
-        </div>
-        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap" id="ptStats"></div>
         <div class="card">
           <div class="pt-toolbar">
             <h2>Projects</h2>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <div style="display:flex;gap:8px;align-items:center">
               <input class="search-input" type="text" placeholder="🔍 Search…" oninput="filterProjects(this.value)"/>
-              <div id="statusFilters" style="display:flex;gap:6px;flex-wrap:wrap"></div>
-              <button class="btn-add" onclick="addProject()">+ Add Project</button>
+              <button class="btn-add" onclick="openAddProjectModal()">+ Add Project</button>
             </div>
           </div>
           <div class="pt-table-wrap">
             <table>
               <thead><tr>
-                <th style="width:30px"></th>
-                <th>Project / Task</th>
-                <th>Status</th>
-                <th>Priority</th>
+                <th style="width:28px"></th>
+                <th>Project</th>
+                <th>Sub Task</th>
                 <th>PIC</th>
+                <th>Priority</th>
+                <th>Start Date</th>
                 <th>Due Date</th>
                 <th>Progress</th>
                 <th>Category</th>
-                <th style="width:40px"></th>
+                <th style="width:36px"></th>
               </tr></thead>
               <tbody id="projectTable"></tbody>
             </table>
-            <div class="empty-state" id="noProjects" style="display:none">No projects match your filter.</div>
+            <div class="empty-state" id="noProjects" style="display:none">No projects yet. Click <strong>+ Add Project</strong> to get started.</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADD / EDIT PROJECT MODAL ══ -->
+    <div id="ptModalOverlay" onclick="closePtModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500"></div>
+    <div id="ptModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:501;background:var(--card);border-radius:14px;width:500px;max-width:96vw;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden">
+      <div style="background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+        <div id="ptModalTitle" style="font-size:.92rem;font-weight:700">New Project</div>
+        <button onclick="closePtModal()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>
+      </div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:13px">
+        <div>
+          <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">PROJECT NAME *</label>
+          <input id="ptEvName" placeholder="Project name" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">STATUS</label>
+            <select id="ptEvStatus" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+              <option>Not Started</option><option>In Progress</option><option>Completed</option><option>On Hold</option><option>Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">PRIORITY</label>
+            <select id="ptEvPriority" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+              <option>Low</option><option selected>Medium</option><option>High</option><option>Critical</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">PIC (Person in Charge)</label>
+          <input id="ptEvPic" placeholder="Name or team" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">START DATE</label>
+            <input id="ptEvStart" type="date" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">DUE DATE</label>
+            <input id="ptEvDue" type="date" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">PROGRESS (%)</label>
+            <input id="ptEvProgress" type="number" min="0" max="100" value="0" placeholder="0–100" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">CATEGORY</label>
+            <input id="ptEvCategory" placeholder="e.g. Development" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+          </div>
+        </div>
+        <div id="ptModalErr" style="display:none;color:#dc2626;font-size:.78rem;font-weight:600"></div>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button onclick="savePtModal()" style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Save Project</button>
+          <button onclick="closePtModal()" style="background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;padding:10px 16px;font-size:.85rem;cursor:pointer;font-family:'Poppins',sans-serif">Cancel</button>
         </div>
       </div>
     </div>
@@ -2445,18 +2498,6 @@ function loadProjects(data){
 }
 
 function renderTracker(){
-  const statuses=['Not Started','In Progress','Completed','On Hold','Cancelled'];
-  const counts={};
-  statuses.forEach(s=>{ counts[s]=allProjects.filter(p=>p.status===s).length; });
-
-  const stats=$('ptStats');
-  stats.innerHTML=[{k:'Total',v:allProjects.length},{k:'In Progress',v:counts['In Progress']},{k:'Completed',v:counts['Completed']},{k:'On Hold',v:counts['On Hold']}]
-    .map(({k,v})=>`<div class="pt-stat"><div class="num">${v||0}</div><div class="lbl">${k}</div></div>`).join('');
-
-  const filtersEl=$('statusFilters');
-  filtersEl.innerHTML=['All',...statuses].map(s=>`<button class="filter-btn ${s==='All'?'active':''}" onclick="setFilter('${s}',this)">${s}</button>`).join('');
-
-  if(projectsDirty) $('saveBanner').style.display='flex';
   renderTable(allProjects);
 }
 
@@ -2475,18 +2516,25 @@ function renderTable(projects){
     const hasSubs=p.subtasks&&p.subtasks.length>0;
     const mainRow=document.createElement('tr');
     mainRow.className='main-row'; mainRow.id='row_'+p.id;
+    let startDisp = '—';
+    if(p.startDate){ const d=new Date(p.startDate); if(!isNaN(d)) startDisp=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); else startDisp=p.startDate; }
+    const subCount = p.subtasks?.length||0;
     mainRow.innerHTML=`
       <td style="text-align:center">
         ${hasSubs?`<button class="row-expand ${p._open?'open':''}" onclick="toggleSubs('${p.id}')" title="Show subtasks">▶</button>`:''}
       </td>
       <td style="font-weight:600">
         <span class="editable" onclick="editCell(this,'${p.id}','name')">${fmt(p.name)}</span>
-        <button class="btn-add-sub" onclick="addSubtask('${p.id}')" title="Add subtask">+ sub</button>
+        <span style="margin-left:4px;font-size:.7rem;color:var(--muted);font-weight:400">[<span class="pt-status ${cls}" style="font-size:.68rem;padding:1px 6px">${fmt(p.status)}</span>]</span>
       </td>
-      <td><span class="editable" onclick="editSelect(this,'${p.id}','status',STATUS_OPTIONS)"><span class="pt-status ${cls}">${fmt(p.status)}</span></span></td>
-      <td><span class="editable" onclick="editSelect(this,'${p.id}','priority',PRIORITY_OPTIONS)"><span class="pt-priority ${priCls}">● ${fmt(p.priority)}</span></span></td>
+      <td>
+        <button class="btn-add-sub" onclick="addSubtask('${p.id}')" title="Add subtask" style="font-size:.72rem;padding:3px 8px">+ Add</button>
+        ${subCount?`<span style="font-size:.72rem;color:var(--muted);margin-left:4px">${subCount} task${subCount>1?'s':''}</span>`:''}
+      </td>
       <td><span class="editable" onclick="editCell(this,'${p.id}','pic')">${fmt(p.pic)}</span></td>
-      <td style="color:${overdue?'var(--red)':'inherit'};font-weight:${overdue?600:400}">${due}${overdue?' ⚠':''}</td>
+      <td><span class="editable" onclick="editSelect(this,'${p.id}','priority',PRIORITY_OPTIONS)"><span class="pt-priority ${priCls}">● ${fmt(p.priority)}</span></span></td>
+      <td style="font-size:.8rem;color:var(--muted)"><span class="editable" onclick="editCell(this,'${p.id}','startDate')">${startDisp}</span></td>
+      <td style="color:${overdue?'var(--red)':'inherit'};font-weight:${overdue?600:400};font-size:.8rem">${due}${overdue?' ⚠':''}</td>
       <td>${pct!==null?`<div style="display:flex;align-items:center;gap:6px"><div class="mini-prog"><div class="mini-prog-fill" style="width:${pct}%"></div></div><span class="editable" style="font-size:.75rem;color:var(--muted)" onclick="editProgress(this,'${p.id}')">${pct}%</span></div>`:'<span class="editable" onclick="editProgress(this,\''+p.id+'\')">—</span>'}</td>
       <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${p.id}','category')">${fmt(p.category)}</span></td>
       <td><button class="btn-del" onclick="deleteProject('${p.id}')" title="Delete">✕</button></td>`;
@@ -2497,7 +2545,7 @@ function renderTable(projects){
       const subGroup=document.createElement('tr');
       subGroup.id='subs_'+p.id;
       subGroup.style.display=p._open?'':'none';
-      const td=document.createElement('td'); td.colSpan=9; td.style.padding='0';
+      const td=document.createElement('td'); td.colSpan=10; td.style.padding='0';
       const subTable=document.createElement('table'); subTable.style.width='100%';
       const subBody=document.createElement('tbody');
       p.subtasks.forEach(s=>{
@@ -2507,15 +2555,17 @@ function renderTable(projects){
         let sDue='—';
         if(s.dueDate){const d=new Date(s.dueDate);if(!isNaN(d))sDue=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});else sDue=s.dueDate;}
         const sr=document.createElement('tr'); sr.className='sub-row';
+        let sStartDisp='—'; if(s.startDate){const d=new Date(s.startDate);if(!isNaN(d))sStartDisp=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});else sStartDisp=s.startDate;}
         sr.innerHTML=`
-          <td style="width:30px"></td>
+          <td style="width:28px"></td>
           <td class="sub-indent" style="font-size:.8rem;color:var(--muted)">
             ↳ <span class="editable" onclick="editCell(this,'${s.id}','name',true,'${p.id}')">${fmt(s.name)}</span>
           </td>
-          <td><span class="editable" onclick="editSelect(this,'${s.id}','status',STATUS_OPTIONS,true,'${p.id}')"><span class="pt-status ${sCls}">${fmt(s.status)}</span></span></td>
-          <td><span class="editable" onclick="editSelect(this,'${s.id}','priority',PRIORITY_OPTIONS,true,'${p.id}')"><span class="pt-priority ${sPriCls}">● ${fmt(s.priority)}</span></span></td>
+          <td></td>
           <td><span class="editable" onclick="editCell(this,'${s.id}','pic',true,'${p.id}')">${fmt(s.pic)}</span></td>
-          <td>${sDue}</td>
+          <td><span class="editable" onclick="editSelect(this,'${s.id}','priority',PRIORITY_OPTIONS,true,'${p.id}')"><span class="pt-priority ${sPriCls}">● ${fmt(s.priority)}</span></span></td>
+          <td style="font-size:.8rem;color:var(--muted)"><span class="editable" onclick="editCell(this,'${s.id}','startDate',true,'${p.id}')">${sStartDisp}</span></td>
+          <td style="font-size:.8rem">${sDue}</td>
           <td>${sPct!==null?`<div style="display:flex;align-items:center;gap:6px"><div class="mini-prog"><div class="mini-prog-fill" style="width:${sPct}%"></div></div><span class="editable" style="font-size:.75rem;color:var(--muted)" onclick="editProgress(this,'${s.id}',true,'${p.id}')">${sPct}%</span></div>`:'<span class="editable" onclick="editProgress(this,\''+s.id+'\',true,\''+p.id+'\')">—</span>'}</td>
           <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${s.id}','category',true,'${p.id}')">${fmt(s.category)}</span></td>
           <td><button class="btn-del" onclick="deleteSubtask('${p.id}','${s.id}')" title="Delete subtask">✕</button></td>`;
@@ -2576,10 +2626,35 @@ function updateField(id,field,value,isSub,parentId){
   projectsDirty=true;
 }
 
-function addProject(){
-  const p={id:'p'+(++projectIdCounter),name:'New Project',status:'Not Started',priority:'Medium',pic:'',dueDate:'',progress:0,category:'',subtasks:[],_open:false};
-  allProjects.push(p); saveLocal(); renderTracker();
+let _ptEditId = null;
+function openAddProjectModal(){
+  _ptEditId = null;
+  $('ptModalTitle').textContent = 'New Project';
+  $('ptEvName').value=''; $('ptEvStatus').value='Not Started'; $('ptEvPriority').value='Medium';
+  $('ptEvPic').value=''; $('ptEvStart').value=''; $('ptEvDue').value='';
+  $('ptEvProgress').value=0; $('ptEvCategory').value='';
+  $('ptModalErr').style.display='none';
+  $('ptModal').style.display='block'; $('ptModalOverlay').style.display='block';
+  setTimeout(()=>$('ptEvName').focus(),80);
 }
+function closePtModal(){
+  $('ptModal').style.display='none'; $('ptModalOverlay').style.display='none'; _ptEditId=null;
+}
+function savePtModal(){
+  const name=$('ptEvName').value.trim();
+  if(!name){ $('ptModalErr').textContent='Project name is required.'; $('ptModalErr').style.display='block'; return; }
+  const payload={
+    id: _ptEditId||'p'+(++projectIdCounter),
+    name, status:$('ptEvStatus').value, priority:$('ptEvPriority').value,
+    pic:$('ptEvPic').value.trim(), startDate:$('ptEvStart').value, dueDate:$('ptEvDue').value,
+    progress:Math.min(100,Math.max(0,parseInt($('ptEvProgress').value)||0)),
+    category:$('ptEvCategory').value.trim(), subtasks:[], _open:false
+  };
+  if(_ptEditId){ const idx=allProjects.findIndex(p=>p.id===_ptEditId); if(idx>=0){ payload.subtasks=allProjects[idx].subtasks; payload._open=allProjects[idx]._open; allProjects[idx]=payload; } }
+  else allProjects.push(payload);
+  saveLocal(); closePtModal(); renderTracker();
+}
+function addProject(){ openAddProjectModal(); }
 
 function addSubtask(pid){
   const p=allProjects.find(p=>p.id===pid); if(!p) return;
@@ -2608,17 +2683,10 @@ function exportProjects(){
   a.download='projects.json'; a.click();
 }
 
-function setFilter(status,btn){
-  activeFilter=status;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTable(getFiltered());
-}
 function filterProjects(q){ renderTable(getFiltered(q)); }
 function getFiltered(q=''){
   const qEl=document.querySelector('.search-input'); if(!q&&qEl) q=qEl.value;
   let list=allProjects;
-  if(activeFilter!=='All') list=list.filter(p=>p.status===activeFilter);
   if(q){ const lq=q.toLowerCase(); list=list.filter(p=>(p.name||'').toLowerCase().includes(lq)||(p.pic||'').toLowerCase().includes(lq)||(p.category||'').toLowerCase().includes(lq)); }
   return list;
 }
