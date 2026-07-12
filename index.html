@@ -1868,24 +1868,24 @@ function renderEntityView(entity, d){
   $('kpiBody').innerHTML=`
     <!-- ① Stat cards — 4 across (5 for TTRFFG) -->
     <div class="grid-4" style="margin-bottom:18px;${entity==='TTRFFG'?'grid-template-columns:repeat(5,1fr)':''}">
-      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}" style="background:#f5f3ff;border-top-color:#7c3aed">
+      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}" style="background:#fefce8;border-top-color:#ca8a04">
         <div class="lbl">${entity} — SLA</div>
         <div class="val" style="color:${clr}">${fmtSla(d.sla_pct)}</div>
         <div class="sub">Target: ${fmtSla(tgt)}</div>
       </div>
-      <div class="sla-stat clickable" style="background:#eff6ff;border-top-color:#3b82f6" onclick="openDrillPanel('anomaly')">
+      <div class="sla-stat clickable" style="background:#fff7ed;border-top-color:#ea580c" onclick="openDrillPanel('anomaly')">
         <div class="lbl">Total Orders</div>
-        <div class="val" style="color:#1d4ed8">${(d.total||0).toLocaleString()}</div>
+        <div class="val" style="color:#c2410c">${(d.total||0).toLocaleString()}</div>
         <div class="sub">Anomaly: ${(d.anomaly||0).toLocaleString()}</div>
         <div class="drill-hint">↗ Click — anomaly detail</div>
       </div>
-      <div class="sla-stat green clickable" style="background:#f0fdf4;border-top-color:#22c55e" onclick="openDrillPanel('comply')">
+      <div class="sla-stat green clickable" style="background:#f7fee7;border-top-color:#65a30d" onclick="openDrillPanel('comply')">
         <div class="lbl">Comply</div>
         <div class="val" style="color:var(--green)">${(d.comply||0).toLocaleString()}</div>
         <div class="sub">${thresh.comply}</div>
         <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
-      <div class="sla-stat red2 clickable" style="background:#fff1f2;border-top-color:#e11d48" onclick="openDrillPanel('nc')">
+      <div class="sla-stat red2 clickable" style="background:#fff0ee;border-top-color:#b91c1c" onclick="openDrillPanel('nc')">
         <div class="lbl">Not Comply</div>
         <div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div>
         <div class="sub">${thresh.nc}</div>
