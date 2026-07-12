@@ -1684,7 +1684,7 @@ function openFulfillmentModal(period){
 
   const html = `
     <div style="margin-bottom:18px">
-      <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Periode: ${mLabel(period)}</div>
+      <div style="font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);margin-bottom:8px">Periode: ${mLabel(period)}</div>
       <table style="width:100%;border-collapse:collapse;font-size:.82rem">
         <thead>
           <tr style="background:var(--navy);color:#fff">
@@ -1696,9 +1696,6 @@ function openFulfillmentModal(period){
           </tr>
         </thead>
         <tbody>
-          <tr style="background:var(--navy2);color:#fff">
-            <td colspan="5" style="padding:7px 14px;font-size:.76rem;font-weight:700;letter-spacing:.3px">Fulfillment</td>
-          </tr>
           ${fmtRow(FL_W.FFG.label,FL_W.FFG.bobot,FL_W.FFG.tgt,ffgSla,ffgScore)}
           ${fmtRow(FL_W.TTI.label,FL_W.TTI.bobot,FL_W.TTI.tgt,ttiSla,ttiScore)}
           <tr style="background:rgba(42,63,94,.06);border-top:2px solid var(--border)">
@@ -1719,7 +1716,7 @@ function openFulfillmentModal(period){
         </tbody>
       </table>
     </div>
-    <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Referensi Performance Tier</div>
+    <div style="font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);margin-bottom:8px">Referensi Performance Tier</div>
     <table style="width:100%;border-collapse:collapse;font-size:.8rem">
       <thead>
         <tr style="background:var(--navy);color:#fff">
