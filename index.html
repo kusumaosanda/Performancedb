@@ -442,6 +442,7 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
       </div>
     </div>
     <a onclick="showPage('tracker')" id="nav-tracker"><span class="icon">📋</span> Project Tracker</a>
+    <a onclick="showPage('calendar')" id="nav-calendar"><span class="icon">📅</span> Calendar of Event</a>
     <a onclick="showPage('devprogress')" id="nav-devprogress"><span class="icon">🛠️</span> Dev Progress</a>
   </nav>
   <div class="sidebar-footer" id="sidebarFooter">Loading…</div>
@@ -637,6 +638,88 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
       </div>
     </div>
 
+    <!-- ══ CALENDAR OF EVENT ══ -->
+    <div class="page" id="page-calendar">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+        <!-- Nav row -->
+        <div style="display:flex;align-items:center;gap:10px">
+          <button onclick="calNav(-1)" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.85rem;font-weight:700;cursor:pointer">‹</button>
+          <div id="calMonthLabel" style="font-size:1.05rem;font-weight:800;color:var(--navy);min-width:160px;text-align:center"></div>
+          <button onclick="calNav(1)"  style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.85rem;font-weight:700;cursor:pointer">›</button>
+          <button onclick="calGoToday()" style="background:var(--teal);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;cursor:pointer">Today</button>
+        </div>
+        <!-- View switcher -->
+        <div style="display:flex;gap:6px">
+          <button onclick="calSetView('month')" id="calBtnMonth" style="padding:6px 14px;border-radius:8px;border:2px solid var(--navy);background:var(--navy);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer">Month</button>
+          <button onclick="calSetView('week')"  id="calBtnWeek"  style="padding:6px 14px;border-radius:8px;border:2px solid var(--navy);background:transparent;color:var(--navy);font-size:.78rem;font-weight:700;cursor:pointer">Week</button>
+          <button onclick="calAddEvent()"        style="padding:6px 16px;border-radius:8px;border:none;background:var(--teal);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer">＋ Add Event</button>
+        </div>
+      </div>
+
+      <!-- Calendar grid container -->
+      <div class="card" style="padding:0;overflow:hidden">
+        <div id="calGrid"></div>
+      </div>
+    </div><!-- /page-calendar -->
+
+    <!-- ══ EVENT MODAL ══ -->
+    <div id="calModalOverlay" onclick="calCloseModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500"></div>
+    <div id="calModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:501;background:var(--card);border-radius:14px;width:440px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden">
+      <div style="background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+        <div id="calModalTitle" style="font-size:.92rem;font-weight:700"></div>
+        <button onclick="calCloseModal()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>
+      </div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:13px">
+        <div>
+          <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">TITLE *</label>
+          <input id="calEvTitle" placeholder="Event name" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">DATE *</label>
+            <input id="calEvDate" type="date" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">COLOR</label>
+            <select id="calEvColor" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+              <option value="#2563eb">🔵 Blue</option>
+              <option value="#16a34a">🟢 Green</option>
+              <option value="#dc2626">🔴 Red</option>
+              <option value="#d97706">🟠 Orange</option>
+              <option value="#7c3aed">🟣 Purple</option>
+              <option value="#0891b2">🩵 Teal</option>
+              <option value="#be185d">🩷 Pink</option>
+              <option value="#374151">⚫ Dark</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">START TIME</label>
+            <input id="calEvStart" type="time" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">END TIME</label>
+            <input id="calEvEnd" type="time" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+          </div>
+        </div>
+        <div>
+          <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">LOCATION</label>
+          <input id="calEvLoc" placeholder="e.g. Meeting Room A" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+        </div>
+        <div>
+          <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">NOTES</label>
+          <textarea id="calEvNotes" rows="2" placeholder="Additional notes…" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;resize:vertical;background:#fff;color:var(--text)"></textarea>
+        </div>
+        <div id="calModalErr" style="display:none;color:#dc2626;font-size:.78rem;font-weight:600"></div>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button onclick="calSaveEvent()" style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Save Event</button>
+          <button id="calBtnDelete" onclick="calDeleteEvent()" style="display:none;background:#dc2626;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Delete</button>
+          <button onclick="calCloseModal()" style="background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;padding:10px 16px;font-size:.85rem;cursor:pointer;font-family:'Poppins',sans-serif">Cancel</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ DEV PROGRESS ══ -->
     <div class="page" id="page-devprogress">
       <div class="card" style="margin-bottom:16px">
@@ -717,7 +800,7 @@ async function fetchJSON(url){
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
-const pageTitles = { home:'Home ID', kpi:'KPI 2025', kpi2026:'KPI 2026', tracker:'Project Tracker', devprogress:'Dev Progress' };
+const pageTitles = { home:'Home ID', kpi:'KPI 2025', kpi2026:'KPI 2026', tracker:'Project Tracker', calendar:'Calendar of Event', devprogress:'Dev Progress' };
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
@@ -731,6 +814,7 @@ function showPage(id){
   $('pageTitle').textContent = pageTitles[id] || id;
   closeSidebar();
   if(id==='devprogress') renderDevProgress();
+  if(id==='calendar') calRender();
 }
 function toggleNavGroup(id){
   $('nav-sub-'+id).classList.toggle('open');
@@ -1687,12 +1771,12 @@ function openFulfillmentModal(period){
       <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:var(--navy);padding:7px 12px;border-radius:6px;margin-bottom:12px">Periode: ${mLabel(period)}</div>
       <table style="width:100%;border-collapse:collapse;font-size:.82rem">
         <thead>
-          <tr style="background:var(--navy);color:#fff">
-            <th style="padding:9px 14px;text-align:left">KPI / Sub KPI</th>
-            <th style="padding:9px 14px;text-align:center">Bobot</th>
-            <th style="padding:9px 14px;text-align:center">Target</th>
-            <th style="padding:9px 14px;text-align:center">Realisasi</th>
-            <th style="padding:9px 14px;text-align:center">Score</th>
+          <tr style="background:var(--navy)">
+            <th style="padding:9px 14px;text-align:left;color:#fff;font-weight:700">KPI / Sub KPI</th>
+            <th style="padding:9px 14px;text-align:center;color:#fff;font-weight:700">Bobot</th>
+            <th style="padding:9px 14px;text-align:center;color:#fff;font-weight:700">Target</th>
+            <th style="padding:9px 14px;text-align:center;color:#fff;font-weight:700">Realisasi</th>
+            <th style="padding:9px 14px;text-align:center;color:#fff;font-weight:700">Score</th>
           </tr>
         </thead>
         <tbody>
@@ -1719,12 +1803,12 @@ function openFulfillmentModal(period){
     <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:var(--navy);padding:7px 12px;border-radius:6px;margin-bottom:12px">Referensi Performance Tier</div>
     <table style="width:100%;border-collapse:collapse;font-size:.8rem">
       <thead>
-        <tr style="background:var(--navy);color:#fff">
-          <th style="padding:7px 14px;text-align:center">Tier</th>
-          <th style="padding:7px 14px;text-align:center">Op</th>
-          <th style="padding:7px 14px;text-align:center">Score Kinerja</th>
-          <th style="padding:7px 14px;text-align:center">SC Fulfillment</th>
-          <th style="padding:7px 14px;text-align:center">SC QA</th>
+        <tr style="background:var(--navy)">
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700">Tier</th>
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700">Op</th>
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700">Score Kinerja</th>
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700">SC Fulfillment</th>
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700">SC QA</th>
         </tr>
       </thead>
       <tbody>${tierRows}</tbody>
@@ -1865,14 +1949,14 @@ function renderEntityView(entity, d){
   $('kpiBody').innerHTML=`
     <!-- ① Stat cards — 4 across (5 for TTRFFG) -->
     <div class="grid-4" style="margin-bottom:18px;${entity==='TTRFFG'?'grid-template-columns:repeat(5,1fr)':''}">
-      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}" style="background:#ffffff;border-top-color:#7c3aed">
+      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}" style="background:#ffffff;border-top-color:#3D7A6E">
         <div class="lbl">${entity} — SLA</div>
-        <div class="val" style="color:${clr}">${fmtSla(d.sla_pct)}</div>
+        <div class="val" style="color:#1a1a1a">${fmtSla(d.sla_pct)}</div>
         <div class="sub">Target: ${fmtSla(tgt)}</div>
       </div>
-      <div class="sla-stat clickable" style="background:#ffffff;border-top-color:#3b82f6" onclick="openDrillPanel('anomaly')">
+      <div class="sla-stat clickable" style="background:#ffffff;border-top-color:#64748b" onclick="openDrillPanel('anomaly')">
         <div class="lbl">Total Orders</div>
-        <div class="val" style="color:#1d4ed8">${(d.total||0).toLocaleString()}</div>
+        <div class="val" style="color:#1a1a1a">${(d.total||0).toLocaleString()}</div>
         <div class="sub">Anomaly: ${(d.anomaly||0).toLocaleString()}</div>
         <div class="drill-hint">↗ Click — anomaly detail</div>
       </div>
@@ -2573,7 +2657,8 @@ const ANOMALY_INFO_HTML = `
       <div style="font-weight:700;color:#b45309;margin-bottom:4px">4. PS-RE</div>
       Order terkategori sebagai anomali jika:
       <ul style="margin:4px 0 0 16px;padding:0">
-        <li><code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">flag_exclude_all ≠ 0</code> — dikecualikan dari perhitungan SLA PS-RE</li>
+        <li><code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">tgl_complete</code> null — tanggal selesai tidak tersedia</li>
+        <li><code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">tgl_ps</code> null — tanggal PS tidak tersedia</li>
       </ul>
     </div>
 
@@ -2625,7 +2710,8 @@ function openDrillPanel(type){
     const totalAn = d.anomaly || 0;
     const rows = areas.map(a=>{
       const c = slaColor(a.sla_pct, tgt);
-      const pct = a.anomaly && a.total ? ((a.anomaly/a.total)*100).toFixed(1)+'%' : '—';
+      const aTotal = (a.comply||0) + (a.not_comply||0) + (a.anomaly||0);
+      const pct = a.anomaly && aTotal ? ((a.anomaly/aTotal)*100).toFixed(1)+'%' : '—';
       return `<tr>
         <td style="font-weight:600;color:var(--navy)">${a.area}</td>
         <td style="color:var(--muted);font-weight:700">${(a.anomaly||0).toLocaleString()}</td>
@@ -3136,6 +3222,265 @@ function renderDevProgress(){
   dpUpdateProgress();
 }
 init();
+
+// ═══════════════════════════════════════════════════════════════════
+// CALENDAR OF EVENT
+// ═══════════════════════════════════════════════════════════════════
+(function(){
+  const STORE_KEY = 'cal_events_v1';
+  const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // ── State ──────────────────────────────────────────────────────
+  let calView  = 'month';          // 'month' | 'week'
+  let calYear  = new Date().getFullYear();
+  let calMonth = new Date().getMonth();  // 0-based
+  let calWeekStart = _startOfWeek(new Date());  // Date
+  let editingId = null;
+
+  // ── Storage ────────────────────────────────────────────────────
+  function loadEvents(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'[]'); }catch(e){return[];} }
+  function saveEvents(evs){ localStorage.setItem(STORE_KEY, JSON.stringify(evs)); }
+  function newId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+  // ── Date helpers ───────────────────────────────────────────────
+  function _startOfWeek(d){ const r=new Date(d); r.setHours(0,0,0,0); r.setDate(r.getDate()-r.getDay()); return r; }
+  function _addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+  function _yyyymmdd(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function _fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':'); const hh=parseInt(h); return (hh>12?hh-12:hh||12)+':'+(m||'00')+(hh>=12?'pm':'am'); }
+
+  // ── Event chips helper ─────────────────────────────────────────
+  function _chipsForDate(dateStr, evs){
+    return evs
+      .filter(e=>e.date===dateStr)
+      .sort((a,b)=>(a.start||'').localeCompare(b.start||''))
+      .map(e=>`<div onclick="calOpenEvent('${e.id}')" style="background:${e.color||'#2563eb'};color:#fff;border-radius:4px;padding:2px 6px;font-size:.67rem;font-weight:600;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">
+        ${e.start?_fmtTime(e.start)+' ':''}${e.title}
+      </div>`).join('');
+  }
+
+  // ── Render ─────────────────────────────────────────────────────
+  window.calRender = function(){
+    _updateViewButtons();
+    if(calView==='month') _renderMonth();
+    else _renderWeek();
+  };
+
+  function _updateViewButtons(){
+    $('calBtnMonth').style.background = calView==='month'?'var(--navy)':'transparent';
+    $('calBtnMonth').style.color      = calView==='month'?'#fff':'var(--navy)';
+    $('calBtnWeek').style.background  = calView==='week'?'var(--navy)':'transparent';
+    $('calBtnWeek').style.color       = calView==='week'?'#fff':'var(--navy)';
+  }
+
+  function _renderMonth(){
+    const evs  = loadEvents();
+    const today = _yyyymmdd(new Date());
+    $('calMonthLabel').textContent = MONTH_NAMES[calMonth]+' '+calYear;
+
+    // First day of month, total days
+    const firstDay = new Date(calYear, calMonth, 1).getDay();  // 0=Sun
+    const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+    const daysInPrev  = new Date(calYear, calMonth, 0).getDate();
+
+    let cells = '';
+    // Previous month fill
+    for(let i=firstDay-1;i>=0;i--){
+      const d = daysInPrev-i;
+      cells += `<div style="${_cellStyle(false,false)};opacity:.35"><div style="${_dayNumStyle(false,false)}">${d}</div></div>`;
+    }
+    // Current month
+    for(let d=1;d<=daysInMonth;d++){
+      const dateStr = calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      const isToday = dateStr===today;
+      cells += `<div style="${_cellStyle(true,isToday)}" onclick="calAddEventOnDate('${dateStr}')">
+        <div style="${_dayNumStyle(true,isToday)}">${d}</div>
+        <div style="flex:1;overflow:hidden">${_chipsForDate(dateStr,evs)}</div>
+      </div>`;
+    }
+    // Next month fill — fill to complete last row
+    const totalCells = firstDay + daysInMonth;
+    const remainder  = totalCells % 7 === 0 ? 0 : 7-(totalCells%7);
+    for(let d=1;d<=remainder;d++){
+      cells += `<div style="${_cellStyle(false,false)};opacity:.35"><div style="${_dayNumStyle(false,false)}">${d}</div></div>`;
+    }
+
+    // Day-name header
+    const hdr = DAY_NAMES.map(n=>`<div style="text-align:center;font-size:.7rem;font-weight:700;color:var(--muted);padding:9px 4px;background:rgba(42,63,94,.04);border-bottom:1px solid var(--border)">${n}</div>`).join('');
+
+    $('calGrid').innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(7,1fr)">${hdr}</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:minmax(90px,auto)">${cells}</div>`;
+  }
+
+  function _cellStyle(current, isToday){
+    let s = 'border:1px solid var(--border);padding:5px 6px;display:flex;flex-direction:column;cursor:pointer;min-height:90px;box-sizing:border-box;transition:background .12s;';
+    if(isToday)  s += 'background:rgba(61,122,110,.07);';
+    else if(current) s += 'background:#fff;';
+    return s;
+  }
+  function _dayNumStyle(current, isToday){
+    let s = 'font-size:.75rem;font-weight:700;margin-bottom:4px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;';
+    if(isToday) s += 'background:var(--teal);color:#fff;';
+    else if(current) s += 'color:var(--navy);';
+    else s += 'color:var(--muted);';
+    return s;
+  }
+
+  function _renderWeek(){
+    const evs = loadEvents();
+    const today = _yyyymmdd(new Date());
+    const weekEnd = _addDays(calWeekStart, 6);
+    $('calMonthLabel').textContent = _fmtDateRange(calWeekStart, weekEnd);
+
+    // Hour rows 06:00 – 22:00
+    const HOURS = [];
+    for(let h=6;h<=22;h++) HOURS.push(h);
+
+    // Column headers (day names + dates)
+    const colHdr = '<div style="width:52px;border-right:1px solid var(--border);background:rgba(42,63,94,.04)"></div>'
+      + Array.from({length:7},(_,i)=>{
+          const d = _addDays(calWeekStart,i);
+          const ds = _yyyymmdd(d);
+          const isT = ds===today;
+          return `<div style="flex:1;text-align:center;padding:8px 4px;border-right:1px solid var(--border);background:rgba(42,63,94,.04)">
+            <div style="font-size:.68rem;font-weight:700;color:var(--muted)">${DAY_NAMES[d.getDay()]}</div>
+            <div style="font-size:.88rem;font-weight:800;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;margin:2px auto 0;${isT?'background:var(--teal);color:#fff;':'color:var(--navy);'}">${d.getDate()}</div>
+          </div>`;
+        }).join('');
+
+    // Body rows
+    const bodyRows = HOURS.map(h=>{
+      const hLabel = h<12?h+':00 am':(h===12?'12:00 pm':(h-12)+':00 pm');
+      const cols = Array.from({length:7},(_,i)=>{
+        const d = _addDays(calWeekStart,i);
+        const ds = _yyyymmdd(d);
+        const hh = String(h).padStart(2,'0');
+        const chips = evs.filter(e=>e.date===ds && e.start && e.start.startsWith(hh))
+          .map(e=>`<div onclick="calOpenEvent('${e.id}')" style="background:${e.color||'#2563eb'};color:#fff;border-radius:4px;padding:2px 5px;font-size:.65rem;font-weight:600;cursor:pointer;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.title}</div>`).join('');
+        return `<div style="flex:1;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:2px 3px;min-height:38px;cursor:pointer;box-sizing:border-box" onclick="calAddEventAtTime('${ds}','${hh}:00')">${chips}</div>`;
+      }).join('');
+      return `<div style="display:flex;border-bottom:1px solid var(--border)">
+        <div style="width:52px;flex-shrink:0;font-size:.64rem;color:var(--muted);padding:4px 6px;border-right:1px solid var(--border);font-weight:600;text-align:right">${hLabel}</div>
+        ${cols}
+      </div>`;
+    }).join('');
+
+    $('calGrid').innerHTML = `
+      <div style="display:flex;border-bottom:2px solid var(--border)">${colHdr}</div>
+      <div style="max-height:60vh;overflow-y:auto">${bodyRows}</div>`;
+  }
+
+  function _fmtDateRange(a,b){
+    if(a.getMonth()===b.getMonth()) return MONTH_NAMES[a.getMonth()]+' '+a.getDate()+'–'+b.getDate()+', '+a.getFullYear();
+    return MONTH_NAMES[a.getMonth()]+' '+a.getDate()+' – '+MONTH_NAMES[b.getMonth()]+' '+b.getDate()+', '+a.getFullYear();
+  }
+
+  // ── Navigation ─────────────────────────────────────────────────
+  window.calNav = function(dir){
+    if(calView==='month'){
+      calMonth += dir;
+      if(calMonth<0){ calMonth=11; calYear--; }
+      if(calMonth>11){ calMonth=0; calYear++; }
+    } else {
+      calWeekStart = _addDays(calWeekStart, dir*7);
+    }
+    calRender();
+  };
+  window.calGoToday = function(){
+    const now = new Date();
+    calYear=now.getFullYear(); calMonth=now.getMonth();
+    calWeekStart = _startOfWeek(now);
+    calRender();
+  };
+  window.calSetView = function(v){
+    calView=v;
+    // Sync week to current month view
+    if(v==='week') calWeekStart=_startOfWeek(new Date(calYear,calMonth,1));
+    calRender();
+  };
+
+  // ── Modal helpers ──────────────────────────────────────────────
+  function _openModal(title, ev){
+    editingId = ev ? ev.id : null;
+    $('calModalTitle').textContent = title;
+    $('calEvTitle').value  = ev?.title  || '';
+    $('calEvDate').value   = ev?.date   || '';
+    $('calEvStart').value  = ev?.start  || '';
+    $('calEvEnd').value    = ev?.end    || '';
+    $('calEvLoc').value    = ev?.loc    || '';
+    $('calEvNotes').value  = ev?.notes  || '';
+    $('calEvColor').value  = ev?.color  || '#2563eb';
+    $('calModalErr').style.display='none';
+    $('calBtnDelete').style.display = ev ? 'block' : 'none';
+    $('calModal').style.display='block';
+    $('calModalOverlay').style.display='block';
+    setTimeout(()=>$('calEvTitle').focus(),80);
+  }
+
+  window.calCloseModal = function(){
+    $('calModal').style.display='none';
+    $('calModalOverlay').style.display='none';
+    editingId=null;
+  };
+
+  window.calAddEvent = function(){ _openModal('New Event', null); };
+
+  window.calAddEventOnDate = function(dateStr){
+    // Only open if clicking the blank area (not a chip)
+    _openModal('New Event', {date:dateStr});
+    editingId=null;
+  };
+  window.calAddEventAtTime = function(dateStr, time){
+    const ev = {date:dateStr, start:time};
+    _openModal('New Event', ev);
+    editingId=null;
+  };
+  window.calOpenEvent = function(id){
+    const evs = loadEvents();
+    const ev  = evs.find(e=>e.id===id);
+    if(ev) _openModal('Edit Event', ev);
+  };
+
+  window.calSaveEvent = function(){
+    const title = $('calEvTitle').value.trim();
+    const date  = $('calEvDate').value;
+    if(!title||!date){
+      $('calModalErr').textContent='Title and Date are required.';
+      $('calModalErr').style.display='block';
+      return;
+    }
+    const evs = loadEvents();
+    const payload = {
+      id:    editingId || newId(),
+      title, date,
+      start: $('calEvStart').value,
+      end:   $('calEvEnd').value,
+      loc:   $('calEvLoc').value.trim(),
+      notes: $('calEvNotes').value.trim(),
+      color: $('calEvColor').value,
+    };
+    if(editingId){
+      const idx = evs.findIndex(e=>e.id===editingId);
+      if(idx>=0) evs[idx]=payload; else evs.push(payload);
+    } else {
+      evs.push(payload);
+    }
+    saveEvents(evs);
+    calCloseModal();
+    calRender();
+  };
+
+  window.calDeleteEvent = function(){
+    if(!editingId) return;
+    if(!confirm('Delete this event?')) return;
+    const evs = loadEvents().filter(e=>e.id!==editingId);
+    saveEvents(evs);
+    calCloseModal();
+    calRender();
+  };
+
+})();
 </script>
 </body>
 </html>
