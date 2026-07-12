@@ -674,14 +674,18 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
           <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">TITLE *</label>
           <input id="calEvTitle" placeholder="Event name" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
           <div>
-            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">DATE *</label>
-            <input id="calEvDate" type="date" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">START DATE *</label>
+            <input id="calEvDateStart" type="date" style="width:100%;box-sizing:border-box;padding:9px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:.8rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">END DATE</label>
+            <input id="calEvDateEnd" type="date" style="width:100%;box-sizing:border-box;padding:9px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:.8rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
           </div>
           <div>
             <label style="font-size:.75rem;font-weight:700;color:var(--navy);display:block;margin-bottom:5px">COLOR</label>
-            <select id="calEvColor" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
+            <select id="calEvColor" style="width:100%;box-sizing:border-box;padding:9px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:.8rem;font-family:'Poppins',sans-serif;background:#fff;color:var(--text)">
               <option value="#2563eb">🔵 Blue</option>
               <option value="#16a34a">🟢 Green</option>
               <option value="#dc2626">🔴 Red</option>
@@ -3249,17 +3253,30 @@ init();
   function _yyyymmdd(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
   function _fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':'); const hh=parseInt(h); return (hh>12?hh-12:hh||12)+':'+(m||'00')+(hh>=12?'pm':'am'); }
 
+  // ── Date range helpers ─────────────────────────────────────────
+  function _evDateStart(e){ return e.date_start || e.date || ''; }
+  function _evDateEnd(e){   return e.date_end   || e.date_start || e.date || ''; }
+  function _evOnDate(e, dateStr){
+    const s = _evDateStart(e), en = _evDateEnd(e);
+    if(!s) return false;
+    return dateStr >= s && dateStr <= (en||s);
+  }
+
   // ── Event chips helper ─────────────────────────────────────────
   function _chipsForDate(dateStr, evs){
     const sorted = evs
-      .filter(e=>e.date===dateStr)
+      .filter(e=>_evOnDate(e, dateStr))
       .sort((a,b)=>(a.start||'').localeCompare(b.start||''));
     const MAX = 2;
     const visible = sorted.slice(0, MAX);
     const extra   = sorted.length - MAX;
-    const chips = visible.map(e=>`<div onclick="event.stopPropagation();calOpenEvent('${e.id}')" style="background:${e.color||'#2563eb'};color:#fff;border-radius:4px;padding:2px 6px;font-size:.67rem;font-weight:600;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">
-        ${e.start?_fmtTime(e.start)+' ':''}${e.title}
-      </div>`).join('');
+    const chips = visible.map(e=>{
+      const isFirst = dateStr === _evDateStart(e);
+      const prefix  = isFirst && e.start ? _fmtTime(e.start)+' ' : '';
+      return `<div onclick="event.stopPropagation();calOpenEvent('${e.id}')" style="background:${e.color||'#2563eb'};color:#fff;border-radius:4px;padding:2px 6px;font-size:.67rem;font-weight:600;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">
+        ${prefix}${e.title}
+      </div>`;
+    }).join('');
     const more = extra>0 ? `<div style="font-size:.63rem;color:var(--muted);font-weight:600;padding:1px 4px">+${extra} more</div>` : '';
     return chips + more;
   }
@@ -3361,9 +3378,9 @@ init();
         const d = _addDays(calWeekStart,i);
         const ds = _yyyymmdd(d);
         const hh = String(h).padStart(2,'0');
-        const chips = evs.filter(e=>e.date===ds && e.start && e.start.startsWith(hh))
-          .map(e=>`<div onclick="calOpenEvent('${e.id}')" style="background:${e.color||'#2563eb'};color:#fff;border-radius:4px;padding:2px 5px;font-size:.65rem;font-weight:600;cursor:pointer;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.title}</div>`).join('');
-        return `<div style="flex:1;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:2px 3px;min-height:38px;cursor:pointer;box-sizing:border-box" onclick="calAddEventAtTime('${ds}','${hh}:00')">${chips}</div>`;
+        const chips = evs.filter(e=>_evOnDate(e,ds) && e.start && e.start.startsWith(hh))
+          .map(e=>`<div onclick="event.stopPropagation();calOpenEvent('${e.id}')" style="background:${e.color||'#2563eb'};color:#fff;border-radius:4px;padding:2px 5px;font-size:.65rem;font-weight:600;cursor:pointer;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.title}</div>`).join('');
+        return `<div style="flex:1;min-width:0;overflow:hidden;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:2px 3px;min-height:38px;cursor:pointer;box-sizing:border-box" onclick="calAddEventAtTime('${ds}','${hh}:00')">${chips}</div>`;
       }).join('');
       return `<div style="display:flex;border-bottom:1px solid var(--border)">
         <div style="width:52px;flex-shrink:0;font-size:.64rem;color:var(--muted);padding:4px 6px;border-right:1px solid var(--border);font-weight:600;text-align:right">${hLabel}</div>
@@ -3406,18 +3423,19 @@ init();
   };
 
   // ── Modal helpers ──────────────────────────────────────────────
-  function _openModal(title, ev){
-    editingId = ev ? ev.id : null;
+  function _openModal(title, ev, isNew){
+    editingId = (!isNew && ev?.id) ? ev.id : null;
     $('calModalTitle').textContent = title;
-    $('calEvTitle').value  = ev?.title  || '';
-    $('calEvDate').value   = ev?.date   || '';
-    $('calEvStart').value  = ev?.start  || '';
-    $('calEvEnd').value    = ev?.end    || '';
-    $('calEvLoc').value    = ev?.loc    || '';
-    $('calEvNotes').value  = ev?.notes  || '';
-    $('calEvColor').value  = ev?.color  || '#2563eb';
+    $('calEvTitle').value     = ev?.title      || '';
+    $('calEvDateStart').value = ev?.date_start || ev?.date || '';
+    $('calEvDateEnd').value   = ev?.date_end   || ev?.date_start || ev?.date || '';
+    $('calEvStart').value     = ev?.start  || '';
+    $('calEvEnd').value       = ev?.end    || '';
+    $('calEvLoc').value       = ev?.loc    || '';
+    $('calEvNotes').value     = ev?.notes  || '';
+    $('calEvColor').value     = ev?.color  || '#2563eb';
     $('calModalErr').style.display='none';
-    $('calBtnDelete').style.display = ev ? 'block' : 'none';
+    $('calBtnDelete').style.display = editingId ? 'block' : 'none';
     $('calModal').style.display='block';
     $('calModalOverlay').style.display='block';
     setTimeout(()=>$('calEvTitle').focus(),80);
@@ -3429,36 +3447,40 @@ init();
     editingId=null;
   };
 
-  window.calAddEvent = function(){ _openModal('New Event', null); };
+  window.calAddEvent = function(){ _openModal('New Event', null, true); };
 
   window.calAddEventOnDate = function(dateStr){
-    // Only open if clicking the blank area (not a chip)
-    _openModal('New Event', {date:dateStr});
-    editingId=null;
+    _openModal('New Event', {date_start:dateStr, date_end:dateStr}, true);
   };
   window.calAddEventAtTime = function(dateStr, time){
-    const ev = {date:dateStr, start:time};
-    _openModal('New Event', ev);
-    editingId=null;
+    _openModal('New Event', {date_start:dateStr, date_end:dateStr, start:time}, true);
   };
   window.calOpenEvent = function(id){
     const evs = loadEvents();
     const ev  = evs.find(e=>e.id===id);
-    if(ev) _openModal('Edit Event', ev);
+    if(ev) _openModal('Edit Event', ev, false);
   };
 
   window.calSaveEvent = function(){
-    const title = $('calEvTitle').value.trim();
-    const date  = $('calEvDate').value;
-    if(!title||!date){
-      $('calModalErr').textContent='Title and Date are required.';
+    const title     = $('calEvTitle').value.trim();
+    const dateStart = $('calEvDateStart').value;
+    const dateEnd   = $('calEvDateEnd').value || dateStart;
+    if(!title || !dateStart){
+      $('calModalErr').textContent='Title and Start Date are required.';
+      $('calModalErr').style.display='block';
+      return;
+    }
+    if(dateEnd && dateEnd < dateStart){
+      $('calModalErr').textContent='End Date cannot be before Start Date.';
       $('calModalErr').style.display='block';
       return;
     }
     const evs = loadEvents();
     const payload = {
-      id:    editingId || newId(),
-      title, date,
+      id:         editingId || newId(),
+      title,
+      date_start: dateStart,
+      date_end:   dateEnd,
       start: $('calEvStart').value,
       end:   $('calEvEnd').value,
       loc:   $('calEvLoc').value.trim(),
