@@ -1684,7 +1684,7 @@ function openFulfillmentModal(period){
 
   const html = `
     <div style="margin-bottom:18px">
-      <div style="font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);margin-bottom:8px">Periode: ${mLabel(period)}</div>
+      <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:var(--navy);padding:7px 12px;border-radius:6px;margin-bottom:12px">Periode: ${mLabel(period)}</div>
       <table style="width:100%;border-collapse:collapse;font-size:.82rem">
         <thead>
           <tr style="background:var(--navy);color:#fff">
@@ -1716,7 +1716,7 @@ function openFulfillmentModal(period){
         </tbody>
       </table>
     </div>
-    <div style="font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);margin-bottom:8px">Referensi Performance Tier</div>
+    <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:var(--navy);padding:7px 12px;border-radius:6px;margin-bottom:12px">Referensi Performance Tier</div>
     <table style="width:100%;border-collapse:collapse;font-size:.8rem">
       <thead>
         <tr style="background:var(--navy);color:#fff">
@@ -2536,13 +2536,50 @@ function getFiltered(q=''){
 }
 
 // ─── DRILL PANEL ─────────────────────────────────────────────────────────────
-const ANOMALY_REASONS = {
-  TTI:     'Anomaly termasuk: (1) flag_exclude_all ≠ 0 — order dikecualikan dari perhitungan; (2) tgl_pc kosong — tanggal penyelesaian tidak tersedia. Baris ini tidak masuk denominator SLA.',
-  TTRFFG:  'Anomaly termasuk: (1) flag_exclude_all ≠ 0 — order dikecualikan; (2) first_cust_assign kosong (MANJA) — tidak ada data waktu assign; (3) f_ttr = WILSUS — Work In Location Suspend, dikecualikan dari SLA.',
-  FFG:     'Anomaly = flag_exclude_all ≠ 0. Order ini tidak dihitung sebagai gangguan (FFG). Denominator FFG berasal dari total order TTI periode N-2 (bukan dari file ini).',
-  FFGGAUL: 'Anomaly = flag_exclude_all ≠ 0. Hanya order dengan flag = 0 yang masuk ke perhitungan FFG vs Total (GAUL).',
-  PSRE:    'Anomaly = flag_exclude_all ≠ 0. Order dengan flag ini dikecualikan dari perhitungan SLA PS-RE.',
-};
+const ANOMALY_INFO_HTML = `
+<div style="margin-bottom:14px">
+  <div style="font-size:.8rem;font-weight:800;color:var(--navy);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--navy)">Perhitungan Anomali KPI</div>
+  <div style="display:flex;flex-direction:column;gap:10px;font-size:.78rem;line-height:1.6">
+
+    <div style="background:rgba(42,63,94,.06);border-left:3px solid #7c3aed;border-radius:0 6px 6px 0;padding:9px 12px">
+      <div style="font-weight:700;color:#7c3aed;margin-bottom:4px">1. TTI 3×24 Jam</div>
+      Order terkategori sebagai anomali jika:
+      <ul style="margin:4px 0 0 16px;padding:0">
+        <li>Tidak ada waktu referensi — Manja, PI, RE semuanya minus atau null</li>
+        <li>Tanggal PC null</li>
+      </ul>
+    </div>
+
+    <div style="background:rgba(42,63,94,.06);border-left:3px solid #3b82f6;border-radius:0 6px 6px 0;padding:9px 12px">
+      <div style="font-weight:700;color:#3b82f6;margin-bottom:4px">2. TTR FFG</div>
+      Order terkategori sebagai anomali jika:
+      <ul style="margin:4px 0 0 16px;padding:0">
+        <li><code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">flag_exclude_all ≠ 0</code></li>
+        <li><code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">f_ttr = WILSUS</code> — Work In Location Suspend</li>
+        <li><code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">first_cust_assign</code> kosong / null (MANJA)</li>
+      </ul>
+    </div>
+
+    <div style="background:rgba(42,63,94,.06);border-left:3px solid #22c55e;border-radius:0 6px 6px 0;padding:9px 12px">
+      <div style="font-weight:700;color:#166534;margin-bottom:4px">3. FFG & FFG GAUL</div>
+      Order terkategori sebagai anomali jika:
+      <ul style="margin:4px 0 0 16px;padding:0">
+        <li><code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">flag_exclude_all ≠ 0</code> — dikecualikan dari perhitungan</li>
+      </ul>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:4px">Catatan: denominator FFG berasal dari total order TTI periode N-2</div>
+    </div>
+
+    <div style="background:rgba(42,63,94,.06);border-left:3px solid #f59e0b;border-radius:0 6px 6px 0;padding:9px 12px">
+      <div style="font-weight:700;color:#b45309;margin-bottom:4px">4. PS-RE</div>
+      Order terkategori sebagai anomali jika:
+      <ul style="margin:4px 0 0 16px;padding:0">
+        <li><code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px">flag_exclude_all ≠ 0</code> — dikecualikan dari perhitungan SLA PS-RE</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+`;
 const ENTITY_DISPLAY = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
 
 // ─── DOWNLOAD DETAIL COLUMNS ──────────────────────────────────────────────────
@@ -2585,7 +2622,6 @@ function openDrillPanel(type){
 
   if(type === 'anomaly'){
     title = `Anomaly Detail — ${label} — ${period}`;
-    const reason = ANOMALY_REASONS[entity] || 'Order yang dikecualikan dari perhitungan SLA.';
     const totalAn = d.anomaly || 0;
     const rows = areas.map(a=>{
       const c = slaColor(a.sla_pct, tgt);
@@ -2598,9 +2634,9 @@ function openDrillPanel(type){
       </tr>`;
     }).join('');
     html = `
-      <div class="drill-reason">ℹ️ ${reason}</div>
+      ${ANOMALY_INFO_HTML}
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <div class="drill-section-head" style="margin-bottom:0">Per Area</div>
+        <div class="drill-section-head" style="margin-bottom:0">Per Area — ${label}</div>
         ${_DL_ENTITIES.includes(entity)?`<button id="btnDlAnomaly" onclick="downloadAnomalyPanel('${entity}','${selectedMonth}')"
           style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download Anomaly
