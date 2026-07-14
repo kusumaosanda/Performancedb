@@ -186,8 +186,9 @@ header h1{font-size:.95rem;font-weight:600}
 .btn-add:hover{background:var(--navy)}
 
 .pt-table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-thead th{text-align:left;padding:9px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+thead th{text-align:left;padding:9px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap;overflow:hidden}
+.pt-name-cell{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:0}
 tbody tr.main-row{border-bottom:1px solid var(--border);transition:background .12s}
 tbody tr.main-row:hover{background:#f8f5f0}
 tbody tr.sub-row{border-bottom:1px solid rgba(224,216,206,.5);background:#ede8dc}
@@ -616,14 +617,14 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
             <table>
               <thead><tr>
                 <th style="width:28px"></th>
-                <th>Project</th>
-                <th>Sub Task</th>
-                <th>PIC</th>
-                <th>Priority</th>
-                <th>Start Date</th>
-                <th>Due Date</th>
-                <th>Progress</th>
-                <th>Category</th>
+                <th style="width:28%">Project</th>
+                <th style="width:130px">Sub Task</th>
+                <th style="width:100px">PIC</th>
+                <th style="width:90px">Priority</th>
+                <th style="width:100px">Start Date</th>
+                <th style="width:110px">Due Date</th>
+                <th style="width:130px">Progress</th>
+                <th style="width:100px">Category</th>
                 <th style="width:36px"></th>
               </tr></thead>
               <tbody id="projectTable"></tbody>
@@ -2537,7 +2538,7 @@ function renderTable(projects){
       <td style="text-align:center;width:28px">
         ${hasSubs?`<button class="row-expand ${p._open?'open':''}" onclick="toggleSubs('${p.id}')" title="Toggle subtasks">▶</button>`:''}
       </td>
-      <td style="font-weight:600">
+      <td class="pt-name-cell" style="font-weight:600" title="${fmt(p.name)}">
         <span class="editable" onclick="editCell(this,'${p.id}','name')">${fmt(p.name)}</span>
         <span class="editable" onclick="editSelect(this,'${p.id}','status',STATUS_OPTIONS)" title="Click to change status" style="margin-left:6px;cursor:pointer">
           <span class="pt-status ${cls}" style="font-size:.68rem;padding:2px 7px">${fmt(p.status)}</span>
@@ -2571,7 +2572,7 @@ function renderTable(projects){
       sr.style.display=p._open?'':'none';
       sr.innerHTML=`
         <td style="width:28px"></td>
-        <td class="sub-indent">
+        <td class="sub-indent pt-name-cell" title="${fmt(s.name)}">
           ↳ <span class="editable" onclick="editCell(this,'${s.id}','name',true,'${p.id}')">${fmt(s.name)}</span>
           <span class="editable" onclick="editSelect(this,'${s.id}','status',STATUS_OPTIONS,true,'${p.id}')" title="Click to change status" style="margin-left:4px;cursor:pointer">
             <span class="pt-status ${sCls}" style="font-size:.62rem;padding:1px 5px">${fmt(s.status)}</span>
