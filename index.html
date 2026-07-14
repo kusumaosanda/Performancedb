@@ -209,6 +209,11 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .btn-del{background:none;border:none;color:#bbb;cursor:pointer;font-size:1.1rem;padding:4px 6px;transition:all .15s;opacity:.5;border-radius:6px}
 .btn-del:hover{color:#dc2626;opacity:1;background:rgba(220,38,38,.08);transform:scale(1.15)}
 .btn-del:hover{color:var(--red)}
+.drag-handle{color:var(--border);cursor:grab;font-size:.9rem;line-height:1;user-select:none;display:inline-block;padding:0 2px}
+.drag-handle:active{cursor:grabbing}
+tr.dragging{opacity:.35;background:var(--bg)!important}
+tr.drop-above{box-shadow:inset 0 3px 0 0 var(--teal)}
+tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 
 .pt-status,.pt-priority{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:.72rem;font-weight:600;white-space:nowrap}
 .pt-status.not-started{background:#f3f4f6;color:#6b7280}
@@ -2488,6 +2493,7 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
 const STATUS_OPTIONS=['Not Started','In Progress','Completed','On Hold','Cancelled'];
 const PRIORITY_OPTIONS=['High','Medium','Low'];
 let projectIdCounter=1000;
+let _drag=null; // {type:'project'|'subtask', id, parentId?}
 
 function loadProjects(data){
   // Check localStorage for saved edits
@@ -2496,7 +2502,15 @@ function loadProjects(data){
     if(saved){ allProjects=JSON.parse(saved); projectsDirty=true; }
     else { allProjects=JSON.parse(JSON.stringify(data.projects||[])); }
   } catch(e){ allProjects=data.projects||[]; }
-  allProjects.forEach(p=>{ if(!p.id) p.id='p'+(++projectIdCounter); (p.subtasks||[]).forEach(s=>{ if(!s.id) s.id='s'+(++projectIdCounter); }); p.subtasks=p.subtasks||[]; p._open=false; });
+  // Sync counter to max existing ID to prevent collisions after reload
+  let _maxId = projectIdCounter;
+  allProjects.forEach(p=>{
+    const pn=parseInt((p.id||'').replace(/\D/g,'')); if(pn>_maxId) _maxId=pn;
+    if(!p.id) p.id='p'+(++projectIdCounter);
+    (p.subtasks||[]).forEach(s=>{ const sn=parseInt((s.id||'').replace(/\D/g,'')); if(sn>_maxId) _maxId=sn; if(!s.id) s.id='s'+(++projectIdCounter); });
+    p.subtasks=p.subtasks||[]; p._open=false;
+  });
+  projectIdCounter=_maxId;
 }
 
 function renderTracker(){
@@ -2518,6 +2532,47 @@ function _progressSlider(id, val, isSub, parentId){
   </div>`;
 }
 
+function _attachDrag(row, type, id, parentId){
+  row.draggable=true;
+  row.addEventListener('dragstart',e=>{
+    _drag={type,id,parentId};
+    e.dataTransfer.effectAllowed='move';
+    setTimeout(()=>row.classList.add('dragging'),0);
+  });
+  row.addEventListener('dragend',()=>{
+    row.classList.remove('dragging');
+    document.querySelectorAll('.drop-above,.drop-below').forEach(r=>r.classList.remove('drop-above','drop-below'));
+    _drag=null;
+  });
+  row.addEventListener('dragover',e=>{
+    e.preventDefault();
+    if(!_drag) return;
+    // Projects can drop on projects; subtasks only within same parent
+    const compatible=(type==='project'&&_drag.type==='project'&&_drag.id!==id)
+                    ||(type==='subtask'&&_drag.type==='subtask'&&_drag.parentId===parentId&&_drag.id!==id);
+    if(!compatible) return;
+    e.dataTransfer.dropEffect='move';
+    document.querySelectorAll('.drop-above').forEach(r=>r.classList.remove('drop-above'));
+    row.classList.add('drop-above');
+  });
+  row.addEventListener('dragleave',()=>row.classList.remove('drop-above'));
+  row.addEventListener('drop',e=>{
+    e.preventDefault();
+    row.classList.remove('drop-above');
+    if(!_drag) return;
+    if(_drag.type==='project' && type==='project' && _drag.id!==id){
+      const fromIdx=allProjects.findIndex(x=>x.id===_drag.id);
+      const toIdx=allProjects.findIndex(x=>x.id===id);
+      if(fromIdx>=0&&toIdx>=0){ const [item]=allProjects.splice(fromIdx,1); allProjects.splice(toIdx,0,item); projectsDirty=true; saveLocal(); renderTable(getFiltered()); }
+    } else if(_drag.type==='subtask' && type==='subtask' && _drag.parentId===parentId && _drag.id!==id){
+      const par=allProjects.find(x=>x.id===parentId);
+      if(par){ const fromIdx=par.subtasks.findIndex(x=>x.id===_drag.id); const toIdx=par.subtasks.findIndex(x=>x.id===id);
+        if(fromIdx>=0&&toIdx>=0){ const [item]=par.subtasks.splice(fromIdx,1); par.subtasks.splice(toIdx,0,item); projectsDirty=true; saveLocal(); renderTable(getFiltered()); } }
+    }
+    _drag=null;
+  });
+}
+
 function renderTable(projects){
   const tbody=$('projectTable');
   tbody.innerHTML='';
@@ -2530,13 +2585,14 @@ function renderTable(projects){
     const overdue=_isOverdue(p.dueDate,p.status);
     const subCount=p.subtasks?.length||0;
     const hasSubs=subCount>0;
-    const histIcon = (p.dueDateHistory?.length) ? `<span title="Due date changed ${p.dueDateHistory.length} time(s). Previous: ${p.dueDateHistory.slice(-1)[0]}" style="cursor:help;font-size:.7rem;margin-left:3px">🕐</span>` : '';
+    const histIcon=(p.dueDateHistory?.length)?`<span title="Due date changed ${p.dueDateHistory.length} time(s). Previous: ${p.dueDateHistory.slice(-1)[0]}" style="cursor:help;font-size:.7rem;margin-left:3px">🕐</span>`:'';
 
     const mainRow=document.createElement('tr');
     mainRow.className='main-row'; mainRow.id='row_'+p.id;
     mainRow.innerHTML=`
       <td style="text-align:center;width:28px">
-        ${hasSubs?`<button class="row-expand ${p._open?'open':''}" onclick="toggleSubs('${p.id}')" title="Toggle subtasks">▶</button>`:''}
+        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        ${hasSubs?`<br><button class="row-expand ${p._open?'open':''}" onclick="toggleSubs('${p.id}')" title="Toggle subtasks">▶</button>`:''}
       </td>
       <td class="pt-name-cell" style="font-weight:600" title="${fmt(p.name)}">
         <span class="editable" onclick="editCell(this,'${p.id}','name')">${fmt(p.name)}</span>
@@ -2558,6 +2614,7 @@ function renderTable(projects){
       <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${p.id}','category')">${fmt(p.category)}</span></td>
       <td><button class="btn-del" onclick="deleteProject('${p.id}')" title="Delete">🗑️</button></td>`;
     tbody.appendChild(mainRow);
+    _attachDrag(mainRow,'project',p.id,null);
 
     // Subtask rows — direct <tr> in same tbody (fixes column alignment)
     (p.subtasks||[]).forEach(s=>{
@@ -2571,7 +2628,7 @@ function renderTable(projects){
       sr.className='sub-row'; sr.dataset.parent=p.id;
       sr.style.display=p._open?'':'none';
       sr.innerHTML=`
-        <td style="width:28px"></td>
+        <td style="width:28px;text-align:center"><span class="drag-handle" title="Drag to reorder subtask">⠿</span></td>
         <td class="sub-indent pt-name-cell" title="${fmt(s.name)}">
           ↳ <span class="editable" onclick="editCell(this,'${s.id}','name',true,'${p.id}')">${fmt(s.name)}</span>
           <span class="editable" onclick="editSelect(this,'${s.id}','status',STATUS_OPTIONS,true,'${p.id}')" title="Click to change status" style="margin-left:4px;cursor:pointer">
@@ -2581,7 +2638,9 @@ function renderTable(projects){
         <td></td>
         <td><span class="editable" onclick="editCell(this,'${s.id}','pic',true,'${p.id}')">${fmt(s.pic)}</span></td>
         <td><span class="editable" onclick="editSelect(this,'${s.id}','priority',PRIORITY_OPTIONS,true,'${p.id}')"><span class="pt-priority ${sPriCls}">● ${fmt(s.priority)}</span></span></td>
-        <td style="font-size:.8rem;color:var(--muted)">${_fmtDate(s.startDate)}</td>
+        <td style="font-size:.8rem">
+          <span class="editable" onclick="editDateCell(this,'${s.id}','startDate',true,'${p.id}')" title="Click to edit start date" style="color:var(--muted)">${_fmtDate(s.startDate)||'—'}</span>
+        </td>
         <td style="color:${sOverdue?'var(--red)':'inherit'};font-weight:${sOverdue?600:400};font-size:.8rem">
           <span class="editable" onclick="editDateCell(this,'${s.id}','dueDate',true,'${p.id}')" title="Click to edit">${_fmtDate(s.dueDate)}${sOverdue?' ⚠':''}</span>${sHistIcon}
         </td>
@@ -2589,6 +2648,7 @@ function renderTable(projects){
         <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${s.id}','category',true,'${p.id}')">${fmt(s.category)}</span></td>
         <td><button class="btn-del" onclick="deleteSubtask('${p.id}','${s.id}')" title="Delete subtask">🗑️</button></td>`;
       tbody.appendChild(sr);
+      _attachDrag(sr,'subtask',s.id,p.id);
     });
   });
 }
@@ -2607,7 +2667,8 @@ function editCell(el, id, field, isSub=false, parentId=null){
   const input=document.createElement('input');
   input.value=current; input.style.cssText='border:1px solid var(--teal);border-radius:5px;padding:3px 7px;font-size:.83rem;width:120px;outline:none';
   el.innerHTML=''; el.appendChild(input); input.focus(); input.select();
-  const save=()=>{ const v=input.value.trim(); updateField(id,field,v,isSub,parentId); saveLocal(); renderTable(getFiltered()); };
+  let saved=false;
+  const save=()=>{ if(saved) return; saved=true; const v=input.value.trim(); updateField(id,field,v,isSub,parentId); saveLocal(); renderTable(getFiltered()); };
   input.onblur=save; input.onkeydown=e=>{if(e.key==='Enter')save();if(e.key==='Escape'){renderTable(getFiltered());}};
 }
 
