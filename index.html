@@ -188,7 +188,7 @@ header h1{font-size:.95rem;font-weight:600}
 .pt-table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;table-layout:fixed}
 thead th{text-align:left;padding:9px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap;overflow:hidden}
-.pt-name-cell{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:0}
+.pt-name-cell{overflow:hidden;max-width:0;word-break:break-word;white-space:normal}
 tbody tr.main-row{border-bottom:1px solid var(--border);transition:background .12s}
 tbody tr.main-row:hover{background:#f8f5f0}
 tbody tr.sub-row{border-bottom:1px solid rgba(224,216,206,.5);background:#ede8dc}
@@ -2565,6 +2565,8 @@ function _progressSlider(id, val, isSub, parentId){
 function _attachDrag(row, type, id, parentId){
   row.draggable=true;
   row.addEventListener('dragstart',e=>{
+    // Only start drag when the grip handle is grabbed — prevents conflict with sliders/inputs
+    if(!e.target.closest('.drag-handle')){ e.preventDefault(); return; }
     _drag={type,id,parentId};
     e.dataTransfer.effectAllowed='move';
     setTimeout(()=>row.classList.add('dragging'),0);
