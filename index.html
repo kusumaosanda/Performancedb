@@ -2740,9 +2740,8 @@ function renderTable(projects){
   tbody.innerHTML='';
   $('noProjects').style.display=projects.length?'none':'block';
 
-  // Sort projects and subtasks alphabetically by name
+  // Sort projects alphabetically — subtasks keep their stored order (drag-to-reorder)
   const sorted=[...projects].sort((a,b)=>(a.name||'').localeCompare(b.name||'','id',{sensitivity:'base'}));
-  sorted.forEach(p=>{ if(p.subtasks?.length) p.subtasks=[...p.subtasks].sort((a,b)=>(a.name||'').localeCompare(b.name||'','id',{sensitivity:'base'})); });
 
   sorted.forEach(p=>{
     const cls=(p.status||'').toLowerCase().replace(/\s+/g,'-');
