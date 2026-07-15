@@ -2694,8 +2694,10 @@ function _progressSlider(id, val, isSub, parentId){
 function _attachDrag(row, type, id, parentId){
   row.draggable=true;
   row.addEventListener('dragstart',e=>{
-    // Only start drag when the grip handle is grabbed — prevents conflict with sliders/inputs
-    if(!e.target.closest('.drag-handle')){ e.preventDefault(); return; }
+    // Only start drag when the ⠿ grip handle is grabbed
+    const path = e.composedPath ? e.composedPath() : [e.target];
+    const fromHandle = path.some(el=>el.classList&&el.classList.contains('drag-handle'));
+    if(!fromHandle){ e.preventDefault(); return; }
     _drag={type,id,parentId};
     e.dataTransfer.effectAllowed='move';
     setTimeout(()=>row.classList.add('dragging'),0);
@@ -2739,7 +2741,11 @@ function renderTable(projects){
   tbody.innerHTML='';
   $('noProjects').style.display=projects.length?'none':'block';
 
-  projects.forEach(p=>{
+  // Sort projects and subtasks alphabetically by name
+  const sorted=[...projects].sort((a,b)=>(a.name||'').localeCompare(b.name||'','id',{sensitivity:'base'}));
+  sorted.forEach(p=>{ if(p.subtasks?.length) p.subtasks=[...p.subtasks].sort((a,b)=>(a.name||'').localeCompare(b.name||'','id',{sensitivity:'base'})); });
+
+  sorted.forEach(p=>{
     const cls=(p.status||'').toLowerCase().replace(/\s+/g,'-');
     const priCls=(p.priority||'medium').toLowerCase();
     const pct=p.progress!=null?p.progress:null;
