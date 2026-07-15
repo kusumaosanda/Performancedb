@@ -264,10 +264,19 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .summary-entity-row td{background:var(--navy2);color:#fff;padding:7px 14px;font-size:.76rem;letter-spacing:.3px}
 .summary-area-row{border-bottom:1px solid var(--border);transition:background .12s}
 .summary-area-row:hover{background:rgba(42,63,94,.04)}
-.summary-area-name{padding:7px 14px;font-size:.8rem;white-space:nowrap;color:var(--text)}
+.summary-area-name{padding:7px 14px 7px 10px;font-size:.8rem;white-space:nowrap;color:var(--text)}
 .summary-cell{text-align:center;padding:6px 10px;font-size:.8rem;font-weight:600}
 .summary-cell.no-data{color:var(--border);text-align:center;font-weight:400}
 .summary-total-row td{border-top:2px solid var(--border);background:rgba(42,63,94,.05);padding:7px 14px;font-weight:700}
+.s-reg-row,.s-br-row,.s-sto-row{border-bottom:1px solid rgba(212,197,169,.3)}
+.s-reg-row:hover,.s-br-row:hover,.s-sto-row:hover{background:rgba(42,63,94,.03)}
+.s-reg-row td:first-child{color:var(--text)}
+.s-br-row td:first-child{color:var(--muted)}
+.s-sto-row td:first-child{color:var(--muted)}
+/* Collapsible toggle arrow */
+.s-toggle{cursor:pointer;display:inline-block;font-size:.6rem;margin-right:5px;transition:transform .18s;color:var(--teal);user-select:none;font-weight:900;vertical-align:middle}
+.s-toggle.s-open{transform:rotate(90deg)}
+.s-indent{display:inline-block;width:13px;margin-right:5px}
 
 /* ── TREE FILTER BAR ─────────────────────────────────────────────────────── */
 .tree-filter-bar{display:flex;gap:12px;flex-wrap:wrap;padding:10px 0 14px;border-bottom:1px solid var(--border);margin-bottom:12px}
@@ -1578,7 +1587,7 @@ function onEntityChange(){
 
 function renderKPIBody(){
   // Show download buttons for entities that push raw/detail CSVs
-  const _dlEntities = ['TTI','FFG','TTRFFG'];
+  const _dlEntities = ['TTI','FFG','TTRFFG','PSRE'];
   const isDownloadMonth = _dlEntities.includes(selectedEntity) && selectedMonth && selectedMonth!=='summary';
   const dlRaw  = $('btnDownloadRaw');
   const dlProc = $('btnDownloadKPI');
@@ -1841,7 +1850,7 @@ function renderAllView(){
   },50);
 }
 
-// ── SUMMARY VIEW ──
+// ── SUMMARY VIEW (collapsible KPI → Area → Regional → Branch → STO) ──
 function renderSummaryView(){
   const allMonths = Object.keys(kpiData.months||{}).sort();
   const entities  = new Set();
@@ -1856,53 +1865,170 @@ function renderSummaryView(){
     return `class="summary-cell" style="color:${clr};background:${bg}">${fmtSla(pct)}`;
   };
   const ENTITY_DISPLAY_NAMES = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
+  let _uid=0; const uid=()=>'sm'+(++_uid);
 
   let rows='';
   ents.forEach(entity=>{
     const tgt = ENTITY_TARGETS_OVERRIDE[entity] || (Object.values(kpiData.months).find(m=>m[entity]))?.[entity]?.target || 95;
     const dispName = ENTITY_DISPLAY_NAMES[entity]||entity;
-    rows+=`<tr class="summary-entity-row"><td colspan="${allMonths.length+1}" style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px">${dispName} &nbsp;<span style="font-weight:400;opacity:.7">— Target: ${fmtSla(tgt)}</span></td></tr>`;
+    const eid = uid();
 
-    // Collect areas
-    const areaMap={};
-    allMonths.forEach(m=>{
-      ((kpiData.months[m]||{})[entity]?.by_area||[]).forEach(a=>{
-        if(!areaMap[a.area]) areaMap[a.area]={};
-        areaMap[a.area][m]=a.sla_pct;
+    // KPI entity header — clicking toggles area rows
+    rows+=`<tr class="summary-entity-row" data-id="${eid}">
+      <td colspan="${allMonths.length+1}" style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer" onclick="smToggle(this.querySelector('.s-toggle'))">
+        <span class="s-toggle s-open">▶</span>${dispName} <span style="font-weight:400;opacity:.7">— Target: ${fmtSla(tgt)}</span>
+      </td>
+    </tr>`;
+
+    // Collect unique areas
+    const areaNames=new Set();
+    allMonths.forEach(m=>((kpiData.months[m]||{})[entity]?.by_area||[]).forEach(a=>areaNames.add(a.area)));
+
+    [...areaNames].sort().forEach(area=>{
+      const aid=uid();
+      // Check if any month has regional data
+      let hasReg=false;
+      allMonths.forEach(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);if(ad?.by_regional?.length)hasReg=true;});
+      const aToggle=hasReg?`<span class="s-toggle" onclick="event.stopPropagation();smToggle(this)">▶</span>`:`<span class="s-indent"></span>`;
+
+      rows+=`<tr class="summary-area-row" data-pid="${eid}" data-id="${aid}">
+        <td class="summary-area-name" style="cursor:${hasReg?'pointer':'default'}" ${hasReg?`onclick="smToggle(this.querySelector('.s-toggle'))"`:''}>${aToggle}${area}</td>
+        ${allMonths.map(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);return`<td ${cellStyle(ad?.sla_pct,tgt)}</td>`;}).join('')}
+      </tr>`;
+
+      if(!hasReg) return;
+
+      // Regionals
+      const regNames=new Set();
+      allMonths.forEach(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);(ad?.by_regional||[]).forEach(r=>regNames.add(r.regional));});
+
+      [...regNames].sort().forEach(reg=>{
+        const rid=uid();
+        let hasBr=false;
+        allMonths.forEach(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);const rd=(ad?.by_regional||[]).find(r=>r.regional===reg);if(rd?.by_branch?.length)hasBr=true;});
+        const rToggle=hasBr?`<span class="s-toggle" onclick="event.stopPropagation();smToggle(this)">▶</span>`:`<span class="s-indent"></span>`;
+
+        rows+=`<tr class="s-reg-row" data-pid="${aid}" data-id="${rid}" style="display:none">
+          <td style="padding-left:26px;font-size:.78rem;cursor:${hasBr?'pointer':'default'}" ${hasBr?`onclick="smToggle(this.querySelector('.s-toggle'))"`:''}>${rToggle}${reg}</td>
+          ${allMonths.map(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);const rd=(ad?.by_regional||[]).find(r=>r.regional===reg);return`<td ${cellStyle(rd?.sla_pct,tgt)}</td>`;}).join('')}
+        </tr>`;
+
+        if(!hasBr) return;
+
+        // Branches
+        const brNames=new Set();
+        allMonths.forEach(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);const rd=(ad?.by_regional||[]).find(r=>r.regional===reg);(rd?.by_branch||[]).forEach(b=>brNames.add(b.branch));});
+
+        [...brNames].sort().forEach(br=>{
+          const bid=uid();
+          let hasSto=false;
+          allMonths.forEach(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);const rd=(ad?.by_regional||[]).find(r=>r.regional===reg);const bd=(rd?.by_branch||[]).find(b=>b.branch===br);if(bd?.by_sto?.length)hasSto=true;});
+          const bToggle=hasSto?`<span class="s-toggle" onclick="event.stopPropagation();smToggle(this)">▶</span>`:`<span class="s-indent"></span>`;
+
+          rows+=`<tr class="s-br-row" data-pid="${rid}" data-id="${bid}" style="display:none">
+            <td style="padding-left:44px;font-size:.76rem;cursor:${hasSto?'pointer':'default'}" ${hasSto?`onclick="smToggle(this.querySelector('.s-toggle'))"`:''}>${bToggle}${br}</td>
+            ${allMonths.map(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);const rd=(ad?.by_regional||[]).find(r=>r.regional===reg);const bd=(rd?.by_branch||[]).find(b=>b.branch===br);return`<td ${cellStyle(bd?.sla_pct,tgt)}</td>`;}).join('')}
+          </tr>`;
+
+          if(!hasSto) return;
+
+          // STOs (leaf)
+          const stoNames=new Set();
+          allMonths.forEach(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);const rd=(ad?.by_regional||[]).find(r=>r.regional===reg);const bd=(rd?.by_branch||[]).find(b=>b.branch===br);(bd?.by_sto||[]).forEach(s=>stoNames.add(s.sto));});
+
+          [...stoNames].sort().forEach(sto=>{
+            rows+=`<tr class="s-sto-row" data-pid="${bid}" style="display:none">
+              <td style="padding-left:62px;font-size:.73rem;color:var(--muted);white-space:nowrap">${sto}</td>
+              ${allMonths.map(m=>{const ad=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);const rd=(ad?.by_regional||[]).find(r=>r.regional===reg);const bd=(rd?.by_branch||[]).find(b=>b.branch===br);const sd=(bd?.by_sto||[]).find(s=>s.sto===sto);return`<td ${cellStyle(sd?.sla_pct,tgt)}</td>`;}).join('')}
+            </tr>`;
+          });
+        });
       });
     });
 
-    Object.keys(areaMap).sort().forEach(area=>{
-      rows+=`<tr class="summary-area-row"><td class="summary-area-name">&nbsp;&nbsp;&nbsp;${area}</td>${allMonths.map(m=>`<td ${cellStyle(areaMap[area][m],tgt)}</td>`).join('')}</tr>`;
-    });
-
-    // Entity total
-    rows+=`<tr class="summary-total-row"><td style="padding-left:14px">↳ Total</td>${allMonths.map(m=>{const pct=(kpiData.months[m]||{})[entity]?.sla_pct;return`<td ${cellStyle(pct,tgt)}</td>`;}).join('')}</tr>`;
+    // Entity total row
+    rows+=`<tr class="summary-total-row" data-pid="${eid}"><td style="padding-left:14px">↳ Total</td>${allMonths.map(m=>{const pct=(kpiData.months[m]||{})[entity]?.sla_pct;return`<td ${cellStyle(pct,tgt)}</td>`;}).join('')}</tr>`;
   });
 
   $('kpiBody').innerHTML=`
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
         <div class="card-title" style="margin-bottom:0">Summary — All KPI by Area</div>
-        <button onclick="downloadSummaryCSV()" style="background:linear-gradient(135deg,#38bdf8,#0284c7);color:#fff;border:none;padding:7px 16px;border-radius:8px;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(2,132,199,.3);letter-spacing:.2px">
-          ⬇ Summary Download
-        </button>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button onclick="smExpandAll()" style="padding:5px 12px;background:rgba(42,63,94,.07);color:var(--navy);border:1px solid var(--border);border-radius:7px;font-size:.73rem;font-weight:600;cursor:pointer">⊞ Expand All</button>
+          <button onclick="smCollapseAll()" style="padding:5px 12px;background:rgba(42,63,94,.07);color:var(--navy);border:1px solid var(--border);border-radius:7px;font-size:.73rem;font-weight:600;cursor:pointer">⊟ Collapse All</button>
+          <button onclick="downloadSummaryCSV()" style="background:linear-gradient(135deg,#38bdf8,#0284c7);color:#fff;border:none;padding:7px 16px;border-radius:8px;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(2,132,199,.3);letter-spacing:.2px">⬇ Summary Download</button>
+        </div>
       </div>
       <div style="overflow:auto;max-height:70vh">
         <table class="summary-table">
           <thead><tr>
-            <th style="position:sticky;top:0;z-index:3;left:0">KPI / Area</th>
+            <th style="position:sticky;top:0;z-index:3;left:0;min-width:220px">KPI / Area / STO</th>
             ${allMonths.map(m=>`<th style="position:sticky;top:0;z-index:2">${mLabel(m)}</th>`).join('')}
           </tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
-      <div style="margin-top:12px;font-size:.72rem;color:var(--muted);display:flex;gap:18px">
+      <div style="margin-top:12px;font-size:.72rem;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap">
         <span style="color:var(--green);font-weight:700">■</span> ≥ 95% On target &nbsp;
         <span style="color:var(--amber);font-weight:700">■</span> 90–94.9% Near target &nbsp;
         <span style="color:var(--red);font-weight:700">■</span> &lt; 90% Below target
       </div>
     </div>`;
+}
+
+// Toggle a collapsible group in the summary table
+function smToggle(btn){
+  if(!btn) return;
+  const row=btn.closest('tr');
+  if(!row) return;
+  const id=row.dataset.id;
+  if(!id) return;
+  const tbody=row.closest('tbody');
+  const isOpen=btn.classList.contains('s-open');
+  if(isOpen){
+    btn.classList.remove('s-open');
+    smCollapseGroup(id,tbody);
+  } else {
+    btn.classList.add('s-open');
+    // Show only direct children
+    tbody.querySelectorAll(`tr[data-pid="${id}"]`).forEach(r=>r.style.display='');
+  }
+}
+function smCollapseGroup(id,tbody){
+  tbody.querySelectorAll(`tr[data-pid="${id}"]`).forEach(r=>{
+    r.style.display='none';
+    const cid=r.dataset.id;
+    if(cid){ const b=r.querySelector('.s-toggle'); if(b)b.classList.remove('s-open'); smCollapseGroup(cid,tbody); }
+  });
+}
+function smExpandAll(){
+  const tbody=document.querySelector('.summary-table tbody');
+  if(!tbody) return;
+  tbody.querySelectorAll('tr[data-pid]').forEach(r=>r.style.display='');
+  tbody.querySelectorAll('.s-toggle').forEach(b=>b.classList.add('s-open'));
+}
+function smCollapseAll(){
+  const tbody=document.querySelector('.summary-table tbody');
+  if(!tbody) return;
+  // Keep area rows (direct children of entity rows) visible; hide everything deeper
+  tbody.querySelectorAll('tr[data-pid]').forEach(r=>{
+    const pid=r.dataset.pid||'';
+    r.style.display = pid.startsWith('sm') && !tbody.querySelector(`tr[data-id="${pid}"].summary-entity-row`) ? 'none' : '';
+  });
+  // Actually: entity rows have no data-pid; area rows have data-pid pointing to an entity row;
+  // regional/branch/sto rows have data-pid pointing to non-entity rows.
+  // Simpler: hide rows whose parent row does NOT have class summary-entity-row
+  tbody.querySelectorAll('tr[data-pid]').forEach(r=>{
+    const par=tbody.querySelector(`tr[data-id="${r.dataset.pid}"]`);
+    r.style.display = (par && par.classList.contains('summary-entity-row')) ? '' : 'none';
+  });
+  // Close all area-level and below toggles, keep entity toggles open
+  tbody.querySelectorAll('.s-toggle').forEach(b=>{
+    b.classList.remove('s-open');
+    const row=b.closest('tr');
+    if(row && row.classList.contains('summary-entity-row')) b.classList.add('s-open');
+  });
 }
 
 function downloadSummaryCSV(){
@@ -2242,9 +2368,9 @@ function renderEntityView(entity, d){
             <div style="font-size:.73rem;color:var(--muted);line-height:1.4;margin-top:2px">${l.desc}</div>
           </div>
         </div>`).join('');
-      return `<div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap">
-        <div class="card" style="min-width:300px;flex:0 0 auto">
-          <div style="background:linear-gradient(135deg,#7f1d1d,#1e1b4b);color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;margin:-16px -16px 0;font-weight:700;text-align:center;font-size:.9rem;letter-spacing:.05em">PS/RE</div>
+      return `<div style="display:grid;grid-template-columns:300px 1fr;gap:16px;margin-bottom:18px;align-items:start">
+        <div class="card" style="min-width:0">
+          <div style="background:linear-gradient(135deg,#7f1d1d,#1e1b4b);color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;margin:-20px -22px 0;font-weight:700;text-align:center;font-size:.9rem;letter-spacing:.05em">PS/RE</div>
           <table style="width:100%;border-collapse:collapse;margin-top:12px">
             <thead><tr style="background:#7f1d1d">
               <th style="padding:7px 12px;text-align:left;color:#fff;font-size:.78rem;font-weight:700">Status</th>
@@ -2253,7 +2379,7 @@ function renderEntityView(entity, d){
             <tbody>${rowsHtml}</tbody>
           </table>
         </div>
-        <div class="card" style="flex:1;min-width:260px">
+        <div class="card" style="min-width:0">
           <div class="card-title">📖 Keterangan</div>
           ${legendHtml}
           <div style="margin-top:10px;background:#f0fdf4;border-radius:8px;padding:10px 12px;font-size:.73rem;color:#166534;line-height:1.5">
@@ -3597,7 +3723,7 @@ async function _fetchAndDownload(url, filename, btn){
 }
 
 // Generic download: works for any entity that pushes raw/detail CSVs (TTI, FFG, TTRFFG, …)
-const _DL_ENTITIES = ['TTI','FFG','TTRFFG'];
+const _DL_ENTITIES = ['TTI','FFG','TTRFFG','PSRE'];
 async function downloadRaw(){
   const e = selectedEntity;
   if(!_DL_ENTITIES.includes(e)||!selectedMonth||selectedMonth==='summary') return;
