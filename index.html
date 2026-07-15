@@ -462,6 +462,8 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
     <p id="sidebarSub">Management Portal</p>
   </div>
   <nav>
+    <a onclick="showPage('calendar')" id="nav-calendar"><span class="icon">📅</span> Calendar of Event</a>
+    <a onclick="showPage('converter')" id="nav-converter"><span class="icon">⚙️</span> Data Converter</a>
     <a class="active" onclick="showPage('home')" id="nav-home"><span class="icon">🏠</span> Home ID</a>
     <div>
       <div class="nav-grp-toggle" id="nav-grp-kpi" onclick="toggleNavGroup('kpi')">
@@ -473,8 +475,6 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       </div>
     </div>
     <a onclick="showPage('tracker')" id="nav-tracker"><span class="icon">📋</span> Project Tracker</a>
-    <a onclick="showPage('calendar')" id="nav-calendar"><span class="icon">📅</span> Calendar of Event</a>
-    <a onclick="showPage('converter')" id="nav-converter"><span class="icon">⚙️</span> Data Converter</a>
     <a onclick="showPage('devprogress')" id="nav-devprogress" style="display:none"><span class="icon">🛠️</span> Dev Progress</a>
   </nav>
   <div class="sidebar-footer" id="sidebarFooter">Loading…</div>
@@ -2652,7 +2652,8 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
 const STATUS_OPTIONS=['Not Started','In Progress','Completed','On Hold','Cancelled'];
 const PRIORITY_OPTIONS=['High','Medium','Low'];
 let projectIdCounter=1000;
-let _drag=null; // {type:'project'|'subtask', id, parentId?}
+let _drag=null;        // {type:'project'|'subtask', id, parentId?}
+let _dragAllowed=false; // set true only on mousedown on ⠿ handle
 
 function loadProjects(data){
   // Check localStorage for saved edits
@@ -2694,10 +2695,8 @@ function _progressSlider(id, val, isSub, parentId){
 function _attachDrag(row, type, id, parentId){
   row.draggable=true;
   row.addEventListener('dragstart',e=>{
-    // Only start drag when the ⠿ grip handle is grabbed
-    const path = e.composedPath ? e.composedPath() : [e.target];
-    const fromHandle = path.some(el=>el.classList&&el.classList.contains('drag-handle'));
-    if(!fromHandle){ e.preventDefault(); return; }
+    if(!_dragAllowed){ e.preventDefault(); return; }
+    _dragAllowed=false;
     _drag={type,id,parentId};
     e.dataTransfer.effectAllowed='move';
     setTimeout(()=>row.classList.add('dragging'),0);
@@ -2758,7 +2757,7 @@ function renderTable(projects){
     mainRow.className='main-row'; mainRow.id='row_'+p.id;
     mainRow.innerHTML=`
       <td style="text-align:center;width:28px">
-        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        <span class="drag-handle" title="Drag to reorder" onmousedown="_dragAllowed=true">⠿</span>
         ${hasSubs?`<br><button class="row-expand ${p._open?'open':''}" onclick="toggleSubs('${p.id}')" title="Toggle subtasks">▶</button>`:''}
       </td>
       <td class="pt-name-cell" style="font-weight:600" title="${fmt(p.name)}">
@@ -2795,7 +2794,7 @@ function renderTable(projects){
       sr.className='sub-row'; sr.dataset.parent=p.id;
       sr.style.display=p._open?'':'none';
       sr.innerHTML=`
-        <td style="width:28px;text-align:center"><span class="drag-handle" title="Drag to reorder subtask">⠿</span></td>
+        <td style="width:28px;text-align:center"><span class="drag-handle" title="Drag to reorder subtask" onmousedown="_dragAllowed=true">⠿</span></td>
         <td class="sub-indent pt-name-cell" title="${fmt(s.name)}">
           ↳ <span class="editable" onclick="editCell(this,'${s.id}','name',true,'${p.id}')">${fmt(s.name)}</span>
           <span class="editable" onclick="editSelect(this,'${s.id}','status',STATUS_OPTIONS,true,'${p.id}')" title="Click to change status" style="margin-left:4px;cursor:pointer">
