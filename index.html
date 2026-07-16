@@ -2270,7 +2270,7 @@ function renderEntityView(entity, d){
     }
 
     breakdownSection = `
-    <div class="card section-gap">
+    <div class="card" style="margin-bottom:18px">
       <div class="card-title" style="margin-bottom:14px">TTI Reference Breakdown</div>
       <div style="display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start">
         ${refSummary}
@@ -2406,13 +2406,15 @@ function renderEntityView(entity, d){
       </div>
     </div>
 
-    <!-- ③ Area tree -->
+    <!-- ③ TTI Reference Breakdown (shown above area tree so it's never missed) -->
+    ${breakdownSection}
+
+    <!-- ④ Area tree -->
     <div class="card" style="margin-bottom:18px">
       <div class="card-title">Area / Regional / Branch / STO Breakdown</div>
       <div class="tree-filter-bar" id="treeFilterBar"></div>
       <div class="area-tree" id="areaTree"></div>
-    </div>
-    ${breakdownSection}`;
+    </div>`;
 
   // Trend chart
   setTimeout(()=>{
@@ -2660,117 +2662,131 @@ function applyTreeFilter(){
 }
 
 function buildAreaTree(areas, tgt=95, collapsed=true){
-  const tree = $('areaTree');
+  const tree=$('areaTree');
   tree.innerHTML='';
+  if(!areas||!areas.length){ tree.innerHTML='<div style="padding:16px;color:var(--muted);font-size:.82rem">No data.</div>'; return; }
+
+  const fmtAch=pct=>{
+    if(pct==null) return '<span style="color:var(--muted)">—</span>';
+    const a=(pct/tgt*100), clr=pct>=tgt?'var(--green)':pct>=(tgt-5)?'var(--amber)':'var(--red)';
+    return `<span style="color:${clr};font-weight:700">${a.toFixed(1)}%</span>`;
+  };
+  const td=(v,style='')=>`<td style="padding:7px 10px;text-align:right;${style}">${v!=null?(+v).toLocaleString():'—'}</td>`;
+
+  let html=`<table style="width:100%;border-collapse:collapse;font-size:.82rem">
+  <colgroup><col><col style="width:100px"><col style="width:100px"><col style="width:90px"><col style="width:100px"><col style="width:80px"></colgroup>
+  <thead><tr style="background:var(--navy2);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.3px">
+    <th style="padding:8px 12px;text-align:left">Area / Regional / Branch / STO</th>
+    <th style="padding:8px 10px;text-align:right">Comply</th>
+    <th style="padding:8px 10px;text-align:right">Not Comply</th>
+    <th style="padding:8px 10px;text-align:right">Total</th>
+    <th style="padding:8px 10px;text-align:right">Realisasi</th>
+    <th style="padding:8px 10px;text-align:right">Ach</th>
+  </tr></thead><tbody>`;
+
   areas.forEach(area=>{
-    const aClr = slaColor(area.sla_pct, tgt);
-    const aId  = 'area_'+area.area.replace(/\s+/g,'_');
-    const aBadge = area.sla_pct < tgt ? `<span style="font-size:.65rem;font-weight:700;background:rgba(168,48,32,.12);color:var(--red);border-radius:4px;padding:1px 5px;margin-left:6px">BELOW TARGET</span>` : '';
+    const ac=area.comply||0, an=area.not_comply||0, at=ac+an;
+    const aClr=slaColor(area.sla_pct,tgt);
+    const aId='at_'+area.area.replace(/\W/g,'_');
+    const hasReg=(area.by_regional||[]).length>0;
 
-    const aRow = document.createElement('div');
-    aRow.className='tree-row area-level';
-    aRow.innerHTML=`
-      <span class="tree-toggle" id="tgl_${aId}">+</span>
-      <span class="tree-name" style="font-weight:700">${area.area}${aBadge}</span>
-      <span class="tree-sla" style="color:${aClr}">${fmtSla(area.sla_pct)}</span>
-      <div class="tree-bar"><div class="tree-bar-fill" style="width:${area.sla_pct}%;background:${aClr}"></div></div>
-      <span class="tree-counts">${(area.comply||0).toLocaleString()} C / ${(area.not_comply||0).toLocaleString()} NC</span>`;
+    html+=`<tr class="atbl-area" data-id="${aId}" style="border-bottom:1px solid var(--border);cursor:pointer">
+      <td style="padding:9px 12px;font-weight:700;color:var(--navy)">
+        ${hasReg?`<span data-tgl="${aId}" style="display:inline-block;font-size:.6rem;color:var(--teal);margin-right:6px;transition:transform .15s">▶</span>`:'<span style="display:inline-block;width:14px;margin-right:6px"></span>'}${area.area}
+      </td>
+      ${td(ac,'color:var(--green);font-weight:600')}
+      ${td(an,'color:var(--red);font-weight:600')}
+      ${td(at,'font-weight:600')}
+      <td style="padding:7px 10px;text-align:right;font-weight:700;color:${aClr}">${fmtSla(area.sla_pct)}</td>
+      <td style="padding:7px 10px;text-align:right">${fmtAch(area.sla_pct)}</td>
+    </tr>`;
 
-    const aChildren = document.createElement('div');
-    aChildren.className='tree-children'; aChildren.id='ch_'+aId;
-
-    // Auto-expand when filter is active
-    if(!collapsed){
-      aChildren.classList.add('open');
-      // will set toggle below after appendChild
-    }
-
-    aRow.onclick=()=>{
-      const open=aChildren.classList.toggle('open');
-      $('tgl_'+aId).textContent = open ? '−' : '+';
-    };
-
-    // Regional rows
     (area.by_regional||[]).forEach(reg=>{
-      const rClr = slaColor(reg.sla_pct, tgt);
-      const rId  = aId+'_'+reg.regional.replace(/\s+/g,'_');
-      const rBadge = reg.sla_pct < tgt ? `<span style="font-size:.62rem;font-weight:600;color:var(--red);margin-left:5px">▼</span>` : '';
+      const rc=reg.comply||0, rn=reg.not_comply||0, rt=rc+rn;
+      const rClr=slaColor(reg.sla_pct,tgt);
+      const rId=aId+'_'+reg.regional.replace(/\W/g,'_');
+      const hasBr=(reg.by_branch||[]).length>0;
 
-      const rRow = document.createElement('div');
-      rRow.className='tree-row regional-level';
-      rRow.innerHTML=`
-        <span class="tree-toggle" id="tgl_${rId}">+</span>
-        <span class="tree-name">${reg.regional}${rBadge}</span>
-        <span class="tree-sla" style="color:${rClr}">${fmtSla(reg.sla_pct)}</span>
-        <div class="tree-bar"><div class="tree-bar-fill" style="width:${reg.sla_pct}%;background:${rClr}"></div></div>
-        <span class="tree-counts">${(reg.comply||0).toLocaleString()} C / ${(reg.not_comply||0).toLocaleString()} NC</span>`;
+      html+=`<tr class="atbl-reg" data-id="${rId}" data-pid="${aId}" style="display:none;border-bottom:1px solid rgba(212,197,169,.3);cursor:${hasBr?'pointer':'default'}">
+        <td style="padding:7px 12px 7px 30px;font-size:.8rem;color:var(--text);font-weight:600">
+          ${hasBr?`<span data-tgl="${rId}" style="display:inline-block;font-size:.58rem;color:var(--teal);margin-right:5px;transition:transform .15s">▶</span>`:'<span style="display:inline-block;width:12px;margin-right:5px"></span>'}${reg.regional}
+        </td>
+        ${td(rc,'font-size:.8rem;color:var(--green)')}
+        ${td(rn,'font-size:.8rem;color:var(--red)')}
+        ${td(rt,'font-size:.8rem')}
+        <td style="padding:7px 10px;text-align:right;font-weight:700;font-size:.8rem;color:${rClr}">${fmtSla(reg.sla_pct)}</td>
+        <td style="padding:7px 10px;text-align:right;font-size:.8rem">${fmtAch(reg.sla_pct)}</td>
+      </tr>`;
 
-      const rChildren = document.createElement('div');
-      rChildren.className='tree-children'; rChildren.id='ch_'+rId;
-
-      rRow.onclick=e=>{
-        e.stopPropagation();
-        const open=rChildren.classList.toggle('open');
-        $('tgl_'+rId).textContent = open ? '−' : '+';
-      };
-
-      // Branch rows
       (reg.by_branch||[]).forEach(br=>{
-        const bClr=slaColor(br.sla_pct, tgt);
-        const bBadge = br.sla_pct < tgt ? `<span style="font-size:.6rem;font-weight:600;color:var(--red);margin-left:4px">▼</span>` : '';
-        const bId = rId+'_'+br.branch.replace(/\s+/g,'_');
-        const hasSto = (br.by_sto||[]).length > 0;
+        const bc=br.comply||0, bn=br.not_comply||0, bt=bc+bn;
+        const bClr=slaColor(br.sla_pct,tgt);
+        const bId=rId+'_'+br.branch.replace(/\W/g,'_');
+        const hasSto=(br.by_sto||[]).length>0;
 
-        const bRow=document.createElement('div');
-        bRow.className='tree-row branch-level';
-        bRow.style.background = br.sla_pct < tgt ? 'rgba(168,48,32,.04)' : '';
-        bRow.style.cursor = hasSto ? 'pointer' : 'default';
-        bRow.innerHTML=`
-          <span class="tree-toggle" id="tgl_${bId}" style="font-size:.75rem;color:var(--muted)">${hasSto?'+':' '}</span>
-          <span class="tree-name">${br.branch}${bBadge}</span>
-          <span class="tree-sla" style="color:${bClr}">${fmtSla(br.sla_pct)}</span>
-          <div class="tree-bar"><div class="tree-bar-fill" style="width:${br.sla_pct}%;background:${bClr}"></div></div>
-          <span class="tree-counts">${(br.comply||0).toLocaleString()} C / ${(br.not_comply||0).toLocaleString()} NC</span>`;
+        html+=`<tr class="atbl-br" data-id="${bId}" data-pid="${rId}" style="display:none;border-bottom:1px solid rgba(212,197,169,.2);cursor:${hasSto?'pointer':'default'}">
+          <td style="padding:6px 12px 6px 48px;font-size:.78rem;color:var(--muted)">
+            ${hasSto?`<span data-tgl="${bId}" style="display:inline-block;font-size:.55rem;color:var(--teal);margin-right:5px;transition:transform .15s">▶</span>`:'<span style="display:inline-block;width:11px;margin-right:5px"></span>'}${br.branch}
+          </td>
+          ${td(bc,'font-size:.78rem;color:var(--green)')}
+          ${td(bn,'font-size:.78rem;color:var(--red)')}
+          ${td(bt,'font-size:.78rem')}
+          <td style="padding:6px 10px;text-align:right;font-weight:600;font-size:.78rem;color:${bClr}">${fmtSla(br.sla_pct)}</td>
+          <td style="padding:6px 10px;text-align:right;font-size:.78rem">${fmtAch(br.sla_pct)}</td>
+        </tr>`;
 
-        const bChildren = document.createElement('div');
-        bChildren.className='tree-children'; bChildren.id='ch_'+bId;
-
-        if(hasSto){
-          bRow.onclick=e=>{
-            e.stopPropagation();
-            const open=bChildren.classList.toggle('open');
-            const tglEl=$('tgl_'+bId); if(tglEl) tglEl.textContent = open?'−':'+';
-          };
-          (br.by_sto||[]).forEach(sto=>{
-            const sClr=slaColor(sto.sla_pct, tgt);
-            const sBadge = sto.sla_pct < tgt ? `<span style="font-size:.58rem;color:var(--red);margin-left:3px">▼</span>` : '';
-            const sRow=document.createElement('div');
-            sRow.className='tree-row branch-level';
-            sRow.style.marginLeft='60px';
-            sRow.style.background = sto.sla_pct < tgt ? 'rgba(168,48,32,.03)' : '';
-            sRow.innerHTML=`
-              <span style="width:18px;flex-shrink:0;color:var(--border);font-size:.7rem">◦</span>
-              <span class="tree-name" style="font-size:.75rem;color:var(--muted)">${sto.sto}${sBadge}</span>
-              <span class="tree-sla" style="color:${sClr};font-size:.76rem">${fmtSla(sto.sla_pct)}</span>
-              <div class="tree-bar"><div class="tree-bar-fill" style="width:${sto.sla_pct}%;background:${sClr}"></div></div>
-              <span class="tree-counts">${(sto.comply||0).toLocaleString()} C / ${(sto.not_comply||0).toLocaleString()} NC</span>`;
-            bChildren.appendChild(sRow);
-          });
-        }
-
-        rChildren.appendChild(bRow);
-        if(hasSto){ rChildren.appendChild(bChildren); }
+        (br.by_sto||[]).forEach(sto=>{
+          const sc=sto.comply||0, sn=sto.not_comply||0, st=sc+sn;
+          const sClr=slaColor(sto.sla_pct,tgt);
+          html+=`<tr class="atbl-sto" data-pid="${bId}" style="display:none;border-bottom:1px solid rgba(212,197,169,.12)">
+            <td style="padding:5px 12px 5px 66px;font-size:.74rem;color:var(--muted)">◦ ${sto.sto}</td>
+            ${td(sc,'font-size:.74rem;color:var(--green)')}
+            ${td(sn,'font-size:.74rem;color:var(--red)')}
+            ${td(st,'font-size:.74rem')}
+            <td style="padding:5px 10px;text-align:right;font-weight:600;font-size:.74rem;color:${sClr}">${fmtSla(sto.sla_pct)}</td>
+            <td style="padding:5px 10px;text-align:right;font-size:.74rem">${fmtAch(sto.sla_pct)}</td>
+          </tr>`;
+        });
       });
-
-      aChildren.appendChild(rRow);
-      aChildren.appendChild(rChildren);
     });
+  });
 
-    tree.appendChild(aRow);
-    tree.appendChild(aChildren);
-    // Set toggle text after DOM insertion
-    const tglEl = $('tgl_'+aId);
-    if(tglEl) tglEl.textContent = aChildren.classList.contains('open') ? '−' : '+';
+  html+='</tbody></table>';
+  tree.innerHTML=html;
+
+  const tbl=tree.querySelector('table');
+  if(!tbl) return;
+
+  // Auto-expand direct children of area rows when filter is active
+  if(!collapsed){
+    tbl.querySelectorAll('tr[data-pid]').forEach(r=>{
+      const par=tbl.querySelector(`tr[data-id="${r.dataset.pid}"]`);
+      if(par&&par.classList.contains('atbl-area')){
+        r.style.display='';
+        const tgl=tbl.querySelector(`[data-tgl="${r.dataset.pid}"]`);
+        if(tgl) tgl.style.transform='rotate(90deg)';
+      }
+    });
+  }
+
+  // Event delegation — single click handler on table
+  tbl.onclick=e=>{
+    const row=e.target.closest('tr[data-id]');
+    if(!row) return;
+    const id=row.dataset.id;
+    const tglEl=tbl.querySelector(`[data-tgl="${id}"]`);
+    if(!tglEl) return;
+    const isOpen=tglEl.style.transform==='rotate(90deg)';
+    if(isOpen){ tglEl.style.transform=''; _atblCollapse(id,tbl); }
+    else { tglEl.style.transform='rotate(90deg)'; tbl.querySelectorAll(`tr[data-pid="${id}"]`).forEach(r=>r.style.display=''); }
+  };
+}
+
+function _atblCollapse(id,tbl){
+  tbl.querySelectorAll(`tr[data-pid="${id}"]`).forEach(r=>{
+    r.style.display='none';
+    const cid=r.dataset.id;
+    if(cid){ const tgl=tbl.querySelector(`[data-tgl="${cid}"]`); if(tgl)tgl.style.transform=''; _atblCollapse(cid,tbl); }
   });
 }
 
@@ -3727,6 +3743,15 @@ const _DL_ENTITIES = ['TTI','FFG','TTRFFG','PSRE'];
 async function downloadRaw(){
   const e = selectedEntity;
   if(!_DL_ENTITIES.includes(e)||!selectedMonth||selectedMonth==='summary') return;
+  // PSRE raw = the original source file (YYYYMM_PSRE.csv), stored directly in /data/
+  if(e === 'PSRE'){
+    await _fetchAndDownload(
+      `data/${selectedMonth}_PSRE.csv`,
+      `${selectedMonth}_PSRE.csv`,
+      $('btnDownloadRaw')
+    );
+    return;
+  }
   const key = e.toLowerCase();
   await _fetchAndDownload(
     `data/${key}_raw_${selectedMonth}.csv`,
