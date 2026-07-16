@@ -308,7 +308,8 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 
 /* ── REFERENCE SUMMARY TABLE ─────────────────────────────────────────────── */
 .ref-summary-wrap{margin-bottom:0}
-.ref-summary-header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:.82rem;font-weight:700;letter-spacing:.3px}
+/* Shared "card title" bar — one format for every KPI-page card (maroon → purple, Danantara-style) */
+.ref-summary-header{background:linear-gradient(135deg,#7f1d1d,#1e1b4b);color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:.82rem;font-weight:700;letter-spacing:.3px}
 .ref-summary-table{width:100%;border-collapse:collapse;margin-bottom:0;table-layout:fixed}
 .ref-summary-table th{background:var(--navy);color:#fff;padding:7px 6px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0;text-align:center;border:1px solid rgba(255,255,255,.12);white-space:normal;overflow:visible;line-height:1.25}
 .ref-summary-table th:first-child{text-align:left;width:29%;padding-left:10px}
@@ -2301,6 +2302,69 @@ function renderEntityView(entity, d){
     </div>`;
   }
 
+  // ── PS/RE breakdown (PSRE only) — built here, placed next to the area tree
+  // at the bottom of the page, same slot as the TTI reference breakdown above.
+  let psreSection = '';
+  if(entity === 'PSRE' && d.psre_breakdown){
+    const b = d.psre_breakdown;
+    const rows = [
+      {label:'RE Total',        val:b.re_total,    highlight:false},
+      {label:'RE AO',           val:b.re_ao,       highlight:true},
+      {label:'RE AO NETT',      val:b.re_ao_nett,  highlight:false, formula:true},
+      {label:'Cancel <7 hari AO', val:b.cancel_7hari, highlight:false},
+      {label:'PS AO',           val:b.ps_ao,       highlight:false},
+      {label:'Not PS AO',       val:b.not_ps_ao,   highlight:false},
+      {label:'Exclude AO',      val:b.exclude_ao,  highlight:false},
+    ];
+    const rowsHtml = rows.map(r=>`
+      <tr style="${r.highlight?'background:#fef9c3':''}${r.formula?';border-top:2px solid #e2e8f0':''}">
+        <td style="padding:7px 12px;font-weight:${r.formula?'700':'500'};color:${r.formula?'var(--navy)':'inherit'};font-size:.82rem">
+          ${r.label}${r.formula?` <span style="font-size:.68rem;color:var(--muted);font-weight:400">(RE AO − Exclude AO)</span>`:''}
+        </td>
+        <td style="padding:7px 12px;text-align:right;font-weight:700;font-size:.9rem;color:${r.formula?'var(--navy)':'var(--muted)'}">
+          ${r.val!=null?(+r.val).toLocaleString():'—'}
+        </td>
+      </tr>`).join('');
+    const legend = [
+      {icon:'📋', label:'RE Total',          color:'#374151', desc:'Semua transaksi (AO + non-AO) sebelum filter.'},
+      {icon:'🔵', label:'RE AO',             color:'#1e40af', desc:'Transaksi bertipe AO (Activation Order) — dasar perhitungan PS/RE.'},
+      {icon:'🟡', label:'RE AO NETT',        color:'#854d0e', desc:'RE AO dikurangi Exclude AO. Ini adalah denominator efektif SLA PS/RE.'},
+      {icon:'🔴', label:'Cancel <7 hari AO', color:'#991b1b', desc:'AO yang di-cancel dalam 7 hari. Dikecualikan dari SLA (anomaly).'},
+      {icon:'✅', label:'PS AO',             color:'#166534', desc:'AO yang sudah PS (tgl_ps / tgl_ps_complete terisi, tidak cancel). = Comply.'},
+      {icon:'⚠️', label:'Not PS AO',         color:'#92400e', desc:'AO yang belum PS atau cancel >7 hari. = Not Comply.'},
+      {icon:'⛔', label:'Exclude AO',        color:'#6b21a8', desc:'AO dengan tgl_pc terisi tapi belum PS — dikecualikan dari denominator (anomaly complete exclude).'},
+    ];
+    const legendHtml = legend.map(l=>`
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid #f1f5f9">
+        <span style="font-size:1rem;flex-shrink:0;margin-top:1px">${l.icon}</span>
+        <div>
+          <div style="font-weight:700;font-size:.78rem;color:${l.color}">${l.label}</div>
+          <div style="font-size:.73rem;color:var(--muted);line-height:1.4;margin-top:2px">${l.desc}</div>
+        </div>
+      </div>`).join('');
+    psreSection = `<div style="display:grid;grid-template-columns:320px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
+      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">
+        <div class="ref-summary-header" style="flex-shrink:0">PS/RE</div>
+        <table style="width:100%;border-collapse:collapse;margin-top:14px">
+          <thead><tr>
+            <th style="padding:7px 12px;text-align:left;color:#fff;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;background:var(--navy);border:1px solid rgba(255,255,255,.12)">Status</th>
+            <th style="padding:7px 12px;text-align:right;color:#fff;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;background:var(--navy);border:1px solid rgba(255,255,255,.12)">Jumlah</th>
+          </tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </div>
+      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">
+        <div class="ref-summary-header" style="flex-shrink:0">📖 Keterangan</div>
+        <div style="margin-top:14px">${legendHtml}</div>
+        <div style="margin-top:10px;background:#f0fdf4;border-radius:8px;padding:10px 12px;font-size:.73rem;color:#166534;line-height:1.5">
+          <strong>Formula SLA PS/RE:</strong><br>
+          SLA = PS AO / RE AO NETT × 100%<br>
+          <span style="color:var(--muted)">(RE AO NETT = RE AO − Exclude AO)</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
   // Dynamic threshold label per entity
   const ENTITY_THRESH = {
     TTI:     {comply:'≤ 72 hours',          nc:'> 72 hours'},
@@ -2352,88 +2416,28 @@ function renderEntityView(entity, d){
       </div>`:''}
     </div>
 
-    <!-- ① PS/RE breakdown card (PSRE only) -->
-    ${entity==='PSRE' && d.psre_breakdown ? (()=>{
-      const b = d.psre_breakdown;
-      const rows = [
-        {label:'RE Total',        val:b.re_total,    highlight:false},
-        {label:'RE AO',           val:b.re_ao,       highlight:true},
-        {label:'RE AO NETT',      val:b.re_ao_nett,  highlight:false, formula:true},
-        {label:'Cancel <7 hari AO', val:b.cancel_7hari, highlight:false},
-        {label:'PS AO',           val:b.ps_ao,       highlight:false},
-        {label:'Not PS AO',       val:b.not_ps_ao,   highlight:false},
-        {label:'Exclude AO',      val:b.exclude_ao,  highlight:false},
-      ];
-      const rowsHtml = rows.map(r=>`
-        <tr style="${r.highlight?'background:#fef9c3':''}${r.formula?';border-top:2px solid #e2e8f0':''}">
-          <td style="padding:7px 12px;font-weight:${r.formula?'700':'500'};color:${r.formula?'var(--navy)':'inherit'};font-size:.82rem">
-            ${r.label}${r.formula?` <span style="font-size:.68rem;color:var(--muted);font-weight:400">(RE AO − Exclude AO)</span>`:''}
-          </td>
-          <td style="padding:7px 12px;text-align:right;font-weight:700;font-size:.9rem;color:${r.formula?'var(--navy)':'var(--muted)'}">
-            ${r.val!=null?(+r.val).toLocaleString():'—'}
-          </td>
-        </tr>`).join('');
-      const legend = [
-        {icon:'📋', label:'RE Total',          color:'#374151', desc:'Semua transaksi (AO + non-AO) sebelum filter.'},
-        {icon:'🔵', label:'RE AO',             color:'#1e40af', desc:'Transaksi bertipe AO (Activation Order) — dasar perhitungan PS/RE.'},
-        {icon:'🟡', label:'RE AO NETT',        color:'#854d0e', desc:'RE AO dikurangi Exclude AO. Ini adalah denominator efektif SLA PS/RE.'},
-        {icon:'🔴', label:'Cancel <7 hari AO', color:'#991b1b', desc:'AO yang di-cancel dalam 7 hari. Dikecualikan dari SLA (anomaly).'},
-        {icon:'✅', label:'PS AO',             color:'#166534', desc:'AO yang sudah PS (tgl_ps / tgl_ps_complete terisi, tidak cancel). = Comply.'},
-        {icon:'⚠️', label:'Not PS AO',         color:'#92400e', desc:'AO yang belum PS atau cancel >7 hari. = Not Comply.'},
-        {icon:'⛔', label:'Exclude AO',        color:'#6b21a8', desc:'AO dengan tgl_pc terisi tapi belum PS — dikecualikan dari denominator (anomaly complete exclude).'},
-      ];
-      const legendHtml = legend.map(l=>`
-        <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid #f1f5f9">
-          <span style="font-size:1rem;flex-shrink:0;margin-top:1px">${l.icon}</span>
-          <div>
-            <div style="font-weight:700;font-size:.78rem;color:${l.color}">${l.label}</div>
-            <div style="font-size:.73rem;color:var(--muted);line-height:1.4;margin-top:2px">${l.desc}</div>
-          </div>
-        </div>`).join('');
-      return `<div style="display:grid;grid-template-columns:300px 1fr;gap:16px;margin-bottom:18px;align-items:start">
-        <div class="card" style="min-width:0">
-          <div style="background:linear-gradient(135deg,#7f1d1d,#1e1b4b);color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;margin:-20px -22px 0;font-weight:700;text-align:center;font-size:.9rem;letter-spacing:.05em">PS/RE</div>
-          <table style="width:100%;border-collapse:collapse;margin-top:12px">
-            <thead><tr style="background:#7f1d1d">
-              <th style="padding:7px 12px;text-align:left;color:#fff;font-size:.78rem;font-weight:700">Status</th>
-              <th style="padding:7px 12px;text-align:right;color:#fff;font-size:.78rem;font-weight:700">Jumlah</th>
-            </tr></thead>
-            <tbody>${rowsHtml}</tbody>
-          </table>
-        </div>
-        <div class="card" style="min-width:0">
-          <div class="card-title">📖 Keterangan</div>
-          ${legendHtml}
-          <div style="margin-top:10px;background:#f0fdf4;border-radius:8px;padding:10px 12px;font-size:.73rem;color:#166534;line-height:1.5">
-            <strong>Formula SLA PS/RE:</strong><br>
-            SLA = PS AO / RE AO NETT × 100%<br>
-            <span style="color:var(--muted)">(RE AO NETT = RE AO − Exclude AO)</span>
-          </div>
-        </div>
-      </div>`;
-    })():''}
-
     <!-- ② Trend bar chart + Area bar chart side by side -->
     <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:18px">
       <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
-          <div class="card-title" style="margin-bottom:0">${entity} — Month to Month Performance</div>
-          <span style="font-size:.68rem;color:var(--muted)">vs target (${fmtSla(tgt)})</span>
+        <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <span>${entity} — Month to Month Performance</span>
+          <span style="font-size:.66rem;font-weight:500;color:rgba(255,255,255,.85)">vs target (${fmtSla(tgt)})</span>
         </div>
-        <div style="height:300px;position:relative"><canvas id="ch_trend_e"></canvas></div>
+        <div style="height:300px;position:relative;margin-top:14px"><canvas id="ch_trend_e"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">SLA % by Area</div>
-        <div style="height:300px;position:relative"><canvas id="ch_area_bar"></canvas></div>
+        <div class="ref-summary-header">SLA % by Area</div>
+        <div style="height:300px;position:relative;margin-top:14px"><canvas id="ch_area_bar"></canvas></div>
       </div>
     </div>
 
-    <!-- ③ TTI Reference Breakdown (shown above area tree so it's never missed) -->
+    <!-- ③ TTI Reference Breakdown / PS-RE Breakdown (shown above area tree so it's never missed) -->
     ${breakdownSection}
+    ${psreSection}
 
     <!-- ④ Area tree -->
     <div class="card" style="margin-bottom:18px">
-      <div class="card-title">Area / Regional / Branch / STO Breakdown</div>
+      <div class="ref-summary-header" style="margin-bottom:14px">Area / Regional / Branch / STO Breakdown</div>
       <div class="tree-filter-bar" id="treeFilterBar"></div>
       <div class="area-tree" id="areaTree"></div>
     </div>`;
