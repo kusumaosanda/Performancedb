@@ -2245,42 +2245,46 @@ function renderEntityView(entity, d){
       const totRowStyle='style="background:rgba(100,200,150,.1)"';
 
       // Merged table — Comply + Not Comply sub-columns per reference type
-      const border = '1px solid rgba(255,255,255,.1)';
-      const borderD= '1px solid rgba(255,255,255,.06)';
-      const hdrBg  = 'background:rgba(15,25,50,.7)';
-      const groupHead = CATS.map(c=>`<th colspan="2" style="padding:6px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:center;${hdrBg};border:${border};color:#e2e8f0">${c.label}</th>`).join('');
-      const subHead   = CATS.map(()=>`<th style="padding:4px 8px;font-size:.7rem;font-weight:700;color:#a7f3d0;text-align:center;background:rgba(10,20,40,.6);border:${border}">Comply</th><th style="padding:4px 8px;font-size:.7rem;font-weight:700;color:#fca5a5;text-align:center;background:rgba(10,20,40,.6);border:${border}">Not Comply</th>`).join('');
-      const tdA = `style="padding:7px 12px;font-weight:700;font-size:.82rem;white-space:nowrap;color:var(--text);border:${borderD}"`;
-      const tdC = `style="padding:7px 12px;text-align:right;font-size:.82rem;color:var(--green);font-weight:600;border:${borderD}"`;
-      const tdNC= `style="padding:7px 12px;text-align:right;font-size:.82rem;color:var(--red);font-weight:600;border:${borderD}"`;
+      // Palette/sizing intentionally mirrors .ref-summary-table (the left "KPI Reference" card)
+      // so both cards read as one visual family: solid navy headers, var(--border) grid lines,
+      // .88rem body text, var(--muted) for the meta "Anomaly" column.
+      const border = `1px solid var(--border)`;
+      const hdrBorder = `1px solid rgba(255,255,255,.12)`;
+      const hdrBg  = 'background:var(--navy)';
+      const groupHead = CATS.map(c=>`<th colspan="2" style="padding:7px 8px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;text-align:center;${hdrBg};border:${hdrBorder};color:#fff">${c.label}</th>`).join('');
+      const subHead   = CATS.map(()=>`<th style="padding:6px 8px;font-size:.68rem;font-weight:700;color:#a7f3d0;text-align:center;${hdrBg};border:${hdrBorder}">Comply</th><th style="padding:6px 8px;font-size:.68rem;font-weight:700;color:#fca5a5;text-align:center;${hdrBg};border:${hdrBorder}">Not Comply</th>`).join('');
+      const tdA = `style="padding:9px 12px;font-weight:700;font-size:.88rem;white-space:nowrap;color:var(--navy);background:rgba(61,122,110,.06);border:${border}"`;
+      const tdC = `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--green);font-weight:700;border:${border}"`;
+      const tdNC= `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--red);font-weight:700;border:${border}"`;
+      const tdAn= `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--muted);font-weight:600;border:${border}"`;
       const dash= `<span style="color:var(--muted)">–</span>`;
       const mergeBody = bda.map((row,i)=>{
         const cells = CATS.map(c=>{
           const cv = row[c.key]?.comply||0, nv = row[c.key]?.not_comply||0;
           return `<td ${tdC}>${cv>0?cv.toLocaleString():dash}</td><td ${tdNC}>${nv>0?nv.toLocaleString():dash}</td>`;
         }).join('');
-        const rowBg = i%2===0?'rgba(255,255,255,.03)':'rgba(0,0,0,.06)';
-        return `<tr style="background:${rowBg}"><td ${tdA}>${row.area}</td>${cells}<td style="padding:7px 12px;text-align:right;font-size:.82rem;color:#cbd5e1;border:${borderD}">${row.anomaly>0?row.anomaly.toLocaleString():dash}</td></tr>`;
+        const rowBg = i%2===1?'rgba(42,63,94,.025)':'transparent';
+        return `<tr style="background:${rowBg}"><td ${tdA}>${row.area}</td>${cells}<td ${tdAn}>${row.anomaly>0?row.anomaly.toLocaleString():dash}</td></tr>`;
       }).join('');
       const mergeTot = CATS.map(c=>{
         const tc = bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0);
         const tnc= bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
-        return `<td style="padding:7px 12px;text-align:right;font-size:.82rem;color:var(--green);font-weight:700;border:${border}">${tc.toLocaleString()}</td><td style="padding:7px 12px;text-align:right;font-size:.82rem;color:var(--red);font-weight:700;border:${border}">${tnc.toLocaleString()}</td>`;
+        return `<td style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--green);font-weight:800;border:${border}">${tc.toLocaleString()}</td><td style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--red);font-weight:800;border:${border}">${tnc.toLocaleString()}</td>`;
       }).join('');
       card2 = `<div style="overflow-x:auto"><table class="kpi-ref-breakdown" style="border-collapse:collapse;width:100%">
         <thead>
           <tr>
-            <th rowspan="2" style="padding:6px 12px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:left;${hdrBg};border:${border};vertical-align:middle;color:#e2e8f0">Area</th>
+            <th rowspan="2" style="padding:7px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;text-align:left;${hdrBg};border:${hdrBorder};vertical-align:middle;color:#fff">Area</th>
             ${groupHead}
-            <th rowspan="2" style="padding:6px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:center;${hdrBg};border:${border};vertical-align:middle;color:#cbd5e1">Anomaly</th>
+            <th rowspan="2" style="padding:7px 10px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;text-align:center;${hdrBg};border:${hdrBorder};vertical-align:middle;color:#d1d5db">Anomaly</th>
           </tr>
           <tr>${subHead}</tr>
         </thead>
         <tbody>${mergeBody}
-          <tr style="background:rgba(30,50,30,.25);border-top:2px solid rgba(255,255,255,.15)">
-            <td style="padding:7px 12px;font-weight:700;font-size:.82rem;color:var(--text);border:${border}">Total</td>
+          <tr style="background:rgba(42,63,94,.08);border-top:2px solid var(--navy)">
+            <td style="padding:9px 12px;font-weight:800;font-size:.88rem;color:var(--navy);border:${border}">Total</td>
             ${mergeTot}
-            <td style="padding:7px 12px;text-align:right;font-size:.82rem;color:#cbd5e1;font-weight:700;border:${border}">${totAn>0?totAn.toLocaleString():0}</td>
+            <td style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--muted);font-weight:700;border:${border}">${totAn>0?totAn.toLocaleString():0}</td>
           </tr>
         </tbody></table></div>`;
     }
@@ -2289,7 +2293,7 @@ function renderEntityView(entity, d){
     <div style="display:grid;grid-template-columns:380px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
       <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">${refSummary}</div>
       <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">
-        <div class="ref-summary-header" style="margin:-20px -22px 14px;border-radius:8px 8px 0 0;font-size:.82rem;flex-shrink:0">📊 KPI Reference Breakdown
+        <div class="ref-summary-header" style="flex-shrink:0">📊 KPI Reference Breakdown
           <div style="font-size:.66rem;font-weight:500;letter-spacing:.2px;opacity:.8;margin-top:2px;text-transform:none">Comply &amp; Not Comply — by Area &amp; Referensi</div>
         </div>
         <div style="flex:1;overflow-x:auto">${bda && bda.length ? card2 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available — re-run update_dashboard.py</div>'}</div>
@@ -2691,7 +2695,7 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
   };
   const td=(v,style='')=>`<td style="padding:7px 10px;text-align:right;${style}">${v!=null?(+v).toLocaleString():'—'}</td>`;
 
-  let html=`<table style="width:100%;border-collapse:collapse;font-size:.82rem;table-layout:fixed">
+  let html=`<table style="width:65%;min-width:560px;max-width:820px;border-collapse:collapse;font-size:.82rem;table-layout:fixed">
   <colgroup><col style="width:30%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:14%"></colgroup>
   <thead><tr style="background:var(--navy2);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.3px">
     <th style="padding:8px 12px;text-align:left;color:#fff">Area / Regional / Branch / STO</th>
