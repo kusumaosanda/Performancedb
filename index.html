@@ -10,11 +10,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 /* ── PALETTE ──────────────────────────────────────────────────────────────── */
+/* Redesign 2026-07: primary interactive accent moved to a maroon→purple
+   "Danantara" gradient. --teal/--teal2 are kept as the variable NAMES (so every
+   existing rule and inline style that references them updates automatically)
+   but now resolve to the new accent colors. --accent/--accent2/--accent-grad
+   are the preferred names for anything new. --navy stays the structural color
+   (table headers, banners). Nothing here touches data, formulas, or logic. */
 :root{
   --navy:    #2A3F5E;
   --navy2:   #1A2D45;
-  --teal:    #3D7A6E;
-  --teal2:   #5A9E8E;
+  --teal:    #7f1d1d;
+  --teal2:   #4c1d6b;
+  --accent:  var(--teal);
+  --accent2: var(--teal2);
+  --accent-grad: linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
   --rust:    #C4522A;
   --sandy:   #C8A044;
   --wine:    #7A3020;
@@ -26,6 +35,8 @@
   --green:   #3A7848;
   --amber:   #C89020;
   --red:     #A83020;
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --sidebar-w: 220px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -33,7 +44,7 @@ body{font-family:'Poppins','Segoe UI',sans-serif;background:var(--bg);color:var(
 
 /* ── SIDEBAR ─────────────────────────────────────────────────────────────── */
 #sidebar{width:var(--sidebar-w);background:#fff;color:var(--text);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s;box-shadow:3px 0 16px rgba(0,0,0,.10)}
-.sidebar-logo{padding:22px 18px 16px;border-bottom:1px solid var(--border)}
+.sidebar-logo{padding:22px 18px 16px;border-bottom:2px solid var(--accent)}
 .sidebar-logo h2{font-size:1rem;font-weight:700;letter-spacing:.5px;color:var(--navy)}
 .sidebar-logo p{font-size:.7rem;color:var(--muted);margin-top:2px}
 nav{flex:1;padding:14px 0}
@@ -100,8 +111,9 @@ header h1{font-size:.95rem;font-weight:600}
 .kpi-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px;padding:14px 18px}
 .kpi-select-wrap{display:flex;align-items:center;gap:8px}
 .kpi-select-wrap label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);white-space:nowrap}
-.kpi-select{padding:7px 14px;border:1px solid var(--border);border-radius:8px;font-size:.85rem;background:var(--bg);color:var(--text);cursor:pointer;outline:none;min-width:140px;font-weight:600}
-.kpi-select:focus{border-color:var(--teal)}
+.kpi-select{padding:8px 32px 8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B5E52'/></svg>") no-repeat right 12px center;color:var(--text);cursor:pointer;outline:none;min-width:140px;font-weight:600;appearance:none;-webkit-appearance:none;transition:border-color .15s,box-shadow .15s}
+.kpi-select:hover{border-color:var(--accent2)}
+.kpi-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(127,29,29,.12)}
 .month-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
 .month-tab{
   padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);
@@ -112,9 +124,9 @@ header h1{font-size:.95rem;font-weight:600}
 }
 .month-tab:hover:not(.no-data):not(.active){
   border-color:var(--teal);color:var(--teal);
-  background:rgba(61,122,110,.1);
+  background:rgba(127,29,29,.1);
   transform:translateY(-3px) scale(1.06);
-  box-shadow:0 6px 16px rgba(61,122,110,.22);
+  box-shadow:0 6px 16px rgba(127,29,29,.22);
 }
 .month-tab.active{
   background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
@@ -125,18 +137,20 @@ header h1{font-size:.95rem;font-weight:600}
 }
 .month-tab.has-data:not(.active){
   border-color:var(--teal);color:var(--teal);
-  background:rgba(61,122,110,.07);
+  background:rgba(127,29,29,.07);
 }
 .month-tab.no-data{opacity:.32;cursor:not-allowed}
 
 /* ── SLA SUMMARY CARDS ───────────────────────────────────────────────────── */
 .sla-stat{background:var(--card);border-radius:10px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-top:4px solid var(--teal)}
-.sla-stat .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:5px}
-.sla-stat .val{font-size:1.7rem;font-weight:800;line-height:1}
-.sla-stat .sub{font-size:.74rem;color:var(--muted);margin-top:4px}
-.sla-stat.green{border-top-color:var(--green)}
-.sla-stat.amber{border-top-color:var(--amber)}
-.sla-stat.red2{border-top-color:var(--red)}
+.sla-stat .lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.sla-stat .stat-icon{font-size:1rem;line-height:1}
+.sla-stat .val{font-size:1.85rem;font-weight:800;line-height:1}
+.sla-stat .sub{font-size:.74rem;color:var(--muted);margin-top:5px}
+.sla-stat.green{border-top-color:var(--green);background:linear-gradient(180deg,rgba(58,120,72,.09),rgba(58,120,72,.015) 65%),var(--card)}
+.sla-stat.amber{border-top-color:var(--amber);background:linear-gradient(180deg,rgba(200,144,32,.11),rgba(200,144,32,.015) 65%),var(--card)}
+.sla-stat.red2{border-top-color:var(--red);background:linear-gradient(180deg,rgba(168,48,32,.09),rgba(168,48,32,.015) 65%),var(--card)}
+.sla-stat.neutral{border-top-color:var(--navy);background:linear-gradient(180deg,rgba(42,63,94,.09),rgba(42,63,94,.015) 65%),var(--card)}
 
 /* ── CHART ───────────────────────────────────────────────────────────────── */
 .chart-wrap{position:relative;height:220px;margin-top:8px}
@@ -155,7 +169,7 @@ header h1{font-size:.95rem;font-weight:600}
 /* ── AREA TREE ───────────────────────────────────────────────────────────── */
 .area-tree{margin-top:4px}
 .tree-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:background .15s;user-select:none}
-.tree-row:hover{background:rgba(45,126,138,.06)}
+.tree-row:hover{background:rgba(127,29,29,.06)}
 .tree-row.area-level{background:rgba(27,50,82,.04);border:1px solid var(--border);margin-bottom:4px;border-radius:8px}
 .tree-row.regional-level{margin-left:20px;padding:7px 12px}
 .tree-row.branch-level{margin-left:40px;padding:6px 12px;cursor:default}
@@ -177,18 +191,32 @@ header h1{font-size:.95rem;font-weight:600}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── PROJECT TRACKER ─────────────────────────────────────────────────────── */
-.pt-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
-.pt-toolbar h2{font-size:1rem;font-weight:700}
+.pt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--accent-grad);border-radius:var(--radius-sm) var(--radius-sm) 0 0;margin-bottom:14px;padding:11px 16px}
+.pt-toolbar h2{font-size:.95rem;font-weight:700;color:#fff;letter-spacing:.2px}
+.pt-toolbar .search-input{background:rgba(255,255,255,.92)}
+.pt-toolbar .btn-add{background:#fff;color:var(--accent)}
+.pt-toolbar .btn-add:hover{background:var(--bg);color:var(--accent2)}
 .search-input{padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:.82rem;outline:none;width:190px;background:var(--bg)}
 .search-input:focus{border-color:var(--teal)}
 .filter-btn{padding:5px 13px;border:1px solid var(--border);border-radius:99px;background:var(--card);font-size:.75rem;cursor:pointer;color:var(--muted);transition:all .15s}
 .filter-btn.active,.filter-btn:hover{background:var(--navy);border-color:var(--navy);color:#fff}
-.btn-add{padding:7px 16px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;transition:background .15s}
-.btn-add:hover{background:var(--navy)}
+.btn-add{padding:7px 16px;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn-add:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(127,29,29,.25)}
+
+/* ── UNIFIED BUTTON SYSTEM ───────────────────────────────────────────────── */
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s;font-family:'Poppins',sans-serif;letter-spacing:.2px}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(127,29,29,.25)}
+.btn-primary:active{transform:translateY(0);box-shadow:none}
+.btn-secondary{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#fff;color:var(--accent);border:1.5px solid var(--accent);border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Poppins',sans-serif}
+.btn-secondary:hover{background:rgba(127,29,29,.06);border-color:var(--accent2);color:var(--accent2)}
+.btn-nav-icon{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .15s}
+.btn-nav-icon:hover{background:var(--accent)}
+.btn-pill-toggle{padding:6px 14px;border-radius:8px;border:2px solid var(--navy);background:transparent;color:var(--navy);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-pill-toggle.active{background:var(--navy);color:#fff}
 
 .pt-table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;table-layout:fixed}
-thead th{text-align:left;padding:9px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap;overflow:hidden}
+thead th{text-align:left;padding:9px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--navy);background:var(--bg);border-bottom:2px solid var(--accent);white-space:nowrap;overflow:hidden}
 .pt-name-cell{overflow:hidden;max-width:0;word-break:break-word;white-space:normal}
 tbody tr.main-row{border-bottom:1px solid var(--border);transition:background .12s}
 tbody tr.main-row:hover{background:#f8f5f0}
@@ -208,8 +236,8 @@ tbody tr.sub-row td{padding:7px 12px;font-size:.8rem}
 .btn-add-sub{background:none;border:1px dashed var(--border);color:var(--muted);border-radius:5px;padding:2px 8px;font-size:.72rem;cursor:pointer;margin-left:4px;transition:all .15s}
 .btn-add-sub:hover{border-color:var(--teal);color:var(--teal)}
 .btn-notes{background:none;border:1px dashed var(--border);color:var(--muted);border-radius:5px;padding:2px 8px;font-size:.72rem;cursor:pointer;transition:all .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
-.btn-notes:hover{border-color:var(--teal);color:var(--teal);background:rgba(61,122,110,.06)}
-.btn-notes.has-notes{border-style:solid;border-color:var(--teal);color:var(--teal);background:rgba(61,122,110,.08);font-weight:600}
+.btn-notes:hover{border-color:var(--teal);color:var(--teal);background:rgba(127,29,29,.06)}
+.btn-notes.has-notes{border-style:solid;border-color:var(--teal);color:var(--teal);background:rgba(127,29,29,.08);font-weight:600}
 .btn-del{background:none;border:none;color:#bbb;cursor:pointer;font-size:1.1rem;padding:4px 6px;transition:all .15s;opacity:.5;border-radius:6px}
 .btn-del:hover{color:#dc2626;opacity:1;background:rgba(220,38,38,.08);transform:scale(1.15)}
 .btn-del:hover{color:var(--red)}
@@ -234,18 +262,19 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .pt-stat .num{font-size:1.5rem;font-weight:800;color:var(--navy)}
 .pt-stat .lbl{font-size:.68rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .save-bar{background:#eef9f5;border:1px solid #a7f3d0;border-radius:8px;padding:8px 14px;font-size:.78rem;color:#065f46;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.btn-export{padding:5px 12px;background:var(--teal);color:#fff;border:none;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer}
+.btn-export{padding:5px 12px;background:var(--accent-grad);color:#fff;border:none;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:transform .15s}
+.btn-export:hover{transform:translateY(-1px)}
 .empty-state{text-align:center;padding:40px;color:var(--muted);font-size:.85rem}
 
 /* ── DATA CONVERTER ─────────────────────────────────────────────────────────── */
 .conv-drop-zone{border:3px dashed var(--border);border-radius:16px;background:var(--card);padding:56px 32px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.conv-drop-zone:hover,.conv-drop-zone.drag-over{border-color:var(--teal);background:rgba(61,122,110,.05)}
-.conv-drop-zone.has-file{border-color:var(--teal);border-style:solid;background:rgba(61,122,110,.04)}
+.conv-drop-zone:hover,.conv-drop-zone.drag-over{border-color:var(--teal);background:rgba(127,29,29,.05)}
+.conv-drop-zone.has-file{border-color:var(--teal);border-style:solid;background:rgba(127,29,29,.04)}
 .conv-drop-icon{font-size:3.5rem;display:block;margin-bottom:14px;transition:transform .3s}
 .conv-drop-zone:hover .conv-drop-icon,.conv-drop-zone.drag-over .conv-drop-icon{transform:translateY(-6px) scale(1.05)}
 .conv-drop-zone.has-file .conv-drop-icon{animation:none}
-.conv-upload-btn{display:inline-block;background:var(--navy);color:#fff;padding:12px 32px;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:14px;transition:background .2s;font-family:'Poppins',sans-serif;border:none;letter-spacing:.2px}
-.conv-upload-btn:hover{background:var(--teal)}
+.conv-upload-btn{display:inline-block;background:var(--accent-grad);color:#fff;padding:12px 32px;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:14px;transition:transform .2s,box-shadow .2s;font-family:'Poppins',sans-serif;border:none;letter-spacing:.2px}
+.conv-upload-btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(127,29,29,.3)}
 .conv-sheet-card{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px}
 .conv-sheet-icon{font-size:1.8rem;flex-shrink:0;margin-top:2px}
 .conv-sheet-name{font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:3px}
@@ -279,11 +308,12 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .s-indent{display:inline-block;width:13px;margin-right:5px}
 
 /* ── TREE FILTER BAR ─────────────────────────────────────────────────────── */
-.tree-filter-bar{display:flex;gap:12px;flex-wrap:wrap;padding:10px 0 14px;border-bottom:1px solid var(--border);margin-bottom:12px}
-.filter-group{display:flex;align-items:center;gap:6px}
-.filter-group label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);white-space:nowrap}
-.filter-group select{padding:5px 10px;border:1px solid var(--border);border-radius:7px;font-size:.8rem;background:var(--bg);color:var(--text);cursor:pointer;outline:none;font-family:'Poppins',sans-serif;min-width:130px}
-.filter-group select:focus{border-color:var(--teal)}
+.tree-filter-bar{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end;padding:12px 14px 16px;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:14px}
+.filter-group{display:flex;flex-direction:column;gap:4px}
+.filter-group label{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);white-space:nowrap}
+.filter-group select{padding:7px 30px 7px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:.8rem;background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B5E52'/></svg>") no-repeat right 10px center;color:var(--text);cursor:pointer;outline:none;font-family:'Poppins',sans-serif;min-width:130px;appearance:none;-webkit-appearance:none;transition:border-color .15s,box-shadow .15s}
+.filter-group select:hover{border-color:var(--accent2)}
+.filter-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(127,29,29,.12)}
 
 /* ── KPI MATRIX TABLE ────────────────────────────────────────────────────── */
 .kpi-matrix{width:100%;border-collapse:collapse;font-size:.8rem}
@@ -314,7 +344,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .ref-summary-table th{background:var(--navy);color:#fff;padding:7px 6px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0;text-align:center;border:1px solid rgba(255,255,255,.12);white-space:normal;overflow:visible;line-height:1.25}
 .ref-summary-table th:first-child{text-align:left;width:29%;padding-left:10px}
 .ref-summary-table td{padding:9px 8px;font-size:.88rem;font-weight:500;border:1px solid var(--border);text-align:center}
-.ref-summary-table td:first-child{text-align:left;font-weight:700;color:var(--navy);background:rgba(61,122,110,.06)}
+.ref-summary-table td:first-child{text-align:left;font-weight:700;color:var(--navy);background:rgba(127,29,29,.06)}
 .ref-summary-table td.rs-c{color:var(--green);font-weight:700}
 .ref-summary-table td.rs-nc{color:var(--red);font-weight:700}
 .ref-summary-table td.rs-an{color:var(--muted);font-weight:600}
@@ -345,10 +375,10 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 /* ── DOWNLOAD BUTTONS ────────────────────────────────────────────────────── */
 .kpi-toolbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .btn-download-kpi,.btn-copy-kpi{display:flex;align-items:center;gap:6px;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;white-space:nowrap;font-family:'Poppins',sans-serif}
-.btn-download-kpi{background:var(--teal);border:none;color:#fff}
-.btn-download-kpi:hover{background:var(--navy);transform:translateY(-1px)}
+.btn-download-kpi{background:var(--accent-grad);border:none;color:#fff}
+.btn-download-kpi:hover{box-shadow:0 4px 10px rgba(127,29,29,.25);transform:translateY(-1px)}
 .btn-copy-kpi{background:var(--card);border:1px solid var(--border);color:var(--teal)}
-.btn-copy-kpi:hover{background:rgba(61,122,110,.1);border-color:var(--teal);transform:translateY(-1px)}
+.btn-copy-kpi:hover{background:rgba(127,29,29,.1);border-color:var(--teal);transform:translateY(-1px)}
 .btn-download-kpi:active,.btn-copy-kpi:active{transform:translateY(0)}
 .copy-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy2);color:#fff;padding:9px 18px;border-radius:8px;font-size:.8rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:999}
 .copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -363,7 +393,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .dp-close{background:none;border:none;font-size:1.2rem;cursor:pointer;color:rgba(255,255,255,.65);line-height:1;padding:2px 6px;transition:color .15s;flex-shrink:0}
 .dp-close:hover{color:#fff}
 .drill-panel-body{flex:1;overflow-y:auto;padding:16px 18px}
-.drill-reason{background:rgba(61,122,110,.1);border-left:3px solid var(--teal);border-radius:6px;padding:10px 14px;font-size:.77rem;color:var(--text);margin-bottom:14px;line-height:1.65}
+.drill-reason{background:rgba(127,29,29,.1);border-left:3px solid var(--teal);border-radius:6px;padding:10px 14px;font-size:.77rem;color:var(--text);margin-bottom:14px;line-height:1.65}
 .drill-table{width:100%;border-collapse:collapse;font-size:.8rem}
 .drill-table th{background:var(--navy);color:#fff;padding:8px 10px;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
 .drill-table th:not(:first-child){text-align:right}
@@ -380,13 +410,15 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .drill-hint{font-size:.64rem;color:var(--teal);margin-top:7px;letter-spacing:.2px;opacity:.85}
 
 /* ── HOME ID DASHBOARD ───────────────────────────────────────────────────── */
-.hid-filter-bar{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.hid-filter-bar{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border);padding:12px 14px}
 .hid-fg{display:flex;flex-direction:column;gap:4px}
-.hid-fg label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.hid-sel,.hid-inp{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;background:var(--bg);color:var(--text);outline:none;font-family:'Poppins',sans-serif}
-.hid-sel:focus,.hid-inp:focus{border-color:var(--teal)}
-.hid-btn{padding:8px 22px;background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;align-self:flex-end;transition:opacity .15s}
-.hid-btn:hover{opacity:.88}
+.hid-fg label{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.hid-sel,.hid-inp{padding:7px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:.82rem;background:#fff;color:var(--text);outline:none;font-family:'Poppins',sans-serif;transition:border-color .15s,box-shadow .15s}
+.hid-sel{padding-right:30px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B5E52'/></svg>");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer;appearance:none;-webkit-appearance:none}
+.hid-sel:hover,.hid-inp:hover{border-color:var(--accent2)}
+.hid-sel:focus,.hid-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(127,29,29,.12)}
+.hid-btn{padding:8px 22px;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;align-self:flex-end;transition:transform .15s,box-shadow .15s}
+.hid-btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(127,29,29,.25)}
 .hid-lu{font-size:.7rem;color:var(--muted);align-self:flex-end;padding-bottom:2px;margin-left:auto}
 .hid-flow-outer{overflow-x:auto;padding-bottom:4px}
 .hid-flow-container{position:relative;width:720px;height:440px;flex-shrink:0}
@@ -441,7 +473,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .dur-pkg-btn:hover{border-color:var(--teal);color:var(--teal)}
 .dur-pkg-btn.active{background:var(--teal);border-color:var(--teal);color:#fff}
 /* Home ID page banner */
-.hid-page-banner{background:linear-gradient(135deg,#1B3252 0%,#1A7A52 100%);border-radius:14px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;overflow:hidden}
+.hid-page-banner{background:linear-gradient(135deg,var(--navy2) 0%,var(--navy) 45%,var(--accent) 100%);border-radius:14px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;overflow:hidden}
 .hid-page-banner::before{content:'';position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.05)}
 .hid-banner-icon{font-size:1.8rem;background:rgba(255,255,255,.15);border-radius:12px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hid-banner-title{font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:.3px}
@@ -552,7 +584,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       <!-- 3-card row: Installation Flow | Avg Duration | Fallout Breakdown -->
       <div style="display:grid;grid-template-columns:1fr 220px 220px;gap:16px;margin-bottom:16px;align-items:start">
         <div class="card">
-          <div class="card-title" style="margin-bottom:14px">Installation Flow</div>
+          <div class="ref-summary-header" style="margin-bottom:14px">Installation Flow</div>
           <div class="hid-flow-outer">
             <div class="hid-flow-container" id="hid-flow-container"></div>
           </div>
@@ -563,12 +595,12 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 
       <!-- Duration Matrix -->
       <div class="card" style="margin-bottom:16px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-          <div class="card-title" style="margin-bottom:0">Duration Matrix
-            <span style="font-size:.65rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.6">— Durasi TTI vs Durasi Instalasi</span>
-          </div>
+        <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+          <span>Duration Matrix
+            <span style="font-size:.66rem;font-weight:500;text-transform:none;letter-spacing:0;opacity:.8">— Durasi TTI vs Durasi Instalasi</span>
+          </span>
           <div style="display:flex;gap:6px;align-items:center">
-            <span style="font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Filter:</span>
+            <span style="font-size:.66rem;font-weight:700;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.4px">Filter:</span>
             <button class="dur-pkg-btn active" id="durPkgAll"   onclick="setDurPkg('all')"  >All</button>
             <button class="dur-pkg-btn"        id="durPkgReg"   onclick="setDurPkg('reg')"  >Indihome Reg</button>
             <button class="dur-pkg-btn"        id="durPkgHid"   onclick="setDurPkg('hid')"  >Home ID</button>
@@ -579,7 +611,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 
       <!-- Area Summary -->
       <div class="card">
-        <div class="card-title" style="margin-bottom:16px">Area Summary</div>
+        <div class="ref-summary-header" style="margin-bottom:16px">Area Summary</div>
         <div style="overflow-x:auto"><table class="hid-area-tbl" id="hid-area-tbl"></table></div>
       </div>
 
@@ -615,15 +647,15 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         <!-- Download toolbar -->
         <div class="kpi-toolbar">
           <button id="btnDownloadRaw" onclick="downloadRaw()"
-            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(90,10,120,.45)'"
+            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(127,29,29,.4)'"
             onmouseout="this.style.transform='';this.style.boxShadow=''"
             title="Download original DB columns (semicolon CSV)"
-            style="display:none;background:linear-gradient(135deg,#3D0A5C,#7A1A1A);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Raw</button>
+            style="display:none;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Raw</button>
           <button id="btnDownloadKPI" onclick="downloadProcessed()"
-            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(20,100,70,.4)'"
+            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(42,63,94,.4)'"
             onmouseout="this.style.transform='';this.style.boxShadow=''"
             title="Download processed TTI data (semicolon CSV, EU format)"
-            style="display:none;background:linear-gradient(135deg,#1A6B5A,#1A4A2E);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Processed</button>
+            style="display:none;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Processed</button>
         </div>
         <!-- Content area -->
         <div id="kpiBody"></div>
@@ -682,7 +714,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
     <!-- ══ ADD / EDIT PROJECT MODAL ══ -->
     <div id="ptModalOverlay" onclick="closePtModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500"></div>
     <div id="ptModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:501;background:var(--card);border-radius:14px;width:500px;max-width:96vw;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden">
-      <div style="background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+      <div style="background:var(--accent-grad);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
         <div id="ptModalTitle" style="font-size:.92rem;font-weight:700">New Project</div>
         <button onclick="closePtModal()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>
       </div>
@@ -731,7 +763,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         </div>
         <div id="ptModalErr" style="display:none;color:#dc2626;font-size:.78rem;font-weight:600"></div>
         <div style="display:flex;gap:10px;margin-top:4px">
-          <button onclick="savePtModal()" style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Save Project</button>
+          <button onclick="savePtModal()" style="flex:1;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Save Project</button>
           <button onclick="closePtModal()" style="background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;padding:10px 16px;font-size:.85rem;cursor:pointer;font-family:'Poppins',sans-serif">Cancel</button>
         </div>
       </div>
@@ -740,7 +772,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
     <!-- ══ SUBTASK NOTES MODAL ══ -->
     <div id="stNotesOverlay" onclick="closeSubtaskNotes()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500"></div>
     <div id="stNotesModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:501;background:var(--card);border-radius:14px;width:540px;max-width:96vw;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden">
-      <div style="background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+      <div style="background:var(--accent-grad);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
         <div>
           <div style="font-size:.65rem;opacity:.6;text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Subtask Details</div>
           <div id="stNotesTitle" style="font-size:.95rem;font-weight:700;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
@@ -758,7 +790,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         </div>
         <div id="stNotesUpdated" style="font-size:.72rem;color:var(--muted);min-height:18px"></div>
         <div style="display:flex;gap:10px">
-          <button onclick="saveSubtaskNotes()" style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:background .15s">Save Notes</button>
+          <button onclick="saveSubtaskNotes()" style="flex:1;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:background .15s">Save Notes</button>
           <button onclick="closeSubtaskNotes()" style="background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;padding:10px 16px;font-size:.85rem;cursor:pointer;font-family:'Poppins',sans-serif">Cancel</button>
         </div>
       </div>
@@ -769,16 +801,16 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
         <!-- Nav row -->
         <div style="display:flex;align-items:center;gap:10px">
-          <button onclick="calNav(-1)" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.85rem;font-weight:700;cursor:pointer">‹</button>
+          <button onclick="calNav(-1)" class="btn-nav-icon">‹</button>
           <div id="calMonthLabel" style="font-size:1.05rem;font-weight:800;color:var(--navy);min-width:160px;text-align:center"></div>
-          <button onclick="calNav(1)"  style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.85rem;font-weight:700;cursor:pointer">›</button>
-          <button onclick="calGoToday()" style="background:var(--teal);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;cursor:pointer">Today</button>
+          <button onclick="calNav(1)"  class="btn-nav-icon">›</button>
+          <button onclick="calGoToday()" class="btn-secondary" style="padding:7px 14px;font-size:.78rem">Today</button>
         </div>
         <!-- View switcher -->
         <div style="display:flex;gap:6px">
-          <button onclick="calSetView('month')" id="calBtnMonth" style="padding:6px 14px;border-radius:8px;border:2px solid var(--navy);background:var(--navy);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer">Month</button>
-          <button onclick="calSetView('week')"  id="calBtnWeek"  style="padding:6px 14px;border-radius:8px;border:2px solid var(--navy);background:transparent;color:var(--navy);font-size:.78rem;font-weight:700;cursor:pointer">Week</button>
-          <button onclick="calAddEvent()"        style="padding:6px 16px;border-radius:8px;border:none;background:var(--teal);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer">＋ Add Event</button>
+          <button onclick="calSetView('month')" id="calBtnMonth" class="btn-pill-toggle active">Month</button>
+          <button onclick="calSetView('week')"  id="calBtnWeek"  class="btn-pill-toggle">Week</button>
+          <button onclick="calAddEvent()" class="btn-primary" style="padding:6px 16px;font-size:.78rem">＋ Add Event</button>
         </div>
       </div>
 
@@ -791,7 +823,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
     <!-- ══ EVENT MODAL ══ -->
     <div id="calModalOverlay" onclick="calCloseModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500"></div>
     <div id="calModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:501;background:var(--card);border-radius:14px;width:440px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden">
-      <div style="background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+      <div style="background:var(--accent-grad);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
         <div id="calModalTitle" style="font-size:.92rem;font-weight:700"></div>
         <button onclick="calCloseModal()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>
       </div>
@@ -843,7 +875,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         </div>
         <div id="calModalErr" style="display:none;color:#dc2626;font-size:.78rem;font-weight:600"></div>
         <div style="display:flex;gap:10px;margin-top:4px">
-          <button onclick="calSaveEvent()" style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Save Event</button>
+          <button onclick="calSaveEvent()" style="flex:1;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Save Event</button>
           <button id="calBtnDelete" onclick="calDeleteEvent()" style="display:none;background:#dc2626;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Delete</button>
           <button onclick="calCloseModal()" style="background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;padding:10px 16px;font-size:.85rem;cursor:pointer;font-family:'Poppins',sans-serif">Cancel</button>
         </div>
@@ -868,9 +900,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         <!-- Upload zone -->
         <div>
           <div class="card" style="padding:0;overflow:hidden">
-            <div style="padding:14px 18px;border-bottom:1px solid var(--border)">
-              <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)">Step 1 — Upload Source File</div>
-            </div>
+            <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0">Step 1 — Upload Source File</div>
             <div style="padding:20px">
               <div class="conv-drop-zone" id="convDropZone"
                 ondragover="convDragOver(event)" ondragleave="convDragLeave(event)" ondrop="convDrop(event)"
@@ -900,7 +930,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         <!-- Output preview + convert button -->
         <div style="display:flex;flex-direction:column;gap:16px">
           <div class="card">
-            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:14px">Step 2 — Output Sheets</div>
+            <div class="ref-summary-header" style="margin-bottom:14px">Step 2 — Output Sheets</div>
             <div style="display:flex;flex-direction:column;gap:10px">
               <div class="conv-sheet-card">
                 <span class="conv-sheet-icon">🟦</span>
@@ -939,13 +969,13 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 
       <!-- Logic reference card -->
       <div class="card">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:14px">Conversion Logic Reference</div>
+        <div class="ref-summary-header" style="margin-bottom:14px">Conversion Logic Reference</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;font-size:.8rem;line-height:1.65">
           <div style="background:rgba(42,63,94,.04);border-left:3px solid var(--navy);padding:12px 14px;border-radius:0 8px 8px 0">
             <div style="font-weight:700;color:var(--navy);margin-bottom:6px">🟦 FFG Population</div>
             Group all tickets by <strong>order_id</strong>. Sort each group by <strong>trouble_opentime</strong> ascending. Pick the <em>first row where flag_exclude_all = 0</em>. If all rows for an order are excluded, that order is skipped.
           </div>
-          <div style="background:rgba(61,122,110,.04);border-left:3px solid var(--teal);padding:12px 14px;border-radius:0 8px 8px 0">
+          <div style="background:rgba(127,29,29,.04);border-left:3px solid var(--teal);padding:12px 14px;border-radius:0 8px 8px 0">
             <div style="font-weight:700;color:var(--teal);margin-bottom:6px">🟩 TTR FFG Population</div>
             All rows from the source file are kept as-is. The SLA formula (<em>date_close − first_cust_assign ≤ 3h</em>, excluding WILSUS and null assign) is applied separately in update_dashboard.py.
           </div>
@@ -1371,7 +1401,7 @@ function _renderHIDDurSummary(){
     {lbl:'Avg Durasi Inst.', sub:'Indihome Reg', val:d.avgInst_reg.toFixed(2)+' jam', color:'#C0392B'},
     {lbl:'Avg Durasi Inst.', sub:'Home ID',       val:d.avgInst_hid.toFixed(2)+' jam', color:'#1A7A52'},
   ];
-  el.innerHTML=`<div class="card-title" style="margin-bottom:12px;font-size:.8rem">Avg Duration</div>
+  el.innerHTML=`<div class="ref-summary-header" style="margin-bottom:12px;font-size:.78rem">Avg Duration</div>
     <div style="display:flex;flex-direction:column;gap:8px">
       ${metrics.map(m=>`
         <div class="dur-metric-card" style="border-left-color:${m.color}">
@@ -1393,8 +1423,8 @@ function _renderHIDFallout(){
     {lbl:'Other',             key:'other',     color:'#7C3AED'},
     {lbl:'Blank',             key:'blank',     color:'#6B7280'},
   ];
-  el.innerHTML=`<div class="card-title" style="margin-bottom:12px;font-size:.8rem">Fallout Breakdown
-    <span style="font-size:.67rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.65">— ${_hidN(total)} total</span>
+  el.innerHTML=`<div class="ref-summary-header" style="margin-bottom:12px;font-size:.78rem">Fallout Breakdown
+    <span style="font-size:.67rem;font-weight:500;text-transform:none;letter-spacing:0;opacity:.8">— ${_hidN(total)} total</span>
   </div>
   <div style="display:flex;flex-direction:column;gap:8px">
     ${items.map(it=>{
@@ -1621,7 +1651,7 @@ function renderAllView(){
   const oClr = slaColor(parseFloat(overallSla));
 
   const allMonths = Object.keys(kpiData.months||{}).sort();
-  const COLORS=['#2A3F5E','#C4522A','#3D7A6E','#C89020','#7A3020','#3A7848','#5A9E8E'];
+  const COLORS=['#2A3F5E','#C4522A','#7f1d1d','#C89020','#7A3020','#3A7848','#4c1d6b'];
   const ENL = {TTI:'TTI',FFG:'FFG',TTRFFG:'TTR FFG',PSRE:'PS-RE',FFGGAUL:'FFG GAUL'};
   // ── Define eln/etgt FIRST so matrix code can use them ──
   const eln  = e => ENL[e]||e;
@@ -1667,8 +1697,8 @@ function renderAllView(){
   ).join('');
   const matrixHtml = `
     <div class="card" style="margin-bottom:18px">
-      <div class="card-title" style="margin-bottom:14px">KPI Performance Matrix
-        <span style="font-size:.68rem;font-weight:400;text-transform:none;letter-spacing:0;opacity:.65"> — Month to Month with MoM Change</span>
+      <div class="ref-summary-header" style="margin-bottom:14px">KPI Performance Matrix
+        <div style="font-size:.66rem;font-weight:500;text-transform:none;letter-spacing:0;opacity:.8;margin-top:2px">Month to Month with MoM Change</div>
       </div>
       <div style="overflow-x:auto">
       <table class="kpi-matrix">
@@ -1744,11 +1774,11 @@ function renderAllView(){
     <!-- MIDDLE: Month-to-month trend + This Month bar chart side by side -->
     <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:18px">
       <div class="card">
-        <div class="card-title">All KPI — Month to Month Performance</div>
+        <div class="ref-summary-header" style="margin-bottom:14px">All KPI — Month to Month Performance</div>
         <div class="chart-wrap tall"><canvas id="ch_all_trend"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">This Month — SLA % by Entity</div>
+        <div class="ref-summary-header" style="margin-bottom:14px">This Month — SLA % by Entity</div>
         <div class="chart-wrap tall"><canvas id="ch_ov_bar"></canvas></div>
       </div>
     </div>
@@ -1757,7 +1787,7 @@ function renderAllView(){
     <!-- BOTTOM: Analysis card full width -->
     <div style="margin-bottom:18px">
       <div class="card">
-        <div class="card-title">Performance Analysis & Outlook</div>
+        <div class="ref-summary-header" style="margin-bottom:14px">Performance Analysis &amp; Outlook</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:4px">
           <div>
             <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📊 Current Status</div>
@@ -1957,12 +1987,12 @@ function renderSummaryView(){
 
   $('kpiBody').innerHTML=`
     <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
-        <div class="card-title" style="margin-bottom:0">Summary — All KPI by Area</div>
+      <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+        <span>Summary — All KPI by Area</span>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <button onclick="smExpandAll()" style="padding:5px 12px;background:rgba(42,63,94,.07);color:var(--navy);border:1px solid var(--border);border-radius:7px;font-size:.73rem;font-weight:600;cursor:pointer">⊞ Expand All</button>
-          <button onclick="smCollapseAll()" style="padding:5px 12px;background:rgba(42,63,94,.07);color:var(--navy);border:1px solid var(--border);border-radius:7px;font-size:.73rem;font-weight:600;cursor:pointer">⊟ Collapse All</button>
-          <button onclick="downloadSummaryCSV()" style="background:linear-gradient(135deg,#38bdf8,#0284c7);color:#fff;border:none;padding:7px 16px;border-radius:8px;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(2,132,199,.3);letter-spacing:.2px">⬇ Summary Download</button>
+          <button onclick="smExpandAll()" style="padding:5px 12px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:7px;font-size:.73rem;font-weight:600;cursor:pointer">⊞ Expand All</button>
+          <button onclick="smCollapseAll()" style="padding:5px 12px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:7px;font-size:.73rem;font-weight:600;cursor:pointer">⊟ Collapse All</button>
+          <button onclick="downloadSummaryCSV()" style="background:rgba(255,255,255,.95);color:var(--accent);border:none;padding:7px 16px;border-radius:8px;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px;letter-spacing:.2px">⬇ Summary Download</button>
         </div>
       </div>
       <div style="overflow:auto;max-height:70vh">
@@ -2254,7 +2284,7 @@ function renderEntityView(entity, d){
       const hdrBg  = 'background:var(--navy)';
       const groupHead = CATS.map(c=>`<th colspan="2" style="padding:7px 8px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;text-align:center;${hdrBg};border:${hdrBorder};color:#fff">${c.label}</th>`).join('');
       const subHead   = CATS.map(()=>`<th style="padding:6px 8px;font-size:.68rem;font-weight:700;color:#a7f3d0;text-align:center;${hdrBg};border:${hdrBorder}">Comply</th><th style="padding:6px 8px;font-size:.68rem;font-weight:700;color:#fca5a5;text-align:center;${hdrBg};border:${hdrBorder}">Not Comply</th>`).join('');
-      const tdA = `style="padding:9px 12px;font-weight:700;font-size:.88rem;white-space:nowrap;color:var(--navy);background:rgba(61,122,110,.06);border:${border}"`;
+      const tdA = `style="padding:9px 12px;font-weight:700;font-size:.88rem;white-space:nowrap;color:var(--navy);background:rgba(127,29,29,.06);border:${border}"`;
       const tdC = `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--green);font-weight:700;border:${border}"`;
       const tdNC= `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--red);font-weight:700;border:${border}"`;
       const tdAn= `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--muted);font-weight:600;border:${border}"`;
@@ -2384,33 +2414,33 @@ function renderEntityView(entity, d){
   $('kpiBody').innerHTML=`
     <!-- ① Stat cards — 4 across (5 for TTRFFG) -->
     <div class="grid-4" style="margin-bottom:18px;${entity==='TTRFFG'?'grid-template-columns:repeat(5,1fr)':''}">
-      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}" style="background:#ffffff;border-top-color:#3D7A6E">
-        <div class="lbl">${entity} — SLA</div>
+      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}">
+        <div class="lbl"><span class="stat-icon">📶</span>${entity} — SLA</div>
         <div class="val" style="color:#1a1a1a">${fmtSla(d.sla_pct)}</div>
         <div class="sub">Target: ${fmtSla(tgt)}</div>
       </div>
-      <div class="sla-stat clickable" style="background:#ffffff;border-top-color:#64748b" onclick="openDrillPanel('anomaly')">
-        <div class="lbl">Total Orders</div>
+      <div class="sla-stat neutral clickable" onclick="openDrillPanel('anomaly')">
+        <div class="lbl"><span class="stat-icon">📦</span>Total Orders</div>
         <div class="val" style="color:#1a1a1a">${(d.total||0).toLocaleString()}</div>
         <div class="sub">Anomaly: ${(d.anomaly||0).toLocaleString()}</div>
         <div class="drill-hint">↗ Click — anomaly detail</div>
       </div>
-      <div class="sla-stat green clickable" style="background:#ffffff;border-top-color:#22c55e" onclick="openDrillPanel('comply')">
-        <div class="lbl">Comply</div>
+      <div class="sla-stat green clickable" onclick="openDrillPanel('comply')">
+        <div class="lbl"><span class="stat-icon">✅</span>Comply</div>
         <div class="val" style="color:var(--green)">${(d.comply||0).toLocaleString()}</div>
         <div class="sub">${thresh.comply}</div>
         <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
-      <div class="sla-stat red2 clickable" style="background:#ffffff;border-top-color:#e11d48" onclick="openDrillPanel('nc')">
-        <div class="lbl">Not Comply</div>
+      <div class="sla-stat red2 clickable" onclick="openDrillPanel('nc')">
+        <div class="lbl"><span class="stat-icon">⚠️</span>Not Comply</div>
         <div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div>
         <div class="sub">${thresh.nc}</div>
         <div class="drill-hint">↗ Click — area breakdown</div>
       </div>
       ${entity==='TTRFFG'?`
-      <div class="sla-stat clickable" style="background:#ffffff;border-top-color:#f59e0b" onclick="openDrillPanel('wilsus')">
-        <div class="lbl">WILSUS</div>
-        <div class="val" style="color:#d97706">${(d.wilsus||0).toLocaleString()}</div>
+      <div class="sla-stat amber clickable" onclick="openDrillPanel('wilsus')">
+        <div class="lbl"><span class="stat-icon">🛠️</span>WILSUS</div>
+        <div class="val" style="color:#a06a10">${(d.wilsus||0).toLocaleString()}</div>
         <div class="sub">Dengan first assign</div>
         <div class="drill-hint">↗ Click — detail & download</div>
       </div>`:''}
@@ -2447,7 +2477,7 @@ function renderEntityView(entity, d){
     const ct=document.getElementById('ch_trend_e');
     if(ct){
       if(chartInstances.trend_e) chartInstances.trend_e.destroy();
-      const _areaPalette=['#C4522A','#3D7A6E','#2A3F5E','#C8A044','#8B6E4E','#5B8C5A'];
+      const _areaPalette=['#C4522A','#4c1d6b','#2A3F5E','#C8A044','#8B6E4E','#5B8C5A'];
       const _areaNames=[...new Set(months.flatMap(m=>((kpiData.months[m]||{})[entity]?.by_area||[]).map(a=>a.area)))].sort();
       // Dynamic min
       const _allAreaVals=_areaNames.flatMap(area=>months.map(m=>{const ar=((kpiData.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);return ar?ar.sla_pct:null;}));
@@ -3482,7 +3512,7 @@ function openDrillPanel(type){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="drill-section-head" style="margin-bottom:0">Comply per Area — target ${fmtSla(tgt)}</div>
         ${_DL_ENTITIES.includes(entity)?`<button id="btnDlComply" onclick="downloadComplyPanel('${entity}','${selectedMonth}')"
-          style="background:linear-gradient(135deg,#166534,#3D7A6E);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
+          style="background:var(--accent-grad);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download Comply
         </button>`:''}
       </div>
@@ -3512,7 +3542,7 @@ function openDrillPanel(type){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="drill-section-head" style="margin-bottom:0">Not Comply per Area — sorted by volume ↓</div>
         ${_DL_ENTITIES.includes(entity)?`<button id="btnDlNC" onclick="downloadNCPanel('${entity}','${selectedMonth}')"
-          style="background:linear-gradient(135deg,#1B3252,#3D7A6E);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
+          style="background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download NC
         </button>`:''}
       </div>
@@ -4071,7 +4101,7 @@ init();
 
   function _cellStyle(current, isToday){
     let s = 'border:1px solid var(--border);padding:5px 6px;display:flex;flex-direction:column;cursor:pointer;height:100px;box-sizing:border-box;transition:background .12s;overflow:hidden;';
-    if(isToday)  s += 'background:rgba(61,122,110,.07);';
+    if(isToday)  s += 'background:rgba(127,29,29,.07);';
     else if(current) s += 'background:#fff;';
     return s;
   }
