@@ -2270,12 +2270,9 @@ function renderEntityView(entity, d){
     }
 
     breakdownSection = `
-    <div class="card" style="margin-bottom:18px">
-      <div class="card-title" style="margin-bottom:14px">TTI Reference Breakdown</div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start">
-        ${refSummary}
-        ${detailTable}
-      </div>
+    <div style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;margin-bottom:18px;align-items:start">
+      <div class="card" style="flex-shrink:0">${refSummary}</div>
+      <div class="card" style="min-width:0"><div style="overflow-x:auto">${detailTable}</div></div>
     </div>`;
   }
 
