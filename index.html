@@ -2183,7 +2183,7 @@ function renderEntityView(entity, d){
   let breakdownSection = '';
   if(entity === 'TTI'){
     const bda = d.breakdown_by_area;
-    let refSummary = '', detailTable = '';
+    let refSummary = '', detailTable = '', card2 = '', card3 = '';
 
     if(!bda || !bda.length){
       refSummary = `<div class="breakdown-no-data">📊 Breakdown data not yet available. Re-run <strong>update_dashboard.py</strong> to generate these tables.</div>`;
@@ -2224,55 +2224,58 @@ function renderEntityView(entity, d){
           </table>
         </div>`;
 
-      // ─ Detail breakdown by area table ─
+      // ─ Area × reference breakdown — shared config ─
       const CATS = [
         {key:'manja',          label:'Manja'},
-        {key:'pi_manja_minus', label:'PI Manja Minus'},
-        {key:'pi_manja_null',  label:'PI Manja Null'},
-        {key:'re_pi_minus',    label:'RE PI Minus'},
-        {key:'re_pi_null',     label:'RE PI Null'},
+        {key:'pi_manja_null',  label:'Manja Null PI'},
+        {key:'pi_manja_minus', label:'Manja Minus PI'},
+        {key:'re_pi_null',     label:'PI Null RE'},
+        {key:'re_pi_minus',    label:'PI Minus RE'},
       ];
-      const catHeaders = CATS.map(c=>`<th class="group-header" colspan="2">${c.label}</th>`).join('');
-      const subHeaders = CATS.map(()=>`<th class="sub-comply">Comply</th><th class="sub-nc">Not Comply</th>`).join('');
-      const bodyRows = bda.map(row=>{
-        const cells = CATS.map(c=>{
-          const cat = row[c.key]||{comply:0,not_comply:0};
-          return `<td class="bd-comply">${fN(cat.comply)}</td><td class="bd-nc">${fN(cat.not_comply)}</td>`;
-        }).join('');
-        return `<tr><td class="bd-area">${row.area}</td>${cells}<td class="bd-anomaly">${fN(row.anomaly)}</td></tr>`;
+      const fN2 = n => (n > 0 ? n.toLocaleString() : '<span style="color:var(--muted)">-</span>');
+      const areaStyle = 'style="padding:5px 8px;font-weight:600;font-size:.78rem;white-space:nowrap;color:var(--text-primary);border-bottom:1px solid rgba(212,197,169,.2)"';
+      const numCStyle = 'style="padding:5px 8px;text-align:right;font-size:.78rem;color:#a7f3d0;border-bottom:1px solid rgba(212,197,169,.2)"';
+      const numNCStyle= 'style="padding:5px 8px;text-align:right;font-size:.78rem;color:#fca5a5;border-bottom:1px solid rgba(212,197,169,.2)"';
+      const totRowStyle='style="background:rgba(100,200,150,.1)"';
+
+      // Card 2 — Comply by area
+      const c2Head = `<tr style="background:rgba(167,243,208,.08)"><th style="padding:5px 8px;text-align:left;font-size:.75rem;color:#a7f3d0;border-bottom:2px solid rgba(167,243,208,.3)">Area</th>${CATS.map(c=>`<th style="padding:5px 8px;text-align:center;font-size:.75rem;color:#a7f3d0;border-bottom:2px solid rgba(167,243,208,.3)">${c.label}</th>`).join('')}<th style="padding:5px 8px;text-align:center;font-size:.75rem;color:#d1d5db;border-bottom:2px solid rgba(167,243,208,.3)">Anomaly</th></tr>`;
+      const c2Body = bda.map(row=>{
+        const cells = CATS.map(c=>`<td ${numCStyle}>${fN2(row[c.key]?.comply||0)}</td>`).join('');
+        return `<tr><td ${areaStyle}>${row.area}</td>${cells}<td ${numCStyle.replace('#a7f3d0','#d1d5db')}>${fN2(row.anomaly||0)}</td></tr>`;
       }).join('');
-      const totCells = CATS.map(c=>{
-        const tc = bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0);
-        const tnc= bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
-        return `<td class="bd-comply" style="font-weight:700">${tc.toLocaleString()}</td><td class="bd-nc" style="font-weight:700">${tnc.toLocaleString()}</td>`;
+      const c2Tot = CATS.map(c=>`<td style="padding:5px 8px;text-align:right;font-size:.78rem;color:#a7f3d0;font-weight:700">${bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0).toLocaleString()}</td>`).join('');
+      card2 = `<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;min-width:400px">
+        <thead>${c2Head}</thead>
+        <tbody>${c2Body}
+          <tr ${totRowStyle}><td style="padding:5px 8px;font-weight:700;font-size:.78rem;color:#a7f3d0">Total</td>${c2Tot}<td style="padding:5px 8px;text-align:right;font-size:.78rem;color:#d1d5db;font-weight:700">${fN(totAn)}</td></tr>
+        </tbody></table></div>`;
+
+      // Card 3 — Not Comply by area
+      const c3Head = `<tr style="background:rgba(252,165,165,.08)"><th style="padding:5px 8px;text-align:left;font-size:.75rem;color:#fca5a5;border-bottom:2px solid rgba(252,165,165,.3)">Area</th>${CATS.map(c=>`<th style="padding:5px 8px;text-align:center;font-size:.75rem;color:#fca5a5;border-bottom:2px solid rgba(252,165,165,.3)">${c.label}</th>`).join('')}</tr>`;
+      const c3Body = bda.map(row=>{
+        const cells = CATS.map(c=>`<td ${numNCStyle}>${fN2(row[c.key]?.not_comply||0)}</td>`).join('');
+        return `<tr><td ${areaStyle}>${row.area}</td>${cells}</tr>`;
       }).join('');
-      detailTable = `<div class="breakdown-wrap">
-        <div class="ref-summary-header" style="border-radius:8px 8px 0 0">Detail Breakdown by Area</div>
-        <table class="breakdown-table">
-          <thead>
-            <tr>
-              <th class="area-col" rowspan="2">Area</th>
-              ${catHeaders}
-              <th class="group-header" rowspan="2">Anomaly</th>
-            </tr>
-            <tr>${subHeaders}</tr>
-          </thead>
-          <tbody>
-            ${bodyRows}
-            <tr class="bd-total-row">
-              <td class="bd-area">Total</td>
-              ${totCells}
-              <td class="bd-anomaly" style="font-weight:700">${fN(totAn)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>`;
+      const c3Tot = CATS.map(c=>`<td style="padding:5px 8px;text-align:right;font-size:.78rem;color:#fca5a5;font-weight:700">${bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0).toLocaleString()}</td>`).join('');
+      card3 = `<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;min-width:360px">
+        <thead>${c3Head}</thead>
+        <tbody>${c3Body}
+          <tr ${totRowStyle}><td style="padding:5px 8px;font-weight:700;font-size:.78rem;color:#fca5a5">Total</td>${c3Tot}</tr>
+        </tbody></table></div>`;
     }
 
     breakdownSection = `
-    <div style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;margin-bottom:18px;align-items:start">
-      <div class="card" style="flex-shrink:0">${refSummary}</div>
-      <div class="card" style="min-width:0"><div style="overflow-x:auto">${detailTable}</div></div>
+    <div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:14px;margin-bottom:18px;align-items:start">
+      <div class="card" style="flex-shrink:0;min-width:0">${refSummary}</div>
+      <div class="card" style="min-width:0">
+        <div class="ref-summary-header" style="margin:-20px -22px 10px;border-radius:8px 8px 0 0;font-size:.8rem">✅ Comply — by Area &amp; Referensi</div>
+        ${bda && bda.length ? card2 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available</div>'}
+      </div>
+      <div class="card" style="min-width:0">
+        <div class="ref-summary-header" style="margin:-20px -22px 10px;border-radius:8px 8px 0 0;font-size:.8rem;background:linear-gradient(135deg,#7f1d1d,#450a0a)">❌ Not Comply — by Area &amp; Referensi</div>
+        ${bda && bda.length ? card3 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available</div>'}
+      </div>
     </div>`;
   }
 
