@@ -2238,43 +2238,46 @@ function renderEntityView(entity, d){
       const numNCStyle= 'style="padding:5px 8px;text-align:right;font-size:.78rem;color:#fca5a5;border-bottom:1px solid rgba(212,197,169,.2)"';
       const totRowStyle='style="background:rgba(100,200,150,.1)"';
 
-      // Card 2 — Comply by area
-      const c2Head = `<tr style="background:rgba(167,243,208,.08)"><th style="padding:5px 8px;text-align:left;font-size:.75rem;color:#a7f3d0;border-bottom:2px solid rgba(167,243,208,.3)">Area</th>${CATS.map(c=>`<th style="padding:5px 8px;text-align:center;font-size:.75rem;color:#a7f3d0;border-bottom:2px solid rgba(167,243,208,.3)">${c.label}</th>`).join('')}<th style="padding:5px 8px;text-align:center;font-size:.75rem;color:#d1d5db;border-bottom:2px solid rgba(167,243,208,.3)">Anomaly</th></tr>`;
-      const c2Body = bda.map(row=>{
-        const cells = CATS.map(c=>`<td ${numCStyle}>${fN2(row[c.key]?.comply||0)}</td>`).join('');
-        return `<tr><td ${areaStyle}>${row.area}</td>${cells}<td ${numCStyle.replace('#a7f3d0','#d1d5db')}>${fN2(row.anomaly||0)}</td></tr>`;
+      // Merged table — Comply + Not Comply sub-columns per reference type
+      const thBase = 'style="padding:5px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;border:1px solid rgba(255,255,255,.1)"';
+      const groupHead = CATS.map(c=>`<th colspan="2" ${thBase} style="padding:5px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;border:1px solid rgba(255,255,255,.1);text-align:center;background:rgba(30,40,60,.6)">${c.label}</th>`).join('');
+      const subHead   = CATS.map(()=>`<th style="padding:4px 8px;font-size:.68rem;font-weight:600;color:#a7f3d0;text-align:center;background:rgba(20,30,50,.5);border:1px solid rgba(255,255,255,.08)">C</th><th style="padding:4px 8px;font-size:.68rem;font-weight:600;color:#fca5a5;text-align:center;background:rgba(20,30,50,.5);border:1px solid rgba(255,255,255,.08)">NC</th>`).join('');
+      const tdA = `style="padding:6px 10px;font-weight:700;font-size:.8rem;white-space:nowrap;color:var(--text-primary);border:1px solid rgba(212,197,169,.15)"`;
+      const tdC = `style="padding:6px 10px;text-align:right;font-size:.8rem;color:#a7f3d0;border:1px solid rgba(212,197,169,.1)"`;
+      const tdNC= `style="padding:6px 10px;text-align:right;font-size:.8rem;color:#fca5a5;border:1px solid rgba(212,197,169,.1)"`;
+      const mergeBody = bda.map((row,i)=>{
+        const cells = CATS.map(c=>{
+          const cv = row[c.key]?.comply||0, nv = row[c.key]?.not_comply||0;
+          return `<td ${tdC}>${cv>0?cv.toLocaleString():'<span style="color:var(--muted)">-</span>'}</td><td ${tdNC}>${nv>0?nv.toLocaleString():'<span style="color:var(--muted)">-</span>'}</td>`;
+        }).join('');
+        const bg = i%2===0?'rgba(255,255,255,.02)':'rgba(0,0,0,.04)';
+        return `<tr style="background:${bg}"><td ${tdA}>${row.area}</td>${cells}<td style="padding:6px 10px;text-align:right;font-size:.8rem;color:#d1d5db;border:1px solid rgba(212,197,169,.1)">${row.anomaly>0?row.anomaly.toLocaleString():'<span style="color:var(--muted)">-</span>'}</td></tr>`;
       }).join('');
-      const c2Tot = CATS.map(c=>`<td style="padding:5px 8px;text-align:right;font-size:.78rem;color:#a7f3d0;font-weight:700">${bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0).toLocaleString()}</td>`).join('');
-      card2 = `<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;min-width:400px">
-        <thead>${c2Head}</thead>
-        <tbody>${c2Body}
-          <tr ${totRowStyle}><td style="padding:5px 8px;font-weight:700;font-size:.78rem;color:#a7f3d0">Total</td>${c2Tot}<td style="padding:5px 8px;text-align:right;font-size:.78rem;color:#d1d5db;font-weight:700">${fN(totAn)}</td></tr>
-        </tbody></table></div>`;
-
-      // Card 3 — Not Comply by area
-      const c3Head = `<tr style="background:rgba(252,165,165,.08)"><th style="padding:5px 8px;text-align:left;font-size:.75rem;color:#fca5a5;border-bottom:2px solid rgba(252,165,165,.3)">Area</th>${CATS.map(c=>`<th style="padding:5px 8px;text-align:center;font-size:.75rem;color:#fca5a5;border-bottom:2px solid rgba(252,165,165,.3)">${c.label}</th>`).join('')}</tr>`;
-      const c3Body = bda.map(row=>{
-        const cells = CATS.map(c=>`<td ${numNCStyle}>${fN2(row[c.key]?.not_comply||0)}</td>`).join('');
-        return `<tr><td ${areaStyle}>${row.area}</td>${cells}</tr>`;
+      const mergeTot = CATS.map(c=>{
+        const tc = bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0);
+        const tnc= bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
+        return `<td style="padding:6px 10px;text-align:right;font-size:.8rem;color:#a7f3d0;font-weight:700;border:1px solid rgba(212,197,169,.15)">${tc>0?tc.toLocaleString():0}</td><td style="padding:6px 10px;text-align:right;font-size:.8rem;color:#fca5a5;font-weight:700;border:1px solid rgba(212,197,169,.15)">${tnc>0?tnc.toLocaleString():0}</td>`;
       }).join('');
-      const c3Tot = CATS.map(c=>`<td style="padding:5px 8px;text-align:right;font-size:.78rem;color:#fca5a5;font-weight:700">${bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0).toLocaleString()}</td>`).join('');
-      card3 = `<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;min-width:360px">
-        <thead>${c3Head}</thead>
-        <tbody>${c3Body}
-          <tr ${totRowStyle}><td style="padding:5px 8px;font-weight:700;font-size:.78rem;color:#fca5a5">Total</td>${c3Tot}</tr>
+      card2 = `<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%">
+        <thead>
+          <tr><th rowspan="2" style="padding:5px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;text-align:left;background:rgba(30,40,60,.6);border:1px solid rgba(255,255,255,.1);vertical-align:middle">Area</th>${groupHead}<th rowspan="2" style="padding:5px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;text-align:center;background:rgba(30,40,60,.6);border:1px solid rgba(255,255,255,.1);vertical-align:middle;color:#d1d5db">Anomaly</th></tr>
+          <tr>${subHead}</tr>
+        </thead>
+        <tbody>${mergeBody}
+          <tr style="background:rgba(100,200,150,.08);border-top:2px solid rgba(212,197,169,.3)">
+            <td style="padding:6px 10px;font-weight:700;font-size:.8rem;color:var(--teal);border:1px solid rgba(212,197,169,.15)">Total</td>
+            ${mergeTot}
+            <td style="padding:6px 10px;text-align:right;font-size:.8rem;color:#d1d5db;font-weight:700;border:1px solid rgba(212,197,169,.15)">${totAn>0?totAn.toLocaleString():0}</td>
+          </tr>
         </tbody></table></div>`;
     }
 
     breakdownSection = `
-    <div style="display:grid;grid-template-columns:260px 1fr 1fr;gap:14px;margin-bottom:18px;align-items:start">
+    <div style="display:grid;grid-template-columns:260px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
       <div class="card" style="min-width:0;width:260px;box-sizing:border-box">${refSummary}</div>
       <div class="card" style="min-width:0">
-        <div class="ref-summary-header" style="margin:-20px -22px 10px;border-radius:8px 8px 0 0;font-size:.8rem">✅ Comply — by Area &amp; Referensi</div>
-        ${bda && bda.length ? card2 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available</div>'}
-      </div>
-      <div class="card" style="min-width:0">
-        <div class="ref-summary-header" style="margin:-20px -22px 10px;border-radius:8px 8px 0 0;font-size:.8rem;background:linear-gradient(135deg,#7f1d1d,#450a0a)">❌ Not Comply — by Area &amp; Referensi</div>
-        ${bda && bda.length ? card3 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available</div>'}
+        <div class="ref-summary-header" style="margin:-20px -22px 12px;border-radius:8px 8px 0 0;font-size:.8rem">📊 Comply &amp; Not Comply — by Area &amp; Referensi</div>
+        ${bda && bda.length ? card2 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available — re-run update_dashboard.py</div>'}
       </div>
     </div>`;
   }
