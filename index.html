@@ -309,9 +309,9 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 /* ── REFERENCE SUMMARY TABLE ─────────────────────────────────────────────── */
 .ref-summary-wrap{margin-bottom:0}
 .ref-summary-header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:.82rem;font-weight:700;letter-spacing:.3px}
-.ref-summary-table{width:100%;border-collapse:collapse;margin-bottom:0;table-layout:fixed}
+.ref-summary-table{width:100%;border-collapse:collapse;margin-bottom:0}
 .ref-summary-table th{background:var(--navy);color:#fff;padding:8px 14px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:center;border:1px solid rgba(255,255,255,.12)}
-.ref-summary-table th:first-child{text-align:left;min-width:60px}
+.ref-summary-table th:first-child{text-align:left;min-width:80px}
 .ref-summary-table td{padding:9px 14px;font-size:.84rem;font-weight:500;border:1px solid var(--border);text-align:center}
 .ref-summary-table td:first-child{text-align:left;font-weight:600;color:var(--teal);background:rgba(61,122,110,.05)}
 .ref-summary-table td.rs-c{color:var(--green);font-weight:600}
@@ -2239,45 +2239,52 @@ function renderEntityView(entity, d){
       const totRowStyle='style="background:rgba(100,200,150,.1)"';
 
       // Merged table — Comply + Not Comply sub-columns per reference type
-      const thBase = 'style="padding:5px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;border:1px solid rgba(255,255,255,.1)"';
-      const groupHead = CATS.map(c=>`<th colspan="2" ${thBase} style="padding:5px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;border:1px solid rgba(255,255,255,.1);text-align:center;background:rgba(30,40,60,.6)">${c.label}</th>`).join('');
-      const subHead   = CATS.map(()=>`<th style="padding:4px 8px;font-size:.68rem;font-weight:600;color:#a7f3d0;text-align:center;background:rgba(20,30,50,.5);border:1px solid rgba(255,255,255,.08)">C</th><th style="padding:4px 8px;font-size:.68rem;font-weight:600;color:#fca5a5;text-align:center;background:rgba(20,30,50,.5);border:1px solid rgba(255,255,255,.08)">NC</th>`).join('');
-      const tdA = `style="padding:6px 10px;font-weight:700;font-size:.8rem;white-space:nowrap;color:var(--text-primary);border:1px solid rgba(212,197,169,.15)"`;
-      const tdC = `style="padding:6px 10px;text-align:right;font-size:.8rem;color:#a7f3d0;border:1px solid rgba(212,197,169,.1)"`;
-      const tdNC= `style="padding:6px 10px;text-align:right;font-size:.8rem;color:#fca5a5;border:1px solid rgba(212,197,169,.1)"`;
+      const border = '1px solid rgba(255,255,255,.1)';
+      const borderD= '1px solid rgba(255,255,255,.06)';
+      const hdrBg  = 'background:rgba(15,25,50,.7)';
+      const groupHead = CATS.map(c=>`<th colspan="2" style="padding:6px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:center;${hdrBg};border:${border};color:#e2e8f0">${c.label}</th>`).join('');
+      const subHead   = CATS.map(()=>`<th style="padding:4px 8px;font-size:.7rem;font-weight:700;color:#4ade80;text-align:center;background:rgba(10,20,40,.6);border:${border}">Comply</th><th style="padding:4px 8px;font-size:.7rem;font-weight:700;color:#f87171;text-align:center;background:rgba(10,20,40,.6);border:${border}">Not Comply</th>`).join('');
+      const tdA = `style="padding:7px 12px;font-weight:700;font-size:.82rem;white-space:nowrap;color:#f1f5f9;border:${borderD}"`;
+      const tdC = `style="padding:7px 12px;text-align:right;font-size:.82rem;color:#4ade80;font-weight:500;border:${borderD}"`;
+      const tdNC= `style="padding:7px 12px;text-align:right;font-size:.82rem;color:#f87171;font-weight:500;border:${borderD}"`;
+      const dash= `<span style="color:rgba(255,255,255,.3)">–</span>`;
       const mergeBody = bda.map((row,i)=>{
         const cells = CATS.map(c=>{
           const cv = row[c.key]?.comply||0, nv = row[c.key]?.not_comply||0;
-          return `<td ${tdC}>${cv>0?cv.toLocaleString():'<span style="color:var(--muted)">-</span>'}</td><td ${tdNC}>${nv>0?nv.toLocaleString():'<span style="color:var(--muted)">-</span>'}</td>`;
+          return `<td ${tdC}>${cv>0?cv.toLocaleString():dash}</td><td ${tdNC}>${nv>0?nv.toLocaleString():dash}</td>`;
         }).join('');
-        const bg = i%2===0?'rgba(255,255,255,.02)':'rgba(0,0,0,.04)';
-        return `<tr style="background:${bg}"><td ${tdA}>${row.area}</td>${cells}<td style="padding:6px 10px;text-align:right;font-size:.8rem;color:#d1d5db;border:1px solid rgba(212,197,169,.1)">${row.anomaly>0?row.anomaly.toLocaleString():'<span style="color:var(--muted)">-</span>'}</td></tr>`;
+        const rowBg = i%2===0?'rgba(255,255,255,.03)':'rgba(0,0,0,.06)';
+        return `<tr style="background:${rowBg}"><td ${tdA}>${row.area}</td>${cells}<td style="padding:7px 12px;text-align:right;font-size:.82rem;color:#cbd5e1;border:${borderD}">${row.anomaly>0?row.anomaly.toLocaleString():dash}</td></tr>`;
       }).join('');
       const mergeTot = CATS.map(c=>{
         const tc = bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0);
         const tnc= bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
-        return `<td style="padding:6px 10px;text-align:right;font-size:.8rem;color:#a7f3d0;font-weight:700;border:1px solid rgba(212,197,169,.15)">${tc>0?tc.toLocaleString():0}</td><td style="padding:6px 10px;text-align:right;font-size:.8rem;color:#fca5a5;font-weight:700;border:1px solid rgba(212,197,169,.15)">${tnc>0?tnc.toLocaleString():0}</td>`;
+        return `<td style="padding:7px 12px;text-align:right;font-size:.82rem;color:#4ade80;font-weight:700;border:${border}">${tc.toLocaleString()}</td><td style="padding:7px 12px;text-align:right;font-size:.82rem;color:#f87171;font-weight:700;border:${border}">${tnc.toLocaleString()}</td>`;
       }).join('');
       card2 = `<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%">
         <thead>
-          <tr><th rowspan="2" style="padding:5px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;text-align:left;background:rgba(30,40,60,.6);border:1px solid rgba(255,255,255,.1);vertical-align:middle">Area</th>${groupHead}<th rowspan="2" style="padding:5px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;text-align:center;background:rgba(30,40,60,.6);border:1px solid rgba(255,255,255,.1);vertical-align:middle;color:#d1d5db">Anomaly</th></tr>
+          <tr>
+            <th rowspan="2" style="padding:6px 12px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:left;${hdrBg};border:${border};vertical-align:middle;color:#e2e8f0">Area</th>
+            ${groupHead}
+            <th rowspan="2" style="padding:6px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:center;${hdrBg};border:${border};vertical-align:middle;color:#cbd5e1">Anomaly</th>
+          </tr>
           <tr>${subHead}</tr>
         </thead>
         <tbody>${mergeBody}
-          <tr style="background:rgba(100,200,150,.08);border-top:2px solid rgba(212,197,169,.3)">
-            <td style="padding:6px 10px;font-weight:700;font-size:.8rem;color:var(--teal);border:1px solid rgba(212,197,169,.15)">Total</td>
+          <tr style="background:rgba(30,50,30,.25);border-top:2px solid rgba(255,255,255,.15)">
+            <td style="padding:7px 12px;font-weight:700;font-size:.82rem;color:#86efac;border:${border}">Total</td>
             ${mergeTot}
-            <td style="padding:6px 10px;text-align:right;font-size:.8rem;color:#d1d5db;font-weight:700;border:1px solid rgba(212,197,169,.15)">${totAn>0?totAn.toLocaleString():0}</td>
+            <td style="padding:7px 12px;text-align:right;font-size:.82rem;color:#cbd5e1;font-weight:700;border:${border}">${totAn>0?totAn.toLocaleString():0}</td>
           </tr>
         </tbody></table></div>`;
     }
 
     breakdownSection = `
-    <div style="display:grid;grid-template-columns:260px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
-      <div class="card" style="min-width:0;width:260px;box-sizing:border-box">${refSummary}</div>
-      <div class="card" style="min-width:0">
-        <div class="ref-summary-header" style="margin:-20px -22px 12px;border-radius:8px 8px 0 0;font-size:.8rem">📊 Comply &amp; Not Comply — by Area &amp; Referensi</div>
-        ${bda && bda.length ? card2 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available — re-run update_dashboard.py</div>'}
+    <div style="display:grid;grid-template-columns:320px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
+      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column">${refSummary}</div>
+      <div class="card" style="min-width:0;display:flex;flex-direction:column">
+        <div class="ref-summary-header" style="margin:-20px -22px 14px;border-radius:8px 8px 0 0;font-size:.82rem;flex-shrink:0">📊 Comply &amp; Not Comply — by Area &amp; Referensi</div>
+        <div style="flex:1;overflow-x:auto">${bda && bda.length ? card2 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available — re-run update_dashboard.py</div>'}</div>
       </div>
     </div>`;
   }
