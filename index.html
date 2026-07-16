@@ -309,16 +309,20 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 /* ── REFERENCE SUMMARY TABLE ─────────────────────────────────────────────── */
 .ref-summary-wrap{margin-bottom:0}
 .ref-summary-header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:.82rem;font-weight:700;letter-spacing:.3px}
-.ref-summary-table{width:100%;border-collapse:collapse;margin-bottom:0}
-.ref-summary-table th{background:var(--navy);color:#fff;padding:6px 9px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;text-align:center;border:1px solid rgba(255,255,255,.12)}
-.ref-summary-table th:first-child{text-align:left;min-width:70px}
-.ref-summary-table td{padding:8px 9px;font-size:.84rem;font-weight:500;border:1px solid var(--border);text-align:center}
-.ref-summary-table td:first-child{text-align:left;font-weight:600;color:var(--teal);background:rgba(61,122,110,.05)}
-.ref-summary-table td.rs-c{color:var(--green);font-weight:600}
-.ref-summary-table td.rs-nc{color:var(--red);font-weight:600}
-.ref-summary-table td.rs-an{color:var(--muted)}
-.ref-summary-table tr.rs-total td{font-weight:700;background:rgba(42,63,94,.05);border-top:2px solid var(--border)}
+.ref-summary-table{width:100%;border-collapse:collapse;margin-bottom:0;table-layout:fixed}
+.ref-summary-table th{background:var(--navy);color:#fff;padding:7px 6px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0;text-align:center;border:1px solid rgba(255,255,255,.12);white-space:normal;overflow:visible;line-height:1.25}
+.ref-summary-table th:first-child{text-align:left;width:29%;padding-left:10px}
+.ref-summary-table td{padding:9px 8px;font-size:.88rem;font-weight:500;border:1px solid var(--border);text-align:center}
+.ref-summary-table td:first-child{text-align:left;font-weight:700;color:var(--navy);background:rgba(61,122,110,.06)}
+.ref-summary-table td.rs-c{color:var(--green);font-weight:700}
+.ref-summary-table td.rs-nc{color:var(--red);font-weight:700}
+.ref-summary-table td.rs-an{color:var(--muted);font-weight:600}
+.ref-summary-table tr.rs-total td{font-weight:800;background:rgba(42,63,94,.08);border-top:2px solid var(--navy)}
 .ref-summary-table tr.rs-total td:first-child{color:var(--navy)}
+.ref-summary-table tr:nth-child(even) td{background-color:rgba(42,63,94,.025)}
+/* Shared fix: headers inside these two cards must wrap instead of being clipped
+   by the global `thead th{white-space:nowrap;overflow:hidden}` rule below */
+.kpi-ref-breakdown th{white-space:normal!important;overflow:visible!important;line-height:1.25!important}
 .ref-summary-table tr:hover td{background:rgba(42,63,94,.03)}
 
 /* ── TTI BREAKDOWN TABLE ─────────────────────────────────────────────────── */
@@ -2200,7 +2204,9 @@ function renderEntityView(entity, d){
 
       refSummary = `
         <div class="ref-summary-wrap">
-          <div class="ref-summary-header">TTI 3×24 Jam — Referensi Perhitungan</div>
+          <div class="ref-summary-header">KPI Reference
+            <div style="font-size:.66rem;font-weight:500;letter-spacing:.2px;opacity:.8;margin-top:2px;text-transform:none">TTI 3×24 Jam — Referensi Perhitungan</div>
+          </div>
           <table class="ref-summary-table">
             <thead>
               <tr>
@@ -2233,7 +2239,7 @@ function renderEntityView(entity, d){
         {key:'re_pi_minus',    label:'PI Minus RE'},
       ];
       const fN2 = n => (n > 0 ? n.toLocaleString() : '<span style="color:var(--muted)">-</span>');
-      const areaStyle = 'style="padding:5px 8px;font-weight:600;font-size:.78rem;white-space:nowrap;color:var(--text-primary);border-bottom:1px solid rgba(212,197,169,.2)"';
+      const areaStyle = 'style="padding:5px 8px;font-weight:600;font-size:.78rem;white-space:nowrap;color:var(--text);border-bottom:1px solid rgba(212,197,169,.2)"';
       const numCStyle = 'style="padding:5px 8px;text-align:right;font-size:.78rem;color:#a7f3d0;border-bottom:1px solid rgba(212,197,169,.2)"';
       const numNCStyle= 'style="padding:5px 8px;text-align:right;font-size:.78rem;color:#fca5a5;border-bottom:1px solid rgba(212,197,169,.2)"';
       const totRowStyle='style="background:rgba(100,200,150,.1)"';
@@ -2244,7 +2250,7 @@ function renderEntityView(entity, d){
       const hdrBg  = 'background:rgba(15,25,50,.7)';
       const groupHead = CATS.map(c=>`<th colspan="2" style="padding:6px 10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:center;${hdrBg};border:${border};color:#e2e8f0">${c.label}</th>`).join('');
       const subHead   = CATS.map(()=>`<th style="padding:4px 8px;font-size:.7rem;font-weight:700;color:#a7f3d0;text-align:center;background:rgba(10,20,40,.6);border:${border}">Comply</th><th style="padding:4px 8px;font-size:.7rem;font-weight:700;color:#fca5a5;text-align:center;background:rgba(10,20,40,.6);border:${border}">Not Comply</th>`).join('');
-      const tdA = `style="padding:7px 12px;font-weight:700;font-size:.82rem;white-space:nowrap;color:var(--text-primary);border:${borderD}"`;
+      const tdA = `style="padding:7px 12px;font-weight:700;font-size:.82rem;white-space:nowrap;color:var(--text);border:${borderD}"`;
       const tdC = `style="padding:7px 12px;text-align:right;font-size:.82rem;color:var(--green);font-weight:600;border:${borderD}"`;
       const tdNC= `style="padding:7px 12px;text-align:right;font-size:.82rem;color:var(--red);font-weight:600;border:${borderD}"`;
       const dash= `<span style="color:var(--muted)">–</span>`;
@@ -2261,7 +2267,7 @@ function renderEntityView(entity, d){
         const tnc= bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
         return `<td style="padding:7px 12px;text-align:right;font-size:.82rem;color:var(--green);font-weight:700;border:${border}">${tc.toLocaleString()}</td><td style="padding:7px 12px;text-align:right;font-size:.82rem;color:var(--red);font-weight:700;border:${border}">${tnc.toLocaleString()}</td>`;
       }).join('');
-      card2 = `<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%">
+      card2 = `<div style="overflow-x:auto"><table class="kpi-ref-breakdown" style="border-collapse:collapse;width:100%">
         <thead>
           <tr>
             <th rowspan="2" style="padding:6px 12px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:left;${hdrBg};border:${border};vertical-align:middle;color:#e2e8f0">Area</th>
@@ -2272,7 +2278,7 @@ function renderEntityView(entity, d){
         </thead>
         <tbody>${mergeBody}
           <tr style="background:rgba(30,50,30,.25);border-top:2px solid rgba(255,255,255,.15)">
-            <td style="padding:7px 12px;font-weight:700;font-size:.82rem;color:var(--text-primary);border:${border}">Total</td>
+            <td style="padding:7px 12px;font-weight:700;font-size:.82rem;color:var(--text);border:${border}">Total</td>
             ${mergeTot}
             <td style="padding:7px 12px;text-align:right;font-size:.82rem;color:#cbd5e1;font-weight:700;border:${border}">${totAn>0?totAn.toLocaleString():0}</td>
           </tr>
@@ -2280,10 +2286,12 @@ function renderEntityView(entity, d){
     }
 
     breakdownSection = `
-    <div style="display:grid;grid-template-columns:320px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
-      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column">${refSummary}</div>
-      <div class="card" style="min-width:0;display:flex;flex-direction:column">
-        <div class="ref-summary-header" style="margin:-20px -22px 14px;border-radius:8px 8px 0 0;font-size:.82rem;flex-shrink:0">📊 Comply &amp; Not Comply — by Area &amp; Referensi</div>
+    <div style="display:grid;grid-template-columns:380px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
+      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">${refSummary}</div>
+      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">
+        <div class="ref-summary-header" style="margin:-20px -22px 14px;border-radius:8px 8px 0 0;font-size:.82rem;flex-shrink:0">📊 KPI Reference Breakdown
+          <div style="font-size:.66rem;font-weight:500;letter-spacing:.2px;opacity:.8;margin-top:2px;text-transform:none">Comply &amp; Not Comply — by Area &amp; Referensi</div>
+        </div>
         <div style="flex:1;overflow-x:auto">${bda && bda.length ? card2 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available — re-run update_dashboard.py</div>'}</div>
       </div>
     </div>`;
@@ -2683,15 +2691,15 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
   };
   const td=(v,style='')=>`<td style="padding:7px 10px;text-align:right;${style}">${v!=null?(+v).toLocaleString():'—'}</td>`;
 
-  let html=`<table style="width:100%;border-collapse:collapse;font-size:.82rem">
-  <colgroup><col><col style="width:100px"><col style="width:100px"><col style="width:90px"><col style="width:100px"><col style="width:80px"></colgroup>
+  let html=`<table style="width:100%;border-collapse:collapse;font-size:.82rem;table-layout:fixed">
+  <colgroup><col style="width:30%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:14%"></colgroup>
   <thead><tr style="background:var(--navy2);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.3px">
-    <th style="padding:8px 12px;text-align:left">Area / Regional / Branch / STO</th>
-    <th style="padding:8px 10px;text-align:right">Comply</th>
-    <th style="padding:8px 10px;text-align:right">Not Comply</th>
-    <th style="padding:8px 10px;text-align:right">Total</th>
-    <th style="padding:8px 10px;text-align:right">Realisasi</th>
-    <th style="padding:8px 10px;text-align:right">Ach</th>
+    <th style="padding:8px 12px;text-align:left;color:#fff">Area / Regional / Branch / STO</th>
+    <th style="padding:8px 10px;text-align:right;color:#fff">Comply</th>
+    <th style="padding:8px 10px;text-align:right;color:#fff">Not Comply</th>
+    <th style="padding:8px 10px;text-align:right;color:#fff">Total</th>
+    <th style="padding:8px 10px;text-align:right;color:#fff">Realisasi</th>
+    <th style="padding:8px 10px;text-align:right;color:#fff">Ach</th>
   </tr></thead><tbody>`;
 
   areas.forEach(area=>{
@@ -2760,6 +2768,23 @@ function buildAreaTree(areas, tgt=95, collapsed=true){
       });
     });
   });
+
+  // National — aggregate total across all areas
+  if(areas.length){
+    const natC = areas.reduce((s,a)=>s+(a.comply||0),0);
+    const natN = areas.reduce((s,a)=>s+(a.not_comply||0),0);
+    const natT = natC+natN;
+    const natSla = natT>0 ? (natC/natT*100) : null;
+    const natClr = slaColor(natSla,tgt);
+    html+=`<tr style="background:rgba(42,63,94,.1);border-top:2px solid var(--navy)">
+      <td style="padding:9px 12px;font-weight:800;color:var(--navy)">National</td>
+      ${td(natC,'font-weight:700;color:var(--green)')}
+      ${td(natN,'font-weight:700;color:var(--red)')}
+      ${td(natT,'font-weight:700')}
+      <td style="padding:7px 10px;text-align:right;font-weight:800;color:${natClr}">${fmtSla(natSla)}</td>
+      <td style="padding:7px 10px;text-align:right">${fmtAch(natSla)}</td>
+    </tr>`;
+  }
 
   html+='</tbody></table>';
   tree.innerHTML=html;
