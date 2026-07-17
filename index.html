@@ -1542,8 +1542,11 @@ function renderKPIs(data){
     sel.appendChild(opt);
   });
   // Also add any entities from data not in our known list
+  // (HOME ID / HOMEID is excluded — it has its own dedicated "Home ID" page in the sidebar,
+  // so listing it again here would be redundant)
+  const EXCLUDED_FROM_KPI_DROPDOWN = ['HOMEID','HOME_ID','HOME-ID','HID'];
   availableEntities.forEach(e => {
-    if(!ENTITY_LIST.find(x=>x.key===e)){
+    if(!ENTITY_LIST.find(x=>x.key===e) && !EXCLUDED_FROM_KPI_DROPDOWN.includes(String(e).toUpperCase())){
       const opt=document.createElement('option'); opt.value=e; opt.textContent=e; sel.appendChild(opt);
     }
   });
@@ -2371,30 +2374,30 @@ function renderEntityView(entity, d){
           <div style="font-size:.73rem;color:var(--muted);line-height:1.4;margin-top:2px">${l.desc}</div>
         </div>
       </div>`).join('');
-    psreSection = `<div style="display:grid;grid-template-columns:300px 1fr 1fr;gap:14px;margin-bottom:18px;align-items:start">
-      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column">
+    // Fixed row height so all 3 cards render at identical size — each card's own content
+    // area scrolls internally (rather than clipping) if it ever grows taller than that budget.
+    const PSRE_ROW_H = 460;
+    psreSection = `<div style="display:grid;grid-template-columns:300px 1fr 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
+      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:${PSRE_ROW_H}px">
         <div class="ref-summary-header" style="flex-shrink:0">PS/RE</div>
-        <table style="width:100%;border-collapse:collapse;margin-top:14px">
-          <thead><tr>
-            <th style="padding:7px 12px;text-align:left;color:#fff;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;background:var(--navy);border:1px solid rgba(255,255,255,.12)">Status</th>
-            <th style="padding:7px 12px;text-align:right;color:#fff;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;background:var(--navy);border:1px solid rgba(255,255,255,.12)">Jumlah</th>
-          </tr></thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-      </div>
-      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column">
-        <div class="ref-summary-header" style="flex-shrink:0">📖 Keterangan</div>
-        <div style="margin-top:14px">${legendHtml}</div>
-        <div style="margin-top:10px;background:#f0fdf4;border-radius:8px;padding:10px 12px;font-size:.73rem;color:#166534;line-height:1.5">
-          <strong>Formula SLA PS/RE:</strong><br>
-          SLA = PS AO / RE AO NETT × 100%<br>
-          <span style="color:var(--muted)">(RE AO NETT = RE AO − Exclude AO)</span>
+        <div style="flex:1;overflow-y:auto;margin-top:14px">
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr>
+              <th style="padding:7px 12px;text-align:left;color:#fff;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;background:var(--navy);border:1px solid rgba(255,255,255,.12)">Status</th>
+              <th style="padding:7px 12px;text-align:right;color:#fff;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;background:var(--navy);border:1px solid rgba(255,255,255,.12)">Jumlah</th>
+            </tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
         </div>
       </div>
-      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column">
+      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:${PSRE_ROW_H}px">
+        <div class="ref-summary-header" style="flex-shrink:0">📖 Keterangan</div>
+        <div style="flex:1;overflow-y:auto;margin-top:14px">${legendHtml}</div>
+      </div>
+      <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:${PSRE_ROW_H}px">
         <div class="ref-summary-header" style="flex-shrink:0;margin-bottom:14px">Area / Regional / Branch / STO Breakdown</div>
-        <div class="tree-filter-bar" id="treeFilterBar" style="flex-wrap:wrap"></div>
-        <div class="area-tree" id="areaTree" style="overflow-x:auto"></div>
+        <div class="tree-filter-bar" id="treeFilterBar" style="flex-wrap:wrap;flex-shrink:0"></div>
+        <div class="area-tree" id="areaTree" style="flex:1;overflow:auto"></div>
       </div>
     </div>`;
   }
