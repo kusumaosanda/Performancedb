@@ -250,6 +250,12 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .conv-drop-icon{font-size:3.5rem;display:block;margin-bottom:14px;transition:transform .3s}
 .conv-drop-zone:hover .conv-drop-icon,.conv-drop-zone.drag-over .conv-drop-icon{transform:translateY(-6px) scale(1.05)}
 .conv-drop-zone.has-file .conv-drop-icon{animation:none}
+.conv-loader-wrap{display:inline-block;width:104px;height:104px;line-height:0}
+.conv-loader-wrap svg{width:100%;height:100%;overflow:visible}
+.conv-drop-emoji{display:none}
+@keyframes dcv-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes dcv-orbit{from{offset-distance:0%}to{offset-distance:100%}}
+@keyframes dcv-pulse{from{transform:scale(.3);opacity:.6}to{transform:scale(2);opacity:0}}
 .conv-upload-btn{display:inline-block;background:var(--accent-grad);color:#fff;padding:12px 32px;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:14px;transition:transform .2s,box-shadow .2s;font-family:'Poppins',sans-serif;border:none;letter-spacing:.2px}
 .conv-upload-btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(127,29,29,.3)}
 .conv-sheet-card{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px}
@@ -316,9 +322,9 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 /* ── KPI DEFINITION PAGE ──────────────────────────────────────────────────── */
 .kpidef-lbl{font-size:.72rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin:14px 0 6px}
 .kpidef-lbl:first-child{margin-top:0}
-.kpidef-def-id{font-size:.83rem;line-height:1.6;color:var(--text);font-style:italic;margin-bottom:4px}
+.kpidef-def-id{font-size:.83rem;line-height:1.6;color:var(--text);font-style:italic;margin-bottom:10px}
 .kpidef-def-en{font-size:.8rem;line-height:1.6;color:var(--muted)}
-.kpidef-formula{background:rgba(42,63,94,.06);border-left:3px solid var(--teal);padding:10px 14px;border-radius:0 8px 8px 0;font-family:'Courier New',monospace;font-size:.8rem;color:var(--navy)}
+.kpidef-formula{background:#e4e9f0;border-left:4px solid var(--teal);padding:10px 14px;border-radius:0 8px 8px 0;font-family:'Courier New',monospace;font-size:.8rem;font-weight:700;color:var(--navy2)}
 .kpidef-meta{font-size:.8rem;color:var(--text)}
 .kpidef-excl{font-size:.78rem;line-height:1.9;color:var(--muted)}
 .kpidef-excl .tag-2023,.kpidef-excl .tag-2024a,.kpidef-excl .tag-2024b,.kpidef-excl .tag-2025{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:99px;font-size:.62rem;font-weight:800;letter-spacing:.2px;white-space:nowrap}
@@ -737,7 +743,6 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                   <span style="background:rgba(127,29,29,.1);color:var(--teal);padding:2px 9px;border-radius:99px;font-size:.62rem;font-weight:800">SLA · 60%</span>
                 </div>
                 <div class="kpidef-def-id">"Jumlah pelanggan yang berhasil pasang baru (New Sales/PDA) dalam kurun waktu ≤3×24 jam."</div>
-                <div class="kpidef-def-en" style="margin-bottom:10px">Customers (New Sales IndiHome + PDA/address-move) successfully installed within ≤72 hours, measured MANJA→Provisioning Complete, falling back to PI or RE if MANJA/PI is null.</div>
                 <div class="kpidef-formula" style="margin-bottom:8px">A. MANJA→PC (primary) · B. PI→PC (if MANJA null) · C. RE→PC (if PI null) — comply if ≤72 jam</div>
                 <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 3×24 jam. Scope: New Sales IndiHome (PSB) + PDA. Excludes: Produk Orbit, reseller.</div>
               </div>
@@ -748,7 +753,6 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                   <span style="background:rgba(127,29,29,.1);color:var(--teal);padding:2px 9px;border-radius:99px;font-size:.62rem;font-weight:800">SLA · 40%</span>
                 </div>
                 <div class="kpidef-def-id">"Indikator yang menunjukkan rasio tidak terjadinya gangguan pada pelanggan Layanan TELKOMSEL dalam jangka waktu target hari setelah pasang baru."</div>
-                <div class="kpidef-def-en" style="margin-bottom:10px">Ratio of newly-installed (PSB) customers <strong>not</strong> experiencing a technical disruption within 60 days after new install, vs. total PS.</div>
                 <div class="kpidef-formula" style="margin-bottom:8px">Σ PSB tidak terganggu dalam 60 hari&nbsp;/&nbsp;Σ Total PSB&nbsp;×&nbsp;100%</div>
                 <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 60 hari · nasional per TREG. Excludes: gamas, isu non-teknis, OTT, perangkat rusak, Produk Orbit, reseller, force majeure (wajib dokumentasi), planned maintenance, kesalahan pelanggan.</div>
               </div>
@@ -759,7 +763,6 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                   <span style="background:rgba(127,29,29,.1);color:var(--teal);padding:2px 9px;border-radius:99px;font-size:.62rem;font-weight:800">SLA · not scored</span>
                 </div>
                 <div class="kpidef-def-id">"Persentase penyelesaian gangguan untuk pelanggan pasang baru dalam jangka waktu target jam, mulai dari MANJA."</div>
-                <div class="kpidef-def-en" style="margin-bottom:10px">% of disruption tickets for newly-installed customers resolved within 3 hours, measured from MANJA (first appointment commitment).</div>
                 <div class="kpidef-formula" style="margin-bottom:8px">Σ Tiket selesai dalam 3 jam dari MANJA&nbsp;/&nbsp;Σ Total Tiket&nbsp;×&nbsp;100%</div>
                 <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 3 jam dari MANJA (valid manja &lt;24h open tiket; else measured from open-ticket time). Excludes: wilsus, Orbit, reseller, force majeure, planned maintenance, kesalahan pelanggan.</div>
               </div>
@@ -778,18 +781,16 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                   <span style="background:rgba(76,29,107,.08);color:var(--teal2);padding:2px 9px;border-radius:99px;font-size:.62rem;font-weight:800">Monitoring</span>
                 </div>
                 <div class="kpidef-def-id">"% penyelesaian order pasang baru dari seluruh RE, dikurangi order cancel, dalam &lt;7 hari setelah tenggat RE."</div>
-                <div class="kpidef-def-en" style="margin-bottom:10px">% of RE (Register) orders reaching PS within &lt;7 days of the RE deadline, after removing cancellations.</div>
                 <div class="kpidef-formula" style="margin-bottom:8px">[ Σ Total PS (N-1)+(N-2) ]&nbsp;/&nbsp;[ Σ Total RE (N-2) − Σ Cancel RE &lt;7 hari ]&nbsp;×&nbsp;100%</div>
                 <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 7 hari setelah tenggat RE. New in BAK Jan 2025, Lampiran III §4 "Monitoring."</div>
               </div>
 
               <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px">
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">
-                  <span style="font-weight:800;color:var(--teal2);font-size:.85rem">Fulfillment Guarantee (Ceil) — "FFG GAUL"</span>
+                  <span style="font-weight:800;color:var(--teal2);font-size:.85rem">Gaul FFG</span>
                   <span style="background:rgba(76,29,107,.08);color:var(--teal2);padding:2px 9px;border-radius:99px;font-size:.62rem;font-weight:800">Monitoring</span>
                 </div>
                 <div class="kpidef-def-id">"% Pelanggan PSB TIDAK mengalami Gangguan &gt;1x (Gangguan Ulang) dalam periode fulfillment guarantee."</div>
-                <div class="kpidef-def-en" style="margin-bottom:10px">% of newly-installed customers not experiencing a repeat disruption (&gt;1×) within the fulfillment-guarantee window — a "no repeat trouble" companion metric to FFG.</div>
                 <div class="kpidef-formula" style="margin-bottom:8px">1 − [ (Σ Tiket − Σ Pelanggan Tergangguan)&nbsp;/&nbsp;Σ Tiket Closed ]&nbsp;×&nbsp;100%</div>
                 <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 60 hari (same window as FFG). Informally tracked at 83.59% in H2 2024; formalized in BAK Jan 2025.</div>
               </div>
@@ -801,7 +802,6 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                 </div>
                 <div style="background:rgba(168,48,32,.08);color:var(--red);border:1px solid rgba(168,48,32,.2);border-radius:6px;padding:4px 9px;font-size:.66rem;font-weight:700;display:inline-block;margin-bottom:10px">⚠ Currently not monitored on this dashboard</div>
                 <div class="kpidef-def-id">"Jumlah pelanggan yang berhasil pasang baru lewat penambahan alpro PT2 dalam &lt;6 hari."</div>
-                <div class="kpidef-def-en" style="margin-bottom:10px">Customers completing installation via a PT2 (Provisioning Type 2) alpro addition, within &lt;6 days. MoM dashboard label: "SLA P12."</div>
                 <div class="kpidef-formula" style="margin-bottom:8px">Σ PS PT2 TTI Sesuai Tolak Ukur&nbsp;/&nbsp;( Σ Total Order PT2 − Cancel &lt;6 hari )&nbsp;×&nbsp;100%</div>
                 <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 6 hari ("agree to complete"). New in BAK Jan 2025, Lampiran III §4 "Monitoring." No live dashboard entity is wired up for this KPI yet.</div>
               </div>
@@ -859,7 +859,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                 <td style="padding:8px 12px;text-align:right;font-weight:800;color:var(--navy)">19.09%</td>
               </tr>
               <tr>
-                <td style="padding:8px 12px;font-weight:700;color:var(--teal2)">Fulfillment Guarantee (Ceil) / FFG GAUL</td>
+                <td style="padding:8px 12px;font-weight:700;color:var(--teal2)">Gaul FFG</td>
                 <td style="padding:8px 12px;color:var(--muted)">FFGGAUL</td>
                 <td style="padding:8px 12px;text-align:center"><span style="background:rgba(76,29,107,.08);color:var(--teal2);padding:2px 9px;border-radius:99px;font-size:.66rem;font-weight:800">Monitoring</span></td>
                 <td style="padding:8px 12px;color:var(--muted)">60 hari</td>
@@ -873,16 +873,26 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         <!-- Document Comparison -->
         <div class="card" style="margin-bottom:16px">
           <div class="ref-summary-header" style="margin-bottom:14px">Document Comparison <span style="font-size:.66rem;font-weight:500;opacity:.8;text-transform:none">— how each Fulfillment KPI evolved, WSA 2023 → BAK Jan 2025</span></div>
+
+          <!-- Scrollable area: table sized to fit, change log continues in the same scroll -->
+          <div style="max-height:480px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:2px">
           <div style="overflow-x:auto">
           <table style="width:100%;border-collapse:collapse;font-size:.78rem">
             <thead><tr style="background:var(--navy)">
-              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:150px">KPI</th>
-              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px">WSA 2023<br><span style="font-weight:500;font-size:.66rem;opacity:.8">eff. 6 Apr 2023</span></th>
-              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px">BAK Apr 2024<br><span style="font-weight:500;font-size:.66rem;opacity:.8">S-I 2024, eff. 1 Jan 2024</span></th>
-              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px">BAK Aug 2024<br><span style="font-weight:500;font-size:.66rem;opacity:.8">S-II 2024, eff. 1 Jul 2024</span></th>
-              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:220px">BAK Jan 2025<br><span style="font-weight:500;font-size:.66rem;opacity:.8">SMT-1 2025, eff. 1 Jan 2025</span></th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:150px;position:sticky;top:0">KPI</th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px;position:sticky;top:0">WSA 2023<br><span style="font-weight:500;font-size:.66rem;opacity:.8">eff. 6 Apr 2023</span></th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px;position:sticky;top:0">BAK Apr 2024<br><span style="font-weight:500;font-size:.66rem;opacity:.8">S-I 2024, eff. 1 Jan 2024</span></th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px;position:sticky;top:0">BAK Aug 2024<br><span style="font-weight:500;font-size:.66rem;opacity:.8">S-II 2024, eff. 1 Jul 2024</span></th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:220px;position:sticky;top:0">BAK Jan 2025<br><span style="font-weight:500;font-size:.66rem;opacity:.8">SMT-1 2025, eff. 1 Jan 2025</span></th>
             </tr></thead>
             <tbody style="line-height:1.6">
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:8px 10px;font-weight:700;color:var(--navy);vertical-align:top">TTI Comply</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>67%</strong> · PI→PS ≤72h</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>92.72%</strong> · NCX timing rules, Orbit excluded</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>93.31%</strong> · same exclusions</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>93.31%</strong> (flat) · <strong>scope +PDA orders</strong>, Manja/Provcomp tiered formula, +reseller</td>
+              </tr>
               <tr style="border-bottom:1px solid var(--border)">
                 <td style="padding:8px 10px;font-weight:700;color:var(--navy);vertical-align:top">Fulfillment Guarantee</td>
                 <td style="padding:8px 10px;vertical-align:top">Target <strong>80%</strong> · Limit 60 hari</td>
@@ -898,13 +908,6 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                 <td style="padding:8px 10px;vertical-align:top">Target <strong>80.81%</strong> (flat) · +reseller, +FM documentation req., +maintenance window, +NTE hardware, +customer-caused</td>
               </tr>
               <tr style="border-bottom:1px solid var(--border)">
-                <td style="padding:8px 10px;font-weight:700;color:var(--navy);vertical-align:top">TTI Comply</td>
-                <td style="padding:8px 10px;vertical-align:top">Target <strong>67%</strong> · PI→PS ≤72h</td>
-                <td style="padding:8px 10px;vertical-align:top">Target <strong>92.72%</strong> · NCX timing rules, Orbit excluded</td>
-                <td style="padding:8px 10px;vertical-align:top">Target <strong>93.31%</strong> · same exclusions</td>
-                <td style="padding:8px 10px;vertical-align:top">Target <strong>93.31%</strong> (flat) · <strong>scope +PDA orders</strong>, Manja/Provcomp tiered formula, +reseller</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--border)">
                 <td style="padding:8px 10px;font-weight:700;color:var(--teal2);vertical-align:top">PS/RE Ratio</td>
                 <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
                 <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
@@ -912,26 +915,40 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                 <td style="padding:8px 10px;vertical-align:top"><strong style="color:var(--teal2)">NEW</strong> — Target 75.17% (Monitoring)</td>
               </tr>
               <tr style="border-bottom:1px solid var(--border)">
-                <td style="padding:8px 10px;font-weight:700;color:var(--teal2);vertical-align:top">TTI PT2 Comply</td>
-                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
-                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
-                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
-                <td style="padding:8px 10px;vertical-align:top"><strong style="color:var(--teal2)">NEW</strong> — Target 19.09% (Monitoring)</td>
-              </tr>
-              <tr>
-                <td style="padding:8px 10px;font-weight:700;color:var(--teal2);vertical-align:top">Fulfillment Guarantee (Ceil) / FFG GAUL</td>
+                <td style="padding:8px 10px;font-weight:700;color:var(--teal2);vertical-align:top">Gaul FFG</td>
                 <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
                 <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
                 <td style="padding:8px 10px;color:var(--muted);vertical-align:top">informally tracked at 83.59% per 8-Jan-2025 MoM</td>
                 <td style="padding:8px 10px;vertical-align:top"><strong style="color:var(--teal2)">NEW formally</strong> — Target 91.76% (Monitoring)</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 10px;font-weight:700;color:var(--teal2);vertical-align:top">TTI PT2 Comply<br><span style="font-weight:600;font-size:.7rem;opacity:.8">("SLA PT-2")</span></td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;vertical-align:top"><strong style="color:var(--red)">⚠ Currently not monitored — starts H2 2025</strong><br>Target 19.09% defined (Monitoring)</td>
               </tr>
             </tbody>
           </table>
           </div>
 
           <!-- Detailed change log per KPI, transition by transition -->
-          <div style="margin-top:22px;padding-top:18px;border-top:1px dashed var(--border)">
-            <div style="font-size:.78rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin-bottom:14px">Detailed Change Log — what was added, removed, or changed at each step</div>
+          <div style="margin-top:22px;padding:0 10px 14px;border-top:1px dashed var(--border)">
+            <div style="font-size:.78rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin:14px 0 14px 0">Detailed Change Log — what was added, removed, or changed at each step</div>
+
+            <div style="margin-bottom:18px">
+              <div style="font-weight:800;color:var(--navy);font-size:.85rem;margin-bottom:6px">TTI Comply</div>
+              <div class="kpidef-excl">
+                <div>• Target changed: 67% → <strong>92.72%</strong> <span class="tag-2024a">BAK Apr 2024</span></div>
+                <div>• Rule added: if NCX Create Order → PI gap &gt;1 hour, TTI is measured from NCX Create Order instead of PI; revoke-case timestamp handling defined <span class="tag-2024a">BAK Apr 2024</span></div>
+                <div>• Exclusion added: Produk Orbit <span class="tag-2024a">BAK Apr 2024</span></div>
+                <div>• Target changed: 92.72% → <strong>93.31%</strong> <span class="tag-2024b">BAK Aug 2024</span> — no other changes this step</div>
+                <div>• Target unchanged at 93.31% <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Scope changed: now covers <strong>New Sales IndiHome (PSB) AND PDA (Pindah Alamat)</strong> orders, not just new installs <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Formula changed: PI/PC/PS terminology replaced by a tiered Manja→Provcomp fallback (Manja primary; PI if Manja null; RE if PI null) <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Exclusion added: reseller channel (in addition to Produk Orbit) <span class="tag-2025">BAK Jan 2025</span></div>
+              </div>
+            </div>
 
             <div style="margin-bottom:18px">
               <div style="font-weight:800;color:var(--navy);font-size:.85rem;margin-bottom:6px">Fulfillment Guarantee (FFG)</div>
@@ -959,20 +976,6 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
             </div>
 
             <div style="margin-bottom:18px">
-              <div style="font-weight:800;color:var(--navy);font-size:.85rem;margin-bottom:6px">TTI Comply</div>
-              <div class="kpidef-excl">
-                <div>• Target changed: 67% → <strong>92.72%</strong> <span class="tag-2024a">BAK Apr 2024</span></div>
-                <div>• Rule added: if NCX Create Order → PI gap &gt;1 hour, TTI is measured from NCX Create Order instead of PI; revoke-case timestamp handling defined <span class="tag-2024a">BAK Apr 2024</span></div>
-                <div>• Exclusion added: Produk Orbit <span class="tag-2024a">BAK Apr 2024</span></div>
-                <div>• Target changed: 92.72% → <strong>93.31%</strong> <span class="tag-2024b">BAK Aug 2024</span> — no other changes this step</div>
-                <div>• Target unchanged at 93.31% <span class="tag-2025">BAK Jan 2025</span></div>
-                <div>• Scope changed: now covers <strong>New Sales IndiHome (PSB) AND PDA (Pindah Alamat)</strong> orders, not just new installs <span class="tag-2025">BAK Jan 2025</span></div>
-                <div>• Formula changed: PI/PC/PS terminology replaced by a tiered Manja→Provcomp fallback (Manja primary; PI if Manja null; RE if PI null) <span class="tag-2025">BAK Jan 2025</span></div>
-                <div>• Exclusion added: reseller channel (in addition to Produk Orbit) <span class="tag-2025">BAK Jan 2025</span></div>
-              </div>
-            </div>
-
-            <div style="margin-bottom:18px">
               <div style="font-weight:800;color:var(--teal2);font-size:.85rem;margin-bottom:6px">PS/RE Ratio</div>
               <div class="kpidef-excl">
                 <div>• Not present — no mention in WSA 2023, BAK Apr 2024, or BAK Aug 2024 <span class="tag-2023">WSA 2023 → BAK Aug 2024</span></div>
@@ -981,21 +984,23 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
             </div>
 
             <div style="margin-bottom:18px">
-              <div style="font-weight:800;color:var(--teal2);font-size:.85rem;margin-bottom:6px">TTI PT2 Comply ("SLA PT-2")</div>
-              <div class="kpidef-excl">
-                <div>• Not present — no mention in WSA 2023, BAK Apr 2024, or BAK Aug 2024 <span class="tag-2023">WSA 2023 → BAK Aug 2024</span></div>
-                <div>• Added as a new Monitoring KPI, Lampiran III §4: target <strong>19.09%</strong>, limit 6 hari ("agree to complete") <span class="tag-2025">BAK Jan 2025</span></div>
-              </div>
-            </div>
-
-            <div>
-              <div style="font-weight:800;color:var(--teal2);font-size:.85rem;margin-bottom:6px">Fulfillment Guarantee (Ceil) / FFG GAUL</div>
+              <div style="font-weight:800;color:var(--teal2);font-size:.85rem;margin-bottom:6px">Gaul FFG</div>
               <div class="kpidef-excl">
                 <div>• Not present in the contract text — no mention in WSA 2023 or BAK Apr 2024 <span class="tag-2023">WSA 2023 → BAK Apr 2024</span></div>
                 <div>• Tracked informally at 83.59% per an 8-Jan-2025 MoM (not yet in the Lampiran III text) <span class="tag-2024b">BAK Aug 2024</span></div>
                 <div>• Formalized as a Monitoring KPI, Lampiran III §4: target <strong>91.76%</strong> (+8.17 pts vs. the informal 2024 baseline), limit 60 hari <span class="tag-2025">BAK Jan 2025</span></div>
               </div>
             </div>
+
+            <div>
+              <div style="font-weight:800;color:var(--teal2);font-size:.85rem;margin-bottom:6px">TTI PT2 Comply ("SLA PT-2")</div>
+              <div class="kpidef-excl">
+                <div>• Not present — no mention in WSA 2023, BAK Apr 2024, or BAK Aug 2024 <span class="tag-2023">WSA 2023 → BAK Aug 2024</span></div>
+                <div>• Added as a new Monitoring KPI, Lampiran III §4: target <strong>19.09%</strong>, limit 6 hari ("agree to complete") <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• <strong style="color:var(--red)">Currently not monitored on this dashboard — live tracking is planned to start in H2 2025</strong> <span class="tag-2025">BAK Jan 2025</span></div>
+              </div>
+            </div>
+          </div>
           </div>
         </div>
 
@@ -1311,7 +1316,111 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
               <div class="conv-drop-zone" id="convDropZone"
                 ondragover="convDragOver(event)" ondragleave="convDragLeave(event)" ondrop="convDrop(event)"
                 onclick="document.getElementById('convFileInput').click()">
-                <span class="conv-drop-icon" id="convDropIcon">📂</span>
+                <span class="conv-drop-icon" id="convDropIcon">
+                  <span class="conv-drop-emoji" id="convDropEmoji"></span>
+                  <span class="conv-loader-wrap" id="convDropLoader">
+                    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <clipPath id="dcv-globe-clip"><circle cx="120" cy="120" r="68"></circle></clipPath>
+                        <radialGradient id="dcv-ocean-grad" cx="38%" cy="34%" r="75%">
+                          <stop offset="0%" stop-color="#CDEBFB"></stop>
+                          <stop offset="60%" stop-color="#8FC9EC"></stop>
+                          <stop offset="100%" stop-color="#5FA3D8"></stop>
+                        </radialGradient>
+                        <radialGradient id="dcv-sheen-grad" cx="32%" cy="28%" r="45%">
+                          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"></stop>
+                          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"></stop>
+                        </radialGradient>
+                        <filter id="dcv-globe-shadow" x="-40%" y="-40%" width="180%" height="180%">
+                          <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E5FA8" flood-opacity="0.25"></feDropShadow>
+                        </filter>
+                      </defs>
+
+                      <g style="transform-origin:120px 120px;filter:url(&quot;#dcv-globe-shadow&quot;)">
+                        <g style="transform-origin:120px 120px;animation:18s linear 0s infinite normal none running dcv-spin">
+                          <g clip-path="url(#dcv-globe-clip)">
+                            <circle cx="120" cy="120" r="68" fill="url(#dcv-ocean-grad)"></circle>
+                            <ellipse cx="78" cy="84" rx="17" ry="14" fill="#4FAE7A" transform="rotate(-12 78 84)"></ellipse>
+                            <ellipse cx="68" cy="98" rx="8" ry="9" fill="#4FAE7A"></ellipse>
+                            <ellipse cx="90" cy="132" rx="9" ry="11" fill="#3F9468" transform="rotate(8 90 132)"></ellipse>
+                            <ellipse cx="86" cy="152" rx="5" ry="9" fill="#3F9468" transform="rotate(6 86 152)"></ellipse>
+                            <ellipse cx="130" cy="76" rx="8" ry="6" fill="#4FAE7A"></ellipse>
+                            <circle cx="140" cy="68" r="5" fill="#4FAE7A"></circle>
+                            <ellipse cx="138" cy="108" rx="11" ry="9" fill="#3F9468"></ellipse>
+                            <ellipse cx="135" cy="126" rx="7" ry="12" fill="#3F9468"></ellipse>
+                            <ellipse cx="132" cy="146" rx="4" ry="8" fill="#3F9468" transform="rotate(-8 132 146)"></ellipse>
+                            <ellipse cx="163" cy="88" rx="19" ry="15" fill="#4FAE7A" transform="rotate(-6 163 88)"></ellipse>
+                            <ellipse cx="181" cy="104" rx="11" ry="13" fill="#4FAE7A"></ellipse>
+                            <ellipse cx="158" cy="68" rx="9" ry="7" fill="#4FAE7A"></ellipse>
+                            <ellipse cx="176" cy="150" rx="9" ry="6" fill="#3F9468" transform="rotate(-10 176 150)"></ellipse>
+                            <ellipse cx="120" cy="120" rx="68" ry="21" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.45"></ellipse>
+                            <ellipse cx="120" cy="120" rx="68" ry="46" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.3"></ellipse>
+                            <line x1="52" y1="120" x2="188" y2="120" stroke="#FFFFFF" stroke-width="1.2" opacity="0.45"></line>
+                            <ellipse cx="120" cy="120" rx="24" ry="68" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4"></ellipse>
+                            <ellipse cx="120" cy="120" rx="50" ry="68" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.28"></ellipse>
+                            <line x1="120" y1="52" x2="120" y2="188" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4"></line>
+                            <circle cx="120" cy="120" r="68" fill="url(#dcv-sheen-grad)"></circle>
+                          </g>
+                          <circle cx="120" cy="120" r="68" fill="none" stroke="#3E7CB1" stroke-width="2"></circle>
+                        </g>
+                      </g>
+
+                      <circle cx="102" cy="76" r="6" fill="none" stroke="#E2704F" stroke-width="2" style="transform-origin:102px 76px;animation:2s ease-out 0s infinite normal none running dcv-pulse"></circle>
+                      <circle cx="102" cy="76" r="6" fill="none" stroke="#E2704F" stroke-width="2" style="transform-origin:102px 76px;animation:2s ease-out 1s infinite normal none running dcv-pulse"></circle>
+                      <line x1="102" y1="84" x2="102" y2="68" stroke="#26344B" stroke-width="2.2"></line>
+                      <line x1="95" y1="81" x2="109" y2="81" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="97.5" y1="75" x2="106.5" y2="75" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="98" y1="84" x2="94" y2="92" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="106" y1="84" x2="110" y2="92" stroke="#26344B" stroke-width="1.6"></line>
+                      <circle cx="102" cy="68" r="2.6" fill="#E2704F"></circle>
+
+                      <circle cx="165" cy="92" r="6" fill="none" stroke="#E2704F" stroke-width="2" style="transform-origin:165px 92px;animation:2s ease-out 0.4s infinite normal none running dcv-pulse"></circle>
+                      <circle cx="165" cy="92" r="6" fill="none" stroke="#E2704F" stroke-width="2" style="transform-origin:165px 92px;animation:2s ease-out 1.4s infinite normal none running dcv-pulse"></circle>
+                      <line x1="165" y1="100" x2="165" y2="84" stroke="#26344B" stroke-width="2.2"></line>
+                      <line x1="158" y1="97" x2="172" y2="97" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="160.5" y1="91" x2="169.5" y2="91" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="161" y1="100" x2="157" y2="108" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="169" y1="100" x2="173" y2="108" stroke="#26344B" stroke-width="1.6"></line>
+                      <circle cx="165" cy="84" r="2.6" fill="#E2704F"></circle>
+
+                      <circle cx="130" cy="165" r="6" fill="none" stroke="#E2704F" stroke-width="2" style="transform-origin:130px 165px;animation:2s ease-out 1.1s infinite normal none running dcv-pulse"></circle>
+                      <circle cx="130" cy="165" r="6" fill="none" stroke="#E2704F" stroke-width="2" style="transform-origin:130px 165px;animation:2s ease-out 2.1s infinite normal none running dcv-pulse"></circle>
+                      <line x1="130" y1="173" x2="130" y2="157" stroke="#26344B" stroke-width="2.2"></line>
+                      <line x1="123" y1="170" x2="137" y2="170" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="125.5" y1="164" x2="134.5" y2="164" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="126" y1="173" x2="122" y2="181" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="134" y1="173" x2="138" y2="181" stroke="#26344B" stroke-width="1.6"></line>
+                      <circle cx="130" cy="157" r="2.6" fill="#E2704F"></circle>
+
+                      <circle cx="78" cy="138" r="6" fill="none" stroke="#E2704F" stroke-width="2" style="transform-origin:78px 138px;animation:2s ease-out 1.5s infinite normal none running dcv-pulse"></circle>
+                      <circle cx="78" cy="138" r="6" fill="none" stroke="#E2704F" stroke-width="2" style="transform-origin:78px 138px;animation:2s ease-out 2.5s infinite normal none running dcv-pulse"></circle>
+                      <line x1="78" y1="146" x2="78" y2="130" stroke="#26344B" stroke-width="2.2"></line>
+                      <line x1="71" y1="143" x2="85" y2="143" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="73.5" y1="137" x2="82.5" y2="137" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="74" y1="146" x2="70" y2="154" stroke="#26344B" stroke-width="1.6"></line>
+                      <line x1="82" y1="146" x2="86" y2="154" stroke="#26344B" stroke-width="1.6"></line>
+                      <circle cx="78" cy="130" r="2.6" fill="#E2704F"></circle>
+
+                      <rect x="-7" y="-2.5" width="14.0" height="5.0" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0.115s infinite normal none running dcv-orbit;opacity:0.55"></rect>
+                      <rect x="-7" y="-2.5" width="13.2" height="4.8" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0.231s infinite normal none running dcv-orbit;opacity:0.47"></rect>
+                      <rect x="-7" y="-2.5" width="12.4" height="4.5" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0.346s infinite normal none running dcv-orbit;opacity:0.39"></rect>
+                      <rect x="-7" y="-2.5" width="11.6" height="4.3" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0.462s infinite normal none running dcv-orbit;opacity:0.32"></rect>
+                      <rect x="-7" y="-2.5" width="10.8" height="4.0" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0.577s infinite normal none running dcv-orbit;opacity:0.26"></rect>
+                      <rect x="-7" y="-2.5" width="10.0" height="3.8" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0.692s infinite normal none running dcv-orbit;opacity:0.19"></rect>
+                      <rect x="-7" y="-2.5" width="9.2" height="3.5" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0.808s infinite normal none running dcv-orbit;opacity:0.14"></rect>
+                      <rect x="-7" y="-2.5" width="8.4" height="3.3" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0.923s infinite normal none running dcv-orbit;opacity:0.09"></rect>
+                      <rect x="-7" y="-2.5" width="7.6" height="3.0" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 1.038s infinite normal none running dcv-orbit;opacity:0.05"></rect>
+                      <rect x="-7" y="-2.5" width="6.8" height="2.8" rx="2.5" fill="#E2704F" style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 1.154s infinite normal none running dcv-orbit;opacity:0.02"></rect>
+
+                      <g style="offset-path:path(&quot;M 22 120 A 98 46 0 1 1 218 120 A 98 46 0 1 1 22 120&quot;);offset-rotate:auto;animation:3s linear 0s infinite normal none running dcv-orbit">
+                        <path d="M0,-9 L36,0 L0,9 L9,0 Z" fill="#FBF7EC" stroke="#26344B" stroke-width="1.5" stroke-linejoin="round"></path>
+                        <path d="M0,-9 L9,0 L0,9" fill="none" stroke="#26344B" stroke-width="1"></path>
+                        <path d="M9,0 L0,-9 L2,0 Z" fill="#E2704F" opacity="0.85"></path>
+                        <image href="data:image/png;base64,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" x="10" y="-6.5" width="13" height="12" preserveAspectRatio="xMidYMid meet"></image>
+                      </g>
+                    </svg>
+                  </span>
+                </span>
                 <div id="convDropLabel" style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:6px">Drop your TTR file here</div>
                 <div id="convDropSub" style="font-size:.8rem;color:var(--muted);margin-bottom:16px">or click to browse your files</div>
                 <button class="conv-upload-btn" onclick="event.stopPropagation();document.getElementById('convFileInput').click()">📁 Choose File</button>
@@ -3654,13 +3763,26 @@ function convDrop(e){
 }
 function convFileChosen(inp){ if(inp.files[0]) _convLoad(inp.files[0]); inp.value=''; }
 
+function _convIconState(state){
+  // 'idle'/'processing' → animated globe+plane loader; 'success' → checkmark emoji
+  const loader = $('convDropLoader'), emoji = $('convDropEmoji');
+  if(state === 'success'){
+    loader.style.display = 'none';
+    emoji.style.display = 'inline-block';
+    emoji.textContent = '✅';
+  } else {
+    emoji.style.display = 'none';
+    loader.style.display = 'inline-block';
+  }
+}
+
 function _convLoad(file){
   const allowed = ['xlsx','xls','csv'];
   const ext = file.name.split('.').pop().toLowerCase();
   if(!allowed.includes(ext)){ _convShowErr('Unsupported file type. Please upload .xlsx, .xls, or .csv.'); return; }
   _convFilename = file.name;
   $('convDropZone').classList.add('conv-processing');
-  $('convDropIcon').textContent = '⏳';
+  _convIconState('processing');
   $('convDropLabel').textContent = 'Reading file…';
   $('convDropSub').textContent = '';
   $('convErrBox').style.display = 'none';
@@ -3756,7 +3878,7 @@ function _convProcess(){
     // Update UI
     $('convDropZone').classList.remove('conv-processing');
     $('convDropZone').classList.add('has-file');
-    $('convDropIcon').textContent = '✅';
+    _convIconState('success');
     $('convDropLabel').textContent = _convFilename;
     $('convDropSub').textContent = `${rows.length.toLocaleString()} rows loaded · ${_convHeaders.length} columns`;
     $('convFileInfo').style.display = 'block';
@@ -3810,7 +3932,7 @@ function _convShowErr(msg){
 }
 function _convReset(){
   $('convDropZone').classList.remove('conv-processing','has-file');
-  $('convDropIcon').textContent = '📂';
+  _convIconState('idle');
   $('convDropLabel').textContent = 'Drop your TTR file here';
   $('convDropSub').textContent = 'or click to browse your files';
   _convData = null; _convResult = null;
