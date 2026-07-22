@@ -720,14 +720,14 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       <div class="kpidef-tab" id="kpidef-overview">
         <div class="card" style="margin-bottom:16px">
           <div style="font-size:.86rem;line-height:1.7;color:var(--text)">
-            The Fulfillment KPIs shown across this dashboard (<strong>TTI</strong>, <strong>FFG</strong>, <strong>TTR FFG</strong>, <strong>PSRE</strong>, <strong>FFGGAUL</strong>) are contractually defined in
-            <strong>Lampiran III — Jaminan Tingkat Layanan, §1 "Fulfillment"</strong> of the Wholesale Agreement between PT Telkom Indonesia and PT Telekomunikasi Selular, and refined by three subsequent addenda
-            (<em>Berita Acara Kesepakatan</em>, or "BAK"). This page focuses only on <strong>Fulfillment</strong> content — the dashboard does not currently surface Assurance, Quality, or Billing KPIs, so those categories are
-            intentionally excluded here even where the source documents cover them. Definitions below reflect the <strong>latest document</strong> (BAK Jan 2025).
+            KPI Fulfillment yang ditampilkan di seluruh dashboard ini (<strong>TTI</strong>, <strong>FFG</strong>, <strong>TTR FFG</strong>, <strong>PSRE</strong>, <strong>FFGGAUL</strong>) didefinisikan secara kontraktual dalam
+            <strong>Lampiran III — Jaminan Tingkat Layanan, bagian "Fulfillment"</strong> pada Wholesale Agreement antara PT Telkom Indonesia dan PT Telekomunikasi Selular, dan disempurnakan melalui tiga addendum berikutnya
+            (<em>Berita Acara Kesepakatan</em>, atau "BAK"). Halaman ini hanya membahas konten <strong>Fulfillment</strong> — dashboard ini belum menampilkan KPI Assurance, Quality, atau Billing, sehingga kategori-kategori tersebut
+            sengaja tidak dimasukkan di sini meskipun dibahas juga di dokumen sumber. Definisi di bawah ini mengacu pada <strong>dokumen terbaru</strong> (BAK Jan 2025).
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
-            <span style="background:rgba(127,29,29,.1);color:var(--teal);border:1px solid rgba(127,29,29,.25);padding:5px 12px;border-radius:99px;font-size:.72rem;font-weight:700">🔒 SLA KPI — penalty-bearing (Kredit Layanan)</span>
-            <span style="background:rgba(76,29,107,.08);color:var(--teal2);border:1px solid rgba(76,29,107,.22);padding:5px 12px;border-radius:99px;font-size:.72rem;font-weight:700">📊 Monitoring KPI — informational, non-penalized</span>
+            <span style="background:rgba(127,29,29,.1);color:var(--teal);border:1px solid rgba(127,29,29,.25);padding:5px 12px;border-radius:99px;font-size:.72rem;font-weight:700">🔒 KPI SLA — dikenai penalti (Kredit Layanan)</span>
+            <span style="background:rgba(76,29,107,.08);color:var(--teal2);border:1px solid rgba(76,29,107,.22);padding:5px 12px;border-radius:99px;font-size:.72rem;font-weight:700">📊 KPI Monitoring — sifatnya informatif, tidak dikenai penalti</span>
           </div>
         </div>
 
@@ -784,7 +784,33 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 
           <!-- Row 2: KPI Monitoring -->
           <div class="kpimap-row">
-            <div class="kpimap-label kpimap-label-mon"><span class="kpimap-label-icon">📊</span>KPI<br>Monitoring</div>
+            <div class="kpimap-label kpimap-label-mon"><span class="kpimap-label-bgicon"><svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+  <!-- clipboard body -->
+  <rect x="42" y="18" width="116" height="168" rx="10" fill="#2A3547" stroke="#1B2433" stroke-width="3"/>
+  <rect x="52" y="30" width="96" height="146" rx="6" fill="#F7F5EF"/>
+  <rect x="82" y="10" width="36" height="16" rx="8" fill="#2A3547" stroke="#1B2433" stroke-width="3"/>
+  <circle cx="100" cy="18" r="5" fill="#3E7CB1"/>
+
+  <!-- KPI title -->
+  <text x="100" y="56" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800" fill="#3E7CB1" text-anchor="middle">KPI</text>
+
+  <!-- text lines -->
+  <rect x="62" y="66" width="50" height="5" rx="2.5" fill="#B9C2CE"/>
+  <rect x="62" y="76" width="35" height="5" rx="2.5" fill="#B9C2CE"/>
+
+  <!-- bar chart -->
+  <rect x="112" y="76" width="8" height="16" fill="#3E7CB1"/>
+  <rect x="123" y="68" width="8" height="24" fill="#3E7CB1"/>
+  <rect x="134" y="72" width="8" height="20" fill="#3E7CB1"/>
+  <polyline points="116,72 127,64 138,70" fill="none" stroke="#C0392B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- pie chart cluster -->
+  <path d="M 58 146 L 58.00 135.00 A 11 11 0 0 1 69.00 146.00 Z" fill="#E8433A"/><path d="M 58 146 L 69.00 146.00 A 11 11 0 0 1 58.00 157.00 Z" fill="#F5B22D"/><path d="M 58 146 L 58.00 157.00 A 11 11 0 0 1 47.00 146.00 Z" fill="#3DA23D"/><path d="M 58 146 L 47.00 146.00 A 11 11 0 0 1 58.00 135.00 Z" fill="#3E7CB1"/><circle cx="58" cy="146" r="11" fill="none" stroke="#26344B" stroke-width="1.5"/><path d="M 84 146 L 84.00 135.00 A 11 11 0 0 1 95.00 146.00 Z" fill="#E8433A"/><path d="M 84 146 L 95.00 146.00 A 11 11 0 0 1 84.00 157.00 Z" fill="#F5B22D"/><path d="M 84 146 L 84.00 157.00 A 11 11 0 0 1 73.00 146.00 Z" fill="#3DA23D"/><path d="M 84 146 L 73.00 146.00 A 11 11 0 0 1 84.00 135.00 Z" fill="#3E7CB1"/><circle cx="84" cy="146" r="11" fill="none" stroke="#26344B" stroke-width="1.5"/><path d="M 110 146 L 110.00 135.00 A 11 11 0 0 1 121.00 146.00 Z" fill="#E8433A"/><path d="M 110 146 L 121.00 146.00 A 11 11 0 0 1 110.00 157.00 Z" fill="#F5B22D"/><path d="M 110 146 L 110.00 157.00 A 11 11 0 0 1 99.00 146.00 Z" fill="#3DA23D"/><path d="M 110 146 L 99.00 146.00 A 11 11 0 0 1 110.00 135.00 Z" fill="#3E7CB1"/><circle cx="110" cy="146" r="11" fill="none" stroke="#26344B" stroke-width="1.5"/><path d="M 136 146 L 136.00 135.00 A 11 11 0 0 1 147.00 146.00 Z" fill="#E8433A"/><path d="M 136 146 L 147.00 146.00 A 11 11 0 0 1 136.00 157.00 Z" fill="#F5B22D"/><path d="M 136 146 L 136.00 157.00 A 11 11 0 0 1 125.00 146.00 Z" fill="#3DA23D"/><path d="M 136 146 L 125.00 146.00 A 11 11 0 0 1 136.00 135.00 Z" fill="#3E7CB1"/><circle cx="136" cy="146" r="11" fill="none" stroke="#26344B" stroke-width="1.5"/>
+
+  <!-- magnifying glass -->
+  <circle cx="94" cy="148" r="30" fill="none" stroke="#33404F" stroke-width="7"/>
+  <line x1="115" y1="169" x2="140" y2="194" stroke="#33404F" stroke-width="9" stroke-linecap="round"/>
+</svg></span><span class="kpimap-label-text">KPI<br>Monitoring</span></div>
             <div class="kpimap-cards">
 
               <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px">
@@ -794,7 +820,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                 </div>
                 <div class="kpidef-def-id">"% penyelesaian order pasang baru dari seluruh RE, dikurangi order cancel, dalam &lt;7 hari setelah tenggat RE."</div>
                 <div class="kpidef-formula" style="margin-bottom:8px">[ Σ Total PS (N-1)+(N-2) ]&nbsp;/&nbsp;[ Σ Total RE (N-2) − Σ Cancel RE &lt;7 hari ]&nbsp;×&nbsp;100%</div>
-                <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 7 hari setelah tenggat RE. New in BAK Jan 2025, Lampiran III §4 "Monitoring."</div>
+                <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 7 hari setelah tenggat RE. New in BAK Jan 2025, Lampiran III bagian "Monitoring."</div>
               </div>
 
               <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px">
@@ -815,7 +841,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
                 <div style="background:rgba(168,48,32,.08);color:var(--red);border:1px solid rgba(168,48,32,.2);border-radius:6px;padding:4px 9px;font-size:.66rem;font-weight:700;display:inline-block;margin-bottom:10px">⚠ Currently not monitored on this dashboard</div>
                 <div class="kpidef-def-id">"Jumlah pelanggan yang berhasil pasang baru lewat penambahan alpro PT2 dalam &lt;6 hari."</div>
                 <div class="kpidef-formula" style="margin-bottom:8px">Σ PS PT2 TTI Sesuai Tolak Ukur&nbsp;/&nbsp;( Σ Total Order PT2 − Cancel &lt;6 hari )&nbsp;×&nbsp;100%</div>
-                <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 6 hari ("agree to complete"). New in BAK Jan 2025, Lampiran III §4 "Monitoring." No live dashboard entity is wired up for this KPI yet.</div>
+                <div style="font-size:.72rem;color:var(--muted);line-height:1.6">Limit: 6 hari ("agree to complete"). New in BAK Jan 2025, Lampiran III bagian "Monitoring." No live dashboard entity is wired up for this KPI yet.</div>
               </div>
 
             </div>
@@ -991,7 +1017,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
               <div style="font-weight:800;color:var(--teal2);font-size:.85rem;margin-bottom:6px">PS/RE Ratio</div>
               <div class="kpidef-excl">
                 <div>• Not present — no mention in WSA 2023, BAK Apr 2024, or BAK Aug 2024 <span class="tag-2023">WSA 2023 → BAK Aug 2024</span></div>
-                <div>• Added as a new Monitoring KPI, Lampiran III §4: target <strong>75.17%</strong>, limit 7 hari <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Added as a new Monitoring KPI, Lampiran III bagian "Monitoring": target <strong>75.17%</strong>, limit 7 hari <span class="tag-2025">BAK Jan 2025</span></div>
               </div>
             </div>
 
@@ -1000,7 +1026,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
               <div class="kpidef-excl">
                 <div>• Not present in the contract text — no mention in WSA 2023 or BAK Apr 2024 <span class="tag-2023">WSA 2023 → BAK Apr 2024</span></div>
                 <div>• Tracked informally at 83.59% per an 8-Jan-2025 MoM (not yet in the Lampiran III text) <span class="tag-2024b">BAK Aug 2024</span></div>
-                <div>• Formalized as a Monitoring KPI, Lampiran III §4: target <strong>91.76%</strong> (+8.17 pts vs. the informal 2024 baseline), limit 60 hari <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Formalized as a Monitoring KPI, Lampiran III bagian "Monitoring": target <strong>91.76%</strong> (+8.17 pts vs. the informal 2024 baseline), limit 60 hari <span class="tag-2025">BAK Jan 2025</span></div>
               </div>
             </div>
 
@@ -1008,7 +1034,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
               <div style="font-weight:800;color:var(--teal2);font-size:.85rem;margin-bottom:6px">TTI PT2 Comply ("SLA PT-2")</div>
               <div class="kpidef-excl">
                 <div>• Not present — no mention in WSA 2023, BAK Apr 2024, or BAK Aug 2024 <span class="tag-2023">WSA 2023 → BAK Aug 2024</span></div>
-                <div>• Added as a new Monitoring KPI, Lampiran III §4: target <strong>19.09%</strong>, limit 6 hari ("agree to complete") <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Added as a new Monitoring KPI, Lampiran III bagian "Monitoring": target <strong>19.09%</strong>, limit 6 hari ("agree to complete") <span class="tag-2025">BAK Jan 2025</span></div>
                 <div>• <strong style="color:var(--red)">Currently not monitored on this dashboard — live tracking is planned to start in H2 2025</strong> <span class="tag-2025">BAK Jan 2025</span></div>
               </div>
             </div>
@@ -1063,7 +1089,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
             <div><strong style="color:var(--navy)">Numbers:</strong> Telkom No. K.Tel.10/HK.810/COP-H0000000/2023 · Telkomsel No. PKS.331/LG.05/PT-00/IV/2023</div>
             <div><strong style="color:var(--navy)">Date:</strong> 6 April 2023 (effective date) · 5-year term from Legal Day-1</div>
             <div><strong style="color:var(--navy)">Signatories:</strong> Bogi Witjaksono (Direktur Wholesale and International Service, Telkom) · Wong Soon Nam &amp; Nugroho (Direktur, Telkomsel)</div>
-            <div><strong style="color:var(--navy)">Fulfillment content:</strong> Lampiran III §1 "Fulfillment" (p.44–45) · Lampiran V.E.1 Service Fulfillment Home Segment process flow (p.58) · Lampiran XI Kredit Layanan penalty formula (p.69–70)</div>
+            <div><strong style="color:var(--navy)">Fulfillment content:</strong> Lampiran III bagian "Fulfillment" (p.44–45) · Lampiran V.E.1 Service Fulfillment Home Segment process flow (p.58) · Lampiran XI Kredit Layanan penalty formula (p.69–70)</div>
           </div>
         </div>
         <div class="card" style="margin-bottom:14px">
@@ -1093,7 +1119,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
             <div><strong style="color:var(--navy)">Numbers:</strong> Telkom Tel.164/YN000/DWS-A0000000/2025 · Telkomsel 040/TC.01/VS-01/III/2025</div>
             <div><strong style="color:var(--navy)">Signed:</strong> 21 March 2025 · <strong style="color:var(--navy)">Effective:</strong> 1 Jan – 30 Jun 2025 (retroactive)</div>
             <div><strong style="color:var(--navy)">Signatories:</strong> Muhammad Rofik (EVP Divisi Wholesale Service, Telkom) · Nizar Fuadi (VP Network Strategic Collaboration and Settlement, Telkomsel)</div>
-            <div><strong style="color:var(--navy)">Scope:</strong> Fulfillment + Assurance + Quality, plus new Lampiran III §4 "Monitoring" — amends WSA 2023 + BAK Apr 2024 + BAK Aug 2024</div>
+            <div><strong style="color:var(--navy)">Scope:</strong> Fulfillment + Assurance + Quality, plus new Lampiran III bagian "Monitoring" — amends WSA 2023 + BAK Apr 2024 + BAK Aug 2024</div>
           </div>
         </div>
       </div>
