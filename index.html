@@ -313,6 +313,26 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .kpi-matrix tr.km-tgt-row td.km-month{color:var(--muted);font-size:.72rem;font-weight:600}
 .kpi-matrix tbody tr:hover td:not(.km-month){background:rgba(42,63,94,.04)}
 
+/* ── KPI DEFINITION PAGE ──────────────────────────────────────────────────── */
+.kpidef-lbl{font-size:.72rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin:14px 0 6px}
+.kpidef-lbl:first-child{margin-top:0}
+.kpidef-def-id{font-size:.83rem;line-height:1.6;color:var(--text);font-style:italic;margin-bottom:4px}
+.kpidef-def-en{font-size:.8rem;line-height:1.6;color:var(--muted)}
+.kpidef-formula{background:rgba(42,63,94,.06);border-left:3px solid var(--teal);padding:10px 14px;border-radius:0 8px 8px 0;font-family:'Courier New',monospace;font-size:.8rem;color:var(--navy)}
+.kpidef-meta{font-size:.8rem;color:var(--text)}
+.kpidef-excl{font-size:.78rem;line-height:1.9;color:var(--muted)}
+.kpidef-excl .tag-2023,.kpidef-excl .tag-2024a,.kpidef-excl .tag-2024b,.kpidef-excl .tag-2025{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:99px;font-size:.62rem;font-weight:800;letter-spacing:.2px;white-space:nowrap}
+.kpidef-excl .tag-2023{background:rgba(107,94,82,.12);color:var(--muted)}
+.kpidef-excl .tag-2024a{background:rgba(127,29,29,.12);color:var(--teal)}
+.kpidef-excl .tag-2024b{background:rgba(212,144,26,.15);color:#92400e}
+.kpidef-excl .tag-2025{background:rgba(76,29,107,.12);color:var(--teal2)}
+.kpidef-trend{width:100%;border-collapse:collapse;font-size:.78rem}
+.kpidef-trend td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.kpidef-trend td:last-child{text-align:right;font-weight:700}
+.kpidef-trend tr.cur{background:rgba(56,189,248,.08)}
+.kpidef-trend tr.cur td{font-weight:800;color:var(--navy);border-bottom:none}
+.kpidef-tabs .dur-pkg-btn{font-size:.72rem}
+
 /* ── REFERENCE SUMMARY TABLE ─────────────────────────────────────────────── */
 .ref-summary-wrap{margin-bottom:0}
 /* Shared "card title" bar — one format for every KPI-page card (maroon → purple, Danantara-style) */
@@ -495,6 +515,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       <div class="nav-submenu" id="nav-sub-kpi">
         <a onclick="showPage('kpi')" id="nav-kpi">KPI 2025</a>
         <a onclick="showPage('kpi2026')" id="nav-kpi2026">KPI 2026</a>
+        <a onclick="showPage('kpidef')" id="nav-kpidef">KPI Definition</a>
       </div>
     </div>
     <a onclick="showPage('tracker')" id="nav-tracker"><span class="icon">📋</span> Project Tracker</a>
@@ -656,6 +677,452 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         <div style="font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:10px">Content Coming Soon</div>
         <div style="color:var(--muted);font-size:.84rem;line-height:1.7">Add 2026 data files to the Performancedb folder<br>and run <code style="background:rgba(42,63,94,.08);padding:2px 7px;border-radius:5px;font-size:.82rem">update_dashboard.py</code> to populate this page.</div>
       </div>
+    </div>
+
+    <!-- ══ KPI DEFINITION ══ -->
+    <div class="page" id="page-kpidef">
+      <div class="kpi-banner">
+        <div class="kpi-banner-left">
+          <h2>KPI Definition</h2>
+          <p>Fulfillment SLA Reference — Wholesale Service Agreement (WSA) Telkom × Telkomsel</p>
+        </div>
+        <div class="last-update-box">
+          <div class="lu-label">Source</div>
+          <div class="lu-val" style="font-size:.72rem;line-height:1.5">WSA 2023<br>+ 3 Addenda</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="card kpidef-tabs" style="margin-bottom:16px;padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="dur-pkg-btn active" onclick="showKpiDefTab('overview',this)">Overview</button>
+        <button class="dur-pkg-btn" onclick="showKpiDefTab('sla',this)">SLA KPIs (Fulfillment Guarantee, TTR FFG, TTI Comply)</button>
+        <button class="dur-pkg-btn" onclick="showKpiDefTab('monitoring',this)">Monitoring KPIs (PS/RE, TTI PT2, FFG GAUL)</button>
+        <button class="dur-pkg-btn" onclick="showKpiDefTab('compare',this)">Document Comparison</button>
+        <button class="dur-pkg-btn" onclick="showKpiDefTab('docs',this)">Source Documents</button>
+      </div>
+
+      <!-- ═ OVERVIEW ═ -->
+      <div class="kpidef-tab" id="kpidef-overview">
+        <div class="card" style="margin-bottom:16px">
+          <div style="font-size:.86rem;line-height:1.7;color:var(--text)">
+            The Fulfillment KPIs shown across this dashboard (<strong>TTI</strong>, <strong>FFG</strong>, <strong>TTR FFG</strong>, <strong>PSRE</strong>, <strong>FFGGAUL</strong>) are contractually defined in
+            <strong>Lampiran III — Jaminan Tingkat Layanan, §1 "Fulfillment"</strong> of the Wholesale Agreement between PT Telkom Indonesia and PT Telekomunikasi Selular, and refined by three subsequent addenda
+            (<em>Berita Acara Kesepakatan</em>, or "BAK"). This page focuses only on <strong>Fulfillment</strong> content — the dashboard does not currently surface Assurance, Quality, or Billing KPIs, so those categories are
+            intentionally excluded here even where the source documents cover them.
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+            <span style="background:rgba(127,29,29,.1);color:var(--teal);border:1px solid rgba(127,29,29,.25);padding:5px 12px;border-radius:99px;font-size:.72rem;font-weight:700">🔒 SLA KPI — penalty-bearing (Kredit Layanan)</span>
+            <span style="background:rgba(76,29,107,.08);color:var(--teal2);border:1px solid rgba(76,29,107,.22);padding:5px 12px;border-radius:99px;font-size:.72rem;font-weight:700">📊 Monitoring KPI — informational, non-penalized</span>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="margin-bottom:14px">Target Evolution — All 3 SLA KPIs, 2023 → 2025</div>
+          <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+            <thead><tr style="background:var(--navy)">
+              <th style="padding:8px 12px;text-align:left;color:#fff;font-weight:700;background:var(--navy)">KPI</th>
+              <th style="padding:8px 12px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">WSA 2023<br><span style="font-weight:500;font-size:.68rem;opacity:.8">baseline · 6 Apr 2023</span></th>
+              <th style="padding:8px 12px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">BAK Apr 2024<br><span style="font-weight:500;font-size:.68rem;opacity:.8">S-I 2024</span></th>
+              <th style="padding:8px 12px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">BAK Aug 2024<br><span style="font-weight:500;font-size:.68rem;opacity:.8">S-II 2024</span></th>
+              <th style="padding:8px 12px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">BAK Jan 2025<br><span style="font-weight:500;font-size:.68rem;opacity:.8">SMT-1 2025 · current</span></th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td style="padding:8px 12px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--border)">Fulfillment Guarantee (FFG)</td>
+                <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border)">80%</td>
+                <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border)">97.40%</td>
+                <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border)">98.11%</td>
+                <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:800;color:var(--navy);background:rgba(56,189,248,.08)">98.29%</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--border)">TTR Fulfillment Guarantee (TTR FFG)</td>
+                <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border)">70%</td>
+                <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border)">80.81%</td>
+                <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border)">80.81%</td>
+                <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:800;color:var(--navy);background:rgba(56,189,248,.08)">80.81%</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;font-weight:700;color:var(--navy)">TTI Comply</td>
+                <td style="padding:8px 12px;text-align:center">67%</td>
+                <td style="padding:8px 12px;text-align:center">92.72%</td>
+                <td style="padding:8px 12px;text-align:center">93.31%</td>
+                <td style="padding:8px 12px;text-align:center;font-weight:800;color:var(--navy);background:rgba(56,189,248,.08)">93.31%</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div style="margin-top:12px;font-size:.72rem;color:var(--muted);line-height:1.6">
+            Note: targets rose sharply in the 2024 addenda and have largely plateaued since — TTR FFG has held flat at 80.81% and TTI Comply at 93.31% across three consecutive periods (S-I 2024, S-II 2024, SMT-1 2025).
+            See <strong>Document Comparison</strong> tab for exclusion-rule changes underlying these numbers.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ref-summary-header" style="margin-bottom:14px">Dashboard Entity Cross-Reference</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:12px;line-height:1.6">These are the exact entity codes used elsewhere in this dashboard (KPI 2025 page, area breakdowns) mapped to their contractual definition:</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px">
+            <div style="border:1px solid var(--border);border-radius:8px;padding:10px 14px"><div style="font-weight:800;color:var(--teal);font-size:.85rem">FFG</div><div style="font-size:.72rem;color:var(--muted);margin-top:2px">Fulfillment Guarantee · target 98.29%</div></div>
+            <div style="border:1px solid var(--border);border-radius:8px;padding:10px 14px"><div style="font-weight:800;color:var(--teal);font-size:.85rem">TTRFFG</div><div style="font-size:.72rem;color:var(--muted);margin-top:2px">TTR Fulfillment Guarantee · target 80.81%</div></div>
+            <div style="border:1px solid var(--border);border-radius:8px;padding:10px 14px"><div style="font-weight:800;color:var(--teal);font-size:.85rem">TTI</div><div style="font-size:.72rem;color:var(--muted);margin-top:2px">TTI Comply · target 93.31%</div></div>
+            <div style="border:1px solid var(--border);border-radius:8px;padding:10px 14px"><div style="font-weight:800;color:var(--teal2);font-size:.85rem">PSRE</div><div style="font-size:.72rem;color:var(--muted);margin-top:2px">PS/RE Ratio (Monitoring) · target 75.17%</div></div>
+            <div style="border:1px solid var(--border);border-radius:8px;padding:10px 14px"><div style="font-weight:800;color:var(--teal2);font-size:.85rem">FFGGAUL</div><div style="font-size:.72rem;color:var(--muted);margin-top:2px">Fulfillment Guarantee (Ceil) — "FFG GAUL" (Monitoring) · target 91.76%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═ SLA KPIs ═ -->
+      <div class="kpidef-tab" id="kpidef-sla" style="display:none">
+
+        <!-- FFG -->
+        <div class="card section-gap" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <span>Fulfillment Guarantee (FFG) <span style="font-size:.66rem;font-weight:500;opacity:.8;text-transform:none">— Lampiran III §1 · Kredit Layanan weight 40%</span></span>
+            <span style="background:rgba(255,255,255,.18);color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">Current Target: 98.29%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;margin-top:16px;align-items:start">
+            <div>
+              <div class="kpidef-lbl">Definisi</div>
+              <div class="kpidef-def-id">"Indikator yang menunjukkan rasio tidak terjadinya gangguan pada pelanggan Layanan TELKOMSEL dalam jangka waktu target hari setelah pasang baru."</div>
+              <div class="kpidef-def-en">Ratio of newly-installed (PSB) customers <strong>not</strong> experiencing a technical disruption within the target window (60 days) after new install, vs. total PS.</div>
+              <div class="kpidef-lbl">Formula</div>
+              <div class="kpidef-formula">Σ PSB tidak terganggu dalam 60 hari&nbsp;/&nbsp;Σ Total PSB&nbsp;×&nbsp;100%</div>
+              <div class="kpidef-lbl">Limit &amp; Population</div>
+              <div class="kpidef-meta">60 hari setelah pasang baru · dilaporkan per TREG · rata-rata nasional</div>
+              <div class="kpidef-lbl">Exclusions (cumulative — newest additions in latest addenda)</div>
+              <div class="kpidef-excl">
+                <div>• Gangguan massal (gamas) &amp; tiket proaktif <span class="tag-2023">WSA 2023</span></div>
+                <div>• Isu non-teknis (relokasi ONT/STB, isolir) &amp; gangguan konten OTT <span class="tag-2023">WSA 2023</span></div>
+                <div>• Perangkat rusak (ONT/STB/CPE) <span class="tag-2023">WSA 2023</span></div>
+                <div>• Produk Orbit; pekerjaan pihak ke-3; vandalisme; force majeure <span class="tag-2024a">BAK Apr 2024</span></div>
+                <div>• Reseller channel <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Force majeure — wajib dokumentasi foto/kronologis/surat pemda <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Planned maintenance dalam window CRA &amp; CRQ <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Perangkat NTE rusak &amp; gangguan akibat kesalahan pelanggan <span class="tag-2025">BAK Jan 2025</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="kpidef-lbl">Target per Periode</div>
+              <table class="kpidef-trend"><tbody>
+                <tr><td>WSA 2023 (baseline)</td><td>80%</td></tr>
+                <tr><td>S-I 2024</td><td>97.40%</td></tr>
+                <tr><td>S-II 2024</td><td>98.11%</td></tr>
+                <tr class="cur"><td>SMT-1 2025 (current)</td><td>98.29%</td></tr>
+              </tbody></table>
+              <div style="margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.6">📈 +18.29 pts since the 2023 baseline — a step-change in 2024, incremental since.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TTR FFG -->
+        <div class="card section-gap" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <span>TTR Fulfillment Guarantee (TTR FFG) <span style="font-size:.66rem;font-weight:500;opacity:.8;text-transform:none">— Lampiran III §1 · not scored in Kredit Layanan</span></span>
+            <span style="background:rgba(255,255,255,.18);color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">Current Target: 80.81%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;margin-top:16px;align-items:start">
+            <div>
+              <div class="kpidef-lbl">Definisi</div>
+              <div class="kpidef-def-id">"Persentase penyelesaian gangguan untuk pelanggan pasang baru dalam jangka waktu target jam, mulai dari manajemen janji pertama (MANJA)."</div>
+              <div class="kpidef-def-en">% of disruption tickets for newly-installed customers resolved within 3 hours, measured from MANJA (first appointment commitment).</div>
+              <div class="kpidef-lbl">Formula</div>
+              <div class="kpidef-formula">Σ Tiket selesai dalam 3 jam dari MANJA&nbsp;/&nbsp;Σ Total Tiket&nbsp;×&nbsp;100%</div>
+              <div class="kpidef-lbl">Limit &amp; Population</div>
+              <div class="kpidef-meta">3 jam dari waktu MANJA · dilaporkan per TREG · rata-rata nasional</div>
+              <div class="kpidef-lbl">Exclusions &amp; comply logic (cumulative)</div>
+              <div class="kpidef-excl">
+                <div>• Wilayah khusus (wilsus) &amp; Produk Orbit <span class="tag-2024a">BAK Apr 2024</span></div>
+                <div>• Comply jika &lt;3 jam dari MANJA — untuk tiket dengan waktu manja valid (manja &lt;24 jam open tiket) <span class="tag-2024b">BAK Aug 2024</span></div>
+                <div>• Comply jika &lt;3 jam dari waktu open tiket — untuk order tanpa manja/manja tidak valid (&gt;24 jam, atau manja setelah tiket close) <span class="tag-2024b">BAK Aug 2024</span></div>
+                <div>• Manja boleh &gt;24 jam jika atas permintaan pelanggan <span class="tag-2024b">BAK Aug 2024</span></div>
+                <div>• Reseller channel; force majeure (wajib dokumentasi); planned maintenance (CRA/CRQ); perangkat NTE rusak; gangguan akibat pelanggan <span class="tag-2025">BAK Jan 2025</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="kpidef-lbl">Target per Periode</div>
+              <table class="kpidef-trend"><tbody>
+                <tr><td>WSA 2023 (baseline)</td><td>70%</td></tr>
+                <tr><td>S-I 2024</td><td>80.81%</td></tr>
+                <tr><td>S-II 2024</td><td>80.81%</td></tr>
+                <tr class="cur"><td>SMT-1 2025 (current)</td><td>80.81%</td></tr>
+              </tbody></table>
+              <div style="margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.6">⏸ Flat at 80.81% for 3 consecutive periods — but the measured ticket population narrowed each period as exclusions grew, so it's not a flat comparison.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TTI Comply -->
+        <div class="card section-gap" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <span>TTI Comply <span style="font-size:.66rem;font-weight:500;opacity:.8;text-transform:none">— Lampiran III §1 · Kredit Layanan weight 60%</span></span>
+            <span style="background:rgba(255,255,255,.18);color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">Current Target: 93.31%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;margin-top:16px;align-items:start">
+            <div>
+              <div class="kpidef-lbl">Definisi</div>
+              <div class="kpidef-def-id">"Jumlah pelanggan yang berhasil pasang baru mulai tahapan PI sampai PS dalam kurun waktu kurang dari atau sama dengan target hari."</div>
+              <div class="kpidef-def-en">Customers successfully installed from PI (Provisioning Issued) to PS (Put in Service) within ≤72 hours (3×24 jam). PC (Provisioning Complete)–to–PS duration is excluded.</div>
+              <div class="kpidef-lbl">Formula — original (WSA 2023)</div>
+              <div class="kpidef-formula">Σ TTI Sesuai Tolak Ukur (PI→PS)&nbsp;/&nbsp;Σ Total PS&nbsp;×&nbsp;100%</div>
+              <div class="kpidef-lbl">Formula — current, tiered fallback (BAK Jan 2025)</div>
+              <div class="kpidef-formula" style="line-height:1.8">
+                A. MANJA → Provisioning Complete <span style="opacity:.65">(primary reference)</span><br>
+                B. PI → Provisioning Complete <span style="opacity:.65">(if MANJA is null/negative)</span><br>
+                C. RE → Provisioning Complete <span style="opacity:.65">(if PI is null/negative)</span><br>
+                Comply if duration ≤ 3×24 jam (72 jam)
+              </div>
+              <div class="kpidef-lbl">Scope &amp; Exclusions (cumulative)</div>
+              <div class="kpidef-excl">
+                <div>• Excludes PC→PS portion of the timeline <span class="tag-2023">WSA 2023</span></div>
+                <div>• NCX Create Order→PI gap &gt;1 jam ⇒ measured from NCX Create Order instead of PI; revoke-case timestamp handling; Produk Orbit excluded <span class="tag-2024a">BAK Apr 2024</span></div>
+                <div>• Scope expanded: now covers <strong>New Sales IndiHome (PSB) AND PDA (Pindah Alamat)</strong> orders, not just new installs <span class="tag-2025">BAK Jan 2025</span></div>
+                <div>• Reseller channel excluded (in addition to Orbit) <span class="tag-2025">BAK Jan 2025</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="kpidef-lbl">Target per Periode</div>
+              <table class="kpidef-trend"><tbody>
+                <tr><td>WSA 2023 (baseline)</td><td>67%</td></tr>
+                <tr><td>S-I 2024</td><td>92.72%</td></tr>
+                <tr><td>S-II 2024</td><td>93.31%</td></tr>
+                <tr class="cur"><td>SMT-1 2025 (current)</td><td>93.31%</td></tr>
+              </tbody></table>
+              <div style="margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.6">📈 +26.31 pts since 2023 baseline; flat since S-II 2024 despite scope expanding to include PDA orders.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═ MONITORING KPIs ═ -->
+      <div class="kpidef-tab" id="kpidef-monitoring" style="display:none">
+        <div class="card" style="margin-bottom:16px;background:rgba(76,29,107,.05);border:1px solid rgba(76,29,107,.18)">
+          <div style="font-size:.82rem;color:var(--text);line-height:1.6">
+            📊 These 3 KPIs first appear in <strong>BAK Jan 2025, Lampiran III §4 "Monitoring"</strong> — a category explicitly separate from the penalty-bearing SLA KPIs above. They are tracked for visibility but do not
+            feed the Kredit Layanan penalty formula. All three map 1:1 to entity codes already used elsewhere in this dashboard.
+          </div>
+        </div>
+
+        <!-- PS/RE -->
+        <div class="card section-gap" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:linear-gradient(135deg,#4c1d6b,#1e1b4b)">
+            <span>PS/RE Ratio <span style="font-size:.66rem;font-weight:500;opacity:.8;text-transform:none">— dashboard entity "PSRE"</span></span>
+            <span style="background:rgba(255,255,255,.18);color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">Target (SMT-1 2025): 75.17%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;margin-top:16px;align-items:start">
+            <div>
+              <div class="kpidef-lbl">Definisi</div>
+              <div class="kpidef-def-id">"% penyelesaian order pasang baru dari seluruh RE, dikurangi order cancel, dalam &lt;7 hari setelah tenggat RE."</div>
+              <div class="kpidef-def-en">% of RE (Register) orders that reach PS within &lt;7 days of the RE deadline, after removing cancellations.</div>
+              <div class="kpidef-lbl">Formula</div>
+              <div class="kpidef-formula">[ Σ Total PS (N-1)+(N-2) ]&nbsp;/&nbsp;[ Σ Total RE (N-2) − Σ Cancel RE &lt;7 hari ]&nbsp;×&nbsp;100%</div>
+              <div class="kpidef-lbl">Limit</div>
+              <div class="kpidef-meta">7 hari setelah tenggat RE</div>
+            </div>
+            <div>
+              <div class="kpidef-lbl">Status</div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.78rem;color:var(--muted);line-height:1.7">
+                Not present in WSA 2023, BAK Apr 2024, or BAK Aug 2024.<br>
+                <strong style="color:var(--teal2)">New</strong> in BAK Jan 2025 — first formal target: <strong>75.17%</strong> (SMT-1 2025).
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TTI PT2 -->
+        <div class="card section-gap" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:linear-gradient(135deg,#4c1d6b,#1e1b4b)">
+            <span>TTI PT2 Comply <span style="font-size:.66rem;font-weight:500;opacity:.8;text-transform:none">— MoM dashboard label "SLA P12"</span></span>
+            <span style="background:rgba(255,255,255,.18);color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">Target (SMT-1 2025): 19.09%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;margin-top:16px;align-items:start">
+            <div>
+              <div class="kpidef-lbl">Definisi</div>
+              <div class="kpidef-def-id">"Jumlah pelanggan yang berhasil pasang baru lewat penambahan alpro PT2 dalam &lt;6 hari."</div>
+              <div class="kpidef-def-en">Customers completing installation via a PT2 (Provisioning Type 2) alpro addition, within &lt;6 days.</div>
+              <div class="kpidef-lbl">Formula</div>
+              <div class="kpidef-formula">Σ PS PT2 TTI Sesuai Tolak Ukur&nbsp;/&nbsp;( Σ Total Order PT2 − Cancel &lt;6 hari )&nbsp;×&nbsp;100%</div>
+              <div class="kpidef-lbl">Limit</div>
+              <div class="kpidef-meta">6 hari ("agree to complete")</div>
+            </div>
+            <div>
+              <div class="kpidef-lbl">Status</div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.78rem;color:var(--muted);line-height:1.7">
+                Not present in WSA 2023, BAK Apr 2024, or BAK Aug 2024.<br>
+                <strong style="color:var(--teal2)">New</strong> in BAK Jan 2025 — first formal target: <strong>19.09%</strong> (SMT-1 2025). The low target reflects that PT2 (network-extension) orders are a small, harder-to-fulfill subset of total orders.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FFG GAUL -->
+        <div class="card section-gap" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:linear-gradient(135deg,#4c1d6b,#1e1b4b)">
+            <span>Fulfillment Guarantee (Ceil) — "FFG GAUL" <span style="font-size:.66rem;font-weight:500;opacity:.8;text-transform:none">— dashboard entity "FFGGAUL"</span></span>
+            <span style="background:rgba(255,255,255,.18);color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">Target (SMT-1 2025): 91.76%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;margin-top:16px;align-items:start">
+            <div>
+              <div class="kpidef-lbl">Definisi</div>
+              <div class="kpidef-def-id">"% Pelanggan PSB TIDAK mengalami Gangguan &gt;1x (Gangguan Ulang) dalam periode fulfillment guarantee, terhadap jumlah Gangguan Pelanggan PSB Closed."</div>
+              <div class="kpidef-def-en">% of newly-installed customers <strong>not</strong> experiencing a repeat disruption (&gt;1×) within the fulfillment-guarantee window — a "no repeat trouble" companion metric to FFG.</div>
+              <div class="kpidef-lbl">Formula</div>
+              <div class="kpidef-formula">1 − [ (Σ Tiket − Σ Pelanggan Tergangguan)&nbsp;/&nbsp;Σ Tiket Closed ]&nbsp;×&nbsp;100%</div>
+              <div class="kpidef-lbl">Limit</div>
+              <div class="kpidef-meta">60 hari (same window as Fulfillment Guarantee)</div>
+            </div>
+            <div>
+              <div class="kpidef-lbl">Status &amp; Trend</div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.78rem;color:var(--muted);line-height:1.7">
+                Not formally in Lampiran III before BAK Jan 2025, but <strong>informally tracked</strong> per an 8-Jan-2025 MoM at <strong>83.59%</strong> in H2 2024.<br>
+                <strong style="color:var(--teal2)">Formalized</strong> in BAK Jan 2025 with target <strong>91.76%</strong> (SMT-1 2025) — a +8.17 pt jump from the informal 2024 baseline.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═ DOCUMENT COMPARISON ═ -->
+      <div class="kpidef-tab" id="kpidef-compare" style="display:none">
+        <div class="card" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="margin-bottom:14px">Full Cross-Document Comparison — Fulfillment KPIs</div>
+          <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+            <thead><tr style="background:var(--navy)">
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:150px">KPI</th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px">WSA 2023<br><span style="font-weight:500;font-size:.66rem;opacity:.8">eff. 6 Apr 2023</span></th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px">BAK Apr 2024<br><span style="font-weight:500;font-size:.66rem;opacity:.8">S-I 2024, eff. 1 Jan 2024</span></th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:200px">BAK Aug 2024<br><span style="font-weight:500;font-size:.66rem;opacity:.8">S-II 2024, eff. 1 Jul 2024</span></th>
+              <th style="padding:8px 10px;text-align:left;color:#fff;font-weight:700;background:var(--navy);min-width:220px">BAK Jan 2025<br><span style="font-weight:500;font-size:.66rem;opacity:.8">SMT-1 2025, eff. 1 Jan 2025</span></th>
+            </tr></thead>
+            <tbody style="line-height:1.6">
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:8px 10px;font-weight:700;color:var(--navy);vertical-align:top">Fulfillment Guarantee</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>80%</strong> · Limit 60 hari</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>97.40%</strong> · exclusions detailed (Orbit, 3rd-party, force majeure)</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>98.11%</strong> · same exclusions</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>98.29%</strong> · +reseller, +FM documentation req., +maintenance window, +NTE hardware, +customer-caused</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:8px 10px;font-weight:700;color:var(--navy);vertical-align:top">TTR Fulfillment Guarantee</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>70%</strong> · Limit 3 jam MANJA</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>80.81%</strong> · exclusions detailed (wilsus, Orbit)</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>80.81%</strong> (flat) · +valid/invalid-manja comply logic split</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>80.81%</strong> (flat) · +reseller, +FM documentation req., +maintenance window, +NTE hardware, +customer-caused</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:8px 10px;font-weight:700;color:var(--navy);vertical-align:top">TTI Comply</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>67%</strong> · PI→PS ≤72h</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>92.72%</strong> · NCX timing rules, Orbit excluded</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>93.31%</strong> · same exclusions</td>
+                <td style="padding:8px 10px;vertical-align:top">Target <strong>93.31%</strong> (flat) · <strong>scope +PDA orders</strong>, Manja/Provcomp tiered formula, +reseller</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:8px 10px;font-weight:700;color:var(--teal2);vertical-align:top">PS/RE Ratio</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;vertical-align:top"><strong style="color:var(--teal2)">NEW</strong> — Target 75.17% (Monitoring)</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:8px 10px;font-weight:700;color:var(--teal2);vertical-align:top">TTI PT2 Comply</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;vertical-align:top"><strong style="color:var(--teal2)">NEW</strong> — Target 19.09% (Monitoring)</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 10px;font-weight:700;color:var(--teal2);vertical-align:top">Fulfillment Guarantee (Ceil) / FFG GAUL</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">— not present</td>
+                <td style="padding:8px 10px;color:var(--muted);vertical-align:top">informally tracked at 83.59% per 8-Jan-2025 MoM</td>
+                <td style="padding:8px 10px;vertical-align:top"><strong style="color:var(--teal2)">NEW formally</strong> — Target 91.76% (Monitoring)</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="ref-summary-header" style="margin-bottom:14px">Key Observations</div>
+          <div style="font-size:.82rem;line-height:1.85;color:var(--text)">
+            <div><strong>1. Targets rose sharply, then plateaued.</strong> FFG went 80% → 97.40% → 98.11% → 98.29% (a step-change in 2024, small increments after). TTI Comply went 67% → 92.72% → 93.31% → 93.31% (flat since S-II 2024). TTR FFG went 70% → 80.81% and has stayed flat at 80.81% for three consecutive periods.</div>
+            <div><strong>2. Kredit Layanan (penalty) scoring only weights 2 of the 3 SLA KPIs.</strong> Fulfillment Guarantee = 40%, TTI Comply = 60%. TTR Fulfillment Guarantee has never been part of the financial-penalty formula in any of the 4 documents — it's an SLA target with its own exclusion logic, but doesn't feed the penalty score.</div>
+            <div><strong>3. The "target" column was repurposed starting BAK Apr 2024.</strong> WSA 2023 used a fixed baseline population percentage (80%/70%/67%); from BAK Apr 2024 onward the same field is overwritten each period with that semester's live target — i.e. it reads as "current period target," not "measurement population," post-2023.</div>
+            <div><strong>4. Exclusion-rule scope has grown monotonically every period</strong> — each addendum adds new carve-outs (Produk Orbit → +reseller; +Force Majeure documentation requirement; +planned-maintenance window; +NTE faulty hardware; +customer-caused disruption) without removing prior ones. A flat headline number (e.g. TTR FFG steady at 80.81%) can still reflect a narrower, cleaner measured population than the prior period.</div>
+            <div><strong>5. Three new Fulfillment KPIs appear only in BAK Jan 2025</strong>, under a new "Monitoring" category explicitly separate from the penalty-bearing SLA KPIs (PS/RE Ratio, TTI PT2 Comply, FFG GAUL).</div>
+            <div><strong>6. BAK Aug 2024 uniquely covers Fulfillment only</strong> — no Assurance/Quality Lampiran — unlike the other three documents, which cover all three categories.</div>
+            <div><strong>7. H2 targets are always deferred to a mid-year addendum.</strong> Every H1-covering document (WSA 2023, BAK Apr 2024, BAK Jan 2025) explicitly states the second-half target will be set "setelah proses review realisasi S-I" — so an H2-2025 addendum is expected but was not among the 4 documents reviewed here.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ref-summary-header" style="margin-bottom:14px">Kredit Layanan — Penalty Formula (Lampiran XI, WSA 2023)</div>
+          <div class="kpidef-formula" style="margin-bottom:14px">Penalti Fulfillment (Pf) = SC Fulfillment&nbsp;×&nbsp;Jumlah Work Order PSB Bulan Berjalan&nbsp;×&nbsp;OTC per LIS</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:14px;line-height:1.6">Scoring weights: <strong style="color:var(--navy)">Fulfillment Guarantee = 40%</strong>, <strong style="color:var(--navy)">TTI Comply = 60%</strong>. TTR Fulfillment Guarantee is not included in this formula.</div>
+          <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:.8rem;max-width:520px">
+            <thead><tr style="background:var(--navy)">
+              <th style="padding:7px 12px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Tier</th>
+              <th style="padding:7px 12px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Score Kinerja</th>
+              <th style="padding:7px 12px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">SC Fulfillment</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border)">T0</td><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border)">≥ 85%</td><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700;color:var(--green)">0%</td></tr>
+              <tr><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border)">T1</td><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border)">&lt; 85%</td><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">0.1%</td></tr>
+              <tr><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border)">T2</td><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border)">&lt; 80%</td><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">0.2%</td></tr>
+              <tr><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border)">T3</td><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border)">&lt; 75%</td><td style="padding:6px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700;color:var(--red)">0.4%</td></tr>
+              <tr><td style="padding:6px 12px;text-align:center">T4</td><td style="padding:6px 12px;text-align:center">&lt; 70%</td><td style="padding:6px 12px;text-align:center;font-weight:700;color:var(--red)">0.75%</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═ SOURCE DOCUMENTS ═ -->
+      <div class="kpidef-tab" id="kpidef-docs" style="display:none">
+        <div class="card" style="margin-bottom:14px">
+          <div class="ref-summary-header" style="margin-bottom:6px">WSA 2023 — Master Agreement</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.8">
+            <div><strong style="color:var(--navy)">Full title:</strong> Wholesale Agreement antara PT Telkom Indonesia (Persero) Tbk dan PT Telekomunikasi Selular</div>
+            <div><strong style="color:var(--navy)">Numbers:</strong> Telkom No. K.Tel.10/HK.810/COP-H0000000/2023 · Telkomsel No. PKS.331/LG.05/PT-00/IV/2023</div>
+            <div><strong style="color:var(--navy)">Date:</strong> 6 April 2023 (effective date) · 5-year term from Legal Day-1</div>
+            <div><strong style="color:var(--navy)">Signatories:</strong> Bogi Witjaksono (Direktur Wholesale and International Service, Telkom) · Wong Soon Nam &amp; Nugroho (Direktur, Telkomsel)</div>
+            <div><strong style="color:var(--navy)">Fulfillment content:</strong> Lampiran III §1 "Fulfillment" (p.44–45) · Lampiran V.E.1 Service Fulfillment Home Segment process flow (p.58) · Lampiran XI Kredit Layanan penalty formula (p.69–70)</div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:14px">
+          <div class="ref-summary-header" style="margin-bottom:6px;background:linear-gradient(135deg,#8a4a2a,#4c1d6b)">BAK Apr 2024 — Semester 1 2024 Addendum</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.8">
+            <div><strong style="color:var(--navy)">Full title:</strong> Berita Acara Kesepakatan — Penetapan KPI SLA Fulfillment, Assurance dan Quality Layanan Wholesale Fixed Broadband Tahun 2024</div>
+            <div><strong style="color:var(--navy)">Numbers:</strong> Telkom Tel.191/YN000/DWS-A0000000/2024 · Telkomsel 044/TC.01/VS-01/IV/2024</div>
+            <div><strong style="color:var(--navy)">Signed:</strong> 18 April 2024 · <strong style="color:var(--navy)">Effective:</strong> retroactive from 1 Jan 2024 (S-I 2024)</div>
+            <div><strong style="color:var(--navy)">Signatories:</strong> Muhammad Rofik (EVP Divisi Wholesale Service, Telkom) · Pratignyo Arif Budiman (VP Network Strategic Collaboration and Settlement, Telkomsel)</div>
+            <div><strong style="color:var(--navy)">Scope:</strong> Fulfillment + Assurance + Quality — amends WSA 2023 Lampiran III</div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:14px">
+          <div class="ref-summary-header" style="margin-bottom:6px;background:linear-gradient(135deg,#8a4a2a,#4c1d6b)">BAK Aug 2024 — Semester 2 2024 Addendum</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.8">
+            <div><strong style="color:var(--navy)">Full title:</strong> Berita Acara Kesepakatan — Penetapan KPI SLA Fulfillment Layanan Wholesale Fixed Broadband Semester 2 Tahun 2024</div>
+            <div><strong style="color:var(--navy)">Numbers:</strong> Telkom Tel.412/YN000/DWS-A0000000/2024 · Telkomsel 098/TC.01/VS-01/VIII/2024</div>
+            <div><strong style="color:var(--navy)">Signed:</strong> 13 August 2024 · <strong style="color:var(--navy)">Effective:</strong> retroactive from 1 Jul 2024 (S-II 2024)</div>
+            <div><strong style="color:var(--navy)">Signatories:</strong> Muhammad Rofik (EVP Divisi Wholesale Service, Telkom) · Pratignyo Arif Budiman (VP Network Strategic Collaboration and Settlement, Telkomsel)</div>
+            <div><strong style="color:var(--navy)">Scope:</strong> Fulfillment only — no Assurance/Quality Lampiran this round — amends WSA 2023 + BAK Apr 2024</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ref-summary-header" style="margin-bottom:6px;background:linear-gradient(135deg,#8a4a2a,#4c1d6b)">BAK Jan 2025 — H1 2025 Addendum</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.8">
+            <div><strong style="color:var(--navy)">Full title:</strong> Berita Acara Kesepakatan — Penetapan KPI SLA Fulfillment, Assurance dan Quality Layanan Wholesale Fixed Broadband Periode H1-2025</div>
+            <div><strong style="color:var(--navy)">Numbers:</strong> Telkom Tel.164/YN000/DWS-A0000000/2025 · Telkomsel 040/TC.01/VS-01/III/2025</div>
+            <div><strong style="color:var(--navy)">Signed:</strong> 21 March 2025 · <strong style="color:var(--navy)">Effective:</strong> 1 Jan – 30 Jun 2025 (retroactive)</div>
+            <div><strong style="color:var(--navy)">Signatories:</strong> Muhammad Rofik (EVP Divisi Wholesale Service, Telkom) · Nizar Fuadi (VP Network Strategic Collaboration and Settlement, Telkomsel)</div>
+            <div><strong style="color:var(--navy)">Scope:</strong> Fulfillment + Assurance + Quality, plus new Lampiran III §4 "Monitoring" — amends WSA 2023 + BAK Apr 2024 + BAK Aug 2024</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- ══ PROJECT TRACKER ══ -->
@@ -1048,14 +1515,14 @@ async function fetchJSON(url){
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
-const pageTitles = { home:'Home ID', kpi:'KPI 2025', kpi2026:'KPI 2026', tracker:'Project Tracker', calendar:'Calendar of Event', converter:'Data Converter', devprogress:'Dev Progress' };
+const pageTitles = { home:'Home ID', kpi:'KPI 2025', kpi2026:'KPI 2026', kpidef:'KPI Definition', tracker:'Project Tracker', calendar:'Calendar of Event', converter:'Data Converter', devprogress:'Dev Progress' };
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
   const pg=$('page-'+id); if(pg) pg.classList.add('active');
   const nav=$('nav-'+id); if(nav) nav.classList.add('active');
   // Auto-expand KPI group when a KPI sub-page is active
-  if(id==='kpi'||id==='kpi2026'){
+  if(id==='kpi'||id==='kpi2026'||id==='kpidef'){
     $('nav-sub-kpi').classList.add('open');
     $('nav-grp-kpi').classList.add('expanded');
   }
@@ -1063,6 +1530,12 @@ function showPage(id){
   closeSidebar();
   if(id==='devprogress') renderDevProgress();
   if(id==='calendar') calRender();
+}
+function showKpiDefTab(tab, btn){
+  document.querySelectorAll('.kpidef-tab').forEach(el=>el.style.display='none');
+  const el = $('kpidef-'+tab); if(el) el.style.display='';
+  document.querySelectorAll('.kpidef-tabs .dur-pkg-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
 }
 function toggleNavGroup(id){
   $('nav-sub-'+id).classList.toggle('open');
