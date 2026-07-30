@@ -2964,7 +2964,7 @@ function renderEntityView(entity, d){
     <div style="display:grid;grid-template-columns:380px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
       <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">${refSummary}</div>
       <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">
-        <div class="ref-summary-header" style="flex-shrink:0">📊 KPI Reference Breakdown
+        <div class="ref-summary-header" style="flex-shrink:0">KPI Reference Breakdown
           <div style="font-size:.66rem;font-weight:500;letter-spacing:.2px;opacity:.8;margin-top:2px;text-transform:none">Comply &amp; Not Comply — by Area &amp; Referensi</div>
         </div>
         <div style="flex:1;overflow-x:auto">${bda && bda.length ? card2 : '<div style="color:var(--muted);font-size:.82rem;padding:8px 0">Data not available — re-run update_dashboard.py</div>'}</div>
@@ -3211,14 +3211,21 @@ function renderEntityView(entity, d){
         type:'bar',
         data:{
           labels:areas.map(a=>a.area),
-          datasets:[{label:'SLA %',data:areas.map(a=>a.sla_pct),
-            backgroundColor:areas.map(a=>slaColor(a.sla_pct,tgt)+'bb'),
-            borderColor:areas.map(a=>slaColor(a.sla_pct,tgt)),
-            borderWidth:2,borderRadius:5}]},
+          datasets:[
+            {label:'SLA %',data:areas.map(a=>a.sla_pct),
+              backgroundColor:areas.map(a=>slaColor(a.sla_pct,tgt)+'bb'),
+              borderColor:areas.map(a=>slaColor(a.sla_pct,tgt)),
+              borderWidth:2,borderRadius:5},
+            {type:'line',label:`Target (${fmtSla(tgt)})`,
+              data:areas.map(()=>tgt),
+              borderColor:'#e11d48',borderWidth:2.5,borderDash:[8,4],
+              pointRadius:0,fill:false,
+              datalabels:{display:false}}
+          ]},
         options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
           plugins:{
-            legend:{display:false},
-            tooltip:{callbacks:{label:c=>` ${fmtSla(c.parsed.x)}`}},
+            legend:{display:true,position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}},
+            tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtSla(c.parsed.x)}`}},
             datalabels:{
               anchor:'end', align:'start', offset:6,
               formatter:v=>fmtSla(v),
@@ -4714,14 +4721,16 @@ function updateKpi2026MonthNavState(){
 }
 
 // Populate the KPI dropdown once: "All KPI" + one option per KPI2026_TABS
-// entry + "Data Checklist" — everything that used to be a separate tab
-// bubble now lives in this one filter, per the KPI 2025 page's pattern.
+// entry — everything that used to be a separate tab bubble now lives in
+// this one filter, per the KPI 2025 page's pattern. (The "Data Checklist"
+// option has been removed from the UI per user request; the underlying
+// renderKpi2026Checklist()/current2026Tab==='checklist' code paths are
+// left in place but are now unreachable dead code, harmless to keep.)
 function populateKpi2026EntitySelect(){
   const sel = $('kpi2026EntitySelect');
   if(!sel) return;
   sel.innerHTML = '<option value="">All KPI</option>' +
-    KPI2026_TABS.map(cfg=>`<option value="${cfg.tab}">${cfg.label}</option>`).join('') +
-    '<option value="checklist">📋 Data Checklist</option>';
+    KPI2026_TABS.map(cfg=>`<option value="${cfg.tab}">${cfg.label}</option>`).join('');
   sel.value = current2026Tab;
 }
 
@@ -4850,7 +4859,7 @@ function renderKpi2026EntityView(entity, d, cfg){
       <div style="display:grid;grid-template-columns:380px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
         <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">${refSummary}</div>
         <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">
-          <div class="ref-summary-header" style="flex-shrink:0">📊 KPI Reference Breakdown
+          <div class="ref-summary-header" style="flex-shrink:0">KPI Reference Breakdown
             <div style="font-size:.66rem;font-weight:500;letter-spacing:.2px;opacity:.8;margin-top:2px;text-transform:none">Comply &amp; Not Comply — by Area &amp; Referensi</div>
           </div>
           <div style="flex:1;overflow-x:auto">${card2}</div>
@@ -5004,14 +5013,21 @@ function renderKpi2026EntityView(entity, d, cfg){
         type:'bar',
         data:{
           labels:areas.map(a=>a.area),
-          datasets:[{label:'SLA %',data:areas.map(a=>a.sla_pct),
-            backgroundColor:areas.map(a=>slaColor(a.sla_pct,tgt)+'bb'),
-            borderColor:areas.map(a=>slaColor(a.sla_pct,tgt)),
-            borderWidth:2,borderRadius:5}]},
+          datasets:[
+            {label:'SLA %',data:areas.map(a=>a.sla_pct),
+              backgroundColor:areas.map(a=>slaColor(a.sla_pct,tgt)+'bb'),
+              borderColor:areas.map(a=>slaColor(a.sla_pct,tgt)),
+              borderWidth:2,borderRadius:5},
+            {type:'line',label:`Target (${fmtSla(tgt)})`,
+              data:areas.map(()=>tgt),
+              borderColor:'#e11d48',borderWidth:2.5,borderDash:[8,4],
+              pointRadius:0,fill:false,
+              datalabels:{display:false}}
+          ]},
         options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
           plugins:{
-            legend:{display:false},
-            tooltip:{callbacks:{label:c=>` ${fmtSla(c.parsed.x)}`}},
+            legend:{display:true,position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}},
+            tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtSla(c.parsed.x)}`}},
             datalabels:{
               anchor:'end', align:'start', offset:6,
               formatter:v=>fmtSla(v),
@@ -5223,8 +5239,7 @@ function renderKpi2026AllView(){
         <div style="font-size:.8rem;color:var(--muted)">Period: <strong style="color:var(--navy)">${kpi2026PeriodLabel(period)}</strong></div>
       </div>
       <div class="card" style="padding:32px 24px;text-align:center;color:var(--muted);font-size:.84rem">
-        No KPI has data for ${kpi2026PeriodLabel(period)} yet. Pick a different month above, or check the
-        <a href="#" onclick="jumpToKpi2026Tab('checklist');return false" style="color:var(--teal);font-weight:600">Data Checklist</a>.
+        No KPI has data for ${kpi2026PeriodLabel(period)} yet. Pick a different month above.
       </div>`;
     return;
   }
