@@ -703,6 +703,17 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         <button class="dur-pkg-btn" id="kpi2026tab-checklist" onclick="showKpi2026Tab('checklist',this)" style="margin-left:auto">📋 Data Checklist</button>
       </div>
 
+      <div class="card kpi-controls" id="kpi2026MonthNavWrap">
+        <div class="kpi-select-wrap">
+          <label>Month</label>
+          <select class="kpi-select" id="kpi2026MonthSelect" onchange="selectKpi2026Month(this.value)" style="min-width:150px"></select>
+        </div>
+        <div class="month-nav">
+          <button class="btn-nav-icon" id="kpi2026MonthPrevBtn" onclick="stepKpi2026Month(-1)" title="Previous period">‹</button>
+          <button class="btn-nav-icon" id="kpi2026MonthNextBtn" onclick="stepKpi2026Month(1)" title="Next period">›</button>
+        </div>
+      </div>
+
       <div id="kpi2026Body"><div class="loading">Loading KPI 2026 data…</div></div>
     </div>
 
@@ -4519,12 +4530,13 @@ const KPI2026_TABS = [
     formulaNote:'Threshold tergantung orca_order_type: migrate (satu STO) = 1×24 jam, create (beda STO) = 2×24 jam. Durasi dari referensi CustomerAssign → PI → Created (durasi negatif langsung di-clamp ke 0 = Comply, tidak lanjut ke referensi berikutnya). Sumber file bisa berupa satu workbook multi-bulan (mis. 202601_202606_PDA.xlsx), periode ditentukan per baris dari orca_provcomp_date.',
     sourceFile:'2026xx_PDA.csv / .xlsx, atau START_END_PDA.xlsx (multi-bulan)', formulaReady:true },
   { tab:'FFG', entity:'FFG', label:'FFG',
-    formulaNote:'Sama seperti FFG di KPI 2025 — denominator dari TTI 2 bulan sebelumnya, via 2026xx_FFGGROUP. Bedanya: mulai periode 2026, tiket WILSUS (f_ttr = WILSUS) tidak lagi dikecualikan — akan dihitung sebagai Not Comply. Pengecualian flag_exclude_all lain (non-WILSUS) tetap berlaku seperti biasa.',
+    formulaNote:'Sama seperti FFG di KPI 2025 — denominator dari TTI 2 bulan sebelumnya, via 2026xx_FFGGROUP. Bedanya: mulai periode 2026, TIDAK ADA pengecualian sama sekali — setiap baris dihitung, flag_exclude_all tidak dipakai sebagai referensi lagi (beda dengan KPI 2025 yang masih mengecualikan flag_exclude_all=1).',
     sourceFile:'2026xx_FFGGROUP.xlsx', formulaReady:true },
 ];
 const KPI2026_CUTOVER = '202601';   // periods >= this are considered "KPI 2026"
 let kpi2026Data = null;
 let current2026Tab = 'AO';
+let kpi2026SelectedPeriod = null;   // e.g. "202603" — null until populateKpi2026MonthSelect() runs
 
 function kpi2026Periods(){
   return Object.keys((kpi2026Data && kpi2026Data.months) || {})
@@ -4537,17 +4549,86 @@ function kpi2026PeriodLabel(p){
   catch { return p; }
 }
 
+// Populate the Month dropdown with Jan–Dec of the latest 2026 year found in
+// the data. A month is disabled (greyed out, unselectable) only if NONE of
+// the 4 KPI 2026 entities have any data for it yet — otherwise it's
+// selectable and individual tabs fall back to their own "no data" message.
+function populateKpi2026MonthSelect(){
+  const periods = kpi2026Periods();
+  const latest  = periods[periods.length-1];
+  const year    = latest ? latest.slice(0,4) : new Date().getFullYear().toString();
+
+  const monthsWithAnyData = new Set();
+  periods.forEach(p=>{
+    const m = kpi2026Data.months[p] || {};
+    if(KPI2026_TABS.some(cfg=>m[cfg.entity])) monthsWithAnyData.add(p);
+  });
+
+  const sel = $('kpi2026MonthSelect');
+  if(!sel) return;
+  sel.innerHTML = '';
+  const monthPeriods = [];
+  for(let mo=1; mo<=12; mo++){
+    const period = year + String(mo).padStart(2,'0');
+    if(period < KPI2026_CUTOVER) continue;   // KPI 2026 never shows pre-cutover months
+    const hasData = monthsWithAnyData.has(period);
+    const isLatest = period === latest;
+    const opt = document.createElement('option');
+    opt.value = period;
+    opt.textContent = MONTH_NAMES[mo] + (isLatest?' (latest)':'') + (!hasData?' — no data':'');
+    if(!hasData) opt.disabled = true;
+    sel.appendChild(opt);
+    monthPeriods.push(period);
+  }
+  window._kpi2026MonthPeriods = monthPeriods;
+
+  if(!kpi2026SelectedPeriod || !monthPeriods.includes(kpi2026SelectedPeriod)){
+    kpi2026SelectedPeriod = latest || monthPeriods[monthPeriods.length-1] || null;
+  }
+  sel.value = kpi2026SelectedPeriod || '';
+  updateKpi2026MonthNavState();
+}
+
+function selectKpi2026Month(period){
+  kpi2026SelectedPeriod = period;
+  const sel = $('kpi2026MonthSelect'); if(sel) sel.value = period;
+  updateKpi2026MonthNavState();
+  renderKpi2026Body();
+}
+
+function stepKpi2026Month(dir){
+  const periods = window._kpi2026MonthPeriods || [];
+  const sel = $('kpi2026MonthSelect'); if(!sel || !periods.length) return;
+  let idx = periods.indexOf(kpi2026SelectedPeriod);
+  if(idx === -1) idx = periods.length - 1;
+  let next = idx;
+  do { next += dir; } while(next>=0 && next<periods.length && sel.querySelector(`option[value="${periods[next]}"]`)?.disabled);
+  if(next<0 || next>=periods.length) return;
+  selectKpi2026Month(periods[next]);
+}
+
+function updateKpi2026MonthNavState(){
+  const periods = window._kpi2026MonthPeriods || [];
+  const idx = periods.indexOf(kpi2026SelectedPeriod);
+  const prevBtn = $('kpi2026MonthPrevBtn'), nextBtn = $('kpi2026MonthNextBtn');
+  if(prevBtn) prevBtn.disabled = idx<=0;
+  if(nextBtn) nextBtn.disabled = (idx===-1) || idx>=periods.length-1;
+}
+
 function renderKPI2026(data){
   kpi2026Data = data;
   const periods = kpi2026Periods();
   const latest = periods[periods.length-1];
   const lu = $('kpi2026LastUpdate');
   if(lu) lu.textContent = latest ? kpi2026PeriodLabel(latest) : 'No 2026 data yet';
+  populateKpi2026MonthSelect();
   renderKpi2026Body();
 }
 
 function showKpi2026Tab(tab, btn){
   current2026Tab = tab;
+  const navWrap = $('kpi2026MonthNavWrap');
+  if(navWrap) navWrap.style.display = (tab === 'checklist') ? 'none' : 'flex';
   document.querySelectorAll('#page-kpi2026 .dur-pkg-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   renderKpi2026Body();
@@ -4562,8 +4643,8 @@ function renderKpi2026Body(){
   const cfg = KPI2026_TABS.find(c=>c.tab===current2026Tab);
   if(!cfg){ body.innerHTML = '<div class="loading">Unknown tab.</div>'; return; }
 
-  const periods = kpi2026Periods().filter(p => (kpi2026Data.months[p]||{})[cfg.entity]);
-  if(!periods.length){
+  const periodsWithData = kpi2026Periods().filter(p => (kpi2026Data.months[p]||{})[cfg.entity]);
+  if(!periodsWithData.length){
     body.innerHTML = `
       <div class="card" style="padding:48px 24px;text-align:center">
         <div style="font-size:2.2rem;margin-bottom:12px">🚧</div>
@@ -4577,8 +4658,24 @@ function renderKpi2026Body(){
     return;
   }
 
-  const latest = periods[periods.length-1];
-  const d = kpi2026Data.months[latest][cfg.entity];
+  const period = kpi2026SelectedPeriod || periodsWithData[periodsWithData.length-1];
+  const d = (kpi2026Data.months[period]||{})[cfg.entity];
+
+  if(!d){
+    // A month is selected (and has data for at least one KPI 2026 entity,
+    // otherwise it wouldn't be selectable) but NOT for this specific tab —
+    // e.g. MO's file may not cover a month that PDA already has.
+    body.innerHTML = `
+      <div class="card" style="padding:40px 24px;text-align:center">
+        <div style="font-size:2rem;margin-bottom:10px">📭</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px">${cfg.label} — No data for ${kpi2026PeriodLabel(period)}</div>
+        <div style="color:var(--muted);font-size:.84rem;line-height:1.7;max-width:540px;margin:0 auto">
+          Months with ${cfg.label} data: ${periodsWithData.map(p=>kpi2026PeriodLabel(p)).join(', ')}.
+        </div>
+      </div>`;
+    return;
+  }
+
   const tgt = d.target ?? 95;
   const clr = slaClass(d.sla_pct, tgt);
 
@@ -4593,7 +4690,7 @@ function renderKpi2026Body(){
 
   body.innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div style="font-size:.8rem;color:var(--muted)">Period: <strong style="color:var(--navy)">${kpi2026PeriodLabel(latest)}</strong>${periods.length>1?` <span style="opacity:.75">(${periods.length} months of 2026 data available)</span>`:''}</div>
+      <div style="font-size:.8rem;color:var(--muted)">Period: <strong style="color:var(--navy)">${kpi2026PeriodLabel(period)}</strong>${periodsWithData.length>1?` <span style="opacity:.75">(${periodsWithData.length} month${periodsWithData.length>1?'s':''} with ${cfg.label} data)</span>`:''}</div>
       ${!cfg.formulaReady?`<span style="background:rgba(200,144,32,.12);color:var(--amber);padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">⏳ Formula pending confirmation</span>`:''}
     </div>
 
