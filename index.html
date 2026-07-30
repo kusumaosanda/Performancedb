@@ -710,6 +710,20 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         </div>
       </div>
 
+      <!-- Download toolbar -->
+      <div class="kpi-toolbar">
+        <button id="btnDownloadRaw2026" onclick="downloadRaw2026()"
+          onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(127,29,29,.4)'"
+          onmouseout="this.style.transform='';this.style.boxShadow=''"
+          title="Download original DB columns (semicolon CSV)"
+          style="display:none;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Raw</button>
+        <button id="btnDownloadKPI2026" onclick="downloadProcessed2026()"
+          onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(42,63,94,.4)'"
+          onmouseout="this.style.transform='';this.style.boxShadow=''"
+          title="Download processed data (semicolon CSV, EU format)"
+          style="display:none;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Processed</button>
+      </div>
+
       <div id="kpi2026Body"><div class="loading">Loading KPI 2026 data…</div></div>
     </div>
 
@@ -3041,6 +3055,8 @@ function renderEntityView(entity, d){
   window._currentTgt   = tgt;
   window._currentEntity = entity;
   window._currentEntityData = d;
+  window._currentPeriod = selectedMonth;   // shared with openDrillPanel/downloads
+  window._currentPageCtx = '2025';         // '2025' | '2026' — which page's download files to use
 
   $('kpiBody').innerHTML=`
     <!-- ① Stat cards — 4 across (5 for TTRFFG) -->
@@ -3222,8 +3238,15 @@ function renderEntityView(entity, d){
 }
 
 // ── TREE FILTERS ──
-function buildTreeFilters(areas, tgt){
-  const bar = $('treeFilterBar');
+// All four functions below take an optional `sfx` (id suffix) so the SAME
+// filter-bar/area-tree logic can drive two independent trees on two
+// different pages (KPI 2025 uses sfx='', KPI 2026 uses sfx='2026') without
+// id collisions — element ids become tf_area+sfx, tf_regional+sfx, etc.
+// window._currentAreas/_currentTgt (shared, not suffixed) always reflect
+// whichever page's entity view rendered most recently, which is correct
+// since only one page's tree can be interacted with at a time.
+function buildTreeFilters(areas, tgt, sfx=''){
+  const bar = $('treeFilterBar'+sfx);
   if(!bar) return;
 
   // Collect all regionals and branches
@@ -3243,28 +3266,28 @@ function buildTreeFilters(areas, tgt){
   bar.innerHTML = `
     <div class="filter-group">
       <label>Area</label>
-      <select id="tf_area" onchange="onTreeAreaChange()">
+      <select id="tf_area${sfx}" onchange="onTreeAreaChange('${sfx}')">
         <option value="">All Areas</option>
         ${areas.map(a=>`<option value="${a.area}">${a.area}</option>`).join('')}
       </select>
     </div>
     <div class="filter-group">
       <label>Regional</label>
-      <select id="tf_regional" onchange="onTreeRegChange()">
+      <select id="tf_regional${sfx}" onchange="onTreeRegChange('${sfx}')">
         <option value="">All Regionals</option>
         ${allRegs.map(r=>`<option value="${r}">${r}</option>`).join('')}
       </select>
     </div>
     <div class="filter-group">
       <label>Branch</label>
-      <select id="tf_branch" onchange="onTreeBrChange()">
+      <select id="tf_branch${sfx}" onchange="onTreeBrChange('${sfx}')">
         <option value="">All Branches</option>
         ${allBrs.map(b=>`<option value="${b}">${b}</option>`).join('')}
       </select>
     </div>
     <div class="filter-group">
       <label>STO</label>
-      <select id="tf_sto" onchange="applyTreeFilter()">
+      <select id="tf_sto${sfx}" onchange="applyTreeFilter('${sfx}')">
         <option value="">All STO</option>
         ${allStos.map(s=>`<option value="${s}">${s}</option>`).join('')}
       </select>
@@ -3284,44 +3307,44 @@ function buildTreeFilters(areas, tgt){
   window._treeStoMap = stoMap;
 }
 
-function onTreeAreaChange(){
-  const area = ($('tf_area')||{}).value;
+function onTreeAreaChange(sfx=''){
+  const area = ($('tf_area'+sfx)||{}).value;
   const allRegs = area ? (window._treeRegMap[area]||[]) : (window._allRegs||[]);
-  const tf_reg = $('tf_regional');
+  const tf_reg = $('tf_regional'+sfx);
   if(tf_reg){
     tf_reg.innerHTML = `<option value="">All Regionals</option>` +
       allRegs.sort().map(r=>`<option value="${r}">${r}</option>`).join('');
   }
-  onTreeRegChange();
+  onTreeRegChange(sfx);
 }
 
-function onTreeRegChange(){
-  const reg = ($('tf_regional')||{}).value;
+function onTreeRegChange(sfx=''){
+  const reg = ($('tf_regional'+sfx)||{}).value;
   const allBrs = reg ? (window._treeBrMap[reg]||[]) : (window._allBrs||[]);
-  const tf_br = $('tf_branch');
+  const tf_br = $('tf_branch'+sfx);
   if(tf_br){
     tf_br.innerHTML = `<option value="">All Branches</option>` +
       allBrs.sort().map(b=>`<option value="${b}">${b}</option>`).join('');
   }
-  onTreeBrChange();
+  onTreeBrChange(sfx);
 }
 
-function onTreeBrChange(){
-  const br = ($('tf_branch')||{}).value;
+function onTreeBrChange(sfx=''){
+  const br = ($('tf_branch'+sfx)||{}).value;
   const allStos = br ? (window._treeStoMap[br]||[]) : (window._allStos||[]);
-  const tf_sto = $('tf_sto');
+  const tf_sto = $('tf_sto'+sfx);
   if(tf_sto){
     tf_sto.innerHTML = `<option value="">All STO</option>` +
       allStos.sort().map(s=>`<option value="${s}">${s}</option>`).join('');
   }
-  applyTreeFilter();
+  applyTreeFilter(sfx);
 }
 
-function applyTreeFilter(){
-  const areaF = ($('tf_area')||{}).value    || '';
-  const regF  = ($('tf_regional')||{}).value || '';
-  const brF   = ($('tf_branch')||{}).value   || '';
-  const stoF  = ($('tf_sto')||{}).value      || '';
+function applyTreeFilter(sfx=''){
+  const areaF = ($('tf_area'+sfx)||{}).value    || '';
+  const regF  = ($('tf_regional'+sfx)||{}).value || '';
+  const brF   = ($('tf_branch'+sfx)||{}).value   || '';
+  const stoF  = ($('tf_sto'+sfx)||{}).value      || '';
   const areas = window._currentAreas || [];
   const tgt   = window._currentTgt   || 95;
 
@@ -3346,11 +3369,12 @@ function applyTreeFilter(){
     })).filter(a=>a.by_regional.length > 0);
   }
   const anyFilter = areaF||regF||brF||stoF;
-  buildAreaTree(filtered, tgt, !anyFilter);
+  buildAreaTree(filtered, tgt, !anyFilter, 'areaTree'+sfx);
 }
 
-function buildAreaTree(areas, tgt=95, collapsed=true){
-  const tree=$('areaTree');
+function buildAreaTree(areas, tgt=95, collapsed=true, treeId='areaTree'){
+  const tree=$(treeId);
+  if(!tree) return;
   tree.innerHTML='';
   if(!areas||!areas.length){ tree.innerHTML='<div style="padding:16px;color:var(--muted);font-size:.82rem">No data.</div>'; return; }
 
@@ -4106,16 +4130,23 @@ const ENTITY_START_REF = {
 };
 const MONTH_NAMES_LONG = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
 
+// Display labels for the drill panel — 2026 page overrides "TTI" to
+// "Fulfill AO" (same entity KEY as legacy TTI, different KPI name) so the
+// modal never shows the wrong label depending on which page opened it.
+const ENTITY_DISPLAY_2026 = {TTI:'Fulfill AO', MO:'Fulfill MO', PDA:'Fulfill PDA', FFG:'FFG'};
+
 function openDrillPanel(type){
   const entity = window._currentEntity;
   const d      = window._currentEntityData;
   const tgt    = window._currentTgt || 95;
   if(!entity || !d) return;
 
-  const areas  = d.by_area || [];
-  const label  = ENTITY_DISPLAY[entity] || entity;
-  const mo     = selectedMonth ? parseInt(selectedMonth.slice(4,6)) : 0;
-  const yr     = selectedMonth ? selectedMonth.slice(0,4) : '';
+  const areas   = d.by_area || [];
+  const is2026  = window._currentPageCtx === '2026';
+  const label   = (is2026 ? ENTITY_DISPLAY_2026[entity] : ENTITY_DISPLAY[entity]) || entity;
+  const _period = window._currentPeriod || selectedMonth;
+  const mo     = _period ? parseInt(_period.slice(4,6)) : 0;
+  const yr     = _period ? _period.slice(0,4) : '';
   const period = (MONTH_NAMES_LONG[mo]||'') + (yr?' '+yr:'');
 
   let title='', html='';
@@ -4138,7 +4169,7 @@ function openDrillPanel(type){
       ${ANOMALY_INFO_HTML}
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="drill-section-head" style="margin-bottom:0">Per Area — ${label}</div>
-        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlAnomaly" onclick="downloadAnomalyPanel('${entity}','${selectedMonth}')"
+        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlAnomaly" onclick="downloadAnomalyPanel('${entity}','${_period}')"
           style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download Anomaly
         </button>`:''}
@@ -4167,7 +4198,7 @@ function openDrillPanel(type){
     html = `
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="drill-section-head" style="margin-bottom:0">Comply per Area — target ${fmtSla(tgt)}</div>
-        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlComply" onclick="downloadComplyPanel('${entity}','${selectedMonth}')"
+        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlComply" onclick="downloadComplyPanel('${entity}','${_period}')"
           style="background:var(--accent-grad);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download Comply
         </button>`:''}
@@ -4197,7 +4228,7 @@ function openDrillPanel(type){
     html = `
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="drill-section-head" style="margin-bottom:0">Not Comply per Area — sorted by volume ↓</div>
-        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlNC" onclick="downloadNCPanel('${entity}','${selectedMonth}')"
+        ${_DL_ENTITIES.includes(entity)?`<button id="btnDlNC" onclick="downloadNCPanel('${entity}','${_period}')"
           style="background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download NC
         </button>`:''}
@@ -4224,7 +4255,7 @@ function openDrillPanel(type){
       <div class="drill-reason">ℹ️ WILSUS (Wilayah Suspend): tiket f_ttr = WILSUS yang memiliki first_cust_assign. Dikecualikan dari perhitungan SLA TTR FFG.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 8px">
         <div class="drill-section-head" style="margin-bottom:0">Per Area</div>
-        <button id="btnDlWilsus" onclick="downloadWilsusPanel('${entity}','${selectedMonth}')"
+        <button id="btnDlWilsus" onclick="downloadWilsusPanel('${entity}','${_period}')"
           style="background:linear-gradient(135deg,#d97706,#b45309);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap">
           ⬇ Download WILSUS
         </button>
@@ -4259,8 +4290,18 @@ function closeDrillPanel(){
   document.body.style.overflow = '';
 }
 
+// On the KPI 2026 page, "TTI" (Fulfill AO) has its own separate detail/raw
+// CSV export (tti2026_*, pushed by update_dashboard.py) so its downloads
+// never accidentally serve the legacy-formula rows that data/tti_*.csv
+// holds for the KPI 2025 page. Every other 2026 entity (FFG/MO/PDA) shares
+// the same file naming as its lowercase entity key either way.
+function _dlFileKey(entity){
+  if(window._currentPageCtx === '2026' && entity === 'TTI') return 'tti2026';
+  return entity.toLowerCase();
+}
+
 async function _downloadFilteredDetailCSV(entity, period, filterStatus, filenamePrefix, btn){
-  const key = entity.toLowerCase();
+  const key = _dlFileKey(entity);
   const url = `data/${key}_detail_${period}.csv?_t=`+Date.now();
   const origText = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳…'; btn.disabled=true; }
@@ -4304,7 +4345,7 @@ async function downloadAnomalyPanel(entity, period){
   const origText = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳…'; btn.disabled=true; }
   try {
-    const key = entity.toLowerCase();
+    const key = _dlFileKey(entity);
     const url = `data/${key}_detail_${period}.csv?_t=`+Date.now();
     const r = await fetch(url, {cache:'no-store'});
     if(!r.ok) throw new Error(`File tidak ditemukan (${r.status}). Jalankan update_dashboard.py terlebih dahulu.`);
@@ -4336,7 +4377,7 @@ async function downloadWilsusPanel(entity, period){
   const origText = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳…'; btn.disabled=true; }
   try {
-    const key = entity.toLowerCase();
+    const key = _dlFileKey(entity);
     const url = `data/${key}_raw_${period}.csv?_t=`+Date.now();
     const r = await fetch(url, {cache:'no-store'});
     if(!r.ok) throw new Error(`File tidak ditemukan (${r.status}). Jalankan update_dashboard.py terlebih dahulu.`);
@@ -4468,7 +4509,7 @@ async function _fetchAndDownload(url, filename, btn){
 }
 
 // Generic download: works for any entity that pushes raw/detail CSVs (TTI, FFG, TTRFFG, …)
-const _DL_ENTITIES = ['TTI','FFG','TTRFFG','PSRE'];
+const _DL_ENTITIES = ['TTI','FFG','TTRFFG','PSRE','MO','PDA'];
 async function downloadRaw(){
   const e = selectedEntity;
   if(!_DL_ENTITIES.includes(e)||!selectedMonth||selectedMonth==='summary') return;
@@ -4501,6 +4542,34 @@ async function downloadProcessed(){
 // Legacy aliases kept for safety
 async function downloadTTIRaw(){ await downloadRaw(); }
 async function downloadKPIData(){ await downloadProcessed(); }
+
+// ── KPI 2026 toolbar downloads — same pattern as downloadRaw()/
+// downloadProcessed() (KPI2025) but resolve the entity from the KPI 2026
+// dropdown's current tab, and route through _dlFileKey() so Fulfill AO
+// (TTI on this page) pulls the separate tti2026_* files instead of the
+// legacy-formula tti_* files KPI2025's downloadRaw()/downloadProcessed() use.
+async function downloadRaw2026(){
+  const cfg = KPI2026_TABS.find(c=>c.tab===current2026Tab);
+  if(!cfg || !kpi2026SelectedPeriod) return;
+  window._currentPageCtx = '2026';
+  const key = _dlFileKey(cfg.entity);
+  await _fetchAndDownload(
+    `data/${key}_raw_${kpi2026SelectedPeriod}.csv`,
+    `${cfg.label.replace(/\s+/g,'')}_Raw_${kpi2026SelectedPeriod}.csv`,
+    $('btnDownloadRaw2026')
+  );
+}
+async function downloadProcessed2026(){
+  const cfg = KPI2026_TABS.find(c=>c.tab===current2026Tab);
+  if(!cfg || !kpi2026SelectedPeriod) return;
+  window._currentPageCtx = '2026';
+  const key = _dlFileKey(cfg.entity);
+  await _fetchAndDownload(
+    `data/${key}_detail_${kpi2026SelectedPeriod}.csv`,
+    `${cfg.label.replace(/\s+/g,'')}_Processed_${kpi2026SelectedPeriod}.csv`,
+    $('btnDownloadKPI2026')
+  );
+}
 async function copyKPITable(){
   const pkg=buildExportPackage(); if(!pkg) return;
   const tsv=pkg.sections.map(s=>`${s.title}\n`+[s.headers.join('\t'),...s.rows.map(r=>s.headers.map(h=>(r[h]??'')+'' ).join('\t'))].join('\n')).join('\n\n');
@@ -4678,9 +4747,300 @@ function onKpi2026EntityChange(){
   renderKpi2026Body();
 }
 
+// ── Breakdown category schemes (mirrors backend breakdown_scheme_for()) —
+// AO/MO/PDA each have a fixed 3-category reference scheme; FFG has none
+// (breakdown_scheme_for returns None for FFG server-side), so the KPI
+// Reference Breakdown section is skipped entirely for FFG below.
+const KPI2026_BREAKDOWN_CATS = {
+  TTI: [ {key:'manja', label:'Manja'}, {key:'pi', label:'PI'}, {key:'re', label:'RE'} ],
+  MO:  [ {key:'manja', label:'Manja'}, {key:'pi', label:'PI (Startwork)'}, {key:'created', label:'Created'} ],
+  PDA: [ {key:'customerassign', label:'Customer Assign'}, {key:'pi', label:'PI'}, {key:'created', label:'Created'} ],
+};
+const KPI2026_ENTITY_THRESH = {
+  TTI: {comply:'≤ 24 hours', nc:'> 24 hours'},
+  MO:  {comply:'≤ 24 hours', nc:'> 24 hours'},
+  PDA: {comply:'Within SLA threshold', nc:'Exceeds SLA threshold'},
+  FFG: {comply:'Clean order (unique)', nc:'Non-clean order'},
+};
+
+// ── Full entity detail view for KPI 2026 — mirrors renderEntityView() 1:1
+// (stat cards, trend+area charts, reference breakdown, area/regional/
+// branch/STO drill-down tree, CSV downloads) but sourced from kpi2026Data
+// and using d.target directly (NOT ENTITY_TARGETS_OVERRIDE, which is a
+// KPI2025-only legacy target map keyed by the same entity codes).
+function renderKpi2026EntityView(entity, d, cfg){
+  const tgt = d.target ?? 95;
+  const months = kpi2026Periods();
+  const trendData = months.map(m=>(kpi2026Data.months[m][entity]||{}).sla_pct ?? null);
+  const trendLabels = months.map(m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;} });
+
+  // ── Reference breakdown (generic over the 3-key scheme; FFG has no
+  // scheme so `cats` is undefined and this whole section stays empty) ──
+  let breakdownSection = '';
+  const cats = KPI2026_BREAKDOWN_CATS[entity];
+  if(cats){
+    const bda = d.breakdown_by_area;
+    if(!bda || !bda.length){
+      breakdownSection = `<div class="breakdown-no-data" style="margin-bottom:18px">📊 Breakdown data not yet available. Re-run <strong>update_dashboard.py</strong> to generate these tables.</div>`;
+    } else {
+      const fN = n => n > 0 ? n.toLocaleString() : '<span style="color:var(--muted)">-</span>';
+      const totAn = bda.reduce((s,r)=>s+(r.anomaly||0),0);
+      const refRows = cats.map(c=>{
+        const cC  = bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0);
+        const cNC = bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
+        return `<tr><td>${c.label}</td><td class="rs-c">${fN(cC)}</td><td class="rs-nc">${fN(cNC)}</td><td class="rs-an">-</td></tr>`;
+      }).join('');
+      const grandC  = cats.reduce((s,c)=>s+bda.reduce((s2,r)=>s2+(r[c.key]?.comply||0),0),0);
+      const grandNC = cats.reduce((s,c)=>s+bda.reduce((s2,r)=>s2+(r[c.key]?.not_comply||0),0),0);
+      const refSummary = `
+        <div class="ref-summary-wrap">
+          <div class="ref-summary-header">KPI Reference
+            <div style="font-size:.66rem;font-weight:500;letter-spacing:.2px;opacity:.8;margin-top:2px;text-transform:none">${cfg.label} — Referensi Perhitungan</div>
+          </div>
+          <table class="ref-summary-table">
+            <thead><tr><th>Referensi</th><th style="color:#a7f3d0">Comply</th><th style="color:#fca5a5">Not Comply</th><th style="color:#d1d5db">Excl. PC Null</th></tr></thead>
+            <tbody>
+              ${refRows}
+              <tr class="rs-total"><td>Total</td><td class="rs-c">${grandC.toLocaleString()}</td><td class="rs-nc">${grandNC.toLocaleString()}</td><td class="rs-an">${fN(totAn)}</td></tr>
+            </tbody>
+          </table>
+        </div>`;
+
+      const border = `1px solid var(--border)`;
+      const hdrBorder = `1px solid rgba(255,255,255,.12)`;
+      const hdrBg  = 'background:var(--navy)';
+      const groupHead = cats.map(c=>`<th colspan="2" style="padding:7px 8px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;text-align:center;${hdrBg};border:${hdrBorder};color:#fff">${c.label}</th>`).join('');
+      const subHead   = cats.map(()=>`<th style="padding:6px 8px;font-size:.68rem;font-weight:700;color:#a7f3d0;text-align:center;${hdrBg};border:${hdrBorder}">Comply</th><th style="padding:6px 8px;font-size:.68rem;font-weight:700;color:#fca5a5;text-align:center;${hdrBg};border:${hdrBorder}">Not Comply</th>`).join('');
+      const tdA = `style="padding:9px 12px;font-weight:700;font-size:.88rem;white-space:nowrap;color:var(--navy);background:rgba(127,29,29,.06);border:${border}"`;
+      const tdC = `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--green);font-weight:700;border:${border}"`;
+      const tdNC= `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--red);font-weight:700;border:${border}"`;
+      const tdAn= `style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--muted);font-weight:600;border:${border}"`;
+      const dash= `<span style="color:var(--muted)">–</span>`;
+      const mergeBody = bda.map((row,i)=>{
+        const cells = cats.map(c=>{
+          const cv = row[c.key]?.comply||0, nv = row[c.key]?.not_comply||0;
+          return `<td ${tdC}>${cv>0?cv.toLocaleString():dash}</td><td ${tdNC}>${nv>0?nv.toLocaleString():dash}</td>`;
+        }).join('');
+        const rowBg = i%2===1?'rgba(42,63,94,.025)':'transparent';
+        return `<tr style="background:${rowBg}"><td ${tdA}>${row.area}</td>${cells}<td ${tdAn}>${row.anomaly>0?row.anomaly.toLocaleString():dash}</td></tr>`;
+      }).join('');
+      const mergeTot = cats.map(c=>{
+        const tc = bda.reduce((s,r)=>s+(r[c.key]?.comply||0),0);
+        const tnc= bda.reduce((s,r)=>s+(r[c.key]?.not_comply||0),0);
+        return `<td style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--green);font-weight:800;border:${border}">${tc.toLocaleString()}</td><td style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--red);font-weight:800;border:${border}">${tnc.toLocaleString()}</td>`;
+      }).join('');
+      const card2 = `<div style="overflow-x:auto"><table class="kpi-ref-breakdown" style="border-collapse:collapse;width:100%">
+        <thead>
+          <tr>
+            <th rowspan="2" style="padding:7px 12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;text-align:left;${hdrBg};border:${hdrBorder};vertical-align:middle;color:#fff">Area</th>
+            ${groupHead}
+            <th rowspan="2" style="padding:7px 10px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;text-align:center;${hdrBg};border:${hdrBorder};vertical-align:middle;color:#d1d5db">Anomaly</th>
+          </tr>
+          <tr>${subHead}</tr>
+        </thead>
+        <tbody>${mergeBody}
+          <tr style="background:rgba(42,63,94,.08);border-top:2px solid var(--navy)">
+            <td style="padding:9px 12px;font-weight:800;font-size:.88rem;color:var(--navy);border:${border}">Total</td>
+            ${mergeTot}
+            <td style="padding:9px 12px;text-align:right;font-size:.88rem;color:var(--muted);font-weight:700;border:${border}">${totAn>0?totAn.toLocaleString():0}</td>
+          </tr>
+        </tbody></table></div>`;
+
+      breakdownSection = `
+      <div style="display:grid;grid-template-columns:380px 1fr;gap:14px;margin-bottom:18px;align-items:stretch">
+        <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">${refSummary}</div>
+        <div class="card" style="min-width:0;box-sizing:border-box;display:flex;flex-direction:column;height:100%">
+          <div class="ref-summary-header" style="flex-shrink:0">📊 KPI Reference Breakdown
+            <div style="font-size:.66rem;font-weight:500;letter-spacing:.2px;opacity:.8;margin-top:2px;text-transform:none">Comply &amp; Not Comply — by Area &amp; Referensi</div>
+          </div>
+          <div style="flex:1;overflow-x:auto">${card2}</div>
+        </div>
+      </div>`;
+    }
+  }
+
+  const thresh = KPI2026_ENTITY_THRESH[entity] || {comply:'Within SLA', nc:'Exceeds SLA'};
+
+  // Store shared state for openDrillPanel / tree filters / CSV downloads —
+  // same globals renderEntityView (KPI2025) sets, since only one page's
+  // entity view can be on-screen (and thus interactive) at any moment.
+  window._currentAreas = d.by_area || [];
+  window._currentTgt   = tgt;
+  window._currentEntity = entity;
+  window._currentEntityData = d;
+  window._currentPeriod = kpi2026SelectedPeriod;
+  window._currentPageCtx = '2026';
+
+  $('kpi2026Body').innerHTML = `
+    <div class="grid-4" style="margin-bottom:18px">
+      <div class="sla-stat ${slaClass(d.sla_pct,tgt)}">
+        <div class="lbl"><span class="stat-icon">📶</span>${cfg.label} — SLA</div>
+        <div class="val" style="color:#1a1a1a">${fmtSla(d.sla_pct)}</div>
+        <div class="sub">Target: ${fmtSla(tgt)}</div>
+      </div>
+      <div class="sla-stat neutral clickable" onclick="openDrillPanel('anomaly')">
+        <div class="lbl"><span class="stat-icon">📦</span>Total Orders</div>
+        <div class="val" style="color:#1a1a1a">${(d.total||0).toLocaleString()}</div>
+        <div class="sub">Anomaly: ${(d.anomaly||0).toLocaleString()}</div>
+        <div class="drill-hint">↗ Click — anomaly detail</div>
+      </div>
+      <div class="sla-stat green clickable" onclick="openDrillPanel('comply')">
+        <div class="lbl"><span class="stat-icon">✅</span>Comply</div>
+        <div class="val" style="color:var(--green)">${(d.comply||0).toLocaleString()}</div>
+        <div class="sub">${thresh.comply}</div>
+        <div class="drill-hint">↗ Click — area breakdown</div>
+      </div>
+      <div class="sla-stat red2 clickable" onclick="openDrillPanel('nc')">
+        <div class="lbl"><span class="stat-icon">⚠️</span>Not Comply</div>
+        <div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div>
+        <div class="sub">${thresh.nc}</div>
+        <div class="drill-hint">↗ Click — area breakdown</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:18px">
+      <div class="card">
+        <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <span>${cfg.label} — Month to Month Performance</span>
+          <span style="font-size:.66rem;font-weight:500;color:rgba(255,255,255,.85)">vs target (${fmtSla(tgt)})</span>
+        </div>
+        <div style="height:300px;position:relative;margin-top:14px"><canvas id="ch_trend_e2026"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="ref-summary-header">SLA % by Area</div>
+        <div style="height:300px;position:relative;margin-top:14px"><canvas id="ch_area_bar2026"></canvas></div>
+      </div>
+    </div>
+
+    ${breakdownSection}
+
+    <div class="card" style="margin-bottom:18px;width:fit-content;max-width:100%;box-sizing:border-box">
+      <div class="ref-summary-header" style="margin-bottom:14px">Area / Regional / Branch / STO Breakdown</div>
+      <div class="tree-filter-bar" id="treeFilterBar2026"></div>
+      <div class="area-tree" id="areaTree2026" style="overflow-x:auto"></div>
+    </div>`;
+
+  setTimeout(()=>{
+    const ct=document.getElementById('ch_trend_e2026');
+    if(ct){
+      if(chartInstances.trend_e2026) chartInstances.trend_e2026.destroy();
+      const _areaPalette=['#C4522A','#4c1d6b','#2A3F5E','#C8A044','#8B6E4E','#5B8C5A'];
+      const _areaNames=[...new Set(months.flatMap(m=>((kpi2026Data.months[m]||{})[entity]?.by_area||[]).map(a=>a.area)))].sort();
+      const _allAreaVals=_areaNames.flatMap(area=>months.map(m=>{const ar=((kpi2026Data.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);return ar?ar.sla_pct:null;}));
+      const _trendVals=[...trendData,..._allAreaVals].filter(v=>v!=null&&v>0);
+      const _tMin=_trendVals.length?Math.max(0,Math.floor(Math.min(..._trendVals)/5)*5-5):Math.max(0,tgt-20);
+      const _barDatasets = _areaNames.map((area,i)=>({
+        type:'bar', label:area,
+        data:months.map(m=>{const ar=((kpi2026Data.months[m]||{})[entity]?.by_area||[]).find(a=>a.area===area);return ar?ar.sla_pct:null;}),
+        backgroundColor:_areaPalette[i%_areaPalette.length]+'cc',
+        borderColor:_areaPalette[i%_areaPalette.length],
+        borderWidth:1.5, borderRadius:4, spanGaps:true,
+        datalabels:{
+          display:(ctx)=>ctx.dataset.data[ctx.dataIndex]!=null,
+          anchor:'end', align:'top',
+          formatter:v=>{ if(v==null||isNaN(+v)) return ''; const n=+v; return (n===100?'100':n.toFixed(1).replace('.',','))+'%'; },
+          color:'#1e293b', font:{size:9,weight:'800'}, offset:2,
+          backgroundColor:'rgba(255,255,255,.75)', borderRadius:3,
+          padding:{top:1,bottom:1,left:3,right:3}
+        }
+      }));
+      const _fallbackData = months.map(m=>{
+        const md=(kpi2026Data.months[m]||{})[entity];
+        if(!md||md.sla_pct==null) return null;
+        return (md.by_area||[]).length===0 ? +md.sla_pct : null;
+      });
+      const _hasFallback = _fallbackData.some(v=>v!=null);
+      try{
+      chartInstances.trend_e2026=new Chart(ct,{type:'bar',
+        data:{
+          labels:trendLabels,
+          datasets:[
+            ..._barDatasets,
+            ...(_hasFallback?[{
+              type:'bar', label:'Total (Area N/A)',
+              data:_fallbackData,
+              backgroundColor:'rgba(120,120,120,0.38)',
+              borderColor:'#888', borderWidth:1.5, borderRadius:4,
+              datalabels:{
+                display:(ctx)=>ctx.dataset.data[ctx.dataIndex]!=null,
+                anchor:'end', align:'top',
+                formatter:v=>fmtSla(+v)+'%',
+                color:'#1e293b', font:{size:9,weight:'800'}, offset:2,
+                backgroundColor:'rgba(255,255,255,.75)', borderRadius:3,
+                padding:{top:1,bottom:1,left:3,right:3}
+              }
+            }]:[]),
+            {type:'line',label:`Target (${fmtSla(tgt)})`,data:months.map(()=>tgt),
+             borderColor:'#e11d48',borderWidth:2.5,borderDash:[8,4],
+             tension:0,pointRadius:0,fill:false,order:0,
+             datalabels:{
+               display:(ctx)=>ctx.dataIndex===months.length-1,
+               anchor:'center', align:'right', offset:14,
+               formatter:()=>fmtSla(tgt)+'%',
+               color:'#fff', font:{size:10,weight:'800'},
+               backgroundColor:'#e11d48',
+               borderRadius:5,
+               padding:{top:3,bottom:3,left:7,right:7}
+             }}
+          ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:10,family:'Poppins'},boxWidth:12,padding:8}},
+            tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtSla(c.parsed.y)}`}},
+            datalabels:{}
+          },
+          scales:{
+            y:{min:_tMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},
+            x:{grid:{display:false}}
+          }}})
+      }catch(e){console.warn('trend_e2026 chart error:',e)}
+    }
+
+    const cab=document.getElementById('ch_area_bar2026');
+    const areas=d.by_area||[];
+    if(cab && areas.length){
+      if(chartInstances.area_bar2026) chartInstances.area_bar2026.destroy();
+      chartInstances.area_bar2026=new Chart(cab,{
+        type:'bar',
+        data:{
+          labels:areas.map(a=>a.area),
+          datasets:[{label:'SLA %',data:areas.map(a=>a.sla_pct),
+            backgroundColor:areas.map(a=>slaColor(a.sla_pct,tgt)+'bb'),
+            borderColor:areas.map(a=>slaColor(a.sla_pct,tgt)),
+            borderWidth:2,borderRadius:5}]},
+        options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{display:false},
+            tooltip:{callbacks:{label:c=>` ${fmtSla(c.parsed.x)}`}},
+            datalabels:{
+              anchor:'end', align:'start', offset:6,
+              formatter:v=>fmtSla(v),
+              color:'#fff', font:{size:11,weight:'700'}
+            }
+          },
+          scales:{
+            x:{min:areas.length?Math.max(0,Math.floor(Math.min(...areas.map(a=>a.sla_pct))/5)*5-5):Math.max(0,tgt-20),max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},
+            y:{grid:{display:false}}
+          }}});
+    }
+  },50);
+
+  buildTreeFilters(d.by_area||[], tgt, '2026');
+  applyTreeFilter('2026');
+}
+
 function renderKpi2026Body(){
   const body = $('kpi2026Body');
   if(!body) return;
+
+  // Toggle the 2026 download toolbar — visible only when a specific KPI
+  // tab (not All KPI / Checklist) with data for the selected period is showing.
+  const dlRaw2026  = $('btnDownloadRaw2026');
+  const dlProc2026 = $('btnDownloadKPI2026');
+  const _cfgForDl  = KPI2026_TABS.find(c=>c.tab===current2026Tab);
+  const _hasDlData = !!(_cfgForDl && kpi2026SelectedPeriod && (kpi2026Data?.months?.[kpi2026SelectedPeriod]||{})[_cfgForDl.entity]);
+  if(dlRaw2026)  dlRaw2026.style.display  = _hasDlData ? '' : 'none';
+  if(dlProc2026) dlProc2026.style.display = _hasDlData ? '' : 'none';
 
   if(current2026Tab === 'checklist'){ body.innerHTML = renderKpi2026Checklist(); return; }
   if(current2026Tab === ''){ renderKpi2026AllView(); return; }
@@ -4721,66 +5081,7 @@ function renderKpi2026Body(){
     return;
   }
 
-  const tgt = d.target ?? 95;
-  const clr = slaClass(d.sla_pct, tgt);
-
-  const areaRows = (d.by_area||[]).map(a=>`
-    <tr style="border-bottom:1px solid var(--border)">
-      <td style="padding:7px 10px;font-weight:600;color:var(--navy)">${a.area}</td>
-      <td style="padding:7px 10px;text-align:right;color:var(--green)">${(a.comply||0).toLocaleString()}</td>
-      <td style="padding:7px 10px;text-align:right;color:var(--red)">${(a.not_comply||0).toLocaleString()}</td>
-      <td style="padding:7px 10px;text-align:right;color:var(--muted)">${(a.anomaly||0).toLocaleString()}</td>
-      <td style="padding:7px 10px;text-align:right;font-weight:700">${fmtSla(a.sla_pct)}</td>
-    </tr>`).join('');
-
-  body.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div style="font-size:.8rem;color:var(--muted)">Period: <strong style="color:var(--navy)">${kpi2026PeriodLabel(period)}</strong>${periodsWithData.length>1?` <span style="opacity:.75">(${periodsWithData.length} month${periodsWithData.length>1?'s':''} with ${cfg.label} data)</span>`:''}</div>
-      ${!cfg.formulaReady?`<span style="background:rgba(200,144,32,.12);color:var(--amber);padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">⏳ Formula pending confirmation</span>`:''}
-    </div>
-
-    <div class="grid-4" style="margin-bottom:18px">
-      <div class="sla-stat ${clr}">
-        <div class="lbl"><span class="stat-icon">📶</span>${cfg.label} — SLA</div>
-        <div class="val" style="color:#1a1a1a">${fmtSla(d.sla_pct)}</div>
-        <div class="sub">Target: ${fmtSla(tgt)}</div>
-      </div>
-      <div class="sla-stat neutral">
-        <div class="lbl"><span class="stat-icon">📦</span>Total</div>
-        <div class="val" style="color:#1a1a1a">${(d.total||0).toLocaleString()}</div>
-        <div class="sub">Anomaly: ${(d.anomaly||0).toLocaleString()}</div>
-      </div>
-      <div class="sla-stat green">
-        <div class="lbl"><span class="stat-icon">✅</span>Comply</div>
-        <div class="val" style="color:var(--green)">${(d.comply||0).toLocaleString()}</div>
-      </div>
-      <div class="sla-stat red2">
-        <div class="lbl"><span class="stat-icon">⚠️</span>Not Comply</div>
-        <div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:16px">
-      <div class="ref-summary-header" style="margin-bottom:14px">${cfg.label} by Area</div>
-      <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse;font-size:.82rem">
-        <thead><tr style="background:var(--navy)">
-          <th style="padding:8px 10px;text-align:left;color:#fff">Area</th>
-          <th style="padding:8px 10px;text-align:right;color:#fff">Comply</th>
-          <th style="padding:8px 10px;text-align:right;color:#fff">Not Comply</th>
-          <th style="padding:8px 10px;text-align:right;color:#fff">Anomaly</th>
-          <th style="padding:8px 10px;text-align:right;color:#fff">SLA %</th>
-        </tr></thead>
-        <tbody>${areaRows || '<tr><td colspan="5" style="padding:14px;text-align:center;color:var(--muted)">No area breakdown in this data.</td></tr>'}</tbody>
-      </table>
-      </div>
-    </div>
-
-    <div class="card" style="font-size:.78rem;color:var(--muted);line-height:1.6;padding:14px 18px">
-      <strong style="color:var(--navy)">Formula:</strong> ${cfg.formulaNote}<br>
-      <strong style="color:var(--navy)">Source:</strong> ${cfg.sourceFile}
-    </div>
-  `;
+  renderKpi2026EntityView(cfg.entity, d, cfg);
 }
 
 // Switch the "KPI" filter dropdown to a specific tab and re-render — used by
@@ -4794,11 +5095,109 @@ function jumpToKpi2026Tab(tab){
   renderKpi2026Body();
 }
 
-// ── "All KPI" overview (default landing view): one stat card per KPI 2026
-// metric for the currently selected month. Mirrors the KPI 2025 page's
-// all-entities overview but simpler — no cross-KPI matrix/trend charts,
-// since Fulfill AO/MO/PDA/FFG aren't directly comparable the way the KPI
-// 2025 entities are.
+// ── Fulfillment Score modal for KPI 2026 — same 60/40 (TTI/FFG) weighted-
+// tier layout as openFulfillmentModal() (KPI2025), but sourced from
+// kpi2026Data and using each entity's own d.target (95.50 / 98.50 per
+// TARGETS_2026 server-side) instead of the KPI2025-hardcoded 93.31/98.29.
+// ASSUMPTION (flagged to the user): the 60/40 TTI/FFG weight split itself
+// is carried over unchanged from KPI2025 — this is a business-formula
+// choice, not a cosmetic one, and hasn't been separately confirmed for 2026.
+function openFulfillmentModal2026(period){
+  const mLabel = m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'long',year:'numeric'})}catch{return m;} };
+  const ffgSla = (kpi2026Data.months[period]||{}).FFG?.sla_pct;
+  const ttiSla = (kpi2026Data.months[period]||{}).TTI?.sla_pct;
+  const ffgTgt = (kpi2026Data.months[period]||{}).FFG?.target ?? 98.50;
+  const ttiTgt = (kpi2026Data.months[period]||{}).TTI?.target ?? 95.50;
+  const FL_W = { FFG:{bobot:40,tgt:ffgTgt,label:'FFG'}, TTI:{bobot:60,tgt:ttiTgt,label:'Fulfill AO Comply'} };
+  const FL_T = [{t:'T0',op:'≥',score:85,sc:0},{t:'T1',op:'<',score:85,sc:0.10},{t:'T2',op:'<',score:80,sc:0.20},{t:'T3',op:'<',score:75,sc:0.40},{t:'T4',op:'<',score:70,sc:0.75}];
+  const flTier2 = score => FL_T.find((t,i)=>i===0?score>=t.score:score<t.score) || FL_T[FL_T.length-1];
+
+  const ffgScore = ffgSla!=null ? (ffgSla/FL_W.FFG.tgt)*FL_W.FFG.bobot : null;
+  const ttiScore = ttiSla!=null ? (ttiSla/FL_W.TTI.tgt)*FL_W.TTI.bobot : null;
+  const total = (ffgScore||0)+(ttiScore||0);
+  const tier  = flTier2(total);
+  const tierClr = tier.t==='T0'?'#166534':tier.t==='T1'?'#D4901A':'#991b1b';
+
+  const fmtRow = (lbl,bobot,tgt,real,score)=>
+    `<tr>
+      <td style="padding:9px 14px;font-size:.82rem;font-weight:600;color:var(--navy)">${lbl}</td>
+      <td style="text-align:center;padding:9px 14px">${bobot}%</td>
+      <td style="text-align:center;padding:9px 14px">${fmtSla(tgt)}%</td>
+      <td style="text-align:center;padding:9px 14px;font-weight:700;color:${real!=null?(real>=tgt?'#166534':'#991b1b'):'var(--muted)'}">${real!=null?fmtSla(real)+'%':'—'}</td>
+      <td style="text-align:center;padding:9px 14px;font-weight:700;color:var(--teal)">${score!=null?score.toFixed(2)+'%':'—'}</td>
+    </tr>`;
+
+  const tierRows = FL_T.map(t=>{
+    const active = t.t===tier.t;
+    return `<tr style="${active?'background:rgba(56,189,248,.12);font-weight:700;':''}">
+      <td style="padding:7px 14px;text-align:center;font-weight:700;color:${active?tierClr:'var(--navy)'}">${t.t}</td>
+      <td style="padding:7px 14px;text-align:center">${t.op}</td>
+      <td style="padding:7px 14px;text-align:center">${t.score}%</td>
+      <td style="padding:7px 14px;text-align:center">${t.sc===0?'0':t.sc.toFixed(2)+'%'}</td>
+      <td style="padding:7px 14px;text-align:center">${t.sc===0?'0':t.sc.toFixed(2)+'%'}</td>
+    </tr>`;
+  }).join('');
+
+  const html = `
+    <div style="margin-bottom:18px">
+      <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:var(--navy);padding:7px 12px;border-radius:6px;margin-bottom:12px">Periode: ${mLabel(period)}</div>
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+        <thead>
+          <tr style="background:var(--navy)">
+            <th style="padding:9px 14px;text-align:left;color:#fff;font-weight:700;background:var(--navy)">KPI / Sub KPI</th>
+            <th style="padding:9px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Bobot</th>
+            <th style="padding:9px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Target</th>
+            <th style="padding:9px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Realisasi</th>
+            <th style="padding:9px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${fmtRow(FL_W.FFG.label,FL_W.FFG.bobot,FL_W.FFG.tgt,ffgSla,ffgScore)}
+          ${fmtRow(FL_W.TTI.label,FL_W.TTI.bobot,FL_W.TTI.tgt,ttiSla,ttiScore)}
+          <tr style="background:rgba(42,63,94,.06);border-top:2px solid var(--border)">
+            <td colspan="3" style="padding:9px 14px;font-weight:700;font-size:.82rem">Total Score Kinerja</td>
+            <td style="text-align:center;padding:9px 14px"></td>
+            <td style="text-align:center;padding:9px 14px;font-weight:800;font-size:.95rem;color:${tierClr}">${total.toFixed(2)}%</td>
+          </tr>
+          <tr style="background:rgba(42,63,94,.06)">
+            <td colspan="3" style="padding:9px 14px;font-weight:700">Performance Tier</td>
+            <td style="text-align:center;padding:9px 14px"></td>
+            <td style="text-align:center;padding:9px 14px"><span style="font-weight:800;font-size:1rem;color:${tierClr};background:${tierClr}22;border-radius:6px;padding:2px 12px">${tier.t}</span></td>
+          </tr>
+          <tr style="background:rgba(42,63,94,.06)">
+            <td colspan="3" style="padding:9px 14px;font-weight:700">SC Fulfillment</td>
+            <td style="text-align:center;padding:9px 14px"></td>
+            <td style="text-align:center;padding:9px 14px;font-weight:700;color:${tier.sc>0?'#991b1b':'#166534'}">${tier.sc===0?'0,00%':tier.sc.toFixed(2)+'%'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:.68rem;color:var(--muted);margin-bottom:14px;line-height:1.6">⚠ The 60/40 Fulfill AO/FFG weighting shown here is carried over from the KPI 2025 Fulfillment Score formula as a placeholder — please confirm this is the intended weighting for KPI 2026.</div>
+    <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:var(--navy);padding:7px 12px;border-radius:6px;margin-bottom:12px">Referensi Performance Tier</div>
+    <table style="width:100%;border-collapse:collapse;font-size:.8rem">
+      <thead>
+        <tr style="background:var(--navy)">
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Tier</th>
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Op</th>
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">Score Kinerja</th>
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">SC Fulfillment</th>
+          <th style="padding:7px 14px;text-align:center;color:#fff;font-weight:700;background:var(--navy)">SC QA</th>
+        </tr>
+      </thead>
+      <tbody>${tierRows}</tbody>
+    </table>`;
+
+  $('drillTitle').textContent = `📊 Fulfillment Score (2026) — ${mLabel(period)}`;
+  $('drillBody').innerHTML = html;
+  $('drillOverlay').classList.add('show');
+  $('drillPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ── "All KPI" overview (default landing view) for KPI 2026 — mirrors
+// renderAllView() (KPI2025) 1:1: Fulfillment Score card + entity mini-cards,
+// month-to-month trend + this-month bar chart, KPI Performance Matrix, and
+// an Analysis & Outlook card, all sourced from kpi2026Data / KPI2026_TABS.
 function renderKpi2026AllView(){
   const body = $('kpi2026Body');
   if(!body) return;
@@ -4816,41 +5215,247 @@ function renderKpi2026AllView(){
 
   const period = kpi2026SelectedPeriod || allPeriods[allPeriods.length-1];
   const monthData = kpi2026Data.months[period] || {};
-  const anyData = KPI2026_TABS.some(cfg=>monthData[cfg.entity]);
+  const entities = KPI2026_TABS.filter(cfg=>monthData[cfg.entity]).map(cfg=>cfg.entity);
 
-  const cards = KPI2026_TABS.map(cfg=>{
-    const d = monthData[cfg.entity];
-    if(!d){
-      return `
-        <div class="entity-ov-card" style="border-left-color:#c9ccd3" onclick="jumpToKpi2026Tab('${cfg.tab}')">
-          <div class="e-name">${cfg.label}</div>
-          <div class="e-pct" style="color:var(--muted);font-size:1rem">No data</div>
-          <div class="e-sub">for ${kpi2026PeriodLabel(period)}</div>
-        </div>`;
-    }
-    const tgt = d.target ?? 95;
-    const clr = slaColor(d.sla_pct, tgt);
-    return `
-      <div class="entity-ov-card" style="border-left-color:${clr}" onclick="jumpToKpi2026Tab('${cfg.tab}')">
-        <div class="e-name">${cfg.label}</div>
-        <div class="e-pct" style="color:${clr}">${fmtSla(d.sla_pct)}</div>
-        <div class="e-sub">Target: ${fmtSla(tgt)} · ${(d.comply||0).toLocaleString()} C / ${(d.not_comply||0).toLocaleString()} NC</div>
+  if(!entities.length){
+    body.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <div style="font-size:.8rem;color:var(--muted)">Period: <strong style="color:var(--navy)">${kpi2026PeriodLabel(period)}</strong></div>
+      </div>
+      <div class="card" style="padding:32px 24px;text-align:center;color:var(--muted);font-size:.84rem">
+        No KPI has data for ${kpi2026PeriodLabel(period)} yet. Pick a different month above, or check the
+        <a href="#" onclick="jumpToKpi2026Tab('checklist');return false" style="color:var(--teal);font-weight:600">Data Checklist</a>.
       </div>`;
-  }).join('');
+    return;
+  }
+
+  const cfgOf = e => KPI2026_TABS.find(c=>c.entity===e) || {};
+  const eln  = e => cfgOf(e).label || e;
+  const KPI2026_TARGET_FALLBACK = {TTI:95.50, MO:95.00, PDA:100.00, FFG:98.50};
+  const etgt = e => monthData[e]?.target ?? KPI2026_TARGET_FALLBACK[e] ?? 95;
+
+  const allMonths = allPeriods;
+  const COLORS=['#2A3F5E','#C4522A','#7f1d1d','#C89020'];
+  const mLbl = m=>{try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m}};
+
+  // ── Build KPI matrix: rows=months, col-groups=entities (Value + MoM) ──
+  const matrixEnts = KPI2026_TABS.map(cfg=>cfg.entity).filter(e=>{
+    return allMonths.some(m=>(kpi2026Data.months[m]||{})[e]?.sla_pct!=null);
+  });
+  const pill=(v,prev)=>{
+    if(v==null||prev==null) return `<span class="km-pill nt">—</span>`;
+    const d=v-prev;
+    const cls=d>0?'up':d<0?'dn':'nt';
+    const sign=d>0?'+':'';
+    return `<span class="km-pill ${cls}">${sign}${d.toFixed(2)}</span>`;
+  };
+  const entityHeaders = matrixEnts.map(e=>`<th class="km-entity" colspan="2">${eln(e)}</th>`).join('');
+  const tgtCells = matrixEnts.map(e=>
+    `<td colspan="2" class="km-month" style="text-align:center;font-weight:600;color:var(--teal);font-size:.73rem">Target: ${fmtSla(monthData[e]?.target ?? KPI2026_TARGET_FALLBACK[e])}%</td>`
+  ).join('');
+  const subHeaders = matrixEnts.map(()=>`<th class="km-val">Value</th><th class="km-mom">MoM</th>`).join('');
+  const dataRows = allMonths.map((m,mi)=>
+    `<tr>
+      <td class="km-month">${mLbl(m)}</td>
+      ${matrixEnts.map(e=>{
+        const v=(kpi2026Data.months[m]||{})[e]?.sla_pct??null;
+        const prev=mi>0?((kpi2026Data.months[allMonths[mi-1]]||{})[e]?.sla_pct??null):null;
+        const tg=(kpi2026Data.months[m]||{})[e]?.target ?? KPI2026_TARGET_FALLBACK[e] ?? 95;
+        const valCell=v==null?`<td class="km-na">—</td>`:`<td class="${v>=tg?'km-ok':'km-nc'}">${fmtSla(v)}</td>`;
+        return `${valCell}<td class="km-sep" style="background:transparent">${pill(v,prev)}</td>`;
+      }).join('')}
+    </tr>`
+  ).join('');
+  const matrixHtml = matrixEnts.length ? `
+    <div class="card" style="margin-bottom:18px">
+      <div class="ref-summary-header" style="margin-bottom:14px">KPI Performance Matrix
+        <div style="font-size:.66rem;font-weight:500;text-transform:none;letter-spacing:0;opacity:.8;margin-top:2px">Month to Month with MoM Change</div>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="kpi-matrix">
+        <thead>
+          <tr>
+            <th class="km-month" rowspan="2" style="min-width:70px">Month</th>
+            ${entityHeaders}
+          </tr>
+          <tr>${subHeaders}</tr>
+        </thead>
+        <tbody>
+          <tr class="km-tgt-row"><td class="km-month">Target</td>${tgtCells}</tr>
+          ${dataRows}
+        </tbody>
+      </table>
+      </div>
+    </div>` : '';
+
+  const aboveTarget = entities.filter(e=>monthData[e].sla_pct>=etgt(e));
+  const belowTarget = entities.filter(e=>monthData[e].sla_pct<etgt(e));
+  const bestEntity  = entities.reduce((a,b)=>monthData[a].sla_pct>monthData[b].sla_pct?a:b);
+  const worstEntity = entities.reduce((a,b)=>monthData[a].sla_pct<monthData[b].sla_pct?a:b);
+
+  function trendArrow(e){
+    const sorted=allMonths.filter(m=>(kpi2026Data.months[m]||{})[e]);
+    if(sorted.length<2) return '';
+    const prev=(kpi2026Data.months[sorted[sorted.length-2]][e]||{}).sla_pct;
+    const curr=(kpi2026Data.months[sorted[sorted.length-1]][e]||{}).sla_pct;
+    if(curr>prev) return '<span style="color:var(--green)">↑</span>';
+    if(curr<prev) return '<span style="color:var(--red)">↓</span>';
+    return '<span style="color:var(--muted)">→</span>';
+  }
+
+  const curVals  = entities.map(e=>monthData[e].sla_pct).filter(v=>v!=null&&v>0);
+  const trendVals= entities.flatMap(e=>allMonths.map(m=>(kpi2026Data.months[m]||{})[e]?.sla_pct).filter(v=>v!=null&&v>0));
+  const barMin   = curVals.length   ? Math.max(0, Math.floor(Math.min(...curVals)/5)*5-5)   : 70;
+  const trendMin = trendVals.length ? Math.max(0, Math.floor(Math.min(...trendVals)/5)*5-5) : 70;
+
+  // ── Fulfillment Score card (Fulfill AO 60% + FFG 40%, 2026 targets) ──
+  // See openFulfillmentModal2026()'s comment: the 60/40 split itself is an
+  // assumption carried over from KPI2025, flagged in the modal it opens.
+  const fulfillmentCardHtml = (()=>{
+    const ffgS=monthData.FFG?.sla_pct, ttiS=monthData.TTI?.sla_pct;
+    const ffgTgt = monthData.FFG?.target ?? 98.50, ttiTgt = monthData.TTI?.target ?? 95.50;
+    const FL_T2=[{t:'T0',s:85,sc:0},{t:'T1',s:85,sc:0.10,lt:true},{t:'T2',s:80,sc:0.20,lt:true},{t:'T3',s:75,sc:0.40,lt:true},{t:'T4',s:70,sc:0.75,lt:true}];
+    if(ffgS==null&&ttiS==null) return `
+      <div class="card" style="flex:0 0 36%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px 20px;min-height:190px;text-align:center">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px">Fulfillment Score</div>
+        <div style="font-size:1.5rem;color:var(--muted)">No FFG / Fulfill AO data</div>
+      </div>`;
+    const ffgScore=ffgS!=null?(ffgS/ffgTgt)*40:0;
+    const ttiScore=ttiS!=null?(ttiS/ttiTgt)*60:0;
+    const flTotal=ffgScore+ttiScore;
+    const flT=FL_T2.find((t,i)=>i===0?flTotal>=t.s:(t.lt&&flTotal<t.s))||FL_T2[FL_T2.length-1];
+    const tClr=flT.t==='T0'?'#166534':flT.t==='T1'?'#D4901A':'#991b1b';
+    const tBg =flT.t==='T0'?'rgba(22,101,52,.12)':flT.t==='T1'?'rgba(212,144,26,.12)':'rgba(153,27,27,.12)';
+    return `
+      <div class="card" onclick="openFulfillmentModal2026('${period}')"
+        style="flex:0 0 36%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px 20px;min-height:190px;text-align:center;cursor:pointer;border:2px solid #0284c7;transition:box-shadow .2s"
+        onmouseover="this.style.boxShadow='0 4px 20px rgba(2,132,199,.25)'" onmouseout="this.style.boxShadow=''">
+        <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#0284c7;margin-bottom:6px">📊 Fulfillment Score <span style="opacity:.7">↗ Click for detail</span></div>
+        <div style="font-size:3.4rem;font-weight:900;color:${tClr};line-height:1.05">${flTotal.toFixed(2)}%</div>
+        <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center">
+          <span style="font-size:.72rem;background:${tBg};color:${tClr};font-weight:800;padding:3px 12px;border-radius:99px;border:1.5px solid ${tClr}">${flT.t}</span>
+          <span style="font-size:.72rem;color:var(--muted)">SC: <strong style="color:${flT.sc>0?'#991b1b':'#166534'}">${flT.sc===0?'0%':flT.sc.toFixed(2)+'%'}</strong></span>
+        </div>
+        <div style="margin-top:8px;font-size:.68rem;color:var(--muted)">FFG ${fmtSla(ffgS)}% × 40 &nbsp;+&nbsp; Fulfill AO ${fmtSla(ttiS)}% × 60</div>
+      </div>`;
+  })();
 
   body.innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
       <div style="font-size:.8rem;color:var(--muted)">Period: <strong style="color:var(--navy)">${kpi2026PeriodLabel(period)}</strong></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:18px">
-      ${cards}
+
+    <!-- TOP: Fulfillment Score left + Entity cards right -->
+    <div style="display:flex;gap:16px;margin-bottom:18px;align-items:stretch">
+      ${fulfillmentCardHtml}
+      <div style="flex:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;align-content:start" id="entityOvGrid2026"></div>
     </div>
-    ${anyData ? '' : `
-    <div class="card" style="padding:32px 24px;text-align:center;color:var(--muted);font-size:.84rem">
-      No KPI has data for ${kpi2026PeriodLabel(period)} yet. Pick a different month above, or check the
-      <a href="#" onclick="jumpToKpi2026Tab('checklist');return false" style="color:var(--teal);font-weight:600">Data Checklist</a>.
-    </div>`}
-  `;
+
+    <!-- MIDDLE: Month-to-month trend + This Month bar chart side by side -->
+    <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:18px">
+      <div class="card">
+        <div class="ref-summary-header" style="margin-bottom:14px">All KPI — Month to Month Performance</div>
+        <div class="chart-wrap tall"><canvas id="ch_2026_all_trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="ref-summary-header" style="margin-bottom:14px">This Month — SLA % by Entity</div>
+        <div class="chart-wrap tall"><canvas id="ch_2026_ov_bar"></canvas></div>
+      </div>
+    </div>
+
+    ${matrixHtml}
+    <!-- BOTTOM: Analysis card full width -->
+    <div style="margin-bottom:18px">
+      <div class="card">
+        <div class="ref-summary-header" style="margin-bottom:14px">Performance Analysis &amp; Outlook</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:4px">
+          <div>
+            <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📊 Current Status</div>
+            <div style="font-size:.83rem;line-height:1.8;color:#374151">
+              ${aboveTarget.length} of ${entities.length} entities met target.
+              ${belowTarget.length>0?`<br>⚠ Below target: <strong>${belowTarget.map(eln).join(', ')}</strong>`:'<br>✅ All entities on target.'}
+              <br>Best: <strong style="color:var(--green)">${eln(bestEntity)} (${fmtSla(monthData[bestEntity].sla_pct)})</strong>
+              ${entities.length>1?`<br>Needs attention: <strong style="color:var(--red)">${eln(worstEntity)} (${fmtSla(monthData[worstEntity].sla_pct)})</strong>`:''}
+            </div>
+          </div>
+          <div>
+            <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:8px">📈 Trend Direction</div>
+            <div style="font-size:.83rem;line-height:2;color:#374151">
+              ${entities.map(e=>`${trendArrow(e)} <strong>${eln(e)}</strong> — ${fmtSla(monthData[e].sla_pct)} ${monthData[e].sla_pct>=etgt(e)?'<span style="color:var(--green);font-size:.72rem">▲</span>':'<span style="color:var(--red);font-size:.72rem">▼</span>'}`).join('<br>')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // Entity mini-cards
+  const grid = $('entityOvGrid2026');
+  entities.forEach(e => {
+    const cfg = cfgOf(e);
+    const d   = monthData[e];
+    const tg  = etgt(e);
+    const clr = slaColor(d.sla_pct, tg);
+    const card = document.createElement('div');
+    card.className='entity-ov-card';
+    card.style.borderLeftColor=clr;
+    card.innerHTML=`<div class="e-name">${cfg.label} ${trendArrow(e)}</div><div class="e-pct" style="color:${clr}">${fmtSla(d.sla_pct)}</div><div class="e-sub">${(d.comply||0).toLocaleString()} C · ${(d.not_comply||0).toLocaleString()} NC</div><div class="e-mini-bar"><div class="e-mini-fill" style="width:${d.sla_pct}%;background:${clr}"></div></div>`;
+    card.onclick=()=>jumpToKpi2026Tab(cfg.tab);
+    grid.appendChild(card);
+  });
+
+  setTimeout(()=>{
+    if(window.ChartDataLabels && !Chart._dlRegistered){
+      Chart.register(ChartDataLabels); Chart._dlRegistered=true;
+    }
+
+    const ct=document.getElementById('ch_2026_all_trend');
+    if(ct){ if(chartInstances.all_trend2026) chartInstances.all_trend2026.destroy();
+      chartInstances.all_trend2026=new Chart(ct,{type:'line',data:{
+        labels:allMonths.map(m=>{ try{return new Date(m.slice(0,4)+'-'+m.slice(4,6)).toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}catch{return m;}}),
+        datasets:entities.map((e,i)=>({
+          label:eln(e),
+          data:allMonths.map(m=>(kpi2026Data.months[m]||{})[e]?.sla_pct||null),
+          borderColor:COLORS[i%COLORS.length], backgroundColor:COLORS[i%COLORS.length]+'18',
+          borderWidth:2.5, tension:.35, pointRadius:6, pointHoverRadius:9, fill:false
+        }))},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},padding:14}},
+            tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtSla(c.parsed.y)}`}},
+            datalabels:{display:false}
+          },
+          scales:{y:{min:trendMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
+    }
+
+    const c1=document.getElementById('ch_2026_ov_bar');
+    if(c1){ if(chartInstances.ov_bar2026) chartInstances.ov_bar2026.destroy();
+      const barData = entities.map(e=>monthData[e].sla_pct);
+      const barColors = entities.map(e=>slaColor(monthData[e].sla_pct, etgt(e)));
+      chartInstances.ov_bar2026=new Chart(c1,{
+        type:'bar',
+        data:{
+          labels:entities.map(e=>eln(e)),
+          datasets:[{
+            label:'SLA %', data:barData,
+            backgroundColor:barColors.map(c=>c+'bb'),
+            borderColor:barColors, borderWidth:2, borderRadius:6
+          }]},
+        options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{display:false},
+            tooltip:{callbacks:{label:c=>` ${fmtSla(c.parsed.x)}`}},
+            datalabels:{
+              anchor:'end', align:'start', offset:6,
+              formatter:v=>fmtSla(v),
+              color:'#fff', font:{size:12,weight:'700'}
+            }
+          },
+          scales:{
+            x:{min:barMin,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ebe3'}},
+            y:{grid:{display:false}}
+          }}});
+    }
+  },50);
 }
 
 function renderKpi2026Checklist(){
