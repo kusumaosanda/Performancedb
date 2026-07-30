@@ -1618,7 +1618,10 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 
 <script>
 // ─── DATA SOURCES ────────────────────────────────────────────────────────────
-const DATA = { kpis:'./data/kpis.json', home:'./data/home.json', projects:'./data/projects.json' };
+// 2025 and 2026 KPI data live in SEPARATE files — different formulas apply
+// even to KPIs sharing the same entity name (legacy TTI vs Fulfill AO, etc.)
+// so they're never merged client-side; each page reads only its own file.
+const DATA = { kpis2025:'./data/kpis_2025.json', kpis2026:'./data/kpis_2026.json', home:'./data/home.json', projects:'./data/projects.json' };
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let kpiData       = null;
@@ -2119,9 +2122,39 @@ const MONTH_NAMES = ['','Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','O
 // Entities that should never surface as standalone KPI cards/rows/charts —
 // Home ID has its own dedicated sidebar page, so re-listing it here would be redundant.
 const EXCLUDED_KPI_ENTITIES = ['HOMEID','HOME_ID','HOME-ID','HID'];
+// KPI 2025 page must NEVER show periods >= this — those live on the
+// separate KPI 2026 page, computed with entirely different formulas/targets
+// (Fulfill AO/MO/PDA, FFG-no-exclusions). Kept as its own literal (not a
+// shared reference to KPI2026_CUTOVER, which is declared later in the
+// script) so this page's date gating has no load-order dependency.
+const KPI_2025_PAGE_CUTOVER = '202601';
+
 function renderKPIs(data){
-  kpiData = data;
-  $('kpiLastUpdate').textContent = data.last_updated_label || data.last_updated || '—';
+  // Filter ONCE, here — every downstream renderer (entity view, summary
+  // matrix, CSV export, trend charts, etc.) reads from kpiData.months, so
+  // scrubbing 2026+ periods at the single point of entry keeps the whole
+  // KPI 2025 page correct without having to patch each renderer separately.
+  const months2025 = {};
+  Object.keys(data.months||{}).forEach(p => { if(p < KPI_2025_PAGE_CUTOVER) months2025[p] = data.months[p]; });
+  kpiData = {...data, months: months2025};
+
+  const periods2025 = Object.keys(months2025).sort();
+  if(!periods2025.length){
+    $('kpiLastUpdate').textContent = 'No 2025 data available';
+    $('entitySelect').innerHTML = '<option value="">All KPI</option>';
+    $('monthSelect').innerHTML = '';
+    window._monthPeriods = [];
+    $('kpiLoading').style.display='none'; $('kpiMain').style.display='block';
+    $('kpiBody').innerHTML = `
+      <div class="card" style="padding:48px 24px;text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:12px">📭</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px">No 2025 data available</div>
+        <div style="color:var(--muted);font-size:.84rem">2026 onward data lives on the <strong>KPI 2026</strong> page.</div>
+      </div>`;
+    return;
+  }
+  const latestPeriod = periods2025[periods2025.length-1];
+  $('kpiLastUpdate').textContent = kpi2026PeriodLabel ? kpi2026PeriodLabel(latestPeriod) : latestPeriod;
 
   // Populate entity dropdown — fixed ordered list with display names
   const ENTITY_LIST = [
@@ -2132,7 +2165,7 @@ function renderKPIs(data){
     {key:'FFGGAUL', label:'FFG GAUL'},
   ];
   const availableEntities = new Set();
-  Object.values(data.months||{}).forEach(m => Object.keys(m).forEach(e => availableEntities.add(e)));
+  Object.values(months2025).forEach(m => Object.keys(m).forEach(e => availableEntities.add(e)));
   const sel = $('entitySelect');
   sel.innerHTML = '<option value="">All KPI</option>';
   ENTITY_LIST.forEach(({key, label}) => {
@@ -2143,18 +2176,18 @@ function renderKPIs(data){
     sel.appendChild(opt);
   });
   // Also add any entities from data not in our known list
-  // (HOME ID / HOMEID is excluded — it has its own dedicated "Home ID" page in the sidebar,
-  // so listing it again here would be redundant)
+  // (HOME ID / HOMEID is excluded — it has its own dedicated "Home ID" page in the sidebar;
+  // MO / PDA are KPI 2026-only entities and belong exclusively on the KPI 2026 page —
+  // both are excluded here so they can never leak into the KPI 2025 dropdown.)
   availableEntities.forEach(e => {
     if(!ENTITY_LIST.find(x=>x.key===e) && !EXCLUDED_KPI_ENTITIES.includes(String(e).toUpperCase())){
       const opt=document.createElement('option'); opt.value=e; opt.textContent=e; sel.appendChild(opt);
     }
   });
 
-  // Build month dropdown (always show Jan–Dec of the latest year + Summary)
-  const latestPeriod = data.last_updated || '';
-  const year = latestPeriod ? latestPeriod.slice(0,4) : new Date().getFullYear().toString();
-  const availableMonths = new Set(Object.keys(data.months||{}));
+  // Build month dropdown (Jan–Dec of the latest 2025-or-earlier year + Summary)
+  const year = latestPeriod.slice(0,4);
+  const availableMonths = new Set(periods2025);
   const monthSelect = $('monthSelect');
   monthSelect.innerHTML = '';
 
@@ -2166,6 +2199,7 @@ function renderKPIs(data){
   const monthPeriods = ['summary'];
   for(let m=1;m<=12;m++){
     const period = year + String(m).padStart(2,'0');
+    if(period >= KPI_2025_PAGE_CUTOVER) continue;   // never offer a 2026+ option here
     const hasDat = availableMonths.has(period);
     const isCur  = period === latestPeriod;
     const opt = document.createElement('option');
@@ -4500,10 +4534,15 @@ async function clearDashboardCache(){
   const btn = document.querySelector('[onclick="clearDashboardCache()"]');
   const orig = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳ Loading…'; btn.disabled=true; }
+  let data2025 = null, data2026 = null;
   try {
-    const r = await fetch(DATA.kpis + '?_t=' + Date.now(), {cache:'no-store'});
-    if(!r.ok) throw new Error('HTTP ' + r.status);
-    kpiData = await r.json();
+    const [r25, r26] = await Promise.all([
+      fetch(DATA.kpis2025 + '?_t=' + Date.now(), {cache:'no-store'}),
+      fetch(DATA.kpis2026 + '?_t=' + Date.now(), {cache:'no-store'})
+    ]);
+    if(r25.ok) data2025 = await r25.json();
+    if(r26.ok) data2026 = await r26.json();
+    if(!r25.ok && !r26.ok) throw new Error('HTTP ' + r25.status + ' / ' + r26.status);
     if(btn){ btn.textContent='✅ Updated'; setTimeout(()=>{ btn.textContent=orig; btn.disabled=false; },2000); }
   } catch(e) {
     if(btn){ btn.textContent=orig; btn.disabled=false; }
@@ -4511,8 +4550,8 @@ async function clearDashboardCache(){
     return;
   }
   // Render separately — rendering errors should not show as "cache failed"
-  try { renderKPIs(kpiData); } catch(e){ console.warn('renderKPIs error after cache refresh:', e); }
-  try { renderKPI2026(kpiData); } catch(e){ console.warn('renderKPI2026 error after cache refresh:', e); }
+  if(data2025) try { renderKPIs(data2025); } catch(e){ console.warn('renderKPIs error after cache refresh:', e); }
+  if(data2026) try { renderKPI2026(data2026); } catch(e){ console.warn('renderKPI2026 error after cache refresh:', e); }
 }
 
 // ─── KPI 2026 (Fulfill AO / Fulfill MO / Fulfill PDA / FFG) ──────────────────
@@ -4780,11 +4819,19 @@ function renderKpi2026Checklist(){
 function showErr(elId,msg){ const el=$(elId); if(el) el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">⚠ ${msg}</div>`; }
 
 async function init(){
-  const [homeRes,kpiRes,projRes]=await Promise.allSettled([fetchJSON(DATA.home),fetchJSON(DATA.kpis),fetchJSON(DATA.projects)]);
+  const [homeRes,kpi2025Res,kpi2026Res,projRes]=await Promise.allSettled([fetchJSON(DATA.home),fetchJSON(DATA.kpis2025),fetchJSON(DATA.kpis2026),fetchJSON(DATA.projects)]);
   if(homeRes.status==='fulfilled') renderHome(homeRes.value);
   else renderHomeIDPage(); // static data always available
-  if(kpiRes.status==='fulfilled'){ renderKPIs(kpiRes.value); renderKPI2026(kpiRes.value); }
-  else { showErr('kpiLoading','Could not load KPI data. Run update_dashboard.py first.'); showErr('kpi2026Body','Could not load KPI data. Run update_dashboard.py first.'); }
+  // 2025 and 2026 KPI data are independent fetches — one failing (e.g. no
+  // 2025 file exists yet) must not block the other page from rendering.
+  // A missing file (404) here just means that year hasn't been processed
+  // yet under the split kpis_2025.json/kpis_2026.json convention — not
+  // necessarily a real error — so the messaging stays neutral rather than
+  // alarming.
+  if(kpi2025Res.status==='fulfilled') renderKPIs(kpi2025Res.value);
+  else showErr('kpiLoading','No 2025 KPI data available yet. Once 2025 source files are processed by update_dashboard.py, this page will populate.');
+  if(kpi2026Res.status==='fulfilled') renderKPI2026(kpi2026Res.value);
+  else showErr('kpi2026Body','No 2026 KPI data available yet. Once 2026 source files are processed by update_dashboard.py, this page will populate.');
   if(projRes.status==='fulfilled'){
     loadProjects(projRes.value);
     renderTracker();
