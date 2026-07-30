@@ -687,14 +687,23 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       <div class="kpi-banner">
         <div class="kpi-banner-left">
           <h2>KPI 2026</h2>
-          <p>SLA Compliance Dashboard</p>
+          <p>Fulfillment SLA — Fulfill AO · Fulfill MO · Fulfill PDA · FFG</p>
+        </div>
+        <div class="last-update-box">
+          <div class="lu-label">Last Update</div>
+          <div class="lu-val" id="kpi2026LastUpdate">—</div>
         </div>
       </div>
-      <div class="card section-gap" style="padding:60px 24px;text-align:center">
-        <div style="font-size:2.5rem;margin-bottom:16px">🚧</div>
-        <div style="font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:10px">Content Coming Soon</div>
-        <div style="color:var(--muted);font-size:.84rem;line-height:1.7">Add 2026 data files to the Performancedb folder<br>and run <code style="background:rgba(42,63,94,.08);padding:2px 7px;border-radius:5px;font-size:.82rem">update_dashboard.py</code> to populate this page.</div>
+
+      <div class="card" style="margin-bottom:16px;padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="dur-pkg-btn active" id="kpi2026tab-AO" onclick="showKpi2026Tab('AO',this)">Fulfill AO</button>
+        <button class="dur-pkg-btn" id="kpi2026tab-MO" onclick="showKpi2026Tab('MO',this)">Fulfill MO</button>
+        <button class="dur-pkg-btn" id="kpi2026tab-PDA" onclick="showKpi2026Tab('PDA',this)">Fulfill PDA</button>
+        <button class="dur-pkg-btn" id="kpi2026tab-FFG" onclick="showKpi2026Tab('FFG',this)">FFG</button>
+        <button class="dur-pkg-btn" id="kpi2026tab-checklist" onclick="showKpi2026Tab('checklist',this)" style="margin-left:auto">📋 Data Checklist</button>
       </div>
+
+      <div id="kpi2026Body"><div class="loading">Loading KPI 2026 data…</div></div>
     </div>
 
     <!-- ══ KPI DEFINITION ══ -->
@@ -4492,6 +4501,182 @@ async function clearDashboardCache(){
   }
   // Render separately — rendering errors should not show as "cache failed"
   try { renderKPIs(kpiData); } catch(e){ console.warn('renderKPIs error after cache refresh:', e); }
+  try { renderKPI2026(kpiData); } catch(e){ console.warn('renderKPI2026 error after cache refresh:', e); }
+}
+
+// ─── KPI 2026 (Fulfill AO / Fulfill MO / Fulfill PDA / FFG) ──────────────────
+// NOTE: MO and PDA don't have a data pipeline yet (no source file convention,
+// no SLA formula) — their tabs show a "no data yet" state driven by
+// formulaReady:false until update_dashboard.py knows how to compute them.
+const KPI2026_TABS = [
+  { tab:'AO',  entity:'TTI', label:'Fulfill AO',
+    formulaNote:'1×24 jam dari referensi Manja → PI → RE (durasi negatif langsung di-clamp ke 0 = Comply, tidak lanjut ke referensi berikutnya).',
+    sourceFile:'2026xx_TTI.csv / .xlsx', formulaReady:true },
+  { tab:'MO',  entity:'MO', label:'Fulfill MO',
+    formulaNote:'1×24 jam dari referensi Manja → PI (Startwork) → Created (durasi negatif langsung di-clamp ke 0 = Comply, tidak lanjut ke referensi berikutnya). Sumber file bisa berupa satu workbook multi-bulan (mis. 202601_202606_MO.xlsx), periode ditentukan per baris dari C_STATUSDATE.',
+    sourceFile:'2026xx_MO.csv / .xlsx, atau START_END_MO.xlsx (multi-bulan)', formulaReady:true },
+  { tab:'PDA', entity:'PDA', label:'Fulfill PDA',
+    formulaNote:'Threshold tergantung orca_order_type: migrate (satu STO) = 1×24 jam, create (beda STO) = 2×24 jam. Durasi dari referensi CustomerAssign → PI → Created (durasi negatif langsung di-clamp ke 0 = Comply, tidak lanjut ke referensi berikutnya). Sumber file bisa berupa satu workbook multi-bulan (mis. 202601_202606_PDA.xlsx), periode ditentukan per baris dari orca_provcomp_date.',
+    sourceFile:'2026xx_PDA.csv / .xlsx, atau START_END_PDA.xlsx (multi-bulan)', formulaReady:true },
+  { tab:'FFG', entity:'FFG', label:'FFG',
+    formulaNote:'Sama seperti FFG di KPI 2025 — denominator dari TTI 2 bulan sebelumnya, via 2026xx_FFGGROUP. Bedanya: mulai periode 2026, tiket WILSUS (f_ttr = WILSUS) tidak lagi dikecualikan — akan dihitung sebagai Not Comply. Pengecualian flag_exclude_all lain (non-WILSUS) tetap berlaku seperti biasa.',
+    sourceFile:'2026xx_FFGGROUP.xlsx', formulaReady:true },
+];
+const KPI2026_CUTOVER = '202601';   // periods >= this are considered "KPI 2026"
+let kpi2026Data = null;
+let current2026Tab = 'AO';
+
+function kpi2026Periods(){
+  return Object.keys((kpi2026Data && kpi2026Data.months) || {})
+    .filter(p => p >= KPI2026_CUTOVER)
+    .sort();
+}
+
+function kpi2026PeriodLabel(p){
+  try { return new Date(p.slice(0,4)+'-'+p.slice(4)).toLocaleDateString('en-GB',{month:'long',year:'numeric'}); }
+  catch { return p; }
+}
+
+function renderKPI2026(data){
+  kpi2026Data = data;
+  const periods = kpi2026Periods();
+  const latest = periods[periods.length-1];
+  const lu = $('kpi2026LastUpdate');
+  if(lu) lu.textContent = latest ? kpi2026PeriodLabel(latest) : 'No 2026 data yet';
+  renderKpi2026Body();
+}
+
+function showKpi2026Tab(tab, btn){
+  current2026Tab = tab;
+  document.querySelectorAll('#page-kpi2026 .dur-pkg-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderKpi2026Body();
+}
+
+function renderKpi2026Body(){
+  const body = $('kpi2026Body');
+  if(!body) return;
+
+  if(current2026Tab === 'checklist'){ body.innerHTML = renderKpi2026Checklist(); return; }
+
+  const cfg = KPI2026_TABS.find(c=>c.tab===current2026Tab);
+  if(!cfg){ body.innerHTML = '<div class="loading">Unknown tab.</div>'; return; }
+
+  const periods = kpi2026Periods().filter(p => (kpi2026Data.months[p]||{})[cfg.entity]);
+  if(!periods.length){
+    body.innerHTML = `
+      <div class="card" style="padding:48px 24px;text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:12px">🚧</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px">${cfg.label} — No data yet</div>
+        <div style="color:var(--muted);font-size:.84rem;line-height:1.7;max-width:540px;margin:0 auto">
+          ${cfg.formulaReady
+            ? `Waiting on a 2026 <code style="background:rgba(42,63,94,.08);padding:2px 7px;border-radius:5px">${cfg.sourceFile}</code> file. Once it's placed in the OneDrive Performancedb folder and <code style="background:rgba(42,63,94,.08);padding:2px 7px;border-radius:5px">update_dashboard.py</code> runs, this tab populates automatically.`
+            : `${cfg.formulaNote}<br>Expected source file: <code style="background:rgba(42,63,94,.08);padding:2px 7px;border-radius:5px">${cfg.sourceFile}</code>.`}
+        </div>
+      </div>`;
+    return;
+  }
+
+  const latest = periods[periods.length-1];
+  const d = kpi2026Data.months[latest][cfg.entity];
+  const tgt = d.target ?? 95;
+  const clr = slaClass(d.sla_pct, tgt);
+
+  const areaRows = (d.by_area||[]).map(a=>`
+    <tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:7px 10px;font-weight:600;color:var(--navy)">${a.area}</td>
+      <td style="padding:7px 10px;text-align:right;color:var(--green)">${(a.comply||0).toLocaleString()}</td>
+      <td style="padding:7px 10px;text-align:right;color:var(--red)">${(a.not_comply||0).toLocaleString()}</td>
+      <td style="padding:7px 10px;text-align:right;color:var(--muted)">${(a.anomaly||0).toLocaleString()}</td>
+      <td style="padding:7px 10px;text-align:right;font-weight:700">${fmtSla(a.sla_pct)}</td>
+    </tr>`).join('');
+
+  body.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div style="font-size:.8rem;color:var(--muted)">Period: <strong style="color:var(--navy)">${kpi2026PeriodLabel(latest)}</strong>${periods.length>1?` <span style="opacity:.75">(${periods.length} months of 2026 data available)</span>`:''}</div>
+      ${!cfg.formulaReady?`<span style="background:rgba(200,144,32,.12);color:var(--amber);padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:700">⏳ Formula pending confirmation</span>`:''}
+    </div>
+
+    <div class="grid-4" style="margin-bottom:18px">
+      <div class="sla-stat ${clr}">
+        <div class="lbl"><span class="stat-icon">📶</span>${cfg.label} — SLA</div>
+        <div class="val" style="color:#1a1a1a">${fmtSla(d.sla_pct)}</div>
+        <div class="sub">Target: ${fmtSla(tgt)}</div>
+      </div>
+      <div class="sla-stat neutral">
+        <div class="lbl"><span class="stat-icon">📦</span>Total</div>
+        <div class="val" style="color:#1a1a1a">${(d.total||0).toLocaleString()}</div>
+        <div class="sub">Anomaly: ${(d.anomaly||0).toLocaleString()}</div>
+      </div>
+      <div class="sla-stat green">
+        <div class="lbl"><span class="stat-icon">✅</span>Comply</div>
+        <div class="val" style="color:var(--green)">${(d.comply||0).toLocaleString()}</div>
+      </div>
+      <div class="sla-stat red2">
+        <div class="lbl"><span class="stat-icon">⚠️</span>Not Comply</div>
+        <div class="val" style="color:var(--red)">${(d.not_comply||0).toLocaleString()}</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="ref-summary-header" style="margin-bottom:14px">${cfg.label} by Area</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+        <thead><tr style="background:var(--navy)">
+          <th style="padding:8px 10px;text-align:left;color:#fff">Area</th>
+          <th style="padding:8px 10px;text-align:right;color:#fff">Comply</th>
+          <th style="padding:8px 10px;text-align:right;color:#fff">Not Comply</th>
+          <th style="padding:8px 10px;text-align:right;color:#fff">Anomaly</th>
+          <th style="padding:8px 10px;text-align:right;color:#fff">SLA %</th>
+        </tr></thead>
+        <tbody>${areaRows || '<tr><td colspan="5" style="padding:14px;text-align:center;color:var(--muted)">No area breakdown in this data.</td></tr>'}</tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="card" style="font-size:.78rem;color:var(--muted);line-height:1.6;padding:14px 18px">
+      <strong style="color:var(--navy)">Formula:</strong> ${cfg.formulaNote}<br>
+      <strong style="color:var(--navy)">Source:</strong> ${cfg.sourceFile}
+    </div>
+  `;
+}
+
+function renderKpi2026Checklist(){
+  const rows = KPI2026_TABS.map(cfg=>{
+    const periods = kpi2026Periods().filter(p => (kpi2026Data.months[p]||{})[cfg.entity]);
+    const hasData = periods.length > 0;
+    const dataBadge = hasData
+      ? `<span style="background:rgba(58,120,72,.12);color:var(--green);padding:3px 10px;border-radius:99px;font-size:.72rem;font-weight:700">✅ ${periods.length} month${periods.length>1?'s':''}</span>`
+      : `<span style="background:rgba(168,48,32,.1);color:var(--red);padding:3px 10px;border-radius:99px;font-size:.72rem;font-weight:700">❌ No data yet</span>`;
+    const formulaBadge = cfg.formulaReady
+      ? `<span style="background:rgba(58,120,72,.12);color:var(--green);padding:3px 10px;border-radius:99px;font-size:.72rem;font-weight:700">✅ Defined</span>`
+      : `<span style="background:rgba(200,144,32,.12);color:var(--amber);padding:3px 10px;border-radius:99px;font-size:.72rem;font-weight:700">⏳ Pending</span>`;
+    return `
+      <tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:10px 12px;font-weight:700;color:var(--navy)">${cfg.label}</td>
+        <td style="padding:10px 12px;color:var(--muted);font-family:'Courier New',monospace;font-size:.74rem">${cfg.sourceFile}</td>
+        <td style="padding:10px 12px;text-align:center">${formulaBadge}</td>
+        <td style="padding:10px 12px;text-align:center">${dataBadge}</td>
+        <td style="padding:10px 12px;color:var(--muted);font-size:.78rem;line-height:1.5">${cfg.formulaNote}</td>
+      </tr>`;
+  }).join('');
+
+  return `
+    <div class="card">
+      <div class="ref-summary-header" style="margin-bottom:14px">Data Checklist — readiness per KPI</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+        <thead><tr style="background:var(--navy)">
+          <th style="padding:8px 12px;text-align:left;color:#fff">KPI</th>
+          <th style="padding:8px 12px;text-align:left;color:#fff">Source File</th>
+          <th style="padding:8px 12px;text-align:center;color:#fff">Formula</th>
+          <th style="padding:8px 12px;text-align:center;color:#fff">2026 Data</th>
+          <th style="padding:8px 12px;text-align:left;color:#fff">Notes</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      </div>
+    </div>`;
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
@@ -4501,8 +4686,8 @@ async function init(){
   const [homeRes,kpiRes,projRes]=await Promise.allSettled([fetchJSON(DATA.home),fetchJSON(DATA.kpis),fetchJSON(DATA.projects)]);
   if(homeRes.status==='fulfilled') renderHome(homeRes.value);
   else renderHomeIDPage(); // static data always available
-  if(kpiRes.status==='fulfilled') renderKPIs(kpiRes.value);
-  else showErr('kpiLoading','Could not load KPI data. Run update_dashboard.py first.');
+  if(kpiRes.status==='fulfilled'){ renderKPIs(kpiRes.value); renderKPI2026(kpiRes.value); }
+  else { showErr('kpiLoading','Could not load KPI data. Run update_dashboard.py first.'); showErr('kpi2026Body','Could not load KPI data. Run update_dashboard.py first.'); }
   if(projRes.status==='fulfilled'){
     loadProjects(projRes.value);
     renderTracker();
