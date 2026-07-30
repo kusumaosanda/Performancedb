@@ -695,21 +695,17 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         </div>
       </div>
 
-      <div class="card" style="margin-bottom:16px;padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="dur-pkg-btn active" id="kpi2026tab-AO" onclick="showKpi2026Tab('AO',this)">Fulfill AO</button>
-        <button class="dur-pkg-btn" id="kpi2026tab-MO" onclick="showKpi2026Tab('MO',this)">Fulfill MO</button>
-        <button class="dur-pkg-btn" id="kpi2026tab-PDA" onclick="showKpi2026Tab('PDA',this)">Fulfill PDA</button>
-        <button class="dur-pkg-btn" id="kpi2026tab-FFG" onclick="showKpi2026Tab('FFG',this)">FFG</button>
-        <button class="dur-pkg-btn" id="kpi2026tab-checklist" onclick="showKpi2026Tab('checklist',this)" style="margin-left:auto">📋 Data Checklist</button>
-      </div>
-
-      <div class="card kpi-controls" id="kpi2026MonthNavWrap">
+      <!-- Controls: KPI dropdown + month nav (same pattern as KPI 2025 page) -->
+      <div class="card kpi-controls">
         <div class="kpi-select-wrap">
-          <label>Month</label>
-          <select class="kpi-select" id="kpi2026MonthSelect" onchange="selectKpi2026Month(this.value)" style="min-width:150px"></select>
+          <label>KPI</label>
+          <select class="kpi-select" id="kpi2026EntitySelect" onchange="onKpi2026EntityChange()">
+            <option value="">All KPI</option>
+          </select>
         </div>
-        <div class="month-nav">
+        <div class="month-nav" id="kpi2026MonthNavWrap">
           <button class="btn-nav-icon" id="kpi2026MonthPrevBtn" onclick="stepKpi2026Month(-1)" title="Previous period">‹</button>
+          <select class="kpi-select" id="kpi2026MonthSelect" onchange="selectKpi2026Month(this.value)" style="min-width:150px"></select>
           <button class="btn-nav-icon" id="kpi2026MonthNextBtn" onclick="stepKpi2026Month(1)" title="Next period">›</button>
         </div>
       </div>
@@ -2122,23 +2118,18 @@ const MONTH_NAMES = ['','Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','O
 // Entities that should never surface as standalone KPI cards/rows/charts —
 // Home ID has its own dedicated sidebar page, so re-listing it here would be redundant.
 const EXCLUDED_KPI_ENTITIES = ['HOMEID','HOME_ID','HOME-ID','HID'];
-// KPI 2025 page must NEVER show periods >= this — those live on the
-// separate KPI 2026 page, computed with entirely different formulas/targets
-// (Fulfill AO/MO/PDA, FFG-no-exclusions). Kept as its own literal (not a
-// shared reference to KPI2026_CUTOVER, which is declared later in the
-// script) so this page's date gating has no load-order dependency.
-const KPI_2025_PAGE_CUTOVER = '202601';
+// NOTE: KPI 2025 no longer filters months by calendar period. update_dashboard.py
+// computes TTI/FFG TWICE for any period — once with the legacy (2025) formula,
+// once with the 2026 formula — and pushes each result to its own file
+// (data/kpis_2025.json / data/kpis_2026.json). That separation, not a date
+// cutover, is what keeps the two menus' numbers from ever mixing: kpis_2025.json
+// structurally can only ever contain legacy-formula results, no matter which
+// calendar month they're for, so every period in it is safe to display here.
 
 function renderKPIs(data){
-  // Filter ONCE, here — every downstream renderer (entity view, summary
-  // matrix, CSV export, trend charts, etc.) reads from kpiData.months, so
-  // scrubbing 2026+ periods at the single point of entry keeps the whole
-  // KPI 2025 page correct without having to patch each renderer separately.
-  const months2025 = {};
-  Object.keys(data.months||{}).forEach(p => { if(p < KPI_2025_PAGE_CUTOVER) months2025[p] = data.months[p]; });
-  kpiData = {...data, months: months2025};
+  kpiData = data;
 
-  const periods2025 = Object.keys(months2025).sort();
+  const periods2025 = Object.keys(data.months||{}).sort();
   if(!periods2025.length){
     $('kpiLastUpdate').textContent = 'No 2025 data available';
     $('entitySelect').innerHTML = '<option value="">All KPI</option>';
@@ -2148,8 +2139,8 @@ function renderKPIs(data){
     $('kpiBody').innerHTML = `
       <div class="card" style="padding:48px 24px;text-align:center">
         <div style="font-size:2.2rem;margin-bottom:12px">📭</div>
-        <div style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px">No 2025 data available</div>
-        <div style="color:var(--muted);font-size:.84rem">2026 onward data lives on the <strong>KPI 2026</strong> page.</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px">No KPI 2025 data available</div>
+        <div style="color:var(--muted);font-size:.84rem">Once update_dashboard.py processes a source file, its legacy-formula result shows up here. New-formula results for the same periods live separately on the <strong>KPI 2026</strong> page.</div>
       </div>`;
     return;
   }
@@ -2165,7 +2156,7 @@ function renderKPIs(data){
     {key:'FFGGAUL', label:'FFG GAUL'},
   ];
   const availableEntities = new Set();
-  Object.values(months2025).forEach(m => Object.keys(m).forEach(e => availableEntities.add(e)));
+  Object.values(data.months||{}).forEach(m => Object.keys(m).forEach(e => availableEntities.add(e)));
   const sel = $('entitySelect');
   sel.innerHTML = '<option value="">All KPI</option>';
   ENTITY_LIST.forEach(({key, label}) => {
@@ -2185,7 +2176,7 @@ function renderKPIs(data){
     }
   });
 
-  // Build month dropdown (Jan–Dec of the latest 2025-or-earlier year + Summary)
+  // Build month dropdown (Jan–Dec of the latest year present in this file + Summary)
   const year = latestPeriod.slice(0,4);
   const availableMonths = new Set(periods2025);
   const monthSelect = $('monthSelect');
@@ -2199,7 +2190,6 @@ function renderKPIs(data){
   const monthPeriods = ['summary'];
   for(let m=1;m<=12;m++){
     const period = year + String(m).padStart(2,'0');
-    if(period >= KPI_2025_PAGE_CUTOVER) continue;   // never offer a 2026+ option here
     const hasDat = availableMonths.has(period);
     const isCur  = period === latestPeriod;
     const opt = document.createElement('option');
@@ -4574,7 +4564,7 @@ const KPI2026_TABS = [
 ];
 const KPI2026_CUTOVER = '202601';   // periods >= this are considered "KPI 2026"
 let kpi2026Data = null;
-let current2026Tab = 'AO';
+let current2026Tab = '';   // '' = All KPI (default landing view), 'checklist', or a KPI2026_TABS .tab key
 let kpi2026SelectedPeriod = null;   // e.g. "202603" — null until populateKpi2026MonthSelect() runs
 
 function kpi2026Periods(){
@@ -4654,22 +4644,37 @@ function updateKpi2026MonthNavState(){
   if(nextBtn) nextBtn.disabled = (idx===-1) || idx>=periods.length-1;
 }
 
+// Populate the KPI dropdown once: "All KPI" + one option per KPI2026_TABS
+// entry + "Data Checklist" — everything that used to be a separate tab
+// bubble now lives in this one filter, per the KPI 2025 page's pattern.
+function populateKpi2026EntitySelect(){
+  const sel = $('kpi2026EntitySelect');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">All KPI</option>' +
+    KPI2026_TABS.map(cfg=>`<option value="${cfg.tab}">${cfg.label}</option>`).join('') +
+    '<option value="checklist">📋 Data Checklist</option>';
+  sel.value = current2026Tab;
+}
+
 function renderKPI2026(data){
   kpi2026Data = data;
   const periods = kpi2026Periods();
   const latest = periods[periods.length-1];
   const lu = $('kpi2026LastUpdate');
   if(lu) lu.textContent = latest ? kpi2026PeriodLabel(latest) : 'No 2026 data yet';
+  populateKpi2026EntitySelect();
   populateKpi2026MonthSelect();
+  const navWrap = $('kpi2026MonthNavWrap');
+  if(navWrap) navWrap.style.display = (current2026Tab === 'checklist') ? 'none' : 'flex';
   renderKpi2026Body();
 }
 
-function showKpi2026Tab(tab, btn){
-  current2026Tab = tab;
+function onKpi2026EntityChange(){
+  current2026Tab = $('kpi2026EntitySelect').value;
+  // Data Checklist isn't period-specific — hide the month nav while it's active
+  // (the KPI dropdown itself stays visible so the user can switch back out).
   const navWrap = $('kpi2026MonthNavWrap');
-  if(navWrap) navWrap.style.display = (tab === 'checklist') ? 'none' : 'flex';
-  document.querySelectorAll('#page-kpi2026 .dur-pkg-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  if(navWrap) navWrap.style.display = (current2026Tab === 'checklist') ? 'none' : 'flex';
   renderKpi2026Body();
 }
 
@@ -4678,6 +4683,7 @@ function renderKpi2026Body(){
   if(!body) return;
 
   if(current2026Tab === 'checklist'){ body.innerHTML = renderKpi2026Checklist(); return; }
+  if(current2026Tab === ''){ renderKpi2026AllView(); return; }
 
   const cfg = KPI2026_TABS.find(c=>c.tab===current2026Tab);
   if(!cfg){ body.innerHTML = '<div class="loading">Unknown tab.</div>'; return; }
@@ -4774,6 +4780,76 @@ function renderKpi2026Body(){
       <strong style="color:var(--navy)">Formula:</strong> ${cfg.formulaNote}<br>
       <strong style="color:var(--navy)">Source:</strong> ${cfg.sourceFile}
     </div>
+  `;
+}
+
+// Switch the "KPI" filter dropdown to a specific tab and re-render — used by
+// the All KPI overview cards (and the Checklist link) so clicking a card
+// behaves the same as picking it from the dropdown.
+function jumpToKpi2026Tab(tab){
+  current2026Tab = tab;
+  const sel = $('kpi2026EntitySelect'); if(sel) sel.value = tab;
+  const navWrap = $('kpi2026MonthNavWrap');
+  if(navWrap) navWrap.style.display = (tab === 'checklist') ? 'none' : 'flex';
+  renderKpi2026Body();
+}
+
+// ── "All KPI" overview (default landing view): one stat card per KPI 2026
+// metric for the currently selected month. Mirrors the KPI 2025 page's
+// all-entities overview but simpler — no cross-KPI matrix/trend charts,
+// since Fulfill AO/MO/PDA/FFG aren't directly comparable the way the KPI
+// 2025 entities are.
+function renderKpi2026AllView(){
+  const body = $('kpi2026Body');
+  if(!body) return;
+
+  const allPeriods = kpi2026Periods();
+  if(!allPeriods.length){
+    body.innerHTML = `
+      <div class="card" style="padding:48px 24px;text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:12px">🚧</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px">No KPI 2026 data yet</div>
+        <div style="color:var(--muted);font-size:.84rem">Once a 2026 source file is processed by <code style="background:rgba(42,63,94,.08);padding:2px 7px;border-radius:5px">update_dashboard.py</code>, this page will populate.</div>
+      </div>`;
+    return;
+  }
+
+  const period = kpi2026SelectedPeriod || allPeriods[allPeriods.length-1];
+  const monthData = kpi2026Data.months[period] || {};
+  const anyData = KPI2026_TABS.some(cfg=>monthData[cfg.entity]);
+
+  const cards = KPI2026_TABS.map(cfg=>{
+    const d = monthData[cfg.entity];
+    if(!d){
+      return `
+        <div class="entity-ov-card" style="border-left-color:#c9ccd3" onclick="jumpToKpi2026Tab('${cfg.tab}')">
+          <div class="e-name">${cfg.label}</div>
+          <div class="e-pct" style="color:var(--muted);font-size:1rem">No data</div>
+          <div class="e-sub">for ${kpi2026PeriodLabel(period)}</div>
+        </div>`;
+    }
+    const tgt = d.target ?? 95;
+    const clr = slaColor(d.sla_pct, tgt);
+    return `
+      <div class="entity-ov-card" style="border-left-color:${clr}" onclick="jumpToKpi2026Tab('${cfg.tab}')">
+        <div class="e-name">${cfg.label}</div>
+        <div class="e-pct" style="color:${clr}">${fmtSla(d.sla_pct)}</div>
+        <div class="e-sub">Target: ${fmtSla(tgt)} · ${(d.comply||0).toLocaleString()} C / ${(d.not_comply||0).toLocaleString()} NC</div>
+      </div>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div style="font-size:.8rem;color:var(--muted)">Period: <strong style="color:var(--navy)">${kpi2026PeriodLabel(period)}</strong></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:18px">
+      ${cards}
+    </div>
+    ${anyData ? '' : `
+    <div class="card" style="padding:32px 24px;text-align:center;color:var(--muted);font-size:.84rem">
+      No KPI has data for ${kpi2026PeriodLabel(period)} yet. Pick a different month above, or check the
+      <a href="#" onclick="jumpToKpi2026Tab('checklist');return false" style="color:var(--teal);font-weight:600">Data Checklist</a>.
+    </div>`}
   `;
 }
 
