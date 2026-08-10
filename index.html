@@ -359,13 +359,13 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
   88%    {opacity:1;transform:scale(1)}
   95%,100%{opacity:0;transform:scale(.4)}
 }
-/* Freeze on the merged frame for users who prefer less motion */
-@media (prefers-reduced-motion:reduce){
-  .mrg-doc{animation:none;opacity:0}
-  .mrg-merged{animation:none;opacity:1;transform:scale(1)}
-  .mrg-merged-in{animation:none}
-  .mrg-spark{animation:none;opacity:1;transform:scale(1)}
-}
+/* NOTE: deliberately no @media (prefers-reduced-motion:reduce) rule here.
+   There was one — it froze the loop on the merged frame — but it also fired
+   for anyone with macOS "Reduce Motion" on, or with Chrome's Energy Saver
+   active on low battery, which made the drop zone look broken. Per the
+   owner's explicit decision (2026-08-10), this decorative loop always plays.
+   If motion sensitivity ever becomes a concern, restore the rule rather than
+   deleting the animation. */
 
 /* ── SUMMARY TABLE ───────────────────────────────────────────────────────── */
 .summary-table{width:100%;border-collapse:collapse;font-size:.8rem}
