@@ -1,0 +1,10 @@
+# Secrets — never commit or push
+.env
+
+# Local deploy bookkeeping
+.deploy_state.json
+
+# macOS / Python noise
+.DS_Store
+__pycache__/
+*.pyc
