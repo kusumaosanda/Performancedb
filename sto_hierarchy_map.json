@@ -1,0 +1,6107 @@
+{
+"ABA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"ABE": {
+"tsel_area": "AREA 4",
+"tsel_branch": "JAYAPURA",
+"tsel_regional": "PUMA"
+},
+"ABG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"ABL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"ABO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"ABR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"ABT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"ADW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"AGN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"AGR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"AGT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TIMIKA",
+"tsel_regional": "PUMA"
+},
+"AJB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"AJN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"AJS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"ALA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"ALH": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"AMD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"AMK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"AMP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"AMR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"AMT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"ANJ": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"ANP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"ANR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"ANT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"APG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"APN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"APR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"ARB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"ARK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"ASB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"ATB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"AWN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"BAA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"BAB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"BAD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TIMIKA",
+"tsel_regional": "PUMA"
+},
+"BAG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"BAH": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"BAK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"BAL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"BAM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"BAN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"BAR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"BAS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"BAY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"BBA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"BBE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"BBL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"BBR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"BBS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"BBT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"BBU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"BCK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"BCR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"BDA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"BDG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"BDK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"BDN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"BDO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"BDT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"BDU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"BDY": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"BEA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"BEJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"BEK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"BEN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"BEO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"BET": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"BGG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"BGI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"BGL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"BGO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"BGS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"BGU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"BIA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "JAYAPURA",
+"tsel_regional": "PUMA"
+},
+"BIG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"BIM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"BIN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"BIR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"BIT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"BJA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"BJD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"BJE": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"BJI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"BJM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"BJN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"BJO": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"BJR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"BJS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"BJT": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"BJW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"BKA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"BKG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"BKI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"BKJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"BKL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"BKM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"BKN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"BKO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"BKP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"BKR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"BKS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"BKT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"BKU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"BKY": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"BLB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"BLC": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"BLG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"BLI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"BLJ": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"BLK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"BLN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"BLO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"BLP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"BLR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"BLS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"BLT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"BLU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"BLW": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"BMK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"BMU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"BNA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"BNC": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"BNJ": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"BNL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"BNN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"BNO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"BNR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"BNT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"BNU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"BOJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"BON": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"BOO": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"BOR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"BOT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"BOW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"BPD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"BPG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"BRB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"BRD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"BRG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"BRI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"BRN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"BRS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"BRU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"BSK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"BSO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"BST": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"BTA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"BTB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"BTC": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"BTG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"BTH": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"BTI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"BTJ": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"BTK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"BTL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"BTN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"BTR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"BTU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"BUG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"BUL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"BUM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"BUO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"BUT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"BWE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"BWG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"BWN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"BYL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"BYM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"BYU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"CAG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"CAS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"CAT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"CAU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CBB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CBD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CBE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CBG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CBI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CBL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"CBN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"CBR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CBT": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"CBU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CCD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CCL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"CCR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CDS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"CEP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"CGD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CGI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"CIB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CID": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CIK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CIL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CIW": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"CJA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CJG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CJR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CJU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CKA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CKB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CKC": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"CKD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CKG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CKI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"CKJ": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"CKK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CKL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CKP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CKW": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CKY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"CLC": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"CLD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CLG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CLI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"CLL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CLM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CLO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"CLS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CMA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"CMI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CMO": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CMS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"CNE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CPA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CPD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CPE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CPL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CPP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CPS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CPT": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CRB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"CRI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CRM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"CRP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"CRS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CSA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"CSE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CSK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CSL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CSN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CSR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CTD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"CTR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CUG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CWA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"CWD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"CWI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"CWN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"DAR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"DBS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"DDS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"DEP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"DGL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"DGO": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"DGS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"DLA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"DLG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"DLM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"DLS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"DLT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"DMA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"DMG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"DMO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"DMP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"DNI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"DNO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"DOB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"DPT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"DRI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"DRN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"DUM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"EJI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"EMP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"END": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"ENR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"FFA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"GAN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"GBC": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"GBG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"GBI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"GBU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"GDA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"GDG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"GDI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"GDO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"GDS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"GDT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"GDW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"GEM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"GEN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"GER": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"GEU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"GGK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"GGR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"GIN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"GKW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"GLD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"GLG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"GLL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"GLM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"GMB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"GMK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"GML": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"GMN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"GND": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"GNH": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"GNK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"GNT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"GOD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"GOM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"GON": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"GPI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"GRA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"GRL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"GRU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"GSA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"GSK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"GST": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"GTL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"GUR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"HAR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"HGM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"HLS": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"HNU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"HRU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"IDA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"IDI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"IDL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"IJK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"IMY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"IPU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"ISM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"JAG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"JAP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "JAYAPURA",
+"tsel_regional": "PUMA"
+},
+"JAW": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"JBB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"JBN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"JBR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"JBS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"JCG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"JEN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"JER": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"JGL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"JGO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"JGR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"JGW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"JHO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"JHR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"JIA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"JLL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"JMB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"JMI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"JNP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"JOM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"JPB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "JAYAPURA",
+"tsel_regional": "PUMA"
+},
+"JPK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"JPR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"JRM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"JSA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"JSO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"JTB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"JTN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"JTO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"JTR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"JTS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"JTW": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"JWN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"JWT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"KAA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"KAD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"KAG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KAI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"KAK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"KAL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KAR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"KAU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"KAW": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"KBG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"KBI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KBJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"KBL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"KBM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"KBN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"KBO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KBR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"KBS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"KBU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"KBY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KDE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"KDG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"KDI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"KDL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"KDN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"KDR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"KDT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KDU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"KDW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"KDY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KEF": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"KEL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"KEN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"KEP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"KET": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"KFR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"KGD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"KGG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"KGH": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"KHL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"KIA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"KIJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"KIM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"KIN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"KIP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"KIS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"KJE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"KJI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"KJN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"KJO": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KJR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"KKA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"KKH": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"KKN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"KKP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"KKU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"KKY": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"KLA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KLB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"KLD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KLG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KLH": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"KLI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"KLJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"KLM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"KLN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"KLP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"KLR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KLS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"KLT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"KLU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"KLX": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"KMG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KMI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"KMJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"KML": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"KMN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"KMP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"KMS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"KMT": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KMY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KNG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"KNL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"KNN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"KNO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"KNT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"KNU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"KOA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"KOB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"KOL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"KON": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"KOR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"KOT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KOU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"KPB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"KPH": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"KPI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"KPK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KPL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"KPN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"KPO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"KPP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"KPS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"KRA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"KRG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KRI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"KRJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"KRK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"KRM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"KRN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"KRO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"KRP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"KRS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KRT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"KRU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KRW": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"KRY": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"KRZ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"KSB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KSG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"KSO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"KTA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"KTB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"KTG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"KTL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"KTM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"KTN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"KTO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"KTP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"KTS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"KTU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"KTW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"KTX": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KTZ": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"KUD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"KUK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TIMIKA",
+"tsel_regional": "PUMA"
+},
+"KUL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"KUT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"KWD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"KWN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"KWR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"KYG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"KYT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"LAB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"LAG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"LAM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"LAN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"LBA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"LBB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"LBG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"LBH": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"LBI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"LBJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"LBK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"LBO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"LBP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"LBR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"LBS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"LBT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"LBU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"LBY": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"LCE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"LDY": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"LEM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"LGK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"LGS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"LHT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"LIK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"LIM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"LIN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"LIW": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"LKG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"LKI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"LKP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"LKT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"LLG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"LMA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"LMD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"LMG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"LMJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"LMP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"LNN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"LNO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"LOA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"LOB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"LOG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"LOL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"LOS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"LRT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"LSE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"LSK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"LSM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"LSR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"LSS": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"LTM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"LUG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"LUL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"LVN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"LWB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"LWD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"LWG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"LWL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"LWU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"MAB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"MAJ": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"MAK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"MAL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"MAM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"MAN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"MAO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"MAR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"MAS": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"MAT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"MBD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"MBG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"MBN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"MBO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"MCR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"MDC": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"MDG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"MDO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"MEM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"MEN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"MER": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"MET": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"MGA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"MGB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"MGD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"MGE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"MGG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"MGL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"MGN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"MGO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"MGR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"MGT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"MIN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"MIP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"MIS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"MJE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"MJL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"MJP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"MJS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"MJT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"MJW": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"MJY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"MKG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"MKL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"MKM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"MKO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"MKR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"MLA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"MLB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"MLD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"MLG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"MLH": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"MLK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"MLL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"MLN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"MLP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"MMN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"MMR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"MMS": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"MNA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"MND": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"MNJ": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"MNZ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"MOJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"MOL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"MOT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"MPA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"MPW": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"MRB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"MRD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"MRK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TIMIKA",
+"tsel_regional": "PUMA"
+},
+"MRO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"MRR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"MRS": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"MRT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"MRU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"MRY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"MSH": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"MSO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"MSP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"MTA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"MTK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"MTP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"MTR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"MTW": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"MTY": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"MUA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"MUB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"MUD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"MUK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"MUN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"MUR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"MWR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"MYR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"NAB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"NDL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"NEG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"NGA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"NGB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"NGG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"NGI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"NGR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"NGS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"NGU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"NIR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"NJA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"NJG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"NJK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"NKN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"NLD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"NML": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"NNK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"NPN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"NRJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"NRS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"NSD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"NTG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"NTR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"NWI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"OKI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"OMB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"OSP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"PAA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"PAB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"PAD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"PAE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"PAG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PAM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PAN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"PAO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"PAP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"PAR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PAT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"PAX": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"PBB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"PBD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"PBG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"PBI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"PBL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"PBM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"PBN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PBS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"PBU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"PBY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PCM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PCT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"PDA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"PDB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"PDC": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"PDE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PDG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PDJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PDK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PDL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"PDM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PDN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"PDP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"PDR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PDS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"PDT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"PDW": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"PEA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"PEC": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"PEN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"PER": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"PGA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"PGB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PGC": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"PGD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"PGE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"PGG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PGI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"PGK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"PGL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"PGM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"PGN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"PGP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"PGR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"PGT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"PII": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"PIK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"PIN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"PJN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"PKA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"PKB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"PKL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"PKM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"PKN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"PKR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"PKS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"PKU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PKY": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PLA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"PLB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"PLD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PLE": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"PLG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"PLJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"PLK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"PLL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"PLM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PLP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"PLR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PLW": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"PMA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"PMB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"PME": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"PMK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"PML": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"PMN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"PMP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"PMS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"PMU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PMY": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"PNA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PND": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"PNG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"PNI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"PNJ": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"PNK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"PNL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"PNN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"PNZ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"POG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"PON": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"POS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"PPG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PPJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PPN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PPR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"PPS": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"PPT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"PRA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"PRB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"PRC": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"PRD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"PRE": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"PRG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"PRI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"PRJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"PRL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"PRN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"PRR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"PRS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PRT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"PRW": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"PRY": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"PSA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"PSB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"PSG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"PSK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PSM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PSN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"PSO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"PSP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"PSR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PSU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"PTG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"PTI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PTK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"PTL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"PTN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"PTR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"PUA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"PUB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"PUG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"PUK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PUT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"PWB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"PWG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"PWJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"PWK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"PWS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"PWT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"PYB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"PYK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"PYM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"RAH": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"RAI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"RAP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"RBA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"RBB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"RBI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"RBM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"RBN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"RBP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"RCK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"RDB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"RDD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"RDK": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"REO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"RGA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"RGJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"RGL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"RGT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"RJG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"RJP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"RJW": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"RKS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"RKT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"RMG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"RMP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"RPN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"RSK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"RTA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"RTE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"RTP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"SAB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"SAD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"SAG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SAI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"SAK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"SAM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SAN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"SAO": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SAP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"SAR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"SAT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"SAU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"SBA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"SBG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"SBI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"SBM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"SBN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"SBO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"SBP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"SBR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"SBU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"SBW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"SCC": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SDA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"SDD": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"SDJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"SDK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"SDL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"SDM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SDN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"SDO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"SDR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SDU": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"SDY": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"SEA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"SEB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"SED": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SEG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SEI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SEL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"SEM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"SEP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"SER": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"SET": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"SFI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"SGA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"SGB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"SGD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SGG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"SGI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"SGK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"SGN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"SGP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SGR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"SGS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"SGT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"SGU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SIB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"SID": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"SIE": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SIG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SIH": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"SIL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"SIN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"SIP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"SIR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SIT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"SIU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SIW": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"SJJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SKB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"SKD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"SKE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SKG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"SKH": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"SKI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"SKJ": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BEKASI",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"SKL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"SKM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"SKN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"SKP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"SKR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"SKS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"SKU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"SKW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"SKY": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"SLA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SLG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"SLH": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"SLI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"SLJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"SLK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SLM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SLN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SLO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"SLP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SLT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"SLU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"SLW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"SLY": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"SMA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"SMB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SMC": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"SMD": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"SMH": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"SMI": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SMJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"SML": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"SMM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"SMN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"SMO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"SMP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"SMR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"SMT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"SMU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SMY": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"SNA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"SNI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "JAYAPURA",
+"tsel_regional": "PUMA"
+},
+"SNN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"SNT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"SNW": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SNY": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"SOB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SOE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"SOK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"SON": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"SOP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"SOR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"SPA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"SPE": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SPG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"SPJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"SPL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"SPM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"SPN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"SPO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"SPP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"SPR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"SPS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"SPT": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SPU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"SPY": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SRA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"SRD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SRG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"SRH": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SRJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"SRK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"SRM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "JAYAPURA",
+"tsel_regional": "PUMA"
+},
+"SRO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"SRP": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"SRR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"SRT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SRU": {
+"tsel_area": "AREA 4",
+"tsel_branch": "JAYAPURA",
+"tsel_regional": "PUMA"
+},
+"SRW": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"SRY": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"SSI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"SSL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"STA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"STB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"STG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"STI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"STL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"STN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"STR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"STT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"SUA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PANGKALAN BUN",
+"tsel_regional": "KALIMANTAN"
+},
+"SUB": {
+"tsel_area": "AREA 2",
+"tsel_branch": "CIREBON",
+"tsel_regional": "JABAR"
+},
+"SUD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"SUE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"SUG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"SUK": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"SUM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SUN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SUP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"SUR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SUS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"SWE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"SWI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"SWJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"SWL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"SWT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"SYA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"TAB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TAJ": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TAK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"TAM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TAN": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TANGERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"TAP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"TAR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"TAS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOREANG",
+"tsel_regional": "JABAR"
+},
+"TAY": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"TBA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PONTIANAK",
+"tsel_regional": "KALIMANTAN"
+},
+"TBE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SOUTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"TBG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TIMIKA",
+"tsel_regional": "PUMA"
+},
+"TBH": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEKANBARU",
+"tsel_regional": "SUMBAGTENG"
+},
+"TBI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TBK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"TBL": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"TBN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"TBT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"TBU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"TBY": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TDN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"TEG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"TEM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MAGELANG",
+"tsel_regional": "JATENG"
+},
+"TEN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"TER": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"TET": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"TGA": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"TGD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"TGE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"TGG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TGP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TGR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "SERANG",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"TGS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"TGU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"THN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"TIB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PEMATANG SIANTAR",
+"tsel_regional": "SUMBAGUT"
+},
+"TIM": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TIMIKA",
+"tsel_regional": "PUMA"
+},
+"TIS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"TJB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "RANTAU PRAPAT",
+"tsel_regional": "SUMBAGUT"
+},
+"TJH": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"TJK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TJL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"TJM": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"TJN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TJO": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BOGOR",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"TJP": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BINJAI",
+"tsel_regional": "SUMBAGUT"
+},
+"TJR": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"TJT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"TKA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"TKB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TKI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"TKN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"TKU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"TLA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TLB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"TLE": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"TLG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"TLJ": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"TLK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TLN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"TLW": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MATARAM",
+"tsel_regional": "BALINUSRA"
+},
+"TLY": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"TMA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MAKASSAR",
+"tsel_regional": "SULAWESI"
+},
+"TMB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"TMD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SAMARINDA",
+"tsel_regional": "KALIMANTAN"
+},
+"TMH": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"TML": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALANGKARAYA",
+"tsel_regional": "KALIMANTAN"
+},
+"TMO": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"TMP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"TMR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TIMIKA",
+"tsel_regional": "PUMA"
+},
+"TMU": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"TNA": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"TNB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"TNG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TNS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"TNT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"TNZ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "LAMONGAN",
+"tsel_regional": "JATIM"
+},
+"TOB": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TERNATE",
+"tsel_regional": "SULAWESI"
+},
+"TOL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"TOP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"TOS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"TPE": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TPH": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"TPI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"TPJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"TPL": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PANGKAL PINANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TPN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"TPO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"TPR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "NORTHERN JAKARTA",
+"tsel_regional": "JAKARTA BANTEN"
+},
+"TPS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"TRA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"TRD": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TRE": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"TRG": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"TRK": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TRO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"TRS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"TRT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"TSE": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"TSL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "TARAKAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TSM": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"TSN": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BALIKPAPAN",
+"tsel_regional": "KALIMANTAN"
+},
+"TSS": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BENGKULU",
+"tsel_regional": "SUMBAGSEL"
+},
+"TTE": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"TTG": {
+"tsel_area": "AREA 1",
+"tsel_branch": "MEDAN",
+"tsel_regional": "SUMBAGUT"
+},
+"TTJ": {
+"tsel_area": "AREA 1",
+"tsel_branch": "JAMBI",
+"tsel_regional": "SUMBAGSEL"
+},
+"TTL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PEKALONGAN",
+"tsel_regional": "JATENG"
+},
+"TTN": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BANDA ACEH",
+"tsel_regional": "SUMBAGUT"
+},
+"TUA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"TUB": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BATAM",
+"tsel_regional": "SUMBAGTENG"
+},
+"TUK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG SIDEMPUAN",
+"tsel_regional": "SUMBAGUT"
+},
+"TUL": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"TUN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"TUR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"TUT": {
+"tsel_area": "AREA 4",
+"tsel_branch": "MANADO",
+"tsel_regional": "SULAWESI"
+},
+"TWI": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"TWL": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PALU",
+"tsel_regional": "SULAWESI"
+},
+"TWM": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"UBN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"UBR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "BANDUNG",
+"tsel_regional": "JABAR"
+},
+"UBT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "DUMAI",
+"tsel_regional": "SUMBAGTENG"
+},
+"UBU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "DENPASAR",
+"tsel_regional": "BALINUSRA"
+},
+"UGD": {
+"tsel_area": "AREA 1",
+"tsel_branch": "BUKIT TINGGI",
+"tsel_regional": "SUMBAGTENG"
+},
+"ULI": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BANJARMASIN",
+"tsel_regional": "KALIMANTAN"
+},
+"ULK": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PADANG",
+"tsel_regional": "SUMBAGTENG"
+},
+"UNH": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"UNR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"UNT": {
+"tsel_area": "AREA 1",
+"tsel_branch": "PALEMBANG",
+"tsel_regional": "SUMBAGSEL"
+},
+"UTR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"WAE": {
+"tsel_area": "AREA 4",
+"tsel_branch": "JAYAPURA",
+"tsel_regional": "PUMA"
+},
+"WAT": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"WDS": {
+"tsel_area": "AREA 2",
+"tsel_branch": "KARAWANG",
+"tsel_regional": "EASTERN JABOTABEK"
+},
+"WGI": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MALANG",
+"tsel_regional": "JATIM"
+},
+"WGP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"WHA": {
+"tsel_area": "AREA 4",
+"tsel_branch": "AMBON",
+"tsel_regional": "PUMA"
+},
+"WJA": {
+"tsel_area": "AREA 1",
+"tsel_branch": "LAMPUNG",
+"tsel_regional": "SUMBAGSEL"
+},
+"WKB": {
+"tsel_area": "AREA 3",
+"tsel_branch": "KUPANG",
+"tsel_regional": "BALINUSRA"
+},
+"WKU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"WLR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"WMR": {
+"tsel_area": "AREA 4",
+"tsel_branch": "SORONG",
+"tsel_regional": "PUMA"
+},
+"WNC": {
+"tsel_area": "AREA 4",
+"tsel_branch": "KENDARI",
+"tsel_regional": "SULAWESI"
+},
+"WNG": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"WNJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SEMARANG",
+"tsel_regional": "JATENG"
+},
+"WNR": {
+"tsel_area": "AREA 2",
+"tsel_branch": "TASIKMALAYA",
+"tsel_regional": "JABAR"
+},
+"WNS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"WON": {
+"tsel_area": "AREA 4",
+"tsel_branch": "PARE-PARE",
+"tsel_regional": "SULAWESI"
+},
+"WOS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "PURWOKERTO",
+"tsel_regional": "JATENG"
+},
+"WRJ": {
+"tsel_area": "AREA 3",
+"tsel_branch": "MADIUN",
+"tsel_regional": "JATIM"
+},
+"WRO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURAKARTA",
+"tsel_regional": "JATENG"
+},
+"WRP": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SURABAYA",
+"tsel_regional": "JATIM"
+},
+"WRU": {
+"tsel_area": "AREA 3",
+"tsel_branch": "SIDOARJO",
+"tsel_regional": "JATIM"
+},
+"WSO": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+},
+"WTG": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"WTP": {
+"tsel_area": "AREA 4",
+"tsel_branch": "BONE",
+"tsel_regional": "SULAWESI"
+},
+"WTS": {
+"tsel_area": "AREA 3",
+"tsel_branch": "YOGYAKARTA",
+"tsel_regional": "JATENG"
+},
+"WWR": {
+"tsel_area": "AREA 3",
+"tsel_branch": "FLORES",
+"tsel_regional": "BALINUSRA"
+},
+"YSN": {
+"tsel_area": "AREA 3",
+"tsel_branch": "JEMBER",
+"tsel_regional": "JATIM"
+}
+}
