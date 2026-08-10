@@ -269,6 +269,33 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .conv-result-badge.success{background:#d1fae5;color:#065f46}
 .conv-result-badge.error{background:#fee2e2;color:#991b1b}
 
+/* ── TECHNICIAN PRODUCTIVITY (mockup page) ──────────────────────────────────── */
+.tp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.tp-stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px}
+.tp-stat-lbl{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.tp-stat-val{font-size:1.6rem;font-weight:800;color:var(--navy);line-height:1.2;margin-top:4px;letter-spacing:-.5px}
+.tp-stat-sub{font-size:.72rem;font-weight:700;margin-top:3px}
+.tp-up{color:#166534}
+.tp-dn{color:#991b1b}
+.tp-rank{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
+.tp-rank:last-child{border-bottom:none}
+.tp-medal{font-size:1.1rem;width:22px;text-align:center;font-weight:800;color:var(--muted);flex-shrink:0}
+.tp-rank-meta{flex:1;min-width:0}
+.tp-rank-name{font-size:.84rem;font-weight:700;color:var(--navy)}
+.tp-rank-sub{font-size:.71rem;color:var(--muted);margin-top:1px}
+.tp-rank-val{font-size:1rem;font-weight:800;color:var(--teal);flex-shrink:0}
+.tp-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.tp-bar-lbl{font-size:.73rem;color:var(--muted);width:74px;flex-shrink:0;font-weight:600}
+.tp-bar{flex:1;height:9px;background:rgba(42,63,94,.07);border-radius:99px;overflow:hidden}
+.tp-bar span{display:block;height:100%;border-radius:99px}
+.tp-bar-n{font-size:.75rem;font-weight:800;color:var(--navy);width:26px;text-align:right;flex-shrink:0}
+.tp-pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.68rem;font-weight:800;white-space:nowrap}
+.tp-pill.ok{background:#d1fae5;color:#065f46}
+.tp-pill.good{background:rgba(42,63,94,.1);color:var(--navy)}
+.tp-pill.warn{background:rgba(212,144,26,.18);color:#92400e}
+.tp-pill.bad{background:#fee2e2;color:#991b1b}
+@media (max-width:900px){.tp-stats{grid-template-columns:repeat(2,1fr)}}
+
 /* ── DATA MERGER ────────────────────────────────────────────────────────────── */
 .mrg-file-list{display:flex;flex-direction:column;gap:8px;margin-top:16px}
 .mrg-file-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:#fff;border:1.5px solid var(--border);border-radius:9px;font-size:.8rem;transition:border-color .15s}
@@ -622,9 +649,24 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
   </div>
   <nav>
     <a onclick="showPage('calendar')" id="nav-calendar"><span class="icon">📅</span> Calendar of Event</a>
-    <a onclick="showPage('converter')" id="nav-converter"><span class="icon">⚙️</span> Data Converter</a>
-    <a onclick="showPage('merger')" id="nav-merger"><span class="icon">🧩</span> Data Merger</a>
-    <a class="active" onclick="showPage('home')" id="nav-home"><span class="icon">🏠</span> Home ID</a>
+    <div>
+      <div class="nav-grp-toggle" id="nav-grp-fileedit" onclick="toggleNavGroup('fileedit')">
+        <span class="icon">🗂️</span> File Editor <em class="nav-chevron">▶</em>
+      </div>
+      <div class="nav-submenu" id="nav-sub-fileedit">
+        <a onclick="showPage('converter')" id="nav-converter">File Converter</a>
+        <a onclick="showPage('merger')" id="nav-merger">File Merger</a>
+      </div>
+    </div>
+    <div>
+      <div class="nav-grp-toggle expanded" id="nav-grp-homeid" onclick="toggleNavGroup('homeid')">
+        <span class="icon">🏠</span> Home ID <em class="nav-chevron">▶</em>
+      </div>
+      <div class="nav-submenu open" id="nav-sub-homeid">
+        <a class="active" onclick="showPage('home')" id="nav-home">Home ID Performance</a>
+        <a onclick="showPage('techprod')" id="nav-techprod">Technician Productivity</a>
+      </div>
+    </div>
     <div>
       <div class="nav-grp-toggle" id="nav-grp-kpi" onclick="toggleNavGroup('kpi')">
         <span class="icon">📊</span> KPI <em class="nav-chevron">▶</em>
@@ -731,6 +773,142 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       </div>
 
     </div>
+
+    <!-- ══ TECHNICIAN PRODUCTIVITY (Home ID → Technician Productivity) ══
+         MOCKUP ONLY. Every number below is hardcoded placeholder data — this
+         page is not wired to update_dashboard.py and no JSON feeds it yet.
+         When real data arrives, replace the static <tbody> and the stat tiles
+         with a render function fed from data/, the way renderHomeIDPage() does. -->
+    <div class="page" id="page-techprod">
+
+      <!-- Banner -->
+      <div class="hid-page-banner">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="hid-banner-icon">🔧</div>
+          <div>
+            <div class="hid-banner-title">Technician Productivity</div>
+            <div class="hid-banner-sub">Output &amp; efficiency per technician</div>
+          </div>
+        </div>
+        <div class="hid-banner-stats">
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Technicians</div><div class="hid-bs-val">148</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Avg / Day</div><div class="hid-bs-val">4.2</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Utilization</div><div class="hid-bs-val">87%</div></div>
+        </div>
+      </div>
+
+      <!-- Mockup notice -->
+      <div style="margin-bottom:16px;padding:12px 16px;background:#fffbeb;border:1.5px solid #fcd34d;
+                  border-radius:10px;font-size:.82rem;color:#92400e;line-height:1.6">
+        <strong>🚧 Halaman mockup</strong> — semua angka di bawah ini masih data contoh, belum terhubung
+        ke pipeline data. Struktur dan tampilannya sudah final, tinggal disambungkan ke sumber data
+        yang sesungguhnya.
+      </div>
+
+      <!-- Stat tiles -->
+      <div class="tp-stats">
+        <div class="tp-stat">
+          <div class="tp-stat-lbl">Total Work Orders</div>
+          <div class="tp-stat-val">6,284</div>
+          <div class="tp-stat-sub tp-up">▲ 8.3% vs bulan lalu</div>
+        </div>
+        <div class="tp-stat">
+          <div class="tp-stat-lbl">Avg Completion Time</div>
+          <div class="tp-stat-val">2h 14m</div>
+          <div class="tp-stat-sub tp-up">▼ 11m lebih cepat</div>
+        </div>
+        <div class="tp-stat">
+          <div class="tp-stat-lbl">First-Time Fix Rate</div>
+          <div class="tp-stat-val">91.4%</div>
+          <div class="tp-stat-sub tp-dn">▼ 1.2% vs bulan lalu</div>
+        </div>
+        <div class="tp-stat">
+          <div class="tp-stat-lbl">Overdue Tickets</div>
+          <div class="tp-stat-val">37</div>
+          <div class="tp-stat-sub tp-dn">▲ 6 dari bulan lalu</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="gap:20px;margin-bottom:20px">
+        <!-- Leaderboard -->
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0">Top Performer</div>
+          <div style="padding:16px 18px">
+            <div class="tp-rank"><span class="tp-medal">🥇</span>
+              <div class="tp-rank-meta"><div class="tp-rank-name">Agus Setiawan</div><div class="tp-rank-sub">Bandung · TTI</div></div>
+              <div class="tp-rank-val">312</div>
+            </div>
+            <div class="tp-rank"><span class="tp-medal">🥈</span>
+              <div class="tp-rank-meta"><div class="tp-rank-name">Dedi Kurniawan</div><div class="tp-rank-sub">Surabaya · FFG</div></div>
+              <div class="tp-rank-val">297</div>
+            </div>
+            <div class="tp-rank"><span class="tp-medal">🥉</span>
+              <div class="tp-rank-meta"><div class="tp-rank-name">Rizky Pratama</div><div class="tp-rank-sub">Jakarta · TTI</div></div>
+              <div class="tp-rank-val">285</div>
+            </div>
+            <div class="tp-rank"><span class="tp-medal" style="opacity:.35">4</span>
+              <div class="tp-rank-meta"><div class="tp-rank-name">Hendra Wijaya</div><div class="tp-rank-sub">Medan · PS-RE</div></div>
+              <div class="tp-rank-val">271</div>
+            </div>
+            <div class="tp-rank"><span class="tp-medal" style="opacity:.35">5</span>
+              <div class="tp-rank-meta"><div class="tp-rank-name">Bayu Nugroho</div><div class="tp-rank-sub">Semarang · FFG</div></div>
+              <div class="tp-rank-val">264</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribution -->
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0">Sebaran Produktivitas</div>
+          <div style="padding:18px">
+            <div class="tp-bar-row"><span class="tp-bar-lbl">&gt; 250 WO</span>
+              <div class="tp-bar"><span style="width:18%;background:#1a5c36"></span></div><span class="tp-bar-n">27</span></div>
+            <div class="tp-bar-row"><span class="tp-bar-lbl">200–250</span>
+              <div class="tp-bar"><span style="width:31%;background:#2f7d4f"></span></div><span class="tp-bar-n">46</span></div>
+            <div class="tp-bar-row"><span class="tp-bar-lbl">150–200</span>
+              <div class="tp-bar"><span style="width:26%;background:#C4522A"></span></div><span class="tp-bar-n">38</span></div>
+            <div class="tp-bar-row"><span class="tp-bar-lbl">100–150</span>
+              <div class="tp-bar"><span style="width:16%;background:#D4901A"></span></div><span class="tp-bar-n">24</span></div>
+            <div class="tp-bar-row"><span class="tp-bar-lbl">&lt; 100 WO</span>
+              <div class="tp-bar"><span style="width:9%;background:#991b1b"></span></div><span class="tp-bar-n">13</span></div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);
+                        font-size:.74rem;color:var(--muted);line-height:1.6">
+              Median <strong style="color:var(--navy)">187 WO</strong> per teknisi ·
+              13 teknisi di bawah ambang batas dan perlu ditinjau.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail table -->
+      <div class="card">
+        <div class="ref-summary-header" style="margin-bottom:14px">Detail per Teknisi</div>
+        <div style="overflow-x:auto">
+          <table class="hid-area-tbl">
+            <thead>
+              <tr>
+                <th style="text-align:left">Teknisi</th>
+                <th>Area</th><th>Work Orders</th><th>Avg Time</th>
+                <th>First-Time Fix</th><th>Overdue</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="text-align:left">Agus Setiawan</td><td>Bandung</td><td>312</td><td>1h 52m</td><td>96.2%</td><td>0</td><td><span class="tp-pill ok">Excellent</span></td></tr>
+              <tr><td style="text-align:left">Dedi Kurniawan</td><td>Surabaya</td><td>297</td><td>2h 03m</td><td>94.8%</td><td>1</td><td><span class="tp-pill ok">Excellent</span></td></tr>
+              <tr><td style="text-align:left">Rizky Pratama</td><td>Jakarta</td><td>285</td><td>2h 11m</td><td>93.1%</td><td>2</td><td><span class="tp-pill ok">Excellent</span></td></tr>
+              <tr><td style="text-align:left">Hendra Wijaya</td><td>Medan</td><td>271</td><td>2h 24m</td><td>90.5%</td><td>3</td><td><span class="tp-pill good">On Target</span></td></tr>
+              <tr><td style="text-align:left">Bayu Nugroho</td><td>Semarang</td><td>264</td><td>2h 18m</td><td>91.7%</td><td>2</td><td><span class="tp-pill good">On Target</span></td></tr>
+              <tr><td style="text-align:left">Fajar Ramadhan</td><td>Bandung</td><td>198</td><td>2h 47m</td><td>88.3%</td><td>5</td><td><span class="tp-pill good">On Target</span></td></tr>
+              <tr><td style="text-align:left">Iwan Setiadi</td><td>Jakarta</td><td>156</td><td>3h 09m</td><td>84.1%</td><td>7</td><td><span class="tp-pill warn">Review</span></td></tr>
+              <tr><td style="text-align:left">Yudi Hartono</td><td>Medan</td><td>92</td><td>3h 41m</td><td>79.6%</td><td>11</td><td><span class="tp-pill bad">Below Target</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px;font-size:.74rem;color:var(--muted)">
+          Menampilkan 8 dari 148 teknisi · data contoh
+        </div>
+      </div>
+    </div><!-- /page-techprod -->
 
     <!-- ══ KPI PAGE ══ -->
     <div class="page" id="page-kpi">
@@ -1460,12 +1638,12 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       </div>
     </div>
 
-    <!-- ══ DATA CONVERTER ══ -->
+    <!-- ══ FILE CONVERTER (File Editor → File Converter) ══ -->
     <div class="page" id="page-converter">
       <!-- Banner -->
       <div class="kpi-banner" style="margin-bottom:20px">
         <div class="kpi-banner-left">
-          <h2>⚙️ Data Converter</h2>
+          <h2>⚙️ File Converter</h2>
           <p>Convert TTR source file → FFG · TTR FFG · FFG GAUL (3-sheet Excel)</p>
         </div>
         <div class="last-update-box" style="text-align:left;min-width:200px">
@@ -1669,12 +1847,12 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
       </div>
     </div><!-- /page-converter -->
 
-    <!-- ══ DATA MERGER ══ -->
+    <!-- ══ FILE MERGER (File Editor → File Merger) ══ -->
     <div class="page" id="page-merger">
       <!-- Banner -->
       <div class="kpi-banner" style="margin-bottom:20px">
         <div class="kpi-banner-left">
-          <h2>🧩 Data Merger</h2>
+          <h2>🧩 File Merger</h2>
           <p>Gabungkan beberapa file CSV / Excel sekaligus menjadi satu file</p>
         </div>
         <div class="last-update-box" style="text-align:left;min-width:200px">
@@ -1901,16 +2079,29 @@ async function fetchJSON(url){
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
-const pageTitles = { home:'Home ID', kpi:'KPI 2025', kpi2026:'KPI 2026', kpidef:'KPI Definition', tracker:'Project Tracker', calendar:'Calendar of Event', converter:'Data Converter', merger:'Data Merger', devprogress:'Dev Progress' };
+const pageTitles = { home:'Home ID Performance', techprod:'Technician Productivity', kpi:'KPI 2025', kpi2026:'KPI 2026', kpidef:'KPI Definition', tracker:'Project Tracker', calendar:'Calendar of Event', converter:'File Converter', merger:'File Merger', devprogress:'Dev Progress' };
+
+// Collapsible sidebar groups: group id → the page ids living inside it.
+// showPage() auto-expands whichever group owns the page being opened, so adding
+// a group means adding one line here rather than another if-branch below.
+const navGroups = {
+  fileedit: ['converter', 'merger'],
+  homeid:   ['home', 'techprod'],
+  kpi:      ['kpi', 'kpi2026', 'kpidef'],
+};
+
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
   const pg=$('page-'+id); if(pg) pg.classList.add('active');
   const nav=$('nav-'+id); if(nav) nav.classList.add('active');
-  // Auto-expand KPI group when a KPI sub-page is active
-  if(id==='kpi'||id==='kpi2026'||id==='kpidef'){
-    $('nav-sub-kpi').classList.add('open');
-    $('nav-grp-kpi').classList.add('expanded');
+  // Auto-expand the group that owns this page
+  for(const grp in navGroups){
+    if(navGroups[grp].includes(id)){
+      const sub = $('nav-sub-'+grp), tog = $('nav-grp-'+grp);
+      if(sub) sub.classList.add('open');
+      if(tog) tog.classList.add('expanded');
+    }
   }
   $('pageTitle').textContent = pageTitles[id] || id;
   closeSidebar();
