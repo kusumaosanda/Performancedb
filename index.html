@@ -292,6 +292,81 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .mrg-col-chip{display:inline-block;background:rgba(42,63,94,.07);border-radius:5px;padding:2px 8px;font-size:.7rem;font-weight:600;color:var(--navy);margin:2px 3px 2px 0;font-family:'Courier New',monospace}
 .mrg-col-chip.extra{background:rgba(212,144,26,.16);color:#92400e}
 
+/* Merge animation — 8 documents orbit inward and fuse into one file.
+   Rebuilt as plain CSS from the reference piece; the original export was a
+   1.1 MB bundle that needed React + Babel from a CDN. One 10s loop, shared by
+   every element: docs 0–43%, merged file 39–95%. */
+.mrg-anim{position:relative;width:104px;height:104px;display:inline-block;line-height:0}
+.mrg-anim-emoji{display:none;font-size:3.5rem;line-height:1}
+.mrg-doc{position:absolute;left:50%;top:50%;width:20px;height:26px;margin:-13px 0 0 -10px;
+  background:#F7F1E3;border-radius:3px;
+  filter:drop-shadow(0 3px 5px rgba(40,30,20,.16));
+  animation:mrg-fly 10s cubic-bezier(.55,0,.35,1) infinite;
+  animation-delay:calc(var(--i) * -.08s);opacity:0}
+.mrg-doc i{position:absolute;left:18%;width:48%;height:1.5px;background:#2E2822;opacity:.2;border-radius:1px}
+.mrg-doc i:nth-child(1){top:42%}
+.mrg-doc i:nth-child(2){top:58%}
+.mrg-doc i:nth-child(3){top:74%}
+@keyframes mrg-fly{
+  0%   {opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(.5)}
+  5%   {opacity:1;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(1)}
+  13%  {opacity:1;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(1)}
+  39%  {opacity:1;transform:translate(0,0) rotate(0deg) scale(.52)}
+  44%  {opacity:0;transform:translate(0,0) rotate(0deg) scale(.42)}
+  100% {opacity:0;transform:translate(0,0) rotate(0deg) scale(.42)}
+}
+.mrg-merged{position:absolute;left:50%;top:50%;width:34px;height:44px;margin:-22px 0 0 -17px;
+  animation:mrg-appear 10s ease-in-out infinite;opacity:0}
+.mrg-merged-in{position:absolute;inset:0;animation:mrg-wiggle 10s ease-in-out infinite}
+.mrg-merged-body{position:absolute;inset:0;background:#F7F1E3;border:2px solid var(--rust);
+  border-radius:5px;box-shadow:0 4px 8px rgba(40,30,20,.2)}
+.mrg-merged-body i{position:absolute;left:16%;width:56%;height:1.5px;background:#2E2822;opacity:.18;border-radius:1px}
+.mrg-merged-body i:nth-child(1){top:34%}
+.mrg-merged-body i:nth-child(2){top:47%}
+.mrg-merged-body i:nth-child(3){top:60%}
+.mrg-merged-body i:nth-child(4){top:73%}
+.mrg-badge{position:absolute;right:-5px;bottom:-5px;width:15px;height:15px;border-radius:50%;
+  background:#1F7A7E;box-shadow:0 2px 4px rgba(40,30,20,.25)}
+.mrg-badge::before,.mrg-badge::after{content:'';position:absolute;background:#F7F1E3;border-radius:1px}
+.mrg-badge::before{left:3.5px;top:7.5px;width:4px;height:1.6px;transform:rotate(45deg)}
+.mrg-badge::after{left:5px;top:6.5px;width:7px;height:1.6px;transform:rotate(-45deg)}
+.mrg-spark{position:absolute;width:7px;height:7px;animation:mrg-spark 10s ease-in-out infinite}
+.mrg-spark::before,.mrg-spark::after{content:'';position:absolute;background:currentColor;border-radius:1px}
+.mrg-spark::before{left:50%;top:0;width:1.8px;height:100%;transform:translateX(-50%)}
+.mrg-spark::after{top:50%;left:0;height:1.8px;width:100%;transform:translateY(-50%)}
+.mrg-spark.s1{left:-7px;top:-8px;color:var(--rust)}
+.mrg-spark.s2{right:-8px;top:-9px;color:#1F7A7E;width:5px;height:5px}
+.mrg-spark.s3{right:-6px;bottom:8px;color:#D4901A;width:6px;height:6px}
+@keyframes mrg-appear{
+  0%,38% {opacity:0;transform:scale(.72)}
+  44%    {opacity:1;transform:scale(1.08)}
+  48%    {opacity:1;transform:scale(1)}
+  88%    {opacity:1;transform:scale(1)}
+  95%    {opacity:0;transform:scale(.9)}
+  100%   {opacity:0;transform:scale(.72)}
+}
+@keyframes mrg-wiggle{
+  0%,61% {transform:rotate(0deg)}
+  64%    {transform:rotate(4deg)}
+  68%    {transform:rotate(-3.5deg)}
+  72%    {transform:rotate(2.5deg)}
+  76%    {transform:rotate(-1.5deg)}
+  80%,100%{transform:rotate(0deg)}
+}
+@keyframes mrg-spark{
+  0%,42% {opacity:0;transform:scale(.3)}
+  48%    {opacity:1;transform:scale(1)}
+  88%    {opacity:1;transform:scale(1)}
+  95%,100%{opacity:0;transform:scale(.4)}
+}
+/* Freeze on the merged frame for users who prefer less motion */
+@media (prefers-reduced-motion:reduce){
+  .mrg-doc{animation:none;opacity:0}
+  .mrg-merged{animation:none;opacity:1;transform:scale(1)}
+  .mrg-merged-in{animation:none}
+  .mrg-spark{animation:none;opacity:1;transform:scale(1)}
+}
+
 /* ── SUMMARY TABLE ───────────────────────────────────────────────────────── */
 .summary-table{width:100%;border-collapse:collapse;font-size:.8rem}
 .summary-table th{background:var(--navy);color:#fff;padding:8px 12px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;position:sticky;top:0}
@@ -1605,8 +1680,6 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         <div class="last-update-box" style="text-align:left;min-width:200px">
           <div class="lu-label">Supported formats</div>
           <div class="lu-val" style="font-size:.78rem">.xlsx · .xls · .csv</div>
-          <div class="lu-label" style="margin-top:6px">Max files</div>
-          <div class="lu-val" style="font-size:.78rem">10 files</div>
         </div>
       </div>
 
@@ -1614,12 +1687,33 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
         <!-- Step 1 — Upload -->
         <div>
           <div class="card" style="padding:0;overflow:hidden">
-            <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0">Step 1 — Upload Files (max 10)</div>
+            <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0">Step 1 — Upload Files (max 15)</div>
             <div style="padding:20px">
               <div class="conv-drop-zone" id="mrgDropZone"
                 ondragover="mrgDragOver(event)" ondragleave="mrgDragLeave(event)" ondrop="mrgDrop(event)"
                 onclick="document.getElementById('mrgFileInput').click()">
-                <span class="conv-drop-icon" id="mrgDropIcon">🧩</span>
+                <span class="conv-drop-icon" id="mrgDropIcon">
+                  <span class="mrg-anim-emoji" id="mrgDropEmoji"></span>
+                  <span class="mrg-anim" id="mrgDropAnim">
+                    <span class="mrg-doc" style="--i:0;--dx:0px;--dy:-34px;--rot:8deg;border:1.5px solid #C4522A"><i></i><i></i><i></i></span>
+                    <span class="mrg-doc" style="--i:1;--dx:24px;--dy:-24px;--rot:-11deg;border:1.5px solid #1F7A7E"><i></i><i></i><i></i></span>
+                    <span class="mrg-doc" style="--i:2;--dx:34px;--dy:0px;--rot:14deg;border:1.5px solid #D4901A"><i></i><i></i><i></i></span>
+                    <span class="mrg-doc" style="--i:3;--dx:24px;--dy:24px;--rot:-17deg;border:1.5px solid #C4522A"><i></i><i></i><i></i></span>
+                    <span class="mrg-doc" style="--i:4;--dx:0px;--dy:34px;--rot:8deg;border:1.5px solid #1F7A7E"><i></i><i></i><i></i></span>
+                    <span class="mrg-doc" style="--i:5;--dx:-24px;--dy:24px;--rot:-11deg;border:1.5px solid #D4901A"><i></i><i></i><i></i></span>
+                    <span class="mrg-doc" style="--i:6;--dx:-34px;--dy:0px;--rot:14deg;border:1.5px solid #C4522A"><i></i><i></i><i></i></span>
+                    <span class="mrg-doc" style="--i:7;--dx:-24px;--dy:-24px;--rot:-17deg;border:1.5px solid #1F7A7E"><i></i><i></i><i></i></span>
+                    <span class="mrg-merged">
+                      <span class="mrg-merged-in">
+                        <span class="mrg-merged-body"><i></i><i></i><i></i><i></i></span>
+                        <span class="mrg-badge"></span>
+                        <span class="mrg-spark s1"></span>
+                        <span class="mrg-spark s2"></span>
+                        <span class="mrg-spark s3"></span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
                 <div id="mrgDropLabel" style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:6px">Drop your files here</div>
                 <div id="mrgDropSub" style="font-size:.8rem;color:var(--muted);margin-bottom:16px">atau klik untuk pilih file — bisa pilih banyak sekaligus</div>
                 <button class="conv-upload-btn" onclick="event.stopPropagation();document.getElementById('mrgFileInput').click()">📁 Choose Files</button>
@@ -4206,7 +4300,7 @@ function _convReset(){
 }
 
 // ─── DATA MERGER ──────────────────────────────────────────────────────────────
-const MRG_MAX_FILES = 10;
+const MRG_MAX_FILES = 15;
 const MRG_XLSX_ROW_LIMIT = 1048575;   // Excel's hard cap, minus the header row
 let _mrgFiles  = [];    // [{name, ext, size, rows, headers, error}]
 let _mrgResult = null;  // {headers, rows}
@@ -4220,6 +4314,21 @@ function mrgDrop(e){
 function mrgFilesChosen(inp){
   if(inp.files.length) _mrgAddFiles(Array.from(inp.files));
   inp.value = '';   // so re-picking the same file still fires onchange
+}
+
+/* Swap the drop-zone icon. 'anim' shows the looping merge animation; any other
+   value is rendered as an emoji. Never touch mrgDropIcon.textContent directly —
+   that would wipe the animation's DOM. */
+function _mrgIconState(state){
+  const anim = $('mrgDropAnim'), emoji = $('mrgDropEmoji');
+  if(state === 'anim'){
+    emoji.style.display = 'none';
+    anim.style.display  = 'inline-block';
+  } else {
+    anim.style.display  = 'none';
+    emoji.style.display = 'inline-block';
+    emoji.textContent   = state;
+  }
 }
 
 function _mrgShowErr(msg){
@@ -4322,12 +4431,12 @@ function _mrgRenderList(){
   // Drop-zone summary line
   if(_mrgFiles.length){
     $('mrgDropZone').classList.add('has-file');
-    $('mrgDropIcon').textContent = '📚';
+    _mrgIconState('📚');
     $('mrgDropLabel').textContent = `${_mrgFiles.length} file dipilih`;
     $('mrgDropSub').textContent = `Klik untuk menambah — sisa ${MRG_MAX_FILES - _mrgFiles.length} slot`;
   } else {
     $('mrgDropZone').classList.remove('has-file');
-    $('mrgDropIcon').textContent = '🧩';
+    _mrgIconState('anim');
     $('mrgDropLabel').textContent = 'Drop your files here';
     $('mrgDropSub').textContent = 'atau klik untuk pilih file — bisa pilih banyak sekaligus';
   }
