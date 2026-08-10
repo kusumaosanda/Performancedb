@@ -2095,14 +2095,11 @@ function showPage(id){
   document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
   const pg=$('page-'+id); if(pg) pg.classList.add('active');
   const nav=$('nav-'+id); if(nav) nav.classList.add('active');
-  // Auto-expand the group that owns this page
-  for(const grp in navGroups){
-    if(navGroups[grp].includes(id)){
-      const sub = $('nav-sub-'+grp), tog = $('nav-grp-'+grp);
-      if(sub) sub.classList.add('open');
-      if(tog) tog.classList.add('expanded');
-    }
-  }
+  // Auto-expand the group that owns this page (and collapse the rest).
+  // Pages that live outside any group — Calendar, Project Tracker — leave the
+  // sidebar as it is; collapsing on every click would be needlessly jumpy.
+  const owner = Object.keys(navGroups).find(g => navGroups[g].includes(id));
+  if(owner) openNavGroup(owner);
   $('pageTitle').textContent = pageTitles[id] || id;
   closeSidebar();
   if(id==='devprogress') renderDevProgress();
@@ -2114,9 +2111,23 @@ function showKpiDefTab(tab, btn){
   document.querySelectorAll('.kpidef-tabs .dur-pkg-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
 }
+/* Accordion: at most one sidebar group is expanded at a time.
+   Pass null to collapse every group. */
+function openNavGroup(id){
+  for(const grp in navGroups){
+    const sub = $('nav-sub-'+grp), tog = $('nav-grp-'+grp);
+    if(!sub || !tog) continue;
+    const on = (grp === id);
+    sub.classList.toggle('open', on);
+    tog.classList.toggle('expanded', on);
+  }
+}
+
 function toggleNavGroup(id){
-  $('nav-sub-'+id).classList.toggle('open');
-  $('nav-grp-'+id).classList.toggle('expanded');
+  // Clicking the group that is already open collapses it; clicking any other
+  // opens it and closes whichever one was open.
+  const alreadyOpen = $('nav-sub-'+id).classList.contains('open');
+  openNavGroup(alreadyOpen ? null : id);
 }
 function toggleSidebar(){ $('sidebar').classList.toggle('open'); $('overlay').classList.toggle('show'); }
 function closeSidebar(){ $('sidebar').classList.remove('open'); $('overlay').classList.remove('show'); }
