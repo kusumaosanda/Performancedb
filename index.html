@@ -277,23 +277,12 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .tp-stat-sub{font-size:.72rem;font-weight:700;margin-top:3px}
 .tp-up{color:#166534}
 .tp-dn{color:#991b1b}
-.tp-rank{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
-.tp-rank:last-child{border-bottom:none}
-.tp-medal{font-size:1.1rem;width:22px;text-align:center;font-weight:800;color:var(--muted);flex-shrink:0}
-.tp-rank-meta{flex:1;min-width:0}
-.tp-rank-name{font-size:.84rem;font-weight:700;color:var(--navy)}
-.tp-rank-sub{font-size:.71rem;color:var(--muted);margin-top:1px}
-.tp-rank-val{font-size:1rem;font-weight:800;color:var(--teal);flex-shrink:0}
-.tp-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
-.tp-bar-lbl{font-size:.73rem;color:var(--muted);width:74px;flex-shrink:0;font-weight:600}
-.tp-bar{flex:1;height:9px;background:rgba(42,63,94,.07);border-radius:99px;overflow:hidden}
-.tp-bar span{display:block;height:100%;border-radius:99px}
-.tp-bar-n{font-size:.75rem;font-weight:800;color:var(--navy);width:26px;text-align:right;flex-shrink:0}
-.tp-pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.68rem;font-weight:800;white-space:nowrap}
-.tp-pill.ok{background:#d1fae5;color:#065f46}
-.tp-pill.good{background:rgba(42,63,94,.1);color:var(--navy)}
-.tp-pill.warn{background:rgba(212,144,26,.18);color:#92400e}
-.tp-pill.bad{background:#fee2e2;color:#991b1b}
+.tp-sun{color:var(--muted);font-size:.68rem;font-weight:700;margin-left:5px}
+.tp-flag{display:inline-block;width:14px;height:14px;line-height:14px;border-radius:50%;
+  background:rgba(212,144,26,.25);color:#92400e;font-size:.62rem;font-weight:900;text-align:center;
+  margin-left:4px;vertical-align:middle;cursor:help}
+#tp-tbl td.tp-num{text-align:center;font-variant-numeric:tabular-nums}
+#tp-tbl tr.tp-weekend td{background:rgba(42,63,94,.035)}
 @media (max-width:900px){.tp-stats{grid-template-columns:repeat(2,1fr)}}
 
 /* ── DATA MERGER ────────────────────────────────────────────────────────────── */
@@ -775,10 +764,17 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
     </div>
 
     <!-- ══ TECHNICIAN PRODUCTIVITY (Home ID → Technician Productivity) ══
-         MOCKUP ONLY. Every number below is hardcoded placeholder data — this
-         page is not wired to update_dashboard.py and no JSON feeds it yet.
-         When real data arrives, replace the static <tbody> and the stat tiles
-         with a render function fed from data/, the way renderHomeIDPage() does. -->
+         Data grain: one row per DATE × STO. There are no per-technician rows
+         and no names — every figure is a daily aggregate.
+         Columns from the source workbook (Sheet1):
+           Jumlah Teknisi  total headcount
+           Rooster         how many were scheduled that day
+           Teknisi Masuk   how many actually turned up
+           RE              orders raised
+           PS              installations completed
+         TECHPROD_DATA below is still the SAMPLE extract (2026-08-01..10, STO
+         Nas + MJP). To go live, replace it with a fetch of a JSON file written
+         by update_dashboard.py — renderTechProd() needs no other change. -->
     <div class="page" id="page-techprod">
 
       <!-- Banner -->
@@ -787,125 +783,83 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
           <div class="hid-banner-icon">🔧</div>
           <div>
             <div class="hid-banner-title">Technician Productivity</div>
-            <div class="hid-banner-sub">Output &amp; efficiency per technician</div>
+            <div class="hid-banner-sub">Ketersediaan teknisi &amp; output harian</div>
           </div>
         </div>
         <div class="hid-banner-stats">
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Technicians</div><div class="hid-bs-val">148</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Avg / Day</div><div class="hid-bs-val">4.2</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Utilization</div><div class="hid-bs-val">87%</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Periode</div><div class="hid-bs-val" id="tp-bn-periode" style="font-size:.9rem">—</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Total PS</div><div class="hid-bs-val" id="tp-bn-ps">—</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">PS / Teknisi</div><div class="hid-bs-val" id="tp-bn-prod">—</div></div>
         </div>
       </div>
 
-      <!-- Mockup notice -->
-      <div style="margin-bottom:16px;padding:12px 16px;background:#fffbeb;border:1.5px solid #fcd34d;
-                  border-radius:10px;font-size:.82rem;color:#92400e;line-height:1.6">
-        <strong>🚧 Halaman mockup</strong> — semua angka di bawah ini masih data contoh, belum terhubung
-        ke pipeline data. Struktur dan tampilannya sudah final, tinggal disambungkan ke sumber data
-        yang sesungguhnya.
+      <!-- Data-source notice -->
+      <div id="tp-notice" style="margin-bottom:16px;padding:11px 16px;background:#fffbeb;border:1.5px solid #fcd34d;
+                  border-radius:10px;font-size:.79rem;color:#92400e;line-height:1.6">
+        <strong>📄 Data contoh</strong> — halaman ini masih memakai ekstrak dari
+        <code style="background:rgba(146,64,14,.1);padding:1px 5px;border-radius:4px">data_teknisi.xlsx</code>
+        (1–10 Agustus 2026, STO Nas &amp; MJP) dan belum tersambung ke pipeline harian.
       </div>
 
-      <!-- Stat tiles -->
+      <!-- Filter -->
+      <div class="tree-filter-bar" style="margin-bottom:16px">
+        <div class="filter-group">
+          <label>STO</label>
+          <select id="tp-sto" onchange="renderTechProd()"></select>
+        </div>
+        <div class="filter-group">
+          <label>Tampilkan</label>
+          <select id="tp-metric" onchange="renderTechProd()">
+            <option value="output">Output — RE vs PS</option>
+            <option value="tenaga">Tenaga kerja — Roster vs Masuk</option>
+          </select>
+        </div>
+        <div style="margin-left:auto;font-size:.74rem;color:var(--muted);align-self:flex-end;padding-bottom:6px"
+             id="tp-range">—</div>
+      </div>
+
+      <!-- KPI tiles -->
       <div class="tp-stats">
         <div class="tp-stat">
-          <div class="tp-stat-lbl">Total Work Orders</div>
-          <div class="tp-stat-val">6,284</div>
-          <div class="tp-stat-sub tp-up">▲ 8.3% vs bulan lalu</div>
+          <div class="tp-stat-lbl">Teknisi Aktif</div>
+          <div class="tp-stat-val" id="tp-k-teknisi">—</div>
+          <div class="tp-stat-sub" id="tp-k-teknisi-sub">&nbsp;</div>
         </div>
         <div class="tp-stat">
-          <div class="tp-stat-lbl">Avg Completion Time</div>
-          <div class="tp-stat-val">2h 14m</div>
-          <div class="tp-stat-sub tp-up">▼ 11m lebih cepat</div>
+          <div class="tp-stat-lbl">Roster Rate</div>
+          <div class="tp-stat-val" id="tp-k-roster">—</div>
+          <div class="tp-stat-sub" id="tp-k-roster-sub">&nbsp;</div>
         </div>
         <div class="tp-stat">
-          <div class="tp-stat-lbl">First-Time Fix Rate</div>
-          <div class="tp-stat-val">91.4%</div>
-          <div class="tp-stat-sub tp-dn">▼ 1.2% vs bulan lalu</div>
+          <div class="tp-stat-lbl">Kehadiran</div>
+          <div class="tp-stat-val" id="tp-k-hadir">—</div>
+          <div class="tp-stat-sub" id="tp-k-hadir-sub">&nbsp;</div>
         </div>
         <div class="tp-stat">
-          <div class="tp-stat-lbl">Overdue Tickets</div>
-          <div class="tp-stat-val">37</div>
-          <div class="tp-stat-sub tp-dn">▲ 6 dari bulan lalu</div>
+          <div class="tp-stat-lbl">PS per Teknisi</div>
+          <div class="tp-stat-val" id="tp-k-prod">—</div>
+          <div class="tp-stat-sub" id="tp-k-prod-sub">&nbsp;</div>
         </div>
       </div>
 
-      <div class="grid-2" style="gap:20px;margin-bottom:20px">
-        <!-- Leaderboard -->
-        <div class="card" style="padding:0;overflow:hidden">
-          <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0">Top Performer</div>
-          <div style="padding:16px 18px">
-            <div class="tp-rank"><span class="tp-medal">🥇</span>
-              <div class="tp-rank-meta"><div class="tp-rank-name">Agus Setiawan</div><div class="tp-rank-sub">Bandung · TTI</div></div>
-              <div class="tp-rank-val">312</div>
-            </div>
-            <div class="tp-rank"><span class="tp-medal">🥈</span>
-              <div class="tp-rank-meta"><div class="tp-rank-name">Dedi Kurniawan</div><div class="tp-rank-sub">Surabaya · FFG</div></div>
-              <div class="tp-rank-val">297</div>
-            </div>
-            <div class="tp-rank"><span class="tp-medal">🥉</span>
-              <div class="tp-rank-meta"><div class="tp-rank-name">Rizky Pratama</div><div class="tp-rank-sub">Jakarta · TTI</div></div>
-              <div class="tp-rank-val">285</div>
-            </div>
-            <div class="tp-rank"><span class="tp-medal" style="opacity:.35">4</span>
-              <div class="tp-rank-meta"><div class="tp-rank-name">Hendra Wijaya</div><div class="tp-rank-sub">Medan · PS-RE</div></div>
-              <div class="tp-rank-val">271</div>
-            </div>
-            <div class="tp-rank"><span class="tp-medal" style="opacity:.35">5</span>
-              <div class="tp-rank-meta"><div class="tp-rank-name">Bayu Nugroho</div><div class="tp-rank-sub">Semarang · FFG</div></div>
-              <div class="tp-rank-val">264</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Distribution -->
-        <div class="card" style="padding:0;overflow:hidden">
-          <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0">Sebaran Produktivitas</div>
-          <div style="padding:18px">
-            <div class="tp-bar-row"><span class="tp-bar-lbl">&gt; 250 WO</span>
-              <div class="tp-bar"><span style="width:18%;background:#1a5c36"></span></div><span class="tp-bar-n">27</span></div>
-            <div class="tp-bar-row"><span class="tp-bar-lbl">200–250</span>
-              <div class="tp-bar"><span style="width:31%;background:#2f7d4f"></span></div><span class="tp-bar-n">46</span></div>
-            <div class="tp-bar-row"><span class="tp-bar-lbl">150–200</span>
-              <div class="tp-bar"><span style="width:26%;background:#C4522A"></span></div><span class="tp-bar-n">38</span></div>
-            <div class="tp-bar-row"><span class="tp-bar-lbl">100–150</span>
-              <div class="tp-bar"><span style="width:16%;background:#D4901A"></span></div><span class="tp-bar-n">24</span></div>
-            <div class="tp-bar-row"><span class="tp-bar-lbl">&lt; 100 WO</span>
-              <div class="tp-bar"><span style="width:9%;background:#991b1b"></span></div><span class="tp-bar-n">13</span></div>
-            <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);
-                        font-size:.74rem;color:var(--muted);line-height:1.6">
-              Median <strong style="color:var(--navy)">187 WO</strong> per teknisi ·
-              13 teknisi di bawah ambang batas dan perlu ditinjau.
-            </div>
-          </div>
-        </div>
+      <!-- Chart -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="ref-summary-header" style="margin-bottom:14px" id="tp-chart-title">Tren Harian</div>
+        <div style="height:300px"><canvas id="ch_techprod"></canvas></div>
       </div>
 
       <!-- Detail table -->
       <div class="card">
-        <div class="ref-summary-header" style="margin-bottom:14px">Detail per Teknisi</div>
+        <div class="ref-summary-header" style="margin-bottom:14px">Detail Harian</div>
         <div style="overflow-x:auto">
-          <table class="hid-area-tbl">
-            <thead>
-              <tr>
-                <th style="text-align:left">Teknisi</th>
-                <th>Area</th><th>Work Orders</th><th>Avg Time</th>
-                <th>First-Time Fix</th><th>Overdue</th><th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td style="text-align:left">Agus Setiawan</td><td>Bandung</td><td>312</td><td>1h 52m</td><td>96.2%</td><td>0</td><td><span class="tp-pill ok">Excellent</span></td></tr>
-              <tr><td style="text-align:left">Dedi Kurniawan</td><td>Surabaya</td><td>297</td><td>2h 03m</td><td>94.8%</td><td>1</td><td><span class="tp-pill ok">Excellent</span></td></tr>
-              <tr><td style="text-align:left">Rizky Pratama</td><td>Jakarta</td><td>285</td><td>2h 11m</td><td>93.1%</td><td>2</td><td><span class="tp-pill ok">Excellent</span></td></tr>
-              <tr><td style="text-align:left">Hendra Wijaya</td><td>Medan</td><td>271</td><td>2h 24m</td><td>90.5%</td><td>3</td><td><span class="tp-pill good">On Target</span></td></tr>
-              <tr><td style="text-align:left">Bayu Nugroho</td><td>Semarang</td><td>264</td><td>2h 18m</td><td>91.7%</td><td>2</td><td><span class="tp-pill good">On Target</span></td></tr>
-              <tr><td style="text-align:left">Fajar Ramadhan</td><td>Bandung</td><td>198</td><td>2h 47m</td><td>88.3%</td><td>5</td><td><span class="tp-pill good">On Target</span></td></tr>
-              <tr><td style="text-align:left">Iwan Setiadi</td><td>Jakarta</td><td>156</td><td>3h 09m</td><td>84.1%</td><td>7</td><td><span class="tp-pill warn">Review</span></td></tr>
-              <tr><td style="text-align:left">Yudi Hartono</td><td>Medan</td><td>92</td><td>3h 41m</td><td>79.6%</td><td>11</td><td><span class="tp-pill bad">Below Target</span></td></tr>
-            </tbody>
-          </table>
+          <table class="hid-area-tbl" id="tp-tbl"></table>
         </div>
-        <div style="margin-top:12px;font-size:.74rem;color:var(--muted)">
-          Menampilkan 8 dari 148 teknisi · data contoh
+        <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.7">
+          <strong>Roster Rate</strong> = Rooster ÷ Jumlah Teknisi ·
+          <strong>Kehadiran</strong> = Teknisi Masuk ÷ Rooster ·
+          <strong>PS/Teknisi</strong> = PS ÷ Teknisi Masuk<br>
+          Sel bertanda <span class="tp-flag">!</span> melebihi 100% — teknisi yang masuk lebih banyak
+          daripada yang dijadwalkan, atau PS hari itu menyelesaikan order dari hari sebelumnya.
         </div>
       </div>
     </div><!-- /page-techprod -->
@@ -2104,6 +2058,7 @@ function showPage(id){
   closeSidebar();
   if(id==='devprogress') renderDevProgress();
   if(id==='calendar') calRender();
+  if(id==='techprod') renderTechProd();
 }
 function showKpiDefTab(tab, btn){
   document.querySelectorAll('.kpidef-tab').forEach(el=>el.style.display='none');
@@ -4499,6 +4454,144 @@ function _convReset(){
   $('convDropLabel').textContent = 'Drop your TTR file here';
   $('convDropSub').textContent = 'or click to browse your files';
   _convData = null; _convResult = null;
+}
+
+// ─── TECHNICIAN PRODUCTIVITY ──────────────────────────────────────────────────
+// Sample extract from data_teknisi.xlsx (Sheet1). One row per date × STO —
+// there are no per-technician rows and no names anywhere in the source.
+// Swap this constant for a fetch() of a pipeline-written JSON when one exists;
+// renderTechProd() reads nothing else.
+const TECHPROD_DATA = [
+{"tanggal":"2026-08-01","sto":"Nas","teknisi":6855,"rooster":5483,"masuk":4635,"re":6473,"ps":4806},
+{"tanggal":"2026-08-02","sto":"Nas","teknisi":6895,"rooster":4136,"masuk":4034,"re":4659,"ps":3972},
+{"tanggal":"2026-08-03","sto":"Nas","teknisi":6929,"rooster":5543,"masuk":5112,"re":7198,"ps":5469},
+{"tanggal":"2026-08-04","sto":"Nas","teknisi":6938,"rooster":5551,"masuk":5251,"re":6553,"ps":5683},
+{"tanggal":"2026-08-05","sto":"Nas","teknisi":7001,"rooster":5601,"masuk":5295,"re":6205,"ps":5252},
+{"tanggal":"2026-08-06","sto":"Nas","teknisi":7035,"rooster":5628,"masuk":5272,"re":6114,"ps":5096},
+{"tanggal":"2026-08-07","sto":"Nas","teknisi":7019,"rooster":5616,"masuk":5180,"re":5875,"ps":4578},
+{"tanggal":"2026-08-08","sto":"Nas","teknisi":7014,"rooster":5611,"masuk":4767,"re":5228,"ps":5040},
+{"tanggal":"2026-08-09","sto":"Nas","teknisi":6966,"rooster":4180,"masuk":4226,"re":4115,"ps":3645},
+{"tanggal":"2026-08-10","sto":"Nas","teknisi":6999,"rooster":5600,"masuk":5221,"re":6178,"ps":4956},
+{"tanggal":"2026-08-01","sto":"MJP","teknisi":11,"rooster":9,"masuk":8,"re":11,"ps":15},
+{"tanggal":"2026-08-02","sto":"MJP","teknisi":11,"rooster":7,"masuk":7,"re":10,"ps":11},
+{"tanggal":"2026-08-03","sto":"MJP","teknisi":11,"rooster":9,"masuk":9,"re":18,"ps":11},
+{"tanggal":"2026-08-04","sto":"MJP","teknisi":11,"rooster":9,"masuk":8,"re":9,"ps":11},
+{"tanggal":"2026-08-05","sto":"MJP","teknisi":11,"rooster":9,"masuk":9,"re":20,"ps":14},
+{"tanggal":"2026-08-06","sto":"MJP","teknisi":11,"rooster":9,"masuk":10,"re":18,"ps":13},
+{"tanggal":"2026-08-07","sto":"MJP","teknisi":11,"rooster":9,"masuk":8,"re":14,"ps":15},
+{"tanggal":"2026-08-08","sto":"MJP","teknisi":11,"rooster":9,"masuk":8,"re":9,"ps":11},
+{"tanggal":"2026-08-09","sto":"MJP","teknisi":11,"rooster":7,"masuk":8,"re":13,"ps":13},
+{"tanggal":"2026-08-10","sto":"MJP","teknisi":11,"rooster":9,"masuk":9,"re":13,"ps":10}
+];
+
+const TP_HARI = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+function _tpDate(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function _tpPct(a,b){ return b ? (a/b*100) : null; }
+function _tpFmtPct(v){ return v==null ? '—' : v.toFixed(1)+'%'; }
+
+/* A ratio above 100% is real data, not an error — more technicians turned up
+   than were rostered, or the day's PS cleared orders raised earlier. Mark it
+   rather than hiding it. */
+function _tpCell(v, flagOver100){
+  if(v==null) return '<td class="tp-num">—</td>';
+  const over = flagOver100 && v > 100;
+  return `<td class="tp-num">${v.toFixed(1)}%${over
+    ? '<span class="tp-flag" title="Melebihi 100% — lihat catatan di bawah tabel">!</span>' : ''}</td>`;
+}
+
+function renderTechProd(){
+  const selEl = $('tp-sto');
+  const stos = [...new Set(TECHPROD_DATA.map(r=>r.sto))];
+  if(!selEl.options.length){
+    selEl.innerHTML = stos.map(s=>`<option value="${s}">${s==='Nas'?'Nas (Nasional)':s}</option>`).join('');
+  }
+  const sto  = selEl.value || stos[0];
+  const mode = $('tp-metric').value;
+
+  const rows = TECHPROD_DATA.filter(r=>r.sto===sto)
+                            .sort((a,b)=>a.tanggal.localeCompare(b.tanggal));
+  if(!rows.length) return;
+
+  const sum = k => rows.reduce((t,r)=>t+r[k],0);
+  const totPs = sum('ps'), totRe = sum('re'), totMasuk = sum('masuk');
+  const avgTeknisi = Math.round(sum('teknisi')/rows.length);
+  const rosterRate = _tpPct(sum('rooster'), sum('teknisi'));
+  const hadirRate  = _tpPct(totMasuk, sum('rooster'));
+  const prod       = totMasuk ? totPs/totMasuk : 0;
+
+  // Banner + tiles
+  const d0 = _tpDate(rows[0].tanggal), d1 = _tpDate(rows[rows.length-1].tanggal);
+  const fmtD = d => d.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
+  $('tp-bn-periode').textContent = `${fmtD(d0)} – ${fmtD(d1)}`;
+  $('tp-bn-ps').textContent   = totPs.toLocaleString('id-ID');
+  $('tp-bn-prod').textContent = prod.toFixed(2);
+  $('tp-range').textContent   = `${rows.length} hari · ${fmtD(d0)} – ${fmtD(d1)} ${d1.getFullYear()}`;
+
+  $('tp-k-teknisi').textContent     = avgTeknisi.toLocaleString('id-ID');
+  $('tp-k-teknisi-sub').textContent = 'rata-rata headcount';
+  $('tp-k-roster').textContent      = _tpFmtPct(rosterRate);
+  $('tp-k-roster-sub').textContent  = `${sum('rooster').toLocaleString('id-ID')} dari ${sum('teknisi').toLocaleString('id-ID')} hari-orang`;
+  $('tp-k-hadir').textContent       = _tpFmtPct(hadirRate);
+  $('tp-k-hadir-sub').textContent   = `${totMasuk.toLocaleString('id-ID')} hadir dari jadwal`;
+  $('tp-k-prod').textContent        = prod.toFixed(2);
+  $('tp-k-prod-sub').textContent    = `${totPs.toLocaleString('id-ID')} PS · ${_tpFmtPct(_tpPct(totPs,totRe))} dari RE`;
+
+  const hadirEl = $('tp-k-hadir-sub');
+  hadirEl.className = 'tp-stat-sub ' + (hadirRate>=95?'tp-up':hadirRate>=85?'':'tp-dn');
+
+  // Chart
+  const labels = rows.map(r=>{ const d=_tpDate(r.tanggal); return `${TP_HARI[d.getDay()]} ${d.getDate()}`; });
+  const isOutput = mode==='output';
+  $('tp-chart-title').textContent = isOutput
+    ? 'Tren Harian — RE (order masuk) vs PS (terpasang)'
+    : 'Tren Harian — Roster (dijadwalkan) vs Teknisi Masuk';
+
+  const ds = isOutput
+    ? [{label:'RE', data:rows.map(r=>r.re), borderColor:'#2A3F5E', backgroundColor:'#2A3F5E18'},
+       {label:'PS', data:rows.map(r=>r.ps), borderColor:'#C4522A', backgroundColor:'#C4522A18'}]
+    : [{label:'Rooster',       data:rows.map(r=>r.rooster), borderColor:'#2A3F5E', backgroundColor:'#2A3F5E18'},
+       {label:'Teknisi Masuk', data:rows.map(r=>r.masuk),   borderColor:'#1F7A7E', backgroundColor:'#1F7A7E18'}];
+
+  const cv = $('ch_techprod');
+  if(cv){
+    if(chartInstances.techprod) chartInstances.techprod.destroy();
+    chartInstances.techprod = new Chart(cv,{
+      type:'line',
+      data:{labels, datasets: ds.map(d=>({...d, borderWidth:2.5, tension:.35, pointRadius:5, pointHoverRadius:8, fill:true}))},
+      options:{responsive:true, maintainAspectRatio:false,
+        plugins:{
+          legend:{position:'top', labels:{font:{size:11}, padding:14}},
+          tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString('id-ID')}`}},
+          datalabels:{display:false}
+        },
+        scales:{y:{beginAtZero:false, ticks:{callback:v=>v.toLocaleString('id-ID')}, grid:{color:'#f0ebe3'}},
+                x:{grid:{display:false}}}}});
+  }
+
+  // Table
+  $('tp-tbl').innerHTML = `
+    <thead><tr>
+      <th style="text-align:left">Tanggal</th>
+      <th>Teknisi</th><th>Rooster</th><th>Masuk</th>
+      <th>Roster Rate</th><th>Kehadiran</th>
+      <th>RE</th><th>PS</th><th>PS/Teknisi</th><th>PS/RE</th>
+    </tr></thead>
+    <tbody>${rows.map(r=>{
+      const d = _tpDate(r.tanggal), minggu = d.getDay()===0;
+      return `<tr class="${minggu?'tp-weekend':''}">
+        <td style="text-align:left">${d.getDate()}/${d.getMonth()+1}
+          <span class="tp-sun">${TP_HARI[d.getDay()]}</span></td>
+        <td class="tp-num">${r.teknisi.toLocaleString('id-ID')}</td>
+        <td class="tp-num">${r.rooster.toLocaleString('id-ID')}</td>
+        <td class="tp-num">${r.masuk.toLocaleString('id-ID')}</td>
+        ${_tpCell(_tpPct(r.rooster,r.teknisi), false)}
+        ${_tpCell(_tpPct(r.masuk,r.rooster), true)}
+        <td class="tp-num">${r.re.toLocaleString('id-ID')}</td>
+        <td class="tp-num">${r.ps.toLocaleString('id-ID')}</td>
+        <td class="tp-num">${(r.ps/r.masuk).toFixed(2)}</td>
+        ${_tpCell(_tpPct(r.ps,r.re), true)}
+      </tr>`;
+    }).join('')}</tbody>`;
 }
 
 // ─── DATA MERGER ──────────────────────────────────────────────────────────────
