@@ -764,102 +764,113 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
     </div>
 
     <!-- ══ TECHNICIAN PRODUCTIVITY (Home ID → Technician Productivity) ══
-         Data grain: one row per DATE × STO. There are no per-technician rows
-         and no names — every figure is a daily aggregate.
-         Columns from the source workbook (Sheet1):
-           Jumlah Teknisi  total headcount
-           Rooster         how many were scheduled that day
-           Teknisi Masuk   how many actually turned up
-           RE              orders raised
-           PS              installations completed
-         TECHPROD_DATA below is still the SAMPLE extract (2026-08-01..10, STO
-         Nas + MJP). To go live, replace it with a fetch of a JSON file written
-         by update_dashboard.py — renderTechProd() needs no other change. -->
+         Metric, as defined by the owner's Excel pivot (CHIEF_CODE on rows,
+         C_STATUSDATE on columns, count of orders in the cells):
+
+             produktivitas harian  = order hari itu ÷ CHIEF_CODE unik hari itu
+             angka nasional        = rata-rata dari produktivitas harian
+
+         Rows with a blank CHIEF_CODE are excluded — Excel's pivot drops them,
+         and including them shifted the national figure from 1.6503 to 1.6528.
+         Reproduced against the owner's sheet: day 01 matched to six decimals
+         (1.689873 vs 1.689873418), national to 1.6502755 vs 1.6502943.
+
+         TP_DATA holds pre-aggregated counts only (order + distinct-chief per
+         day per regional). The source CSV is per-order and carries customer
+         SERVICENUMs — those must never reach this public repo, so aggregation
+         happens offline and only the counts are embedded here. -->
     <div class="page" id="page-techprod">
 
-      <!-- Banner -->
       <div class="hid-page-banner">
         <div style="display:flex;align-items:center;gap:14px">
           <div class="hid-banner-icon">🔧</div>
           <div>
             <div class="hid-banner-title">Technician Productivity</div>
-            <div class="hid-banner-sub">Ketersediaan teknisi &amp; output harian</div>
+            <div class="hid-banner-sub">Order per teknisi per hari</div>
           </div>
         </div>
         <div class="hid-banner-stats">
           <div class="hid-banner-stat"><div class="hid-bs-lbl">Periode</div><div class="hid-bs-val" id="tp-bn-periode" style="font-size:.9rem">—</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Total PS</div><div class="hid-bs-val" id="tp-bn-ps">—</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">PS / Teknisi</div><div class="hid-bs-val" id="tp-bn-prod">—</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Produktivitas</div><div class="hid-bs-val" id="tp-bn-prod">—</div></div>
+          <div class="hid-banner-stat"><div class="hid-bs-lbl">Total Order</div><div class="hid-bs-val" id="tp-bn-order">—</div></div>
         </div>
       </div>
 
-      <!-- Data-source notice -->
       <div id="tp-notice" style="margin-bottom:16px;padding:11px 16px;background:#fffbeb;border:1.5px solid #fcd34d;
                   border-radius:10px;font-size:.79rem;color:#92400e;line-height:1.6">
-        <strong>📄 Data contoh</strong> — halaman ini masih memakai ekstrak dari
-        <code style="background:rgba(146,64,14,.1);padding:1px 5px;border-radius:4px">data_teknisi.xlsx</code>
-        (1–10 Agustus 2026, STO Nas &amp; MJP) dan belum tersambung ke pipeline harian.
+        <strong>📄 Data contoh</strong> — ekstrak dari
+        <code style="background:rgba(146,64,14,.1);padding:1px 5px;border-radius:4px">produktivitas_teknisi.csv</code>
+        (1–10 Agustus 2026, 48.429 order). Belum tersambung ke pipeline harian.
       </div>
 
-      <!-- Filter -->
       <div class="tree-filter-bar" style="margin-bottom:16px">
         <div class="filter-group">
-          <label>STO</label>
-          <select id="tp-sto" onchange="renderTechProd()"></select>
+          <label>Level</label>
+          <select id="tp-level" onchange="renderTechProd()"></select>
         </div>
         <div class="filter-group">
-          <label>Tampilkan</label>
-          <select id="tp-metric" onchange="renderTechProd()">
-            <option value="output">Output — RE vs PS</option>
-            <option value="tenaga">Tenaga kerja — Roster vs Masuk</option>
+          <label>Jenis Order</label>
+          <select id="tp-variant" onchange="renderTechProd()">
+            <option value="ALL">ALL — semua order</option>
+            <option value="HPID">HOMEPASSID</option>
+            <option value="REG">Reguler — tanpa HOMEPASSID</option>
           </select>
         </div>
         <div style="margin-left:auto;font-size:.74rem;color:var(--muted);align-self:flex-end;padding-bottom:6px"
              id="tp-range">—</div>
       </div>
 
-      <!-- KPI tiles -->
       <div class="tp-stats">
         <div class="tp-stat">
-          <div class="tp-stat-lbl">Teknisi Aktif</div>
-          <div class="tp-stat-val" id="tp-k-teknisi">—</div>
-          <div class="tp-stat-sub" id="tp-k-teknisi-sub">&nbsp;</div>
-        </div>
-        <div class="tp-stat">
-          <div class="tp-stat-lbl">Roster Rate</div>
-          <div class="tp-stat-val" id="tp-k-roster">—</div>
-          <div class="tp-stat-sub" id="tp-k-roster-sub">&nbsp;</div>
-        </div>
-        <div class="tp-stat">
-          <div class="tp-stat-lbl">Kehadiran</div>
-          <div class="tp-stat-val" id="tp-k-hadir">—</div>
-          <div class="tp-stat-sub" id="tp-k-hadir-sub">&nbsp;</div>
-        </div>
-        <div class="tp-stat">
-          <div class="tp-stat-lbl">PS per Teknisi</div>
+          <div class="tp-stat-lbl">Produktivitas</div>
           <div class="tp-stat-val" id="tp-k-prod">—</div>
           <div class="tp-stat-sub" id="tp-k-prod-sub">&nbsp;</div>
         </div>
+        <div class="tp-stat">
+          <div class="tp-stat-lbl">Total Order</div>
+          <div class="tp-stat-val" id="tp-k-order">—</div>
+          <div class="tp-stat-sub" id="tp-k-order-sub">&nbsp;</div>
+        </div>
+        <div class="tp-stat">
+          <div class="tp-stat-lbl">Teknisi Aktif / Hari</div>
+          <div class="tp-stat-val" id="tp-k-chief">—</div>
+          <div class="tp-stat-sub" id="tp-k-chief-sub">&nbsp;</div>
+        </div>
+        <div class="tp-stat">
+          <div class="tp-stat-lbl">Hari Terbaik</div>
+          <div class="tp-stat-val" id="tp-k-best">—</div>
+          <div class="tp-stat-sub" id="tp-k-best-sub">&nbsp;</div>
+        </div>
       </div>
 
-      <!-- Chart -->
+      <div id="tp-overlap" style="display:none;margin-bottom:16px;padding:11px 16px;background:#eef4ff;
+                  border:1.5px solid #a9c4ee;border-radius:10px;font-size:.79rem;color:#1a3566;line-height:1.6"></div>
+
       <div class="card" style="margin-bottom:20px">
-        <div class="ref-summary-header" style="margin-bottom:14px" id="tp-chart-title">Tren Harian</div>
-        <div style="height:300px"><canvas id="ch_techprod"></canvas></div>
+        <div class="ref-summary-header" style="margin-bottom:14px" id="tp-chart-title">Produktivitas Harian — order ÷ teknisi aktif</div>
+        <div style="height:290px"><canvas id="ch_techprod"></canvas></div>
       </div>
 
-      <!-- Detail table -->
+      <div class="grid-2" style="gap:20px;margin-bottom:20px">
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0">Perbandingan Regional</div>
+          <div style="padding:16px 18px"><div id="tp-regbars"></div></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="ref-summary-header" style="border-radius:var(--radius-md) var(--radius-md) 0 0" id="tp-witel-title">Witel</div>
+          <div style="padding:6px 0 0"><div style="max-height:330px;overflow-y:auto">
+            <table class="hid-area-tbl" id="tp-witel"></table>
+          </div></div>
+        </div>
+      </div>
+
       <div class="card">
         <div class="ref-summary-header" style="margin-bottom:14px">Detail Harian</div>
-        <div style="overflow-x:auto">
-          <table class="hid-area-tbl" id="tp-tbl"></table>
-        </div>
+        <div style="overflow-x:auto"><table class="hid-area-tbl" id="tp-tbl"></table></div>
         <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.7">
-          <strong>Roster Rate</strong> = Rooster ÷ Jumlah Teknisi ·
-          <strong>Kehadiran</strong> = Teknisi Masuk ÷ Rooster ·
-          <strong>PS/Teknisi</strong> = PS ÷ Teknisi Masuk<br>
-          Sel bertanda <span class="tp-flag">!</span> melebihi 100% — teknisi yang masuk lebih banyak
-          daripada yang dijadwalkan, atau PS hari itu menyelesaikan order dari hari sebelumnya.
+          <strong>Produktivitas</strong> = jumlah order ÷ jumlah CHIEF_CODE unik pada tanggal tersebut.
+          <strong>Nasional</strong> = rata-rata dari nilai harian, bukan total order ÷ total teknisi.<br>
+          Baris Minggu diarsir. Order tanpa CHIEF_CODE (72 baris) dikeluarkan, mengikuti perilaku pivot.
         </div>
       </div>
     </div><!-- /page-techprod -->
@@ -4457,139 +4468,158 @@ function _convReset(){
 }
 
 // ─── TECHNICIAN PRODUCTIVITY ──────────────────────────────────────────────────
-// Sample extract from data_teknisi.xlsx (Sheet1). One row per date × STO —
-// there are no per-technician rows and no names anywhere in the source.
-// Swap this constant for a fetch() of a pipeline-written JSON when one exists;
-// renderTechProd() reads nothing else.
-const TECHPROD_DATA = [
-{"tanggal":"2026-08-01","sto":"Nas","teknisi":6855,"rooster":5483,"masuk":4635,"re":6473,"ps":4806},
-{"tanggal":"2026-08-02","sto":"Nas","teknisi":6895,"rooster":4136,"masuk":4034,"re":4659,"ps":3972},
-{"tanggal":"2026-08-03","sto":"Nas","teknisi":6929,"rooster":5543,"masuk":5112,"re":7198,"ps":5469},
-{"tanggal":"2026-08-04","sto":"Nas","teknisi":6938,"rooster":5551,"masuk":5251,"re":6553,"ps":5683},
-{"tanggal":"2026-08-05","sto":"Nas","teknisi":7001,"rooster":5601,"masuk":5295,"re":6205,"ps":5252},
-{"tanggal":"2026-08-06","sto":"Nas","teknisi":7035,"rooster":5628,"masuk":5272,"re":6114,"ps":5096},
-{"tanggal":"2026-08-07","sto":"Nas","teknisi":7019,"rooster":5616,"masuk":5180,"re":5875,"ps":4578},
-{"tanggal":"2026-08-08","sto":"Nas","teknisi":7014,"rooster":5611,"masuk":4767,"re":5228,"ps":5040},
-{"tanggal":"2026-08-09","sto":"Nas","teknisi":6966,"rooster":4180,"masuk":4226,"re":4115,"ps":3645},
-{"tanggal":"2026-08-10","sto":"Nas","teknisi":6999,"rooster":5600,"masuk":5221,"re":6178,"ps":4956},
-{"tanggal":"2026-08-01","sto":"MJP","teknisi":11,"rooster":9,"masuk":8,"re":11,"ps":15},
-{"tanggal":"2026-08-02","sto":"MJP","teknisi":11,"rooster":7,"masuk":7,"re":10,"ps":11},
-{"tanggal":"2026-08-03","sto":"MJP","teknisi":11,"rooster":9,"masuk":9,"re":18,"ps":11},
-{"tanggal":"2026-08-04","sto":"MJP","teknisi":11,"rooster":9,"masuk":8,"re":9,"ps":11},
-{"tanggal":"2026-08-05","sto":"MJP","teknisi":11,"rooster":9,"masuk":9,"re":20,"ps":14},
-{"tanggal":"2026-08-06","sto":"MJP","teknisi":11,"rooster":9,"masuk":10,"re":18,"ps":13},
-{"tanggal":"2026-08-07","sto":"MJP","teknisi":11,"rooster":9,"masuk":8,"re":14,"ps":15},
-{"tanggal":"2026-08-08","sto":"MJP","teknisi":11,"rooster":9,"masuk":8,"re":9,"ps":11},
-{"tanggal":"2026-08-09","sto":"MJP","teknisi":11,"rooster":7,"masuk":8,"re":13,"ps":13},
-{"tanggal":"2026-08-10","sto":"MJP","teknisi":11,"rooster":9,"masuk":9,"re":13,"ps":10}
-];
+// Pre-aggregated from produktivitas_teknisi.csv. Per day, per level:
+//   o = jumlah order,  c = jumlah CHIEF_CODE unik
+// Productivity is derived (o/c) rather than stored, so the arithmetic on screen
+// is the same arithmetic the owner's pivot performs. Only counts live here —
+// the source rows carry customer SERVICENUMs and must not reach a public repo.
+const TP_DATA = {"harian":{"ALL":{"NASIONAL":[{"t":"2026-08-01","o":4806,"c":2844},{"t":"2026-08-02","o":3959,"c":2328},{"t":"2026-08-03","o":5467,"c":3209},{"t":"2026-08-04","o":5678,"c":3312},{"t":"2026-08-05","o":5237,"c":3210},{"t":"2026-08-06","o":5089,"c":3110},{"t":"2026-08-07","o":4575,"c":2945},{"t":"2026-08-08","o":5037,"c":2988},{"t":"2026-08-09","o":3639,"c":2300},{"t":"2026-08-10","o":4942,"c":3079}],"REGIONAL 1":[{"t":"2026-08-01","o":1205,"c":620},{"t":"2026-08-02","o":933,"c":508},{"t":"2026-08-03","o":1131,"c":636},{"t":"2026-08-04","o":1378,"c":725},{"t":"2026-08-05","o":1292,"c":713},{"t":"2026-08-06","o":1250,"c":677},{"t":"2026-08-07","o":1182,"c":666},{"t":"2026-08-08","o":1222,"c":632},{"t":"2026-08-09","o":860,"c":492},{"t":"2026-08-10","o":1242,"c":701}],"REGIONAL 2":[{"t":"2026-08-01","o":1417,"c":852},{"t":"2026-08-02","o":1273,"c":732},{"t":"2026-08-03","o":1544,"c":923},{"t":"2026-08-04","o":1412,"c":894},{"t":"2026-08-05","o":1273,"c":848},{"t":"2026-08-06","o":1285,"c":850},{"t":"2026-08-07","o":1191,"c":820},{"t":"2026-08-08","o":1334,"c":847},{"t":"2026-08-09","o":1075,"c":685},{"t":"2026-08-10","o":1221,"c":823}],"REGIONAL 3":[{"t":"2026-08-01","o":1184,"c":712},{"t":"2026-08-02","o":973,"c":576},{"t":"2026-08-03","o":1394,"c":813},{"t":"2026-08-04","o":1482,"c":869},{"t":"2026-08-05","o":1392,"c":841},{"t":"2026-08-06","o":1295,"c":811},{"t":"2026-08-07","o":1143,"c":771},{"t":"2026-08-08","o":1183,"c":731},{"t":"2026-08-09","o":936,"c":598},{"t":"2026-08-10","o":1241,"c":779}],"REGIONAL 4":[{"t":"2026-08-01","o":479,"c":283},{"t":"2026-08-02","o":424,"c":256},{"t":"2026-08-03","o":609,"c":352},{"t":"2026-08-04","o":593,"c":339},{"t":"2026-08-05","o":530,"c":325},{"t":"2026-08-06","o":578,"c":332},{"t":"2026-08-07","o":441,"c":280},{"t":"2026-08-08","o":574,"c":326},{"t":"2026-08-09","o":365,"c":251},{"t":"2026-08-10","o":540,"c":318}],"REGIONAL 5":[{"t":"2026-08-01","o":521,"c":377},{"t":"2026-08-02","o":356,"c":256},{"t":"2026-08-03","o":789,"c":485},{"t":"2026-08-04","o":813,"c":485},{"t":"2026-08-05","o":750,"c":483},{"t":"2026-08-06","o":681,"c":440},{"t":"2026-08-07","o":618,"c":408},{"t":"2026-08-08","o":724,"c":452},{"t":"2026-08-09","o":403,"c":274},{"t":"2026-08-10","o":698,"c":458}]},"HPID":{"NASIONAL":[{"t":"2026-08-01","o":2697,"c":1949},{"t":"2026-08-02","o":2396,"c":1653},{"t":"2026-08-03","o":3225,"c":2280},{"t":"2026-08-04","o":3456,"c":2365},{"t":"2026-08-05","o":3247,"c":2296},{"t":"2026-08-06","o":3266,"c":2282},{"t":"2026-08-07","o":2966,"c":2130},{"t":"2026-08-08","o":3264,"c":2235},{"t":"2026-08-09","o":2466,"c":1766},{"t":"2026-08-10","o":3215,"c":2251}],"REGIONAL 1":[{"t":"2026-08-01","o":705,"c":463},{"t":"2026-08-02","o":593,"c":383},{"t":"2026-08-03","o":711,"c":480},{"t":"2026-08-04","o":916,"c":576},{"t":"2026-08-05","o":888,"c":577},{"t":"2026-08-06","o":899,"c":562},{"t":"2026-08-07","o":840,"c":543},{"t":"2026-08-08","o":877,"c":535},{"t":"2026-08-09","o":643,"c":407},{"t":"2026-08-10","o":915,"c":584}],"REGIONAL 2":[{"t":"2026-08-01","o":695,"c":543},{"t":"2026-08-02","o":669,"c":476},{"t":"2026-08-03","o":802,"c":599},{"t":"2026-08-04","o":775,"c":571},{"t":"2026-08-05","o":732,"c":557},{"t":"2026-08-06","o":787,"c":595},{"t":"2026-08-07","o":739,"c":570},{"t":"2026-08-08","o":793,"c":593},{"t":"2026-08-09","o":652,"c":493},{"t":"2026-08-10","o":725,"c":558}],"REGIONAL 3":[{"t":"2026-08-01","o":688,"c":485},{"t":"2026-08-02","o":599,"c":411},{"t":"2026-08-03","o":827,"c":586},{"t":"2026-08-04","o":909,"c":625},{"t":"2026-08-05","o":826,"c":599},{"t":"2026-08-06","o":810,"c":588},{"t":"2026-08-07","o":694,"c":532},{"t":"2026-08-08","o":740,"c":529},{"t":"2026-08-09","o":627,"c":461},{"t":"2026-08-10","o":790,"c":563}],"REGIONAL 4":[{"t":"2026-08-01","o":325,"c":224},{"t":"2026-08-02","o":304,"c":203},{"t":"2026-08-03","o":433,"c":280},{"t":"2026-08-04","o":413,"c":268},{"t":"2026-08-05","o":374,"c":251},{"t":"2026-08-06","o":399,"c":267},{"t":"2026-08-07","o":331,"c":224},{"t":"2026-08-08","o":414,"c":254},{"t":"2026-08-09","o":279,"c":209},{"t":"2026-08-10","o":403,"c":251}],"REGIONAL 5":[{"t":"2026-08-01","o":284,"c":234},{"t":"2026-08-02","o":231,"c":180},{"t":"2026-08-03","o":452,"c":335},{"t":"2026-08-04","o":443,"c":325},{"t":"2026-08-05","o":427,"c":312},{"t":"2026-08-06","o":371,"c":270},{"t":"2026-08-07","o":362,"c":261},{"t":"2026-08-08","o":440,"c":324},{"t":"2026-08-09","o":265,"c":196},{"t":"2026-08-10","o":382,"c":295}]},"REG":{"NASIONAL":[{"t":"2026-08-01","o":2109,"c":1614},{"t":"2026-08-02","o":1563,"c":1221},{"t":"2026-08-03","o":2242,"c":1700},{"t":"2026-08-04","o":2222,"c":1754},{"t":"2026-08-05","o":1990,"c":1573},{"t":"2026-08-06","o":1823,"c":1465},{"t":"2026-08-07","o":1609,"c":1321},{"t":"2026-08-08","o":1773,"c":1429},{"t":"2026-08-09","o":1173,"c":971},{"t":"2026-08-10","o":1727,"c":1417}],"REGIONAL 1":[{"t":"2026-08-01","o":500,"c":358},{"t":"2026-08-02","o":340,"c":252},{"t":"2026-08-03","o":420,"c":308},{"t":"2026-08-04","o":462,"c":354},{"t":"2026-08-05","o":404,"c":301},{"t":"2026-08-06","o":351,"c":272},{"t":"2026-08-07","o":342,"c":262},{"t":"2026-08-08","o":345,"c":274},{"t":"2026-08-09","o":217,"c":185},{"t":"2026-08-10","o":327,"c":267}],"REGIONAL 2":[{"t":"2026-08-01","o":722,"c":538},{"t":"2026-08-02","o":604,"c":459},{"t":"2026-08-03","o":742,"c":548},{"t":"2026-08-04","o":637,"c":519},{"t":"2026-08-05","o":541,"c":443},{"t":"2026-08-06","o":498,"c":415},{"t":"2026-08-07","o":452,"c":384},{"t":"2026-08-08","o":541,"c":435},{"t":"2026-08-09","o":423,"c":343},{"t":"2026-08-10","o":496,"c":412}],"REGIONAL 3":[{"t":"2026-08-01","o":496,"c":399},{"t":"2026-08-02","o":374,"c":301},{"t":"2026-08-03","o":567,"c":433},{"t":"2026-08-04","o":573,"c":451},{"t":"2026-08-05","o":566,"c":440},{"t":"2026-08-06","o":485,"c":387},{"t":"2026-08-07","o":449,"c":372},{"t":"2026-08-08","o":443,"c":357},{"t":"2026-08-09","o":309,"c":257},{"t":"2026-08-10","o":451,"c":364}],"REGIONAL 4":[{"t":"2026-08-01","o":154,"c":125},{"t":"2026-08-02","o":120,"c":96},{"t":"2026-08-03","o":176,"c":143},{"t":"2026-08-04","o":180,"c":146},{"t":"2026-08-05","o":156,"c":131},{"t":"2026-08-06","o":179,"c":151},{"t":"2026-08-07","o":110,"c":98},{"t":"2026-08-08","o":160,"c":141},{"t":"2026-08-09","o":86,"c":71},{"t":"2026-08-10","o":137,"c":121}],"REGIONAL 5":[{"t":"2026-08-01","o":237,"c":194},{"t":"2026-08-02","o":125,"c":113},{"t":"2026-08-03","o":337,"c":268},{"t":"2026-08-04","o":370,"c":284},{"t":"2026-08-05","o":323,"c":258},{"t":"2026-08-06","o":310,"c":240},{"t":"2026-08-07","o":256,"c":205},{"t":"2026-08-08","o":284,"c":222},{"t":"2026-08-09","o":138,"c":115},{"t":"2026-08-10","o":316,"c":253}]}},"witel":{"ALL":{"REGIONAL 1":[{"n":"PKPINANG","o":543,"p":2.0256},{"n":"ACEH","o":1792,"p":1.9848},{"n":"MEDAN","o":1496,"p":1.9814},{"n":"PADANG","o":1555,"p":1.9097},{"n":"SIANTAR","o":1332,"p":1.9022},{"n":"RIDAR","o":1408,"p":1.8628},{"n":"RIKEP","o":641,"p":1.8463},{"n":"JAMBI","o":509,"p":1.6693},{"n":"PALEMBNG","o":1078,"p":1.6543},{"n":"LAMPUNG","o":815,"p":1.5524},{"n":"BENGKULU","o":526,"p":1.5017}],"REGIONAL 2":[{"n":"BANDUNG BARAT","o":1655,"p":1.747},{"n":"TANGERANG","o":1389,"p":1.6923},{"n":"SUKABUMI","o":573,"p":1.6854},{"n":"BANDUNG","o":1650,"p":1.6414},{"n":"BEKASI","o":1364,"p":1.6338},{"n":"JAKPUS","o":304,"p":1.5853},{"n":"TASIKMALAYA","o":532,"p":1.5845},{"n":"JAKSEL","o":796,"p":1.5783},{"n":"JAKUT","o":546,"p":1.5556},{"n":"SERANG","o":768,"p":1.5355},{"n":"CIREBON","o":541,"p":1.5002},{"n":"JAKBAR","o":666,"p":1.4938},{"n":"KARAWANG","o":414,"p":1.4683},{"n":"BOGOR","o":1133,"p":1.3598},{"n":"JAKTIM","o":694,"p":1.3475}],"REGIONAL 3":[{"n":"MADURA","o":701,"p":2.0642},{"n":"MALANG","o":683,"p":1.9906},{"n":"SBY SELATAN","o":863,"p":1.8869},{"n":"PEKALONGAN","o":597,"p":1.8376},{"n":"DENPASAR","o":693,"p":1.7229},{"n":"SBY UTARA","o":1297,"p":1.7164},{"n":"PURWOKERTO","o":654,"p":1.7074},{"n":"YOGYAKARTA","o":910,"p":1.6596},{"n":"SINGARJA","o":496,"p":1.6238},{"n":"PASURUAN","o":245,"p":1.6073},{"n":"MADIUN","o":223,"p":1.5653},{"n":"KUDUS","o":475,"p":1.5505},{"n":"MAGELANG","o":446,"p":1.5232},{"n":"MATARAM","o":621,"p":1.5063},{"n":"SOLO","o":557,"p":1.4608},{"n":"SEMARANG","o":694,"p":1.4409},{"n":"KUPANG","o":633,"p":1.4339},{"n":"JEMBER","o":251,"p":1.4066},{"n":"KEDIRI","o":297,"p":1.3977},{"n":"SIDOARJO","o":887,"p":1.377}],"REGIONAL 4":[{"n":"PONTIANAK","o":1458,"p":1.8342},{"n":"BALIKPAPAN","o":519,"p":1.733},{"n":"SAMARINDA","o":819,"p":1.7254},{"n":"PALANGKARAYA","o":816,"p":1.6448},{"n":"TARAKAN","o":523,"p":1.6234},{"n":"BANJARMASIN","o":998,"p":1.4459}],"REGIONAL 5":[{"n":"MAKASAR","o":1407,"p":1.6903},{"n":"PALU","o":593,"p":1.6477},{"n":"PAREPARE","o":903,"p":1.6442},{"n":"MENADO","o":1083,"p":1.4702},{"n":"AMBON","o":476,"p":1.445},{"n":"SORONG","o":529,"p":1.4344},{"n":"JAYAPURA","o":527,"p":1.4177},{"n":"GORONTALO","o":230,"p":1.416},{"n":"KENDARI","o":605,"p":1.3449}]},"HPID":{"REGIONAL 1":[{"n":"PKPINANG","o":397,"p":1.8984},{"n":"MEDAN","o":1014,"p":1.6236},{"n":"SIANTAR","o":944,"p":1.6157},{"n":"ACEH","o":1131,"p":1.5982},{"n":"PADANG","o":1006,"p":1.5828},{"n":"RIKEP","o":452,"p":1.5805},{"n":"JAMBI","o":375,"p":1.5096},{"n":"PALEMBNG","o":816,"p":1.5011},{"n":"RIDAR","o":819,"p":1.4882},{"n":"LAMPUNG","o":652,"p":1.4466},{"n":"BENGKULU","o":381,"p":1.3843}],"REGIONAL 2":[{"n":"SUKABUMI","o":417,"p":1.4613},{"n":"BANDUNG BARAT","o":891,"p":1.4235},{"n":"BANDUNG","o":1058,"p":1.4056},{"n":"SERANG","o":552,"p":1.3925},{"n":"BEKASI","o":812,"p":1.3769},{"n":"JAKPUS","o":196,"p":1.3587},{"n":"JAKUT","o":270,"p":1.3246},{"n":"JAKSEL","o":440,"p":1.308},{"n":"TANGERANG","o":679,"p":1.2955},{"n":"CIREBON","o":346,"p":1.2936},{"n":"TASIKMALAYA","o":271,"p":1.2894},{"n":"KARAWANG","o":244,"p":1.2647},{"n":"JAKBAR","o":299,"p":1.2147},{"n":"BOGOR","o":582,"p":1.1628},{"n":"JAKTIM","o":312,"p":1.1373}],"REGIONAL 3":[{"n":"PASURUAN","o":191,"p":1.6559},{"n":"PURWOKERTO","o":573,"p":1.6288},{"n":"MALANG","o":453,"p":1.6266},{"n":"MADURA","o":439,"p":1.6199},{"n":"PEKALONGAN","o":415,"p":1.6074},{"n":"SINGARJA","o":318,"p":1.4547},{"n":"KUDUS","o":328,"p":1.4162},{"n":"DENPASAR","o":435,"p":1.4157},{"n":"SBY SELATAN","o":442,"p":1.3824},{"n":"SBY UTARA","o":648,"p":1.3795},{"n":"MADIUN","o":153,"p":1.342},{"n":"YOGYAKARTA","o":488,"p":1.3359},{"n":"MAGELANG","o":276,"p":1.3106},{"n":"SOLO","o":379,"p":1.3087},{"n":"KUPANG","o":388,"p":1.3016},{"n":"MATARAM","o":372,"p":1.3011},{"n":"KEDIRI","o":233,"p":1.2765},{"n":"JEMBER","o":162,"p":1.2322},{"n":"SIDOARJO","o":488,"p":1.1977},{"n":"SEMARANG","o":329,"p":1.1648}],"REGIONAL 4":[{"n":"PONTIANAK","o":1268,"p":1.7353},{"n":"BALIKPAPAN","o":366,"p":1.4768},{"n":"TARAKAN","o":361,"p":1.4486},{"n":"PALANGKARAYA","o":496,"p":1.4354},{"n":"SAMARINDA","o":446,"p":1.3707},{"n":"BANJARMASIN","o":738,"p":1.3577}],"REGIONAL 5":[{"n":"PALU","o":401,"p":1.4317},{"n":"MAKASAR","o":863,"p":1.4223},{"n":"MENADO","o":676,"p":1.3382},{"n":"AMBON","o":310,"p":1.3329},{"n":"GORONTALO","o":175,"p":1.3291},{"n":"PAREPARE","o":425,"p":1.328},{"n":"JAYAPURA","o":254,"p":1.2172},{"n":"KENDARI","o":354,"p":1.2036},{"n":"SORONG","o":199,"p":1.1782}]},"REG":{"REGIONAL 1":[{"n":"RIDAR","o":589,"p":1.4288},{"n":"ACEH","o":661,"p":1.357},{"n":"PADANG","o":549,"p":1.3282},{"n":"MEDAN","o":482,"p":1.3229},{"n":"SIANTAR","o":388,"p":1.3073},{"n":"RIKEP","o":189,"p":1.2527},{"n":"PKPINANG","o":146,"p":1.2185},{"n":"JAMBI","o":134,"p":1.1977},{"n":"PALEMBNG","o":262,"p":1.1564},{"n":"BENGKULU","o":145,"p":1.1462},{"n":"LAMPUNG","o":163,"p":1.1448}],"REGIONAL 2":[{"n":"TANGERANG","o":710,"p":1.4174},{"n":"SUKABUMI","o":156,"p":1.3203},{"n":"TASIKMALAYA","o":261,"p":1.3157},{"n":"BANDUNG BARAT","o":764,"p":1.3027},{"n":"JAKUT","o":276,"p":1.2576},{"n":"JAKBAR","o":367,"p":1.2544},{"n":"BEKASI","o":552,"p":1.2178},{"n":"JAKTIM","o":382,"p":1.2177},{"n":"BOGOR","o":551,"p":1.2096},{"n":"JAKSEL","o":356,"p":1.2076},{"n":"BANDUNG","o":592,"p":1.2054},{"n":"CIREBON","o":195,"p":1.195},{"n":"SERANG","o":216,"p":1.1491},{"n":"KARAWANG","o":170,"p":1.137},{"n":"JAKPUS","o":108,"p":1.1205}],"REGIONAL 3":[{"n":"MADURA","o":262,"p":1.458},{"n":"SBY SELATAN","o":421,"p":1.396},{"n":"SBY UTARA","o":649,"p":1.3664},{"n":"YOGYAKARTA","o":422,"p":1.3221},{"n":"MALANG","o":230,"p":1.2712},{"n":"SINGARJA","o":178,"p":1.2295},{"n":"SEMARANG","o":365,"p":1.2278},{"n":"MADIUN","o":70,"p":1.2126},{"n":"DENPASAR","o":258,"p":1.2026},{"n":"MATARAM","o":249,"p":1.1907},{"n":"MAGELANG","o":170,"p":1.1891},{"n":"SOLO","o":178,"p":1.1838},{"n":"KUPANG","o":245,"p":1.1704},{"n":"PEKALONGAN","o":182,"p":1.1667},{"n":"JEMBER","o":89,"p":1.163},{"n":"KUDUS","o":147,"p":1.1602},{"n":"SIDOARJO","o":399,"p":1.1521},{"n":"KEDIRI","o":64,"p":1.1097},{"n":"PURWOKERTO","o":81,"p":1.0582},{"n":"PASURUAN","o":54,"p":1.031}],"REGIONAL 4":[{"n":"SAMARINDA","o":373,"p":1.3274},{"n":"PALANGKARAYA","o":320,"p":1.2231},{"n":"TARAKAN","o":162,"p":1.167},{"n":"PONTIANAK","o":190,"p":1.1617},{"n":"BALIKPAPAN","o":153,"p":1.1258},{"n":"BANJARMASIN","o":260,"p":1.0776}],"REGIONAL 5":[{"n":"PAREPARE","o":478,"p":1.3738},{"n":"SORONG","o":330,"p":1.2697},{"n":"MAKASAR","o":544,"p":1.2605},{"n":"JAYAPURA","o":273,"p":1.256},{"n":"PALU","o":192,"p":1.2403},{"n":"AMBON","o":166,"p":1.2131},{"n":"KENDARI","o":251,"p":1.164},{"n":"MENADO","o":407,"p":1.1533},{"n":"GORONTALO","o":55,"p":1.025}]}},"overlap":{"2026-08-01":719,"2026-08-02":546,"2026-08-03":771,"2026-08-04":807,"2026-08-05":659,"2026-08-06":637,"2026-08-07":506,"2026-08-08":676,"2026-08-09":437,"2026-08-10":589}};
 
 const TP_HARI = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
 function _tpDate(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
-function _tpPct(a,b){ return b ? (a/b*100) : null; }
-function _tpFmtPct(v){ return v==null ? '—' : v.toFixed(1)+'%'; }
-
-/* A ratio above 100% is real data, not an error — more technicians turned up
-   than were rostered, or the day's PS cleared orders raised earlier. Mark it
-   rather than hiding it. */
-function _tpCell(v, flagOver100){
-  if(v==null) return '<td class="tp-num">—</td>';
-  const over = flagOver100 && v > 100;
-  return `<td class="tp-num">${v.toFixed(1)}%${over
-    ? '<span class="tp-flag" title="Melebihi 100% — lihat catatan di bawah tabel">!</span>' : ''}</td>`;
+function _tpProd(r){ return r.c ? r.o/r.c : null; }
+/* Rata-rata dari nilai harian — bukan total order ÷ total teknisi.
+   Kedua cara memberi angka berbeda (1,65 vs 8,46); pivot memakai yang pertama. */
+function _tpAvg(rows){
+  const v = rows.map(_tpProd).filter(x=>x!=null);
+  return v.length ? v.reduce((a,b)=>a+b,0)/v.length : 0;
 }
 
 function renderTechProd(){
-  const selEl = $('tp-sto');
-  const stos = [...new Set(TECHPROD_DATA.map(r=>r.sto))];
-  if(!selEl.options.length){
-    selEl.innerHTML = stos.map(s=>`<option value="${s}">${s==='Nas'?'Nas (Nasional)':s}</option>`).join('');
+  const varian = $('tp-variant').value || 'ALL';
+  const HARIAN = TP_DATA.harian[varian];
+  const WITEL  = TP_DATA.witel[varian];
+
+  const sel = $('tp-level');
+  const levels = Object.keys(HARIAN);
+  if(!sel.options.length){
+    sel.innerHTML = levels.map(l=>`<option value="${l}">${l==='NASIONAL'?'Nasional':l}</option>`).join('');
   }
-  const sto  = selEl.value || stos[0];
-  const mode = $('tp-metric').value;
+  const level = sel.value || 'NASIONAL';
+  const rows  = HARIAN[level];
+  if(!rows || !rows.length) return;
 
-  const rows = TECHPROD_DATA.filter(r=>r.sto===sto)
-                            .sort((a,b)=>a.tanggal.localeCompare(b.tanggal));
-  if(!rows.length) return;
+  const LABEL = {ALL:'semua order', HPID:'HOMEPASSID', REG:'Reguler (tanpa HOMEPASSID)'}[varian];
+  $('tp-chart-title').textContent = `Produktivitas Harian — ${LABEL}`;
 
-  const sum = k => rows.reduce((t,r)=>t+r[k],0);
-  const totPs = sum('ps'), totRe = sum('re'), totMasuk = sum('masuk');
-  const avgTeknisi = Math.round(sum('teknisi')/rows.length);
-  const rosterRate = _tpPct(sum('rooster'), sum('teknisi'));
-  const hadirRate  = _tpPct(totMasuk, sum('rooster'));
-  const prod       = totMasuk ? totPs/totMasuk : 0;
+  /* Subset HOMEPASSID dan Reguler memakai penyebut teknisi unik masing-masing.
+     Teknisi yang mengerjakan kedua jenis terhitung di keduanya, sehingga kedua
+     subset tidak menjumlah menjadi ALL — justru ALL lebih tinggi. Dijelaskan di
+     halaman supaya tidak dibaca sebagai kesalahan hitung. */
+  const ov = $('tp-overlap');
+  if(varian === 'ALL'){
+    ov.style.display = 'none';
+  } else {
+    const jml = Object.values(TP_DATA.overlap);
+    const rata = Math.round(jml.reduce((a,b)=>a+b,0)/jml.length);
+    ov.style.display = 'block';
+    ov.innerHTML = `<strong>ℹ️ Angka ini tidak bisa dijumlahkan dengan jenis order lainnya.</strong>
+      Rata-rata <strong>${rata.toLocaleString('id-ID')} teknisi per hari</strong> mengerjakan
+      HOMEPASSID <em>dan</em> Reguler sekaligus, jadi mereka masuk ke penyebut kedua-duanya.
+      Karena itu ALL (1,65) justru lebih tinggi daripada HOMEPASSID (1,42) maupun Reguler (1,26),
+      bukan hasil penjumlahan keduanya.`;
+  }
 
-  // Banner + tiles
-  const d0 = _tpDate(rows[0].tanggal), d1 = _tpDate(rows[rows.length-1].tanggal);
+  const prod     = _tpAvg(rows);
+  const totOrder = rows.reduce((t,r)=>t+r.o,0);
+  const avgChief = Math.round(rows.reduce((t,r)=>t+r.c,0)/rows.length);
+  const best     = rows.reduce((a,b)=>_tpProd(b)>_tpProd(a)?b:a);
+  const bestD    = _tpDate(best.t);
+
+  const d0=_tpDate(rows[0].t), d1=_tpDate(rows[rows.length-1].t);
   const fmtD = d => d.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
   $('tp-bn-periode').textContent = `${fmtD(d0)} – ${fmtD(d1)}`;
-  $('tp-bn-ps').textContent   = totPs.toLocaleString('id-ID');
-  $('tp-bn-prod').textContent = prod.toFixed(2);
-  $('tp-range').textContent   = `${rows.length} hari · ${fmtD(d0)} – ${fmtD(d1)} ${d1.getFullYear()}`;
+  $('tp-bn-prod').textContent    = prod.toFixed(2);
+  $('tp-bn-order').textContent   = totOrder.toLocaleString('id-ID');
+  $('tp-range').textContent      = `${rows.length} hari · ${fmtD(d0)} – ${fmtD(d1)} ${d1.getFullYear()}`;
 
-  $('tp-k-teknisi').textContent     = avgTeknisi.toLocaleString('id-ID');
-  $('tp-k-teknisi-sub').textContent = 'rata-rata headcount';
-  $('tp-k-roster').textContent      = _tpFmtPct(rosterRate);
-  $('tp-k-roster-sub').textContent  = `${sum('rooster').toLocaleString('id-ID')} dari ${sum('teknisi').toLocaleString('id-ID')} hari-orang`;
-  $('tp-k-hadir').textContent       = _tpFmtPct(hadirRate);
-  $('tp-k-hadir-sub').textContent   = `${totMasuk.toLocaleString('id-ID')} hadir dari jadwal`;
-  $('tp-k-prod').textContent        = prod.toFixed(2);
-  $('tp-k-prod-sub').textContent    = `${totPs.toLocaleString('id-ID')} PS · ${_tpFmtPct(_tpPct(totPs,totRe))} dari RE`;
+  $('tp-k-prod').textContent      = prod.toFixed(4);
+  $('tp-k-prod-sub').textContent  = 'order per teknisi per hari';
+  $('tp-k-order').textContent     = totOrder.toLocaleString('id-ID');
+  $('tp-k-order-sub').textContent = `${Math.round(totOrder/rows.length).toLocaleString('id-ID')} per hari`;
+  $('tp-k-chief').textContent     = avgChief.toLocaleString('id-ID');
+  $('tp-k-chief-sub').textContent = 'CHIEF_CODE unik, rata-rata harian';
+  $('tp-k-best').textContent      = _tpProd(best).toFixed(2);
+  $('tp-k-best-sub').textContent  = `${bestD.getDate()}/${bestD.getMonth()+1} ${TP_HARI[bestD.getDay()]}`;
 
-  const hadirEl = $('tp-k-hadir-sub');
-  hadirEl.className = 'tp-stat-sub ' + (hadirRate>=95?'tp-up':hadirRate>=85?'':'tp-dn');
-
-  // Chart
-  const labels = rows.map(r=>{ const d=_tpDate(r.tanggal); return `${TP_HARI[d.getDay()]} ${d.getDate()}`; });
-  const isOutput = mode==='output';
-  $('tp-chart-title').textContent = isOutput
-    ? 'Tren Harian — RE (order masuk) vs PS (terpasang)'
-    : 'Tren Harian — Roster (dijadwalkan) vs Teknisi Masuk';
-
-  const ds = isOutput
-    ? [{label:'RE', data:rows.map(r=>r.re), borderColor:'#2A3F5E', backgroundColor:'#2A3F5E18'},
-       {label:'PS', data:rows.map(r=>r.ps), borderColor:'#C4522A', backgroundColor:'#C4522A18'}]
-    : [{label:'Rooster',       data:rows.map(r=>r.rooster), borderColor:'#2A3F5E', backgroundColor:'#2A3F5E18'},
-       {label:'Teknisi Masuk', data:rows.map(r=>r.masuk),   borderColor:'#1F7A7E', backgroundColor:'#1F7A7E18'}];
-
+  // ── Grafik harian, dengan garis rata-rata sebagai pembanding ──
+  const labels = rows.map(r=>{ const d=_tpDate(r.t); return `${TP_HARI[d.getDay()]} ${d.getDate()}`; });
   const cv = $('ch_techprod');
   if(cv){
     if(chartInstances.techprod) chartInstances.techprod.destroy();
     chartInstances.techprod = new Chart(cv,{
       type:'line',
-      data:{labels, datasets: ds.map(d=>({...d, borderWidth:2.5, tension:.35, pointRadius:5, pointHoverRadius:8, fill:true}))},
+      data:{labels, datasets:[
+        {label:`Produktivitas — ${LABEL}`, data:rows.map(_tpProd),
+         borderColor:'#C4522A', backgroundColor:'#C4522A18', borderWidth:2.5,
+         tension:.35, pointRadius:5, pointHoverRadius:8, fill:true},
+        {label:`Rata-rata (${prod.toFixed(3)})`, data:rows.map(()=>prod),
+         borderColor:'#2A3F5E', borderWidth:1.6, borderDash:[6,4],
+         pointRadius:0, fill:false}
+      ]},
       options:{responsive:true, maintainAspectRatio:false,
         plugins:{
           legend:{position:'top', labels:{font:{size:11}, padding:14}},
-          tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString('id-ID')}`}},
+          tooltip:{callbacks:{label:c=>{
+            const r=rows[c.dataIndex];
+            return c.datasetIndex===0
+              ? ` ${c.parsed.y.toFixed(4)}  (${r.o.toLocaleString('id-ID')} order ÷ ${r.c.toLocaleString('id-ID')} teknisi)`
+              : ` rata-rata ${prod.toFixed(4)}`;
+          }}},
           datalabels:{display:false}
         },
-        scales:{y:{beginAtZero:false, ticks:{callback:v=>v.toLocaleString('id-ID')}, grid:{color:'#f0ebe3'}},
+        scales:{y:{ticks:{callback:v=>v.toFixed(2)}, grid:{color:'#f0ebe3'}},
                 x:{grid:{display:false}}}}});
   }
 
-  // Table
+  // ── Perbandingan regional ──
+  const regs = levels.filter(l=>l!=='NASIONAL')
+                     .map(l=>({n:l, p:_tpAvg(HARIAN[l])}))
+                     .sort((a,b)=>b.p-a.p);
+  const maxP = Math.max(...regs.map(r=>r.p));
+  $('tp-regbars').innerHTML = regs.map(r=>{
+    const aktif = r.n===level;
+    const warna = r.p>=prod ? '#2f7d4f' : '#C4522A';
+    return `<div class="tp-bar-row">
+      <span class="tp-bar-lbl" style="width:88px${aktif?';font-weight:800;color:var(--navy)':''}">${r.n}</span>
+      <div class="tp-bar"><span style="width:${(r.p/maxP*100).toFixed(1)}%;background:${warna}"></span></div>
+      <span class="tp-bar-n" style="width:38px">${r.p.toFixed(2)}</span>
+    </div>`;
+  }).join('') + `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);
+      font-size:.73rem;color:var(--muted)">Hijau = di atas rata-rata level yang dipilih (${prod.toFixed(2)}),
+      merah = di bawahnya.</div>`;
+
+  // ── Witel ──
+  const wt = level==='NASIONAL' ? null : WITEL[level];
+  $('tp-witel-title').textContent = level==='NASIONAL'
+    ? 'Witel — pilih regional untuk melihat rinciannya'
+    : `Witel — ${level}`;
+  $('tp-witel').innerHTML = !wt
+    ? `<tbody><tr><td style="padding:22px;text-align:center;color:var(--muted);font-size:.8rem">
+         Pilih salah satu regional di filter Level untuk melihat rincian per witel.</td></tr></tbody>`
+    : `<thead><tr><th style="text-align:left">Witel</th><th>Order</th><th>Produktivitas</th></tr></thead>
+       <tbody>${wt.map(w=>`<tr>
+         <td style="text-align:left">${w.n}</td>
+         <td class="tp-num">${w.o.toLocaleString('id-ID')}</td>
+         <td class="tp-num" style="font-weight:700;color:${w.p>=prod?'#166534':'#991b1b'}">${w.p.toFixed(2)}</td>
+       </tr>`).join('')}</tbody>`;
+
+  // ── Detail harian ──
   $('tp-tbl').innerHTML = `
     <thead><tr>
-      <th style="text-align:left">Tanggal</th>
-      <th>Teknisi</th><th>Rooster</th><th>Masuk</th>
-      <th>Roster Rate</th><th>Kehadiran</th>
-      <th>RE</th><th>PS</th><th>PS/Teknisi</th><th>PS/RE</th>
+      <th style="text-align:left">Tanggal</th><th>Order</th>
+      <th>Teknisi Aktif</th><th>Produktivitas</th><th>vs Rata-rata</th>
     </tr></thead>
     <tbody>${rows.map(r=>{
-      const d = _tpDate(r.tanggal), minggu = d.getDay()===0;
+      const d=_tpDate(r.t), p=_tpProd(r), sel=p-prod, minggu=d.getDay()===0;
       return `<tr class="${minggu?'tp-weekend':''}">
         <td style="text-align:left">${d.getDate()}/${d.getMonth()+1}
           <span class="tp-sun">${TP_HARI[d.getDay()]}</span></td>
-        <td class="tp-num">${r.teknisi.toLocaleString('id-ID')}</td>
-        <td class="tp-num">${r.rooster.toLocaleString('id-ID')}</td>
-        <td class="tp-num">${r.masuk.toLocaleString('id-ID')}</td>
-        ${_tpCell(_tpPct(r.rooster,r.teknisi), false)}
-        ${_tpCell(_tpPct(r.masuk,r.rooster), true)}
-        <td class="tp-num">${r.re.toLocaleString('id-ID')}</td>
-        <td class="tp-num">${r.ps.toLocaleString('id-ID')}</td>
-        <td class="tp-num">${(r.ps/r.masuk).toFixed(2)}</td>
-        ${_tpCell(_tpPct(r.ps,r.re), true)}
+        <td class="tp-num">${r.o.toLocaleString('id-ID')}</td>
+        <td class="tp-num">${r.c.toLocaleString('id-ID')}</td>
+        <td class="tp-num" style="font-weight:700">${p.toFixed(4)}</td>
+        <td class="tp-num" style="color:${sel>=0?'#166534':'#991b1b'};font-weight:700">
+          ${sel>=0?'▲':'▼'} ${Math.abs(sel).toFixed(3)}</td>
       </tr>`;
     }).join('')}</tbody>`;
 }
