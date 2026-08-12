@@ -8,3 +8,7 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# Sample/reference data used while building pages — may contain employee names.
+# The Performancedb repo is PUBLIC, so this must never be pushed.
+samples/
