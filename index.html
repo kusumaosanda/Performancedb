@@ -281,6 +281,26 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .tp-var3-sub{font-size:.72rem;color:var(--muted);margin-top:3px}
 .tp-var3-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
 
+/* Grafik + report manajemen berdampingan; report dipatok lebarnya supaya
+   grafik tetap mendapat ruang. Menumpuk di layar sempit. */
+.tp-row2{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;margin-bottom:20px;align-items:start}
+.tp-report{display:flex;flex-direction:column}
+.tp-rep-note{font-size:.72rem;color:var(--muted);line-height:1.5;margin-bottom:14px;
+  padding-bottom:12px;border-bottom:1px solid var(--border)}
+.tp-rep-blk+.tp-rep-blk{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.tp-rep-name{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.tp-rep-sub{font-size:.68rem;color:var(--muted);font-weight:600;margin-top:1px}
+.tp-rep-hero{font-size:2.1rem;font-weight:800;color:var(--navy);line-height:1.05;letter-spacing:-1px;margin-top:6px}
+.tp-rep-unit{font-size:.7rem;font-weight:700;color:var(--muted);margin-left:5px;letter-spacing:0}
+.tp-rep-line{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  font-size:.78rem;padding:4px 0}
+.tp-rep-line dt{color:var(--muted)}
+.tp-rep-line dd{margin:0;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;text-align:right}
+.tp-rep-verdict{margin-top:8px;padding:7px 10px;border-radius:8px;font-size:.74rem;font-weight:700;line-height:1.45}
+.tp-rep-verdict.up{background:rgba(22,101,52,.1);color:#166534}
+.tp-rep-verdict.dn{background:rgba(153,27,27,.09);color:#991b1b}
+@media (max-width:1200px){.tp-row2{grid-template-columns:1fr}}
+
 .tp-sum-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
 .tp-sum-item{border:1px solid var(--border);border-radius:var(--radius-md);padding:13px 15px;background:var(--bg)}
 .tp-sum-item.tp-sum-best{background:rgba(22,101,52,.07);border-color:rgba(22,101,52,.28)}
@@ -855,14 +875,26 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
           </div>
         </div>
 
-        <!-- CARD 1 — All / Homepass / Reguler bersama -->
-        <div class="card" style="margin-bottom:20px">
-          <div class="ref-summary-header" style="margin-bottom:14px">
-            Produktivitas Harian — All · Homepass · Reguler
+        <!-- CARD 1 — All / Homepass / Reguler + report manajemen di sampingnya -->
+        <div class="tp-row2">
+          <div class="card">
+            <div class="ref-summary-header" style="margin-bottom:14px">
+              Produktivitas Harian — All · Homepass · Reguler
+            </div>
+            <div class="tp-var3" id="tp-var3"></div>
+            <div style="height:300px;margin-top:16px"><canvas id="ch_techprod"></canvas></div>
+            <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.7" id="tp-var3-note"></div>
           </div>
-          <div class="tp-var3" id="tp-var3"></div>
-          <div style="height:300px;margin-top:16px"><canvas id="ch_techprod"></canvas></div>
-          <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.7" id="tp-var3-note"></div>
+
+          <!-- Report ringkas untuk manajemen: angka saja, tanpa grafik.
+               Cakupannya tetap Nasional + STO MJP dan tidak mengikuti filter
+               wilayah — hanya filter Bulan yang berlaku. -->
+          <div class="card tp-report">
+            <div class="ref-summary-header" style="margin-bottom:14px">Report Manajemen</div>
+            <div class="tp-rep-note">Performansi <strong>ALL</strong> · Nasional &amp; STO MJP<br>
+              <span style="opacity:.8">Tidak terpengaruh filter wilayah.</span></div>
+            <div id="tp-report"></div>
+          </div>
         </div>
 
         <!-- CARD 2 — Summary -->
@@ -4630,6 +4662,62 @@ function _tpScope(){
   return {key:'NASIONAL|', label:'Nasional'};
 }
 
+/* Jalur Area → Regional → Branch sebuah STO, dibaca dari hierarki yang sama
+   (sto_hierarchy_map.json) supaya tidak ada nama wilayah yang di-hardcode. */
+function _tpJalur(sto){
+  const H = tpData.hier;
+  for(const a in H) for(const r in H[a]) for(const b in H[a][r])
+    if(H[a][r][b].includes(sto)) return `${a} · ${r} · ${b}`;
+  return '—';
+}
+
+/* Report manajemen: angka saja, varian ALL, cakupan tetap Nasional + STO MJP.
+   Hanya filter Bulan yang berlaku — filter wilayah sengaja diabaikan supaya
+   angka rujukan manajemen tidak ikut berubah saat orang menelusuri wilayah. */
+function _tpRenderReport(pilihBulan){
+  const el = $('tp-report');
+  const blok = (judul, sub, key, pembanding) => {
+    const seri = pilihBulan(tpData.lvl.ALL[key] || []);
+    if(!seri.length){
+      return `<div class="tp-rep-blk"><div class="tp-rep-name">${judul}</div>
+        <div class="tp-rep-sub">tidak ada order pada periode ini</div></div>`;
+    }
+    const prod  = _tpAvg(seri);
+    const order = seri.reduce((t,r)=>t+r[1],0);
+    const tek   = Math.round(seri.reduce((t,r)=>t+r[2],0)/seri.length);
+    const hrn   = seri.map(r=>({i:r[0], p:r[2]?r[1]/r[2]:0}));
+    const best  = hrn.reduce((a,b)=>b.p>a.p?b:a);
+    const worst = hrn.reduce((a,b)=>b.p<a.p?b:a);
+    const fmtT  = i => { const d=_tpD(tpData.tgl[i]);
+      return `${d.getDate()} ${d.toLocaleDateString('id-ID',{month:'short'})}`; };
+
+    let vonis = '';
+    if(pembanding != null){
+      const sel = prod - pembanding;
+      const arah = sel>=0 ? 'up' : 'dn';
+      vonis = `<div class="tp-rep-verdict ${arah}">${sel>=0?'▲':'▼'} ${Math.abs(sel).toFixed(4)}
+        ${sel>=0?'di atas':'di bawah'} nasional (${(sel/pembanding*100).toFixed(1)}%)</div>`;
+    }
+    return `<div class="tp-rep-blk">
+      <div class="tp-rep-name">${judul}</div>
+      <div class="tp-rep-sub">${sub}</div>
+      <div class="tp-rep-hero">${prod.toFixed(4)}<span class="tp-rep-unit">order/teknisi/hari</span></div>
+      <dl style="margin:10px 0 0">
+        <div class="tp-rep-line"><dt>Total order</dt><dd>${order.toLocaleString('id-ID')}</dd></div>
+        <div class="tp-rep-line"><dt>Teknisi aktif/hari</dt><dd>${tek.toLocaleString('id-ID')}</dd></div>
+        <div class="tp-rep-line"><dt>Order per hari</dt><dd>${Math.round(order/seri.length).toLocaleString('id-ID')}</dd></div>
+        <div class="tp-rep-line"><dt>Terbaik</dt><dd>${best.p.toFixed(3)} · ${fmtT(best.i)}</dd></div>
+        <div class="tp-rep-line"><dt>Terburuk</dt><dd>${worst.p.toFixed(3)} · ${fmtT(worst.i)}</dd></div>
+        <div class="tp-rep-line"><dt>Rentang</dt><dd>${(best.p-worst.p).toFixed(3)}</dd></div>
+      </dl>${vonis}</div>`;
+  };
+
+  const nas = pilihBulan(tpData.lvl.ALL['NASIONAL|'] || []);
+  const prodNas = nas.length ? _tpAvg(nas) : null;
+  el.innerHTML = blok('Nasional', 'seluruh wilayah', 'NASIONAL|', null)
+               + blok('STO MJP', _tpJalur('MJP'), 'STO|MJP', prodNas);
+}
+
 async function renderTechProd(){
   if(!tpData){
     $('tp-loading').style.display='block'; $('tp-main').style.display='none';
@@ -4652,6 +4740,10 @@ async function renderTechProd(){
   const seriVar = {};
   TP_VAR.forEach(v=>{ seriVar[v.k] = pilihBulan(tpData.lvl[v.k][key] || []); });
   const utama = seriVar.ALL;
+
+  // Report manajemen berdiri sendiri: cakupannya tetap, jadi dirender di luar
+  // cabang "tidak ada order pada cakupan ini" di bawah.
+  _tpRenderReport(pilihBulan);
 
   if(!utama.length){
     $('tp-bn-scope').textContent = label;
