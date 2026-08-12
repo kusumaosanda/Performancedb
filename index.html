@@ -4624,7 +4624,13 @@ function _tpOpt(sel, items, label){
 async function loadTechProd(){
   if(tpData) return true;
   try {
-    const r = await fetch('./data/technician_productivity.json?_t='+Date.now(), {cache:'no-store'});
+    // URL sengaja TANPA cache-buster. Pola fetchJSON() dashboard menambahkan
+    // ?t=Date.now() sehingga berkas selalu diunduh ulang — itu wajar untuk file
+    // 1–12 KB, tapi berkas ini 440 KB (83 KB ter-gzip) dan pengunduhan ulang di
+    // setiap kunjungan terasa lambat. Dengan URL tetap, GitHub Pages menyimpannya
+    // di cache 10 menit (max-age=600) seperti index.html. Tombol "Clear Cache"
+    // tetap bisa memaksa muat ulang.
+    const r = await fetch(DATA.techprod, {cache:'default'});
     if(!r.ok) throw new Error('HTTP '+r.status);
     tpData = await r.json();
     return true;
@@ -5822,6 +5828,9 @@ async function clearDashboardCache(){
   const btn = document.querySelector('[onclick="clearDashboardCache()"]');
   const orig = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳ Loading…'; btn.disabled=true; }
+  // Data teknisi kini memakai cache browser agar tidak mengunduh 440 KB tiap
+  // kunjungan; tombol ini jadi satu-satunya cara memaksa muat ulang.
+  tpData = null;
   let data2025 = null, data2026 = null;
   try {
     const [r25, r26] = await Promise.all([
