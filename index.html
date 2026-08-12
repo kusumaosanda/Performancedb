@@ -281,20 +281,24 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .tp-var3-sub{font-size:.72rem;color:var(--muted);margin-top:3px}
 .tp-var3-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
 
-/* ── Report manajemen: tabel angka ringkas ──────────────────────────────────
-   Warna mengikuti palet dashboard: header navy seperti .summary-table, kolom
-   label memakai maroon aksen, kolom rata-rata dipisahkan garis tebal. */
-.tp-rep-tbl{width:100%;border-collapse:collapse;font-size:.8rem;min-width:660px}
-.tp-rep-tbl th{background:var(--navy);color:#fff;padding:8px 10px;font-size:.7rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.4px;text-align:center;white-space:nowrap;
-  border:1px solid rgba(255,255,255,.14)}
-.tp-rep-tbl th:first-child{background:var(--accent);text-align:left;min-width:104px}
+/* ── Produktivitas Teknisi: tabel angka ringkas ─────────────────────────────
+   Dirancang untuk menampung sebulan penuh (31 hari = 33 kolom). Selebar apa pun
+   layarnya, kolom label dibuat sticky supaya NAS/MJP tetap terlihat saat tabel
+   digeser ke samping. Warna mengikuti palet dashboard. */
+.tp-rep-scroll{overflow-x:auto;overflow-y:hidden;border-radius:var(--radius-sm)}
+.tp-rep-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:.8rem}
+.tp-rep-tbl th,.tp-rep-tbl td{border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.tp-rep-tbl th{background:var(--navy);color:#fff;padding:7px 9px;font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.3px;text-align:center;white-space:nowrap;
+  border-right-color:rgba(255,255,255,.14);border-bottom:none;line-height:1.3}
+.tp-rep-tbl th:first-child,.tp-rep-tbl td.tp-rep-lbl{position:sticky;left:0;z-index:2;
+  text-align:left;min-width:74px;box-shadow:2px 0 4px rgba(40,30,20,.08)}
+.tp-rep-tbl th:first-child{background:var(--accent)}
 .tp-rep-tbl th.tp-rep-avg{background:#1a3252;border-left:2px solid rgba(255,255,255,.35)}
-.tp-rep-tbl td{padding:8px 10px;text-align:center;border:1px solid var(--border);
-  font-variant-numeric:tabular-nums;background:#fff}
-.tp-rep-tbl td.tp-rep-lbl{background:var(--accent);color:#fff;font-weight:800;text-align:left;
-  letter-spacing:.3px;border-color:rgba(255,255,255,.18)}
-.tp-rep-tbl td.tp-rep-lbl small{display:block;font-weight:600;font-size:.64rem;opacity:.8;letter-spacing:0}
+.tp-rep-tbl td{padding:8px 9px;text-align:center;background:#fff;font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.tp-rep-tbl td.tp-rep-lbl{background:var(--accent);color:#fff;font-weight:800;letter-spacing:.4px;
+  border-right-color:rgba(255,255,255,.18)}
 .tp-rep-tbl td.tp-rep-avg{background:rgba(42,63,94,.07);font-weight:800;color:var(--navy);
   border-left:2px solid var(--border)}
 .tp-rep-tbl td.tp-hi{background:rgba(22,101,52,.13);font-weight:800;color:#166534}
@@ -304,6 +308,19 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .tp-rep-tbl tr:hover td.tp-lo{background:rgba(153,27,27,.15)}
 .tp-rep-legend{margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.6}
 .tp-rep-chip{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:4px}
+/* Kolom angka wajib punya lebar minimum. Tanpa ini, width:100% memeras kolom
+   sampai "1,69" terpotong di layar sempit — tabel harus menggeser, bukan
+   memotong. Dengan 31 hari lebar alaminya ~1.190px, jadi scroll horizontal
+   muncul di layar kecil dan itu memang yang diinginkan. */
+.tp-rep-tbl th:not(:first-child),.tp-rep-tbl td:not(.tp-rep-lbl){min-width:46px}
+/* Sebulan penuh: rapatkan supaya lebih banyak kolom terlihat sekaligus */
+.tp-rep-tbl.is-long th,.tp-rep-tbl.is-long td{padding:7px 5px;font-size:.74rem}
+.tp-rep-tbl.is-long th{font-size:.63rem}
+.tp-rep-tbl.is-long th:not(:first-child),.tp-rep-tbl.is-long td:not(.tp-rep-lbl){min-width:33px}
+.tp-rep-tbl.is-long th.tp-rep-avg,.tp-rep-tbl.is-long td.tp-rep-avg{min-width:54px}
+.tp-rep-tbl.is-long th:first-child,.tp-rep-tbl.is-long td.tp-rep-lbl{min-width:58px}
+/* Tanpa nama hari, Minggu ditandai lewat warna header agar tetap terbaca */
+.tp-rep-tbl th.tp-th-min{background:#1a3252}
 
 /* ── Rincian kendala per symptom ────────────────────────────────────────────
    Menggantikan satu tabel panjang berkepala navy polos: tiap kategori jadi
@@ -312,6 +329,9 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .tp-sym-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
 .tp-sym{border:1.5px solid var(--border);border-radius:var(--radius-md);overflow:hidden;background:var(--card)}
 .tp-sym-head{padding:9px 14px;color:#fff;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.tp-sym-head.is-clickable{cursor:pointer;transition:filter .15s}
+.tp-sym-head.is-clickable:hover{filter:brightness(1.15)}
+.tp-sym-head.is-clickable:active{filter:brightness(.95)}
 .tp-sym-name{font-size:.76rem;font-weight:800;letter-spacing:.3px}
 .tp-sym-n{font-size:.72rem;font-weight:700;opacity:.92;white-space:nowrap}
 .tp-sym-body{padding:10px 14px 12px}
@@ -915,11 +935,8 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
              muat di kolom sempit. Cakupannya tetap Nasional + STO MJP dan tidak
              mengikuti filter wilayah; hanya filter Bulan yang berlaku. -->
         <div class="card" style="margin-bottom:20px">
-          <div class="ref-summary-header" style="margin-bottom:6px">Report Manajemen</div>
-          <div style="font-size:.73rem;color:var(--muted);margin-bottom:12px">
-            Performansi <strong>ALL</strong> — Nasional &amp; STO MJP. Tidak terpengaruh filter wilayah.
-          </div>
-          <div style="overflow-x:auto"><table class="tp-rep-tbl" id="tp-report"></table></div>
+          <div class="ref-summary-header" style="margin-bottom:12px">Produktivitas Teknisi</div>
+          <div class="tp-rep-scroll"><table class="tp-rep-tbl" id="tp-report"></table></div>
         </div>
 
         <!-- CARD 2 — Summary -->
@@ -4696,17 +4713,22 @@ function _tpJalur(sto){
    baris "Nas". */
 function _tpRenderReport(pilihBulan){
   const baris = [
-    {kode:'Nas', nama:'Nasional', sub:'seluruh wilayah', key:'NASIONAL|'},
-    {kode:'MJP', nama:'STO MJP',  sub:_tpJalur('MJP'),   key:'STO|MJP'},
+    {kode:'NAS', key:'NASIONAL|'},
+    {kode:'MJP', key:'STO|MJP'},
   ];
   const nas = pilihBulan(tpData.lvl.ALL['NASIONAL|'] || []);
   if(!nas.length){ $('tp-report').innerHTML=''; return; }
   const idx = nas.map(r=>r[0]);
 
-  const head = `<thead><tr><th>Tanggal</th>` +
+  // Nama hari yang memaksa kolom melebar ("Sab1" butuh 31px, "1,69" hanya 26px).
+  // Untuk periode panjang nama hari dilepas — Minggu tetap dikenali lewat warna.
+  const ringkas = idx.length > 16;
+  const head = `<thead><tr><th>${ringkas ? 'Tanggal' : 'Hari/Tanggal'}</th>` +
     idx.map(i=>{ const d=_tpD(tpData.tgl[i]);
-      return `<th>${TP_HARI[d.getDay()]}<br>${d.getDate()}</th>`; }).join('') +
-    `<th class="tp-rep-avg">Nasional<br><span style="font-weight:600;font-size:.62rem;opacity:.85">rata-rata</span></th></tr></thead>`;
+      return ringkas
+        ? `<th class="${d.getDay()===0?'tp-th-min':''}" title="${TP_HARI[d.getDay()]} ${d.getDate()}">${d.getDate()}</th>`
+        : `<th>${TP_HARI[d.getDay()]}<br>${d.getDate()}</th>`; }).join('') +
+    `<th class="tp-rep-avg">Rata-rata</th></tr></thead>`;
 
   const body = baris.map(b=>{
     const seri = pilihBulan(tpData.lvl.ALL[b.key] || []);
@@ -4717,7 +4739,7 @@ function _tpRenderReport(pilihBulan){
     const lo = ada.length ? Math.min(...ada) : null;
     const avg = ada.length ? ada.reduce((x,y)=>x+y,0)/ada.length : null;
     return `<tr>
-      <td class="tp-rep-lbl">${b.kode}<small>${b.sub}</small></td>` +
+      <td class="tp-rep-lbl">${b.kode}</td>` +
       nilai.map(v=>{
         if(v==null) return `<td>—</td>`;
         const c = v===hi ? ' tp-hi' : v===lo ? ' tp-lo' : '';
@@ -4726,14 +4748,72 @@ function _tpRenderReport(pilihBulan){
       `<td class="tp-rep-avg">${avg==null?'—':avg.toFixed(2).replace('.',',')}</td></tr>`;
   }).join('');
 
+  // Sebulan penuh perlu kolom yang lebih rapat agar muat lebih banyak sekaligus
+  $('tp-report').classList.toggle('is-long', idx.length > 16);
   $('tp-report').innerHTML = head + `<tbody>${body}</tbody>`;
   const lg = $('tp-report').parentElement.nextElementSibling;
   if(lg && lg.classList.contains('tp-rep-legend')) lg.remove();
   $('tp-report').parentElement.insertAdjacentHTML('afterend',
     `<div class="tp-rep-legend">
-       <span class="tp-rep-chip" style="background:rgba(22,101,52,.35)"></span>hari terbaik ·
-       <span class="tp-rep-chip" style="background:rgba(153,27,27,.3)"></span>hari terburuk ·
-       angka = order per teknisi per hari</div>`);
+       <span class="tp-rep-chip" style="background:rgba(22,101,52,.35)"></span>Highest Productivity
+       &nbsp;·&nbsp;
+       <span class="tp-rep-chip" style="background:rgba(153,27,27,.3)"></span>Lowest Productivity</div>`);
+}
+
+/* Nama sub-kendala panjang terpotong di kartu ("KENDALA IKR/I…"), jadi kepala
+   kategori bisa diklik untuk membuka panel berisi daftar LENGKAP dengan nama
+   utuh. Memakai drill panel yang sudah dipakai halaman KPI agar konsisten. */
+function tpOpenSymptom(kategori){
+  const {key, label} = _tpScope();
+  const E = tpData.err[key];
+  const v = E && E.kat ? E.kat[kategori] : null;
+  if(!v) return;
+  const WARNA = {'KENDALA PELANGGAN':'#991b1b','KENDALA TEKNIK':'#C4522A',
+                 'KENDALA LAINNYA':'#D4901A','FALLOUT HOMEPASS':'#4c1d6b',
+                 'KENDALA SISTEM':'#2A3F5E'};
+  const c = WARNA[kategori] || '#6B5E52';
+  const berkendala = E.n - E.ok;
+  const maxS = v.top.length ? v.top[0][1] : 1;
+
+  $('drillTitle').textContent = `⚠ ${kategori}`;
+  $('drillBody').innerHTML = `
+    <div style="display:flex;gap:10px;margin-bottom:16px">
+      <div style="flex:1;background:${c}14;border-left:3px solid ${c};border-radius:0 8px 8px 0;padding:10px 12px">
+        <div style="font-size:1.3rem;font-weight:800;color:${c};line-height:1.1">${v.n.toLocaleString('id-ID')}</div>
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Order</div>
+      </div>
+      <div style="flex:1;background:rgba(42,63,94,.06);border-radius:8px;padding:10px 12px">
+        <div style="font-size:1.3rem;font-weight:800;color:var(--navy);line-height:1.1">${(v.n/berkendala*100).toFixed(1)}%</div>
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Dari kendala</div>
+      </div>
+      <div style="flex:1;background:rgba(42,63,94,.06);border-radius:8px;padding:10px 12px">
+        <div style="font-size:1.3rem;font-weight:800;color:var(--navy);line-height:1.1">${v.top.length}</div>
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Jenis</div>
+      </div>
+    </div>
+    <div style="font-size:.73rem;color:var(--muted);margin-bottom:10px">
+      Cakupan: <strong style="color:var(--navy)">${label}</strong> · seluruh ${v.top.length} sub-kendala
+    </div>
+    <table class="hid-area-tbl">
+      <thead><tr><th style="text-align:left">Sub-kendala</th><th>Order</th><th>%</th></tr></thead>
+      <tbody>${v.top.map(([s,n],i)=>`
+        <tr>
+          <td style="text-align:left;line-height:1.4">
+            <span style="display:inline-block;width:18px;height:18px;border-radius:5px;background:${c}1f;
+                         color:${c};font-size:.62rem;font-weight:800;text-align:center;line-height:18px;
+                         margin-right:7px;vertical-align:1px">${i+1}</span>${s}
+            <div style="margin:5px 0 2px 25px;height:5px;background:rgba(42,63,94,.08);border-radius:99px;overflow:hidden">
+              <span style="display:block;height:100%;width:${(n/maxS*100).toFixed(0)}%;background:${c};border-radius:99px"></span>
+            </div>
+          </td>
+          <td class="tp-num" style="font-weight:700">${n.toLocaleString('id-ID')}</td>
+          <td class="tp-num" style="color:var(--muted)">${(n/v.n*100).toFixed(1)}%</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+  $('drillOverlay').classList.add('show');
+  $('drillPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 async function renderTechProd(){
@@ -4871,9 +4951,11 @@ async function renderTechProd(){
     const c = warna(k);
     const maxS = v.top.length ? v.top[0][1] : 1;
     return `<div class="tp-sym">
-      <div class="tp-sym-head" style="background:${c}">
+      <div class="tp-sym-head is-clickable" style="background:${c}"
+           onclick="tpOpenSymptom(${JSON.stringify(k).replace(/"/g,'&quot;')})"
+           title="Klik untuk melihat rincian lengkap">
         <span class="tp-sym-name">${k}</span>
-        <span class="tp-sym-n">${v.n.toLocaleString('id-ID')} order</span>
+        <span class="tp-sym-n">${v.n.toLocaleString('id-ID')} order ›</span>
       </div>
       <div class="tp-sym-body">${v.top.map(([s,n],i)=>`
         <div class="tp-sym-row">
