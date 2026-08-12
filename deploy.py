@@ -71,6 +71,10 @@ SOURCE_FILES = [
     "deploy.sh",
     "dashboard_env.py",
     "sto_hierarchy_map.json",
+    # Technician Productivity reads this at runtime. It is aggregate counts only
+    # (orders + distinct technicians per day per area/regional/branch/STO) —
+    # the source CSV carries customer SERVICENUMs and must never be published.
+    "data/technician_productivity.json",
     "CLAUDE.md",
     "MY_DASHBOARD_INFO.md",
     "HOW-TO-DEPLOY.md",
