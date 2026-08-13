@@ -24,6 +24,12 @@ Other modes:
                                   ./deploy.sh doesn't reprocess all 7 periods)
     ./deploy.sh --netcheck        test the connection to GitHub and stop
 
+Data teknisi berada di jalur terpisah — sumbernya subfolder
+technician_productivity/, bukan file KPI di root — jadi punya perintahnya
+sendiri yang mengolah CSV lalu langsung mengunggah hasilnya:
+
+    ./deploy.sh --techprod        olah produktivitas_teknisi.csv → unggah
+
 State lives in .deploy_state.json next to this file. It records the size and
 modification time of every source file at the last successful deploy; a period
 is "changed" when one of its files is added, removed, resized, or re-saved.
@@ -70,6 +76,7 @@ SOURCE_FILES = [
     "deploy.py",
     "deploy.sh",
     "dashboard_env.py",
+    "build_techprod.py",
     "sto_hierarchy_map.json",
     # Technician Productivity reads this at runtime. It is aggregate counts only
     # (orders + distinct technicians per day per area/regional/branch/STO) —
@@ -192,15 +199,29 @@ def run_ui_push():
     return r.returncode == 0
 
 
-def push_source():
-    """Upload the project's own code and docs to the repo via the Contents API."""
+def build_techprod():
+    """Regenerate data/technician_productivity.json from the raw OneDrive CSV.
+
+    Kept as a separate script so it can also be run on its own; --techprod just
+    chains it with the upload so the two steps cannot be accidentally split
+    (building without pushing leaves the live site on stale data, and pushing
+    without building silently republishes the previous month's numbers).
+    """
+    print("\n▶   Building technician productivity data\n" + "─" * 70)
+    r = subprocess.run([sys.executable, os.path.join(HERE, "build_techprod.py")],
+                       cwd=HERE)
+    return r.returncode == 0
+
+
+def push_files(files, label):
+    """Upload the given repo-relative files via the Contents API."""
     token, repo, branch = get_github_config()
     headers = {"Authorization": f"token {token}",
                "Accept": "application/vnd.github.v3+json"}
 
-    print("\n▶   Pushing project source to GitHub\n" + "─" * 70)
+    print(f"\n▶   {label}\n" + "─" * 70)
     ok = failed = skipped = 0
-    for rel in SOURCE_FILES:
+    for rel in files:
         path = os.path.join(HERE, rel)
         if not os.path.isfile(path):
             print(f"   ⏭   {rel} (not present)")
@@ -235,6 +256,25 @@ def push_source():
     return failed == 0
 
 
+def push_source():
+    return push_files(SOURCE_FILES, "Pushing project source to GitHub")
+
+
+def deploy_techprod():
+    """--techprod: olah CSV teknisi lalu unggah hasilnya. Satu perintah.
+
+    Hanya dua berkas yang diunggah — data teknisi dan index.html — bukan seluruh
+    SOURCE_FILES, karena memperbarui data teknisi tidak menyentuh yang lain.
+    """
+    if not build_techprod():
+        print("\n❌  Pembuatan data gagal — tidak ada yang diunggah.\n")
+        return False
+    return push_files(
+        ["data/technician_productivity.json", "index.html"],
+        "Uploading technician productivity data",
+    )
+
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -243,7 +283,7 @@ def main():
     explicit = [a for a in args if re.fullmatch(r"\d{6}", a)]
     unknown = [a for a in args if a.startswith("-") and a not in {
         "--check", "--dry-run", "--all", "--ui", "--source", "--reset",
-        "--mark-deployed", "--netcheck", "-h", "--help"}]
+        "--mark-deployed", "--netcheck", "--techprod", "-h", "--help"}]
 
     if unknown or "-h" in flags or "--help" in flags:
         if unknown:
@@ -282,6 +322,9 @@ def main():
         print("    These are now treated as already published. From here on,")
         print("    ./deploy.sh only processes files you actually change.\n")
         return
+
+    if "--techprod" in flags:
+        sys.exit(0 if deploy_techprod() else 1)
 
     if "--ui" in flags:
         sys.exit(0 if run_ui_push() else 1)
