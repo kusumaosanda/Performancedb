@@ -159,7 +159,8 @@ def main():
     print(f"    produktivitas ALL  : {prod:.4f}")
     print(f"    tanpa kendala      : {e['ok']:,} ({e['ok']/e['n']*100:.1f}%)")
     print(f"    entitas wilayah    : {len(hasil['lvl']['ALL']):,}")
-    print("\n    Selanjutnya:  ./deploy.sh --source\n")
+    print("\n    Selanjutnya:  ./deploy.sh --source")
+    print("    (atau lain kali cukup satu perintah: ./deploy.sh --techprod)\n")
 
 
 if __name__ == "__main__":
