@@ -256,7 +256,36 @@ def push_files(files, label):
     return failed == 0
 
 
+TECHPROD_CSV = os.path.join(ONEDRIVE_FOLDER, "technician_productivity",
+                            "produktivitas_teknisi.csv")
+TECHPROD_JSON = os.path.join(HERE, "data", "technician_productivity.json")
+
+
+def techprod_stale():
+    """Apakah JSON teknisi lebih tua daripada CSV sumbernya?
+
+    --source hanya MENGUNGGAH berkas; ia tidak mengolah ulang apa pun. Tanpa
+    pemeriksaan ini, memperbarui CSV lalu menjalankan --source akan menayangkan
+    data lama tanpa satu pun tanda bahwa ada yang salah — kegagalan diam yang
+    justru paling berbahaya di dashboard kinerja.
+    """
+    try:
+        return os.path.getmtime(TECHPROD_CSV) > os.path.getmtime(TECHPROD_JSON)
+    except OSError:
+        return False
+
+
 def push_source():
+    if techprod_stale():
+        print("\n" + "─" * 70)
+        print("⚠   produktivitas_teknisi.csv lebih baru daripada")
+        print("    data/technician_productivity.json — data teknisi yang akan")
+        print("    diunggah masih versi lama.")
+        print("\n    Olah ulang dulu, lalu unggah, dengan satu perintah:")
+        print("        ./deploy.sh --techprod")
+        print("\n    Atau lanjutkan --source ini kalau memang hanya ingin")
+        print("    mengunggah kode/dokumen tanpa memperbarui data teknisi.")
+        print("─" * 70)
     return push_files(SOURCE_FILES, "Pushing project source to GitHub")
 
 
