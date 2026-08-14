@@ -4790,18 +4790,37 @@ function _tpRenderWeekly(pilihBulan){
   const fmtTgl = t => { const d=_tpD(t);
     return `${d.getDate()} ${d.toLocaleDateString('en-GB',{month:'short'})}`; };
 
-  // Minggu dianggap parsial bila harinya kurang dari yang seharusnya
+  /* Minggu dianggap lengkap bila ditutup secara wajar DAN tidak ada hari bolong.
+     Penutup yang wajar: hari Kamis (akhir minggu Jum–Kam), atau tanggal terakhir
+     bulan itu — minggu terakhir bulan memang terpotong oleh kalender, bukan
+     karena datanya kurang, jadi tidak pantas ditandai belum lengkap. */
   const lengkapnya = w => {
     const hari = minggu.get(w);
     const d0 = _tpD(hari[0].t), d1 = _tpD(hari[hari.length-1].t);
-    const seharusnya = w === 1 ? d1.getDate() : 7;   // W1 dipotong batas bulan
-    return hari.length >= seharusnya;
+    const akhirBln = new Date(d1.getFullYear(), d1.getMonth()+1, 0).getDate();
+    const ditutupWajar = d1.getDay() === 4 || d1.getDate() === akhirBln;
+    const rentangHari = Math.round((d1 - d0) / 86400000) + 1;
+    return ditutupWajar && hari.length >= rentangHari;
   };
+
+  // Kolom penutup: rata-rata sepanjang bulan terakhir yang ada datanya.
+  // "MtD" selama bulan belum tuntas, berubah jadi "FM" begitu hari terakhir
+  // bulan itu ikut terdata — jadi labelnya mengikuti data, bukan disetel manual.
+  const bulanTerakhir = tpData.tgl[nas[nas.length-1][0]].slice(0,7);
+  const hariBulanItu  = nas.filter(r=>tpData.tgl[r[0]].startsWith(bulanTerakhir));
+  const tglAkhir      = _tpD(tpData.tgl[hariBulanItu[hariBulanItu.length-1][0]]);
+  const akhirBulan    = new Date(tglAkhir.getFullYear(), tglAkhir.getMonth()+1, 0).getDate();
+  const bulanTuntas   = tglAkhir.getDate() === akhirBulan;
+  const namaBulan     = tglAkhir.toLocaleDateString('en-GB', {month:'short'});
+  const labelMtd      = `${bulanTuntas ? 'FM' : 'MtD'} ${namaBulan}`;
+  const idxBulanItu   = new Set(hariBulanItu.map(r=>r[0]));
 
   const head = `<thead><tr><th>Week</th>` + urut.map(w=>{
     const h = minggu.get(w);
     return `<th>Week ${w}<small>${fmtTgl(h[0].t)} – ${fmtTgl(h[h.length-1].t)}</small></th>`;
-  }).join('') + `</tr></thead>`;
+  }).join('') + `<th class="tp-rep-avg">${labelMtd}<small>${
+      bulanTuntas ? 'full month' : `1–${tglAkhir.getDate()} ${namaBulan}`
+    }</small></th></tr></thead>`;
 
   const body = baris.map(b=>{
     const seri = pilihBulan(tpData.lvl.ALL[b.key] || []);
@@ -4813,12 +4832,19 @@ function _tpRenderWeekly(pilihBulan){
     const ada = nilai.filter(v=>v!=null);
     const hi = ada.length>1 ? Math.max(...ada) : null;
     const lo = ada.length>1 ? Math.min(...ada) : null;
+    // MtD dihitung ulang dari nilai harian bulan itu — bukan rata-rata dari
+    // angka mingguan, karena panjang tiap minggu berbeda (W1 sering 6 hari).
+    const harianBulan = seri.filter(r=>idxBulanItu.has(r[0]) && r[2]).map(r=>r[1]/r[2]);
+    const mtd = harianBulan.length
+      ? harianBulan.reduce((a,c)=>a+c,0)/harianBulan.length : null;
+
     return `<tr><td class="tp-rep-lbl">${b.kode}</td>` + nilai.map((v,i)=>{
       if(v==null) return `<td>—</td>`;
       const kelas = [v===hi?'tp-hi':v===lo?'tp-lo':'',
                      lengkapnya(urut[i])?'':'tp-parsial'].filter(Boolean).join(' ');
       return `<td class="${kelas}">${v.toFixed(2).replace('.',',')}</td>`;
-    }).join('') + `</tr>`;
+    }).join('')
+    + `<td class="tp-rep-avg">${mtd==null?'—':mtd.toFixed(2).replace('.',',')}</td></tr>`;
   }).join('');
 
   $('tp-report-week').innerHTML = head + `<tbody>${body}</tbody>`;
