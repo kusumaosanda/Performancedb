@@ -308,6 +308,32 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .tp-rep-tbl tr:hover td.tp-lo{background:rgba(153,27,27,.15)}
 .tp-rep-legend{margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.6}
 .tp-rep-chip{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:4px}
+/* Tabel mingguan hanya punya beberapa kolom. Berbeda dari tabel harian, ia
+   TIDAK direntangkan selebar kartu — dengan width:100% dan 3 kolom, tiap sel
+   jadi selebar telapak tangan dan angkanya terapung sendirian. Lebarnya
+   mengikuti isi, rata kiri. */
+/* Kartunya ikut menyempit mengikuti tabel, bukan hanya tabelnya. Kalau hanya
+   tabel yang menyempit, header maroon tetap membentang selebar dashboard dan
+   hasil tangkapan layarnya jadi kosong melompong di sebelah kanan. */
+.tp-week-card{width:fit-content;max-width:100%;margin-bottom:20px}
+.tp-week-card .ref-summary-header{display:block}
+/* Dengan fit-content, lebar kartu ditentukan anak terlebarnya — teks legenda
+   yang panjang akan melebarkan kartu melebihi tabelnya. Dibatasi agar
+   membungkus, bukan mendorong. */
+.tp-week-card .tp-rep-legend{max-width:392px}
+.tp-week-tbl{width:auto;max-width:100%}
+/* Pakai selektor `table.` agar spesifisitasnya melampaui aturan min-width
+   .tp-rep-tbl yang berada lebih bawah di stylesheet — tanpa itu, lebar kolom
+   di sini diam-diam dikalahkan nilai 46px milik tabel harian. */
+table.tp-week-tbl th:not(:first-child),table.tp-week-tbl td:not(.tp-rep-lbl){min-width:148px}
+table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
+.tp-week-tbl th,.tp-week-tbl td{padding:10px 18px}
+.tp-week-tbl td:not(.tp-rep-lbl){font-size:.92rem;font-weight:700}
+.tp-week-tbl th{line-height:1.35}
+.tp-week-tbl th small{display:block;font-weight:600;font-size:.62rem;opacity:.85;letter-spacing:0}
+.tp-week-tbl td.tp-parsial{background:rgba(212,144,26,.1)}
+.tp-week-tbl tr:hover td.tp-parsial{background:rgba(212,144,26,.18)}
+
 /* Kolom angka wajib punya lebar minimum. Tanpa ini, width:100% memeras kolom
    sampai "1,69" terpotong di layar sempit — tabel harus menggeser, bukan
    memotong. Dengan 31 hari lebar alaminya ~1.190px, jadi scroll horizontal
@@ -935,8 +961,18 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
              muat di kolom sempit. Cakupannya tetap Nasional + STO MJP dan tidak
              mengikuti filter wilayah; hanya filter Bulan yang berlaku. -->
         <div class="card" style="margin-bottom:20px">
-          <div class="ref-summary-header" style="margin-bottom:12px">Produktivitas Teknisi</div>
+          <div class="ref-summary-header" style="margin-bottom:12px">Produktivitas Teknisi Daily</div>
           <div class="tp-rep-scroll"><table class="tp-rep-tbl" id="tp-report"></table></div>
+        </div>
+
+        <!-- CARD 1c — Produktivitas mingguan.
+             Minggu berjalan Jumat–Kamis karena laporan ditarik tiap Jumat,
+             sehingga data lengkap hanya sampai Kamis. Minggu pertama dipotong
+             di awal bulan: dari tanggal 1 sampai Kamis pertama. -->
+        <div class="card tp-week-card">
+          <div class="ref-summary-header" style="margin-bottom:12px">Produktivitas Teknisi Weekly</div>
+          <div class="tp-rep-scroll"><table class="tp-rep-tbl tp-week-tbl" id="tp-report-week"></table></div>
+          <div id="tp-week-legend" class="tp-rep-legend"></div>
         </div>
 
         <!-- CARD 2 — Summary -->
@@ -2143,6 +2179,8 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 // 2025 and 2026 KPI data live in SEPARATE files — different formulas apply
 // even to KPIs sharing the same entity name (legacy TTI vs Fulfill AO, etc.)
 // so they're never merged client-side; each page reads only its own file.
+// Dicap otomatis oleh build_techprod.py — jangan diubah manual.
+const TECHPROD_VERSION = '1a762730282b';
 const DATA = { kpis2025:'./data/kpis_2025.json', kpis2026:'./data/kpis_2026.json', home:'./data/home.json', projects:'./data/projects.json', techprod:'./data/technician_productivity.json' };
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
@@ -4624,13 +4662,15 @@ function _tpOpt(sel, items, label){
 async function loadTechProd(){
   if(tpData) return true;
   try {
-    // URL sengaja TANPA cache-buster. Pola fetchJSON() dashboard menambahkan
-    // ?t=Date.now() sehingga berkas selalu diunduh ulang — itu wajar untuk file
-    // 1–12 KB, tapi berkas ini 440 KB (83 KB ter-gzip) dan pengunduhan ulang di
-    // setiap kunjungan terasa lambat. Dengan URL tetap, GitHub Pages menyimpannya
-    // di cache 10 menit (max-age=600) seperti index.html. Tombol "Clear Cache"
-    // tetap bisa memaksa muat ulang.
-    const r = await fetch(DATA.techprod, {cache:'default'});
+    // URL memakai cap versi, bukan Date.now(). Alasannya:
+    //   - Date.now() → unduh ulang 500 KB tiap kunjungan, terasa lambat.
+    //   - URL tetap  → ter-cache, TAPI data baru tidak muncul sampai cache
+    //     kedaluwarsa; hard refresh pun tidak membantu karena fetch() ini
+    //     berjalan setelah halaman dimuat sehingga tidak ikut dilewati.
+    // Cap versi diperbarui build_techprod.py setiap kali data diolah ulang,
+    // jadi URL hanya berubah ketika isinya benar-benar berubah: data sama
+    // dilayani dari cache, data baru langsung terunduh.
+    const r = await fetch(DATA.techprod + '?v=' + TECHPROD_VERSION);
     if(!r.ok) throw new Error('HTTP '+r.status);
     tpData = await r.json();
     return true;
@@ -4711,6 +4751,88 @@ function _tpJalur(sto){
   for(const a in H) for(const r in H[a]) for(const b in H[a][r])
     if(H[a][r][b].includes(sto)) return `${a} · ${r} · ${b}`;
   return '—';
+}
+
+/* Nomor minggu dalam bulannya. Minggu berjalan Jumat–Kamis karena laporan
+   ditarik tiap Jumat, sehingga hari terakhir yang datanya lengkap adalah Kamis.
+   Minggu pertama dipotong di batas bulan: dari tanggal 1 sampai Kamis pertama —
+   Agustus 2026 mulai Sabtu, jadi W1 = 1–6, W2 = 7–13, W3 = 14–20. */
+function _tpMinggu(tglStr){
+  const [y, m, d] = tglStr.split('-').map(Number);
+  let kamis = new Date(y, m - 1, 1);
+  while (kamis.getDay() !== 4) kamis.setDate(kamis.getDate() + 1);
+  const k = kamis.getDate();
+  return d <= k ? 1 : 1 + Math.ceil((d - k) / 7);
+}
+
+/* Produktivitas mingguan = rata-rata nilai HARIAN dalam minggu itu — cara yang
+   sama dipakai untuk angka periode. Bukan total order ÷ total teknisi, karena
+   satu teknisi bekerja di banyak hari sehingga penyebutnya akan tercacah ganda. */
+function _tpRenderWeekly(pilihBulan){
+  const baris = [
+    {kode:'NAS', key:'NASIONAL|'},
+    {kode:'MJP', key:'STO|MJP'},
+  ];
+  const nas = pilihBulan(tpData.lvl.ALL['NASIONAL|'] || []);
+  if(!nas.length){ $('tp-report-week').innerHTML=''; $('tp-week-legend').innerHTML=''; return; }
+
+  // Kelompokkan indeks hari yang tersedia ke dalam minggunya
+  const minggu = new Map();
+  nas.forEach(r=>{
+    const t = tpData.tgl[r[0]];
+    const w = _tpMinggu(t);
+    if(!minggu.has(w)) minggu.set(w, []);
+    minggu.get(w).push({i:r[0], t});
+  });
+  const urut = [...minggu.keys()].sort((a,b)=>a-b);
+
+  // Kartu mingguan memakai bahasa Inggris ("1 Aug"), berbeda dari kartu harian.
+  const fmtTgl = t => { const d=_tpD(t);
+    return `${d.getDate()} ${d.toLocaleDateString('en-GB',{month:'short'})}`; };
+
+  // Minggu dianggap parsial bila harinya kurang dari yang seharusnya
+  const lengkapnya = w => {
+    const hari = minggu.get(w);
+    const d0 = _tpD(hari[0].t), d1 = _tpD(hari[hari.length-1].t);
+    const seharusnya = w === 1 ? d1.getDate() : 7;   // W1 dipotong batas bulan
+    return hari.length >= seharusnya;
+  };
+
+  const head = `<thead><tr><th>Week</th>` + urut.map(w=>{
+    const h = minggu.get(w);
+    return `<th>Week ${w}<small>${fmtTgl(h[0].t)} – ${fmtTgl(h[h.length-1].t)}</small></th>`;
+  }).join('') + `</tr></thead>`;
+
+  const body = baris.map(b=>{
+    const seri = pilihBulan(tpData.lvl.ALL[b.key] || []);
+    const peta = Object.fromEntries(seri.map(r=>[r[0], r[2]?r[1]/r[2]:null]));
+    const nilai = urut.map(w=>{
+      const v = minggu.get(w).map(h=>peta[h.i]).filter(x=>x!=null);
+      return v.length ? v.reduce((a,c)=>a+c,0)/v.length : null;
+    });
+    const ada = nilai.filter(v=>v!=null);
+    const hi = ada.length>1 ? Math.max(...ada) : null;
+    const lo = ada.length>1 ? Math.min(...ada) : null;
+    return `<tr><td class="tp-rep-lbl">${b.kode}</td>` + nilai.map((v,i)=>{
+      if(v==null) return `<td>—</td>`;
+      const kelas = [v===hi?'tp-hi':v===lo?'tp-lo':'',
+                     lengkapnya(urut[i])?'':'tp-parsial'].filter(Boolean).join(' ');
+      return `<td class="${kelas}">${v.toFixed(2).replace('.',',')}</td>`;
+    }).join('') + `</tr>`;
+  }).join('');
+
+  $('tp-report-week').innerHTML = head + `<tbody>${body}</tbody>`;
+
+  const parsial = urut.filter(w=>!lengkapnya(w));
+  $('tp-week-legend').innerHTML =
+    `<span class="tp-rep-chip" style="background:rgba(22,101,52,.35)"></span>Highest Productivity
+     &nbsp;·&nbsp;
+     <span class="tp-rep-chip" style="background:rgba(153,27,27,.3)"></span>Lowest Productivity`
+    + (parsial.length
+        ? `&nbsp;·&nbsp;<span class="tp-rep-chip" style="background:rgba(212,144,26,.35)"></span>`
+          + `Week ${parsial.join(', ')} incomplete`
+        : '')
+    + `<br>Weeks run Fri–Thu · figure is the average of daily productivity`;
 }
 
 /* Report manajemen: tabel angka, varian ALL, baris Nasional + STO MJP.
@@ -4848,6 +4970,7 @@ async function renderTechProd(){
   // Report manajemen berdiri sendiri: cakupannya tetap, jadi dirender di luar
   // cabang "tidak ada order pada cakupan ini" di bawah.
   _tpRenderReport(pilihBulan);
+  _tpRenderWeekly(pilihBulan);
 
   if(!utama.length){
     $('tp-bn-scope').textContent = label;
