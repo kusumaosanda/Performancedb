@@ -308,6 +308,7 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .tp-rep-tbl tr:hover td.tp-lo{background:rgba(153,27,27,.15)}
 .tp-rep-legend{margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.6}
 .tp-rep-chip{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:4px}
+.tp-source{display:inline-block;margin-top:6px;font-weight:700;color:var(--navy);letter-spacing:.2px}
 /* Tabel mingguan hanya punya beberapa kolom. Berbeda dari tabel harian, ia
    TIDAK direntangkan selebar kartu — dengan width:100% dan 3 kolom, tiap sel
    jadi selebar telapak tangan dan angkanya terapung sendirian. Lebarnya
@@ -372,15 +373,6 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
   font-variant-numeric:tabular-nums;flex-shrink:0}
 .tp-sym-pct{width:42px;text-align:right;font-size:.68rem;color:var(--muted);font-weight:600;flex-shrink:0}
 
-.tp-sum-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.tp-sum-item{border:1px solid var(--border);border-radius:var(--radius-md);padding:13px 15px;background:var(--bg)}
-.tp-sum-item.tp-sum-best{background:rgba(22,101,52,.07);border-color:rgba(22,101,52,.28)}
-.tp-sum-item.tp-sum-worst{background:rgba(153,27,27,.06);border-color:rgba(153,27,27,.25)}
-.tp-sum-lbl{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.tp-sum-val{font-size:1.5rem;font-weight:800;color:var(--navy);line-height:1.15;margin-top:4px;letter-spacing:-.5px}
-.tp-sum-item.tp-sum-best .tp-sum-val{color:#166534}
-.tp-sum-item.tp-sum-worst .tp-sum-val{color:#991b1b}
-.tp-sum-sub{font-size:.71rem;color:var(--muted);margin-top:3px;line-height:1.4}
 
 .tp-err-top{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .tp-err-box{border-radius:var(--radius-md);padding:13px 15px;text-align:center}
@@ -401,8 +393,7 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 
 .tp-sun{color:var(--muted);font-size:.68rem;font-weight:700;margin-left:5px}
 .tp-num{text-align:center;font-variant-numeric:tabular-nums}
-@media (max-width:1100px){.tp-sum-grid{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:900px){.tp-var3,.tp-err-top{grid-template-columns:1fr}.tp-sum-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:900px){.tp-var3,.tp-err-top{grid-template-columns:1fr}}
 
 /* ── DATA MERGER ────────────────────────────────────────────────────────────── */
 .mrg-file-list{display:flex;flex-direction:column;gap:8px;margin-top:16px}
@@ -973,38 +964,6 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
           <div class="ref-summary-header" style="margin-bottom:12px">Produktivitas Teknisi Weekly</div>
           <div class="tp-rep-scroll"><table class="tp-rep-tbl tp-week-tbl" id="tp-report-week"></table></div>
           <div id="tp-week-legend" class="tp-rep-legend"></div>
-        </div>
-
-        <!-- CARD 2 — Summary -->
-        <div class="card" style="margin-bottom:20px">
-          <div class="ref-summary-header" style="margin-bottom:14px">Summary</div>
-          <div class="tp-sum-grid">
-            <div class="tp-sum-item">
-              <div class="tp-sum-lbl">Jumlah Order</div>
-              <div class="tp-sum-val" id="tp-s-order">—</div>
-              <div class="tp-sum-sub" id="tp-s-order-sub">&nbsp;</div>
-            </div>
-            <div class="tp-sum-item">
-              <div class="tp-sum-lbl">Teknisi Aktif / Hari</div>
-              <div class="tp-sum-val" id="tp-s-teknisi">—</div>
-              <div class="tp-sum-sub" id="tp-s-teknisi-sub">&nbsp;</div>
-            </div>
-            <div class="tp-sum-item">
-              <div class="tp-sum-lbl">Produktivitas Overall</div>
-              <div class="tp-sum-val" id="tp-s-prod">—</div>
-              <div class="tp-sum-sub" id="tp-s-prod-sub">&nbsp;</div>
-            </div>
-            <div class="tp-sum-item tp-sum-best">
-              <div class="tp-sum-lbl">Tanggal Terbaik</div>
-              <div class="tp-sum-val" id="tp-s-best">—</div>
-              <div class="tp-sum-sub" id="tp-s-best-sub">&nbsp;</div>
-            </div>
-            <div class="tp-sum-item tp-sum-worst">
-              <div class="tp-sum-lbl">Tanggal Terburuk</div>
-              <div class="tp-sum-val" id="tp-s-worst">—</div>
-              <div class="tp-sum-sub" id="tp-s-worst-sub">&nbsp;</div>
-            </div>
-          </div>
         </div>
 
         <!-- CARD 3 — Kendala -->
@@ -4858,7 +4817,7 @@ function _tpRenderWeekly(pilihBulan){
         ? `&nbsp;·&nbsp;<span class="tp-rep-chip" style="background:rgba(212,144,26,.35)"></span>`
           + `Week ${parsial.join(', ')} incomplete`
         : '')
-    + `<br>Weeks run Fri–Thu · figure is the average of daily productivity`;
+    + `<br><span class="tp-source">Source: KPRO</span>`;
 }
 
 /* Report manajemen: tabel angka, varian ALL, baris Nasional + STO MJP.
@@ -5003,9 +4962,6 @@ async function renderTechProd(){
     $('tp-bn-prod').textContent  = '—';
     $('tp-var3').innerHTML = `<div style="grid-column:1/-1;padding:20px;text-align:center;
       color:var(--muted);font-size:.82rem">Tidak ada order pada cakupan ini.</div>`;
-    ['tp-s-order','tp-s-teknisi','tp-s-prod','tp-s-best','tp-s-worst'].forEach(i=>$(i).textContent='—');
-    ['tp-s-order-sub','tp-s-teknisi-sub','tp-s-prod-sub','tp-s-best-sub','tp-s-worst-sub']
-      .forEach(i=>$(i).innerHTML='&nbsp;');
     $('tp-err-top').innerHTML=''; $('tp-err-cat').innerHTML=''; $('tp-err-sub').innerHTML='';
     $('tp-var3-note').textContent='';
     if(chartInstances.techprod){ chartInstances.techprod.destroy(); chartInstances.techprod=null; }
@@ -5051,26 +5007,6 @@ async function renderTechProd(){
           datalabels:{display:false}},
         scales:{y:{ticks:{callback:v=>v.toFixed(2)},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
   }
-
-  // ── CARD 2 — summary ──
-  const totOrder = utama.reduce((t,r)=>t+r[1],0);
-  const avgTek   = Math.round(utama.reduce((t,r)=>t+r[2],0)/utama.length);
-  const harian   = utama.map(r=>({i:r[0], p:r[2]?r[1]/r[2]:0, o:r[1], c:r[2]}));
-  const best     = harian.reduce((a,b)=>b.p>a.p?b:a);
-  const worst    = harian.reduce((a,b)=>b.p<a.p?b:a);
-  const fmtT = i => { const d=_tpD(tpData.tgl[i]);
-    return `${d.getDate()} ${d.toLocaleDateString('id-ID',{month:'short'})} · ${TP_HARI[d.getDay()]}`; };
-
-  $('tp-s-order').textContent       = totOrder.toLocaleString('id-ID');
-  $('tp-s-order-sub').textContent   = `${Math.round(totOrder/utama.length).toLocaleString('id-ID')} per hari · ${utama.length} hari`;
-  $('tp-s-teknisi').textContent     = avgTek.toLocaleString('id-ID');
-  $('tp-s-teknisi-sub').textContent = 'CHIEF_CODE unik, rata-rata harian';
-  $('tp-s-prod').textContent        = prodAll.toFixed(4);
-  $('tp-s-prod-sub').textContent    = 'order per teknisi per hari';
-  $('tp-s-best').textContent        = best.p.toFixed(3);
-  $('tp-s-best-sub').textContent    = `${fmtT(best.i)} · ${best.o.toLocaleString('id-ID')} order`;
-  $('tp-s-worst').textContent       = worst.p.toFixed(3);
-  $('tp-s-worst-sub').textContent   = `${fmtT(worst.i)} · ${worst.o.toLocaleString('id-ID')} order`;
 
   // ── CARD 3 — kendala ──
   // Ringkasan kendala tidak dipecah per bulan; datanya satu periode penuh.
