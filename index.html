@@ -4083,7 +4083,14 @@ function loadProjects(data){
   try{
     const saved=localStorage.getItem('dashboard_projects');
     if(saved){ allProjects=JSON.parse(saved); projectsDirty=true; }
-    else { allProjects=JSON.parse(JSON.stringify(data.projects||[])); }
+    else {
+      // Alphabetical order only on the very first load of fresh data, so the
+      // initial view still reads A–Z. After this, allProjects order is
+      // authoritative and drag-to-reorder (which splices this array) sticks —
+      // renderTable() must NOT re-sort, or every drop snaps straight back.
+      allProjects=JSON.parse(JSON.stringify(data.projects||[]))
+        .sort((a,b)=>(a.name||'').localeCompare(b.name||'','id',{sensitivity:'base'}));
+    }
   } catch(e){ allProjects=data.projects||[]; }
   // Sync counter to max existing ID to prevent collisions after reload
   let _maxId = projectIdCounter;
@@ -4163,10 +4170,11 @@ function renderTable(projects){
   tbody.innerHTML='';
   $('noProjects').style.display=projects.length?'none':'block';
 
-  // Sort projects alphabetically — subtasks keep their stored order (drag-to-reorder)
-  const sorted=[...projects].sort((a,b)=>(a.name||'').localeCompare(b.name||'','id',{sensitivity:'base'}));
-
-  sorted.forEach(p=>{
+  // Render in stored array order — NOT re-sorted here. allProjects is sorted
+  // A–Z once, at initial load (see loadProjects); after that its order is
+  // whatever drag-to-reorder left it as. Re-sorting on every render would undo
+  // every drag the moment the row drops, which is exactly what happened before.
+  projects.forEach(p=>{
     const cls=(p.status||'').toLowerCase().replace(/\s+/g,'-');
     const priCls=(p.priority||'medium').toLowerCase();
     const pct=p.progress!=null?p.progress:null;
