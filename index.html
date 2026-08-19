@@ -1934,11 +1934,11 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
       <div class="kpi-banner" style="margin-bottom:20px">
         <div class="kpi-banner-left">
           <h2>🧩 File Merger</h2>
-          <p>Gabungkan beberapa file CSV / Excel sekaligus menjadi satu file</p>
+          <p>Gabungkan beberapa file CSV / Excel / Text sekaligus menjadi satu file</p>
         </div>
         <div class="last-update-box" style="text-align:left;min-width:200px">
           <div class="lu-label">Supported formats</div>
-          <div class="lu-val" style="font-size:.78rem">.xlsx · .xls · .csv</div>
+          <div class="lu-val" style="font-size:.78rem">.xlsx · .xls · .csv · .txt</div>
         </div>
       </div>
 
@@ -1976,7 +1976,7 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
                 <div id="mrgDropLabel" style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:6px">Drop your files here</div>
                 <div id="mrgDropSub" style="font-size:.8rem;color:var(--muted);margin-bottom:16px">atau klik untuk pilih file — bisa pilih banyak sekaligus</div>
                 <button class="conv-upload-btn" onclick="event.stopPropagation();document.getElementById('mrgFileInput').click()">📁 Choose Files</button>
-                <input type="file" id="mrgFileInput" accept=".xlsx,.xls,.csv" multiple style="display:none" onchange="mrgFilesChosen(this)">
+                <input type="file" id="mrgFileInput" accept=".xlsx,.xls,.csv,.txt" multiple style="display:none" onchange="mrgFilesChosen(this)">
               </div>
 
               <div id="mrgFileList" class="mrg-file-list"></div>
@@ -5114,19 +5114,24 @@ function _mrgFmtSize(bytes){
   return (bytes/1048576).toFixed(1) + ' MB';
 }
 
-/* Read one file into {headers, rows}. Excel → first sheet only. */
+/* Read one file into {headers, rows}. Excel → first sheet only.
+   .txt is read the same way as .csv — SheetJS's string-mode CSV parser
+   auto-detects the delimiter (comma, tab, semicolon, pipe) from the header
+   row, which matters here since some source exports (e.g. the technician
+   productivity feed) are pipe-delimited despite a .csv/.txt extension. */
 function _mrgReadFile(file){
   return new Promise(resolve => {
     const ext = file.name.split('.').pop().toLowerCase();
     const base = {name:file.name, ext, size:file.size, rows:[], headers:[], error:null};
-    if(!['xlsx','xls','csv'].includes(ext)){
+    if(!['xlsx','xls','csv','txt'].includes(ext)){
       base.error = 'Format tidak didukung'; resolve(base); return;
     }
+    const isDelimited = ext === 'csv' || ext === 'txt';
     const reader = new FileReader();
     reader.onerror = () => { base.error = 'Gagal membaca file'; resolve(base); };
     reader.onload = e => {
       try {
-        const wb = (ext === 'csv')
+        const wb = isDelimited
           ? XLSX.read(e.target.result, {type:'string', raw:false})
           : XLSX.read(e.target.result, {type:'array', raw:false, cellDates:true});
         const ws  = wb.Sheets[wb.SheetNames[0]];
@@ -5140,7 +5145,7 @@ function _mrgReadFile(file){
         resolve(base);
       }
     };
-    if(ext === 'csv') reader.readAsText(file);
+    if(isDelimited) reader.readAsText(file);
     else reader.readAsArrayBuffer(file);
   });
 }
