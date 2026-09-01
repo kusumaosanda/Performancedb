@@ -722,6 +722,10 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
    global `thead th{white-space:nowrap;overflow:hidden}` rule clips them to
    "NOT COM…" instead of wrapping. Let them wrap to two lines instead. */
 .rekon-tbl th{white-space:normal!important;overflow:visible!important;line-height:1.25!important}
+/* .rekon-block deliberately carries NO background/border-radius/shadow/padding
+   (unlike .card) — .ref-summary-header already rounds its own top corners, so
+   the header+table sit straight on the page background, and the two SLA WSA
+   REKON tables read as one continuous block instead of two floating cards. */
 
 /* Duration summary card */
 .dur-metric-card{background:var(--bg);border-radius:10px;padding:10px 12px;border-left:3px solid var(--teal);box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:0}
@@ -1561,17 +1565,47 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
          real data earlier in this project. -->
     <div class="page" id="page-slawsarekon">
       <div class="mrg-warn" style="margin-bottom:16px">
-        <strong>🧪 Halaman mockup</strong> — seluruh angka di bawah ini contoh, belum
-        terhubung ke sumber data mana pun. Target WSA yang ditampilkan adalah angka
-        resmi dari TARGETS di update_dashboard.py; realisasinya masih contoh.
+        <strong>🧪 Halaman mockup</strong> — seluruh angka di bawah ini contoh (namun
+        konsisten: baris Nasional adalah hasil jumlah Area 1–4, %Ach dihitung dari
+        target WSA resmi), belum terhubung ke sumber data mana pun. Filter di bawah
+        belum memfilter apa pun — barulah tersambung begitu sumber datanya ada.
+      </div>
+
+      <!-- Satu filter bar untuk kedua tabel di bawahnya (kartu 1 & 2), sesuai
+           permintaan pemilik — bukan satu filter per kartu. Area/Region/Branch
+           beririsan (cascading) dari sto_hierarchy_map.json yang sesungguhnya,
+           bukan daftar karangan; tapi belum benar-benar memfilter isi tabel
+           karena belum ada dataset di baliknya (lihat rekonFilterChanged()). -->
+      <div class="tree-filter-bar" style="margin-bottom:20px">
+        <div class="filter-group">
+          <label>Area</label>
+          <select id="rekonArea" onchange="rekonFilterChanged('area')"></select>
+        </div>
+        <div class="filter-group">
+          <label>Region</label>
+          <select id="rekonRegion" onchange="rekonFilterChanged('region')"></select>
+        </div>
+        <div class="filter-group">
+          <label>Branch</label>
+          <select id="rekonBranch"></select>
+        </div>
+        <div class="filter-group">
+          <label>Periode</label>
+          <select id="rekonPeriode">
+            <option>Juni 2026</option>
+            <option selected>Juli 2026</option>
+            <option>Agustus 2026</option>
+          </select>
+        </div>
       </div>
 
       <!-- Card 1 — TTI, FFG, TTR FFG per Area. Structure and column set match
            the owner's reference spreadsheet exactly (grouped 2-row header,
-           Comply/Not Comply/PS/%Real/%Ach per KPI); cells are deliberately
-           empty, same as the reference — no pipeline exists yet, so there is
-           nothing honest to fill them with. -->
-      <div class="card" style="margin-bottom:20px">
+           Comply/Not Comply/PS/%Real/%Ach per KPI). No .card wrapper (no
+           white box, no shadow) per the owner's request — the header bar and
+           table sit straight on the page background so both cards read as
+           one continuous block, not two separate floating cards. -->
+      <div class="rekon-block" style="margin-bottom:20px">
         <div class="ref-summary-header" style="margin-bottom:14px">Rekonsiliasi SLA WSA</div>
         <div style="overflow-x:auto">
           <table class="hid-area-tbl rekon-tbl">
@@ -1589,11 +1623,11 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
               </tr>
             </thead>
             <tbody>
-              <tr><td class="hid-area-name">Area 1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-              <tr><td class="hid-area-name">Area 2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-              <tr><td class="hid-area-name">Area 3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-              <tr><td class="hid-area-name">Area 4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="hid-area-name">Area 1</td><td>172</td><td>3</td><td>175</td><td>98.29</td><td>105.3%</td><td>130</td><td>12</td><td>142</td><td>91.55</td><td>93.1%</td><td>112</td><td>12</td><td>124</td><td>90.32</td><td>111.8%</td></tr>
+              <tr><td class="hid-area-name">Area 2</td><td>182</td><td>6</td><td>188</td><td>96.81</td><td>103.7%</td><td>152</td><td>3</td><td>155</td><td>98.06</td><td>99.8%</td><td>81</td><td>11</td><td>92</td><td>88.04</td><td>109.0%</td></tr>
+              <tr><td class="hid-area-name">Area 3</td><td>179</td><td>5</td><td>184</td><td>97.28</td><td>104.3%</td><td>126</td><td>4</td><td>130</td><td>96.92</td><td>98.6%</td><td>92</td><td>11</td><td>103</td><td>89.32</td><td>110.5%</td></tr>
+              <tr><td class="hid-area-name">Area 4</td><td>171</td><td>11</td><td>182</td><td>93.96</td><td>100.7%</td><td>138</td><td>6</td><td>144</td><td>95.83</td><td>97.5%</td><td>106</td><td>6</td><td>112</td><td>94.64</td><td>117.1%</td></tr>
+              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td>704</td><td>25</td><td>729</td><td>96.57</td><td>103.5%</td><td>546</td><td>25</td><td>571</td><td>95.62</td><td>97.3%</td><td>391</td><td>40</td><td>431</td><td>90.72</td><td>112.3%</td></tr>
             </tbody>
           </table>
         </div>
@@ -1602,8 +1636,9 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
       <!-- Card 2 — PS/RE, FFG GAUL per Area. Same pattern; PS/RE reuses the
            TTI band color and FFG GAUL reuses the FFG band color, mirroring how
            the reference spreadsheet reused its own two colors across both
-           tables. -->
-      <div class="card">
+           tables. Also no .card wrapper — small margin-top is the only thing
+           separating it from Card 1 above, so the two read as one unit. -->
+      <div class="rekon-block">
         <div class="ref-summary-header" style="margin-bottom:14px">Rekonsiliasi KPI WSA</div>
         <div style="overflow-x:auto">
           <table class="hid-area-tbl rekon-tbl">
@@ -1619,11 +1654,11 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
               </tr>
             </thead>
             <tbody>
-              <tr><td class="hid-area-name">Area 1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-              <tr><td class="hid-area-name">Area 2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-              <tr><td class="hid-area-name">Area 3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-              <tr><td class="hid-area-name">Area 4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="hid-area-name">Area 1</td><td>219</td><td>237</td><td>13</td><td>224</td><td>97.77</td><td>130.1%</td><td>188</td><td>11</td><td>94.47</td><td>103.0%</td></tr>
+              <tr><td class="hid-area-name">Area 2</td><td>167</td><td>200</td><td>18</td><td>182</td><td>91.76</td><td>122.1%</td><td>185</td><td>19</td><td>90.69</td><td>98.8%</td></tr>
+              <tr><td class="hid-area-name">Area 3</td><td>195</td><td>215</td><td>9</td><td>206</td><td>94.66</td><td>125.9%</td><td>217</td><td>16</td><td>93.13</td><td>101.5%</td></tr>
+              <tr><td class="hid-area-name">Area 4</td><td>208</td><td>223</td><td>8</td><td>215</td><td>96.74</td><td>128.7%</td><td>145</td><td>22</td><td>86.83</td><td>94.6%</td></tr>
+              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td>789</td><td>875</td><td>48</td><td>827</td><td>95.41</td><td>126.9%</td><td>735</td><td>68</td><td>91.53</td><td>99.8%</td></tr>
             </tbody>
           </table>
         </div>
@@ -2305,6 +2340,65 @@ function showPage(id){
   if(id==='devprogress') renderDevProgress();
   if(id==='calendar') calRender();
   if(id==='techprod') renderTechProd();
+  if(id==='slawsarekon') rekonInitFilters();
+}
+
+/* SLA WSA REKON filter bar — Area/Region/Branch cascade from the real
+   Area→Regional→Branch hierarchy in sto_hierarchy_map.json (not invented),
+   the same source Technician Productivity's own filter reads. Selecting a
+   value does NOT change the tables below: this page has no data source yet
+   (see the mockup notice), so the filter only narrows its own dropdown
+   options for now — wiring it to real filtering is future work once a
+   pipeline exists, same as Technician Productivity went from mockup → real. */
+const REKON_HIER = {
+  'AREA 1': {SUMBAGUT:['BANDA ACEH','BINJAI','MEDAN','PADANG SIDEMPUAN','PEMATANG SIANTAR','RANTAU PRAPAT'],
+             SUMBAGTENG:['BATAM','BUKIT TINGGI','DUMAI','PADANG','PEKANBARU'],
+             SUMBAGSEL:['BENGKULU','JAMBI','LAMPUNG','PALEMBANG','PANGKAL PINANG']},
+  'AREA 2': {JABAR:['BANDUNG','CIREBON','SOREANG','TASIKMALAYA'],
+             'JAKARTA BANTEN':['NORTHERN JAKARTA','SERANG','SOUTHERN JAKARTA','TANGERANG'],
+             'EASTERN JABOTABEK':['BEKASI','BOGOR','KARAWANG']},
+  'AREA 3': {JATENG:['MAGELANG','PEKALONGAN','PURWOKERTO','SEMARANG','SURAKARTA','YOGYAKARTA'],
+             JATIM:['JEMBER','LAMONGAN','MADIUN','MALANG','SIDOARJO','SURABAYA'],
+             BALINUSRA:['DENPASAR','FLORES','KUPANG','MATARAM']},
+  'AREA 4': {KALIMANTAN:['BALIKPAPAN','BANJARMASIN','PALANGKARAYA','PANGKALAN BUN','PONTIANAK','SAMARINDA','TARAKAN'],
+             SULAWESI:['BONE','KENDARI','MAKASSAR','MANADO','PALU','PARE-PARE','TERNATE'],
+             PUMA:['AMBON','JAYAPURA','SORONG','TIMIKA']},
+};
+const REKON_SEMUA = '__ALL__';
+
+/* Same fix as _tpOpt() in Technician Productivity: rewriting innerHTML wipes
+   whatever was selected, so the previous value is restored when it still
+   exists in the new option list. */
+function _rekonOpt(sel, items, label){
+  const prev = sel.value;
+  sel.innerHTML = `<option value="${REKON_SEMUA}">${label}</option>` +
+    items.map(v=>`<option value="${v}">${v}</option>`).join('');
+  if(prev && [...sel.options].some(o=>o.value===prev)) sel.value = prev;
+}
+
+function rekonFilterChanged(dari){
+  const area = $('rekonArea').value;
+  if(dari==='area' || dari===undefined){
+    const regs = area===REKON_SEMUA
+      ? [...new Set(Object.values(REKON_HIER).flatMap(a=>Object.keys(a)))].sort()
+      : Object.keys(REKON_HIER[area]).sort();
+    _rekonOpt($('rekonRegion'), regs, 'Semua Region');
+  }
+  const region = $('rekonRegion').value;
+  let branches = [];
+  for(const a in REKON_HIER){
+    if(area!==REKON_SEMUA && a!==area) continue;
+    for(const r in REKON_HIER[a]){
+      if(region!==REKON_SEMUA && r!==region) continue;
+      branches.push(...REKON_HIER[a][r]);
+    }
+  }
+  _rekonOpt($('rekonBranch'), [...new Set(branches)].sort(), 'Semua Branch');
+}
+
+function rekonInitFilters(){
+  _rekonOpt($('rekonArea'), Object.keys(REKON_HIER).sort(), 'Semua Area');
+  rekonFilterChanged('area');
 }
 function showKpiDefTab(tab, btn){
   document.querySelectorAll('.kpidef-tab').forEach(el=>el.style.display='none');
