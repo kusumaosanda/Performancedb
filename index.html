@@ -726,6 +726,16 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
    (unlike .card) — .ref-summary-header already rounds its own top corners, so
    the header+table sit straight on the page background, and the two SLA WSA
    REKON tables read as one continuous block instead of two floating cards. */
+/* Header bar sized to its text, not stretched edge-to-edge like every other
+   .ref-summary-header on this dashboard — scoped to .rekon-block only so
+   every other page's full-width header bars are untouched. */
+.rekon-block .ref-summary-header{display:inline-block;width:auto;padding:9px 26px}
+/* %Ach < 100% gets a pastel-red flag. Written twice (plain + rekon-total-row)
+   because .hid-area-tbl tr.rekon-total-row td (0,2,2) already outranks a
+   single-purpose .rekon-ach-low class (0,2,1) on the Nasional row — the exact
+   trap .tp-bar and the first cut of .rekon-grp-* hit earlier on this page. */
+.hid-area-tbl td.rekon-ach-low,
+.hid-area-tbl tr.rekon-total-row td.rekon-ach-low{background:rgba(168,48,32,.14);color:var(--red);font-weight:700}
 
 /* Duration summary card */
 .dur-metric-card{background:var(--bg);border-radius:10px;padding:10px 12px;border-left:3px solid var(--teal);box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:0}
@@ -1590,13 +1600,14 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
           <select id="rekonBranch"></select>
         </div>
         <div class="filter-group">
-          <label>Periode</label>
+          <label>Period</label>
           <select id="rekonPeriode">
-            <option>Juni 2026</option>
-            <option selected>Juli 2026</option>
-            <option>Agustus 2026</option>
+            <option>June 2026</option>
+            <option selected>July 2026</option>
+            <option>August 2026</option>
           </select>
         </div>
+        <button class="hid-btn" onclick="rekonApplyFilter()">Submit</button>
       </div>
 
       <!-- Card 1 — TTI, FFG, TTR FFG per Area. Structure and column set match
@@ -1623,11 +1634,11 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
               </tr>
             </thead>
             <tbody>
-              <tr><td class="hid-area-name">Area 1</td><td>172</td><td>3</td><td>175</td><td>98.29</td><td>105.3%</td><td>130</td><td>12</td><td>142</td><td>91.55</td><td>93.1%</td><td>112</td><td>12</td><td>124</td><td>90.32</td><td>111.8%</td></tr>
-              <tr><td class="hid-area-name">Area 2</td><td>182</td><td>6</td><td>188</td><td>96.81</td><td>103.7%</td><td>152</td><td>3</td><td>155</td><td>98.06</td><td>99.8%</td><td>81</td><td>11</td><td>92</td><td>88.04</td><td>109.0%</td></tr>
-              <tr><td class="hid-area-name">Area 3</td><td>179</td><td>5</td><td>184</td><td>97.28</td><td>104.3%</td><td>126</td><td>4</td><td>130</td><td>96.92</td><td>98.6%</td><td>92</td><td>11</td><td>103</td><td>89.32</td><td>110.5%</td></tr>
-              <tr><td class="hid-area-name">Area 4</td><td>171</td><td>11</td><td>182</td><td>93.96</td><td>100.7%</td><td>138</td><td>6</td><td>144</td><td>95.83</td><td>97.5%</td><td>106</td><td>6</td><td>112</td><td>94.64</td><td>117.1%</td></tr>
-              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td>704</td><td>25</td><td>729</td><td>96.57</td><td>103.5%</td><td>546</td><td>25</td><td>571</td><td>95.62</td><td>97.3%</td><td>391</td><td>40</td><td>431</td><td>90.72</td><td>112.3%</td></tr>
+              <tr><td class="hid-area-name">Area 1</td><td>172</td><td>3</td><td>175</td><td>98.29</td><td>105.3%</td><td>130</td><td>12</td><td>142</td><td>91.55</td><td class="rekon-ach-low">93.1%</td><td>112</td><td>12</td><td>124</td><td>90.32</td><td>111.8%</td></tr>
+              <tr><td class="hid-area-name">Area 2</td><td>182</td><td>6</td><td>188</td><td>96.81</td><td>103.7%</td><td>152</td><td>3</td><td>155</td><td>98.06</td><td class="rekon-ach-low">99.8%</td><td>81</td><td>11</td><td>92</td><td>88.04</td><td>109.0%</td></tr>
+              <tr><td class="hid-area-name">Area 3</td><td>179</td><td>5</td><td>184</td><td>97.28</td><td>104.3%</td><td>126</td><td>4</td><td>130</td><td>96.92</td><td class="rekon-ach-low">98.6%</td><td>92</td><td>11</td><td>103</td><td>89.32</td><td>110.5%</td></tr>
+              <tr><td class="hid-area-name">Area 4</td><td>171</td><td>11</td><td>182</td><td>93.96</td><td>100.7%</td><td>138</td><td>6</td><td>144</td><td>95.83</td><td class="rekon-ach-low">97.5%</td><td>106</td><td>6</td><td>112</td><td>94.64</td><td>117.1%</td></tr>
+              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td>704</td><td>25</td><td>729</td><td>96.57</td><td>103.5%</td><td>546</td><td>25</td><td>571</td><td>95.62</td><td class="rekon-ach-low">97.3%</td><td>391</td><td>40</td><td>431</td><td>90.72</td><td>112.3%</td></tr>
             </tbody>
           </table>
         </div>
@@ -1655,13 +1666,23 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
             </thead>
             <tbody>
               <tr><td class="hid-area-name">Area 1</td><td>219</td><td>237</td><td>13</td><td>224</td><td>97.77</td><td>130.1%</td><td>188</td><td>11</td><td>94.47</td><td>103.0%</td></tr>
-              <tr><td class="hid-area-name">Area 2</td><td>167</td><td>200</td><td>18</td><td>182</td><td>91.76</td><td>122.1%</td><td>185</td><td>19</td><td>90.69</td><td>98.8%</td></tr>
+              <tr><td class="hid-area-name">Area 2</td><td>167</td><td>200</td><td>18</td><td>182</td><td>91.76</td><td>122.1%</td><td>185</td><td>19</td><td>90.69</td><td class="rekon-ach-low">98.8%</td></tr>
               <tr><td class="hid-area-name">Area 3</td><td>195</td><td>215</td><td>9</td><td>206</td><td>94.66</td><td>125.9%</td><td>217</td><td>16</td><td>93.13</td><td>101.5%</td></tr>
-              <tr><td class="hid-area-name">Area 4</td><td>208</td><td>223</td><td>8</td><td>215</td><td>96.74</td><td>128.7%</td><td>145</td><td>22</td><td>86.83</td><td>94.6%</td></tr>
-              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td>789</td><td>875</td><td>48</td><td>827</td><td>95.41</td><td>126.9%</td><td>735</td><td>68</td><td>91.53</td><td>99.8%</td></tr>
+              <tr><td class="hid-area-name">Area 4</td><td>208</td><td>223</td><td>8</td><td>215</td><td>96.74</td><td>128.7%</td><td>145</td><td>22</td><td>86.83</td><td class="rekon-ach-low">94.6%</td></tr>
+              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td>789</td><td>875</td><td>48</td><td>827</td><td>95.41</td><td>126.9%</td><td>735</td><td>68</td><td>91.53</td><td class="rekon-ach-low">99.8%</td></tr>
             </tbody>
           </table>
         </div>
+      </div>
+
+      <!-- Legend: target per KPI (KPI 2025 / TARGETS in update_dashboard.py —
+           the same numbers the KPI 2025 page itself uses) + the %Ach color
+           key, shared by both tables above. -->
+      <div class="tp-rep-legend">
+        <span class="tp-rep-chip" style="background:rgba(168,48,32,.3)"></span>Achievement below 100% (target not met)
+        <br>
+        <strong>Target (KPI 2025):</strong>
+        TTI 93.31% · FFG 98.29% · TTR FFG 80.81% · PS/RE 75.17% · FFG GAUL 91.76%
       </div>
     </div><!-- /page-slawsarekon -->
 
@@ -2382,7 +2403,7 @@ function rekonFilterChanged(dari){
     const regs = area===REKON_SEMUA
       ? [...new Set(Object.values(REKON_HIER).flatMap(a=>Object.keys(a)))].sort()
       : Object.keys(REKON_HIER[area]).sort();
-    _rekonOpt($('rekonRegion'), regs, 'Semua Region');
+    _rekonOpt($('rekonRegion'), regs, 'All Region');
   }
   const region = $('rekonRegion').value;
   let branches = [];
@@ -2393,12 +2414,23 @@ function rekonFilterChanged(dari){
       branches.push(...REKON_HIER[a][r]);
     }
   }
-  _rekonOpt($('rekonBranch'), [...new Set(branches)].sort(), 'Semua Branch');
+  _rekonOpt($('rekonBranch'), [...new Set(branches)].sort(), 'All Branch');
 }
 
 function rekonInitFilters(){
-  _rekonOpt($('rekonArea'), Object.keys(REKON_HIER).sort(), 'Semua Area');
+  _rekonOpt($('rekonArea'), Object.keys(REKON_HIER).sort(), 'All Area');
   rekonFilterChanged('area');
+}
+
+/* Submit button. No dataset exists behind this mockup yet (see the notice
+   banner), so there is nothing to actually re-query — this just gives the
+   button honest, visible feedback rather than doing nothing when clicked. */
+function rekonApplyFilter(){
+  const btn = event.currentTarget;
+  const orig = btn.textContent;
+  btn.textContent = '✓ Applied';
+  btn.disabled = true;
+  setTimeout(()=>{ btn.textContent = orig; btn.disabled = false; }, 1200);
 }
 function showKpiDefTab(tab, btn){
   document.querySelectorAll('.kpidef-tab').forEach(el=>el.style.display='none');
