@@ -1523,65 +1523,63 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
     </div>
 
     <!-- ══ SLA WSA REKON (Mockup → SLA WSA REKON) ══
-         MOCKUP ONLY. Every number below is hardcoded placeholder data — no
-         pipeline, no data file, nothing wired up. Grounded in the WSA
-         (Berita Acara Kesepakatan) KPI names already used on the KPI
-         Definition page, since a reconciliation page's whole point is
-         comparing the two sides' computed SLA % for the same KPIs against
-         the agreed target. Replace with real numbers when a source is
-         decided, the way Technician Productivity went from mockup → real
-         data earlier in this project. -->
+         MOCKUP ONLY. Realisasi numbers below are hardcoded placeholders — no
+         pipeline, no data file, nothing wired up. Target WSA figures ARE
+         real, though: pulled from TARGETS in update_dashboard.py (the same
+         values every other KPI page on this dashboard uses), so achievement %
+         is at least computed against a genuine target even while realisasi
+         is fake. Two cards split by KPI, per the owner's request:
+           Card 1 "Rekonsiliasi SLA WSA"  — TTI, FFG, TTR FFG (realisasi + achievement)
+           Card 2 "Rekonsiliasi KPI WSA"  — PS-RE, FFG GAUL (realisasi only)
+         Replace with real numbers when a source is decided, the way
+         Technician Productivity went from mockup → real data earlier in
+         this project. -->
     <div class="page" id="page-slawsarekon">
-      <div class="hid-page-banner">
-        <div style="display:flex;align-items:center;gap:14px">
-          <div class="hid-banner-icon">🧮</div>
-          <div>
-            <div class="hid-banner-title">SLA WSA REKON</div>
-            <div class="hid-banner-sub">Rekonsiliasi SLA Telkom vs Telkomsel — per WSA BAK</div>
-          </div>
-        </div>
-        <div class="hid-banner-stats">
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Periode</div><div class="hid-bs-val" style="font-size:.9rem">Jul 2026</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Match Rate</div><div class="hid-bs-val">80%</div></div>
-        </div>
-      </div>
-
       <div class="mrg-warn" style="margin-bottom:16px">
         <strong>🧪 Halaman mockup</strong> — seluruh angka di bawah ini contoh, belum
-        terhubung ke sumber data mana pun. Struktur mengikuti KPI yang sudah ada di
-        halaman KPI Definition (WSA BAK) sebagai acuan; ganti dengan angka
-        sesungguhnya begitu sumbernya ditentukan.
+        terhubung ke sumber data mana pun. Target WSA yang ditampilkan adalah angka
+        resmi dari TARGETS di update_dashboard.py; realisasinya masih contoh.
       </div>
 
-      <div class="tp-err-top" style="margin-bottom:20px">
-        <div class="tp-err-box tot"><div class="tp-err-val">5</div><div class="tp-err-lbl">KPI Dibandingkan</div></div>
-        <div class="tp-err-box ok"><div class="tp-err-val">4</div><div class="tp-err-lbl">Match</div></div>
-        <div class="tp-err-box bad"><div class="tp-err-val">1</div><div class="tp-err-lbl">Selisih &gt; toleransi</div></div>
-      </div>
-
-      <div class="card">
-        <div class="ref-summary-header" style="margin-bottom:14px">Rekonsiliasi per KPI</div>
+      <!-- Card 1 — TTI, FFG, TTR FFG: realisasi + achievement terhadap target WSA -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="ref-summary-header" style="margin-bottom:14px">Rekonsiliasi SLA WSA</div>
         <div style="overflow-x:auto">
           <table class="hid-area-tbl">
             <thead>
               <tr>
                 <th style="text-align:left">KPI</th>
-                <th>Telkom (%)</th><th>Telkomsel (%)</th><th>Selisih</th>
-                <th>Target WSA</th><th>Status</th>
+                <th>Realisasi (%)</th><th>Target WSA (%)</th><th>Achievement</th><th>Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td style="text-align:left">TTI</td><td class="tp-num">93.42</td><td class="tp-num">93.18</td><td class="tp-num">0.24</td><td class="tp-num">93.31</td><td><span class="pt-status completed">Match</span></td></tr>
-              <tr><td style="text-align:left">FFG</td><td class="tp-num">98.55</td><td class="tp-num">98.41</td><td class="tp-num">0.14</td><td class="tp-num">98.29</td><td><span class="pt-status completed">Match</span></td></tr>
-              <tr><td style="text-align:left">TTR FFG</td><td class="tp-num">81.20</td><td class="tp-num">77.63</td><td class="tp-num" style="color:var(--red);font-weight:700">3.57</td><td class="tp-num">80.81</td><td><span class="pt-status cancelled">Selisih</span></td></tr>
-              <tr><td style="text-align:left">PS-RE</td><td class="tp-num">75.44</td><td class="tp-num">75.29</td><td class="tp-num">0.15</td><td class="tp-num">75.17</td><td><span class="pt-status completed">Match</span></td></tr>
-              <tr><td style="text-align:left">FFG GAUL</td><td class="tp-num">92.01</td><td class="tp-num">91.87</td><td class="tp-num">0.14</td><td class="tp-num">91.76</td><td><span class="pt-status completed">Match</span></td></tr>
+              <tr><td style="text-align:left">TTI</td><td class="tp-num">93.68</td><td class="tp-num">93.31</td><td class="tp-num">100.4%</td><td><span class="pt-status completed">Tercapai</span></td></tr>
+              <tr><td style="text-align:left">FFG</td><td class="tp-num">98.55</td><td class="tp-num">98.29</td><td class="tp-num">100.3%</td><td><span class="pt-status completed">Tercapai</span></td></tr>
+              <tr><td style="text-align:left">TTR FFG</td><td class="tp-num">77.90</td><td class="tp-num">80.81</td><td class="tp-num" style="color:var(--red);font-weight:700">96.4%</td><td><span class="pt-status cancelled">Belum Tercapai</span></td></tr>
             </tbody>
           </table>
         </div>
         <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.6">
-          <strong>Match</strong> = selisih Telkom vs Telkomsel dalam toleransi (contoh: ≤1 pp).
-          <strong>Selisih</strong> = melebihi toleransi, perlu ditelusuri sebelum periode ditutup.
+          <strong>Achievement</strong> = Realisasi ÷ Target WSA × 100%.
+        </div>
+      </div>
+
+      <!-- Card 2 — PS-RE, FFG GAUL: realisasi saja -->
+      <div class="card">
+        <div class="ref-summary-header" style="margin-bottom:14px">Rekonsiliasi KPI WSA</div>
+        <div style="overflow-x:auto">
+          <table class="hid-area-tbl">
+            <thead>
+              <tr><th style="text-align:left">KPI</th><th>Realisasi (%)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td style="text-align:left">PS-RE</td><td class="tp-num">75.60</td></tr>
+              <tr><td style="text-align:left">FFG GAUL</td><td class="tp-num">92.10</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.6">
+          Target WSA — PS-RE 75.17% · FFG GAUL 91.76%.
         </div>
       </div>
     </div><!-- /page-slawsarekon -->
