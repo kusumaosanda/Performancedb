@@ -702,6 +702,27 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 .hid-expand-btn{cursor:pointer;display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;font-size:.65rem;border-radius:4px;background:rgba(42,63,94,.12);color:var(--navy);font-weight:800;margin-right:6px;transition:transform .2s,background .15s;flex-shrink:0}
 .hid-expand-btn.open{transform:rotate(90deg);background:var(--teal);color:#fff}
 .hid-area-name-cell{display:flex;align-items:center}
+
+/* Grouped-header pivot table (SLA WSA REKON) — extends .hid-area-tbl with
+   colored KPI bands spanning both header rows (group label + sub-columns),
+   matching the owner's reference spreadsheet. Colors pull from the dashboard's
+   own palette (wine/sandy/green) rather than the reference's literal hues, per
+   "sesuaikan warnanya". Colors are reused across tables where the reference
+   reused them too: TTI & PS/RE share --wine, FFG & FFG GAUL share --sandy.
+   Selectors are scoped as .hid-area-tbl th.rekon-* (not bare .rekon-*) to
+   out-specificity the base ".hid-area-tbl th" rule above — a bare single-class
+   selector loses to that silently, the same trap .tp-bar hit earlier. */
+.hid-area-tbl th.rekon-area-col{background:var(--accent);color:#fff;text-align:left;min-width:100px}
+.hid-area-tbl th.rekon-grp-a{background:var(--wine);color:#fff}
+.hid-area-tbl th.rekon-grp-b{background:var(--sandy);color:var(--text)}
+.hid-area-tbl th.rekon-grp-c{background:var(--green);color:#fff}
+.hid-area-tbl tr.rekon-total-row td{background:rgba(42,63,94,.06);font-weight:700;color:var(--navy)}
+/* Same fix as .kpi-ref-breakdown th above: with 15-16 columns the sub-headers
+   ("Not Comply", "RE-Nett"…) are narrower than their own label, and the
+   global `thead th{white-space:nowrap;overflow:hidden}` rule clips them to
+   "NOT COM…" instead of wrapping. Let them wrap to two lines instead. */
+.rekon-tbl th{white-space:normal!important;overflow:visible!important;line-height:1.25!important}
+
 /* Duration summary card */
 .dur-metric-card{background:var(--bg);border-radius:10px;padding:10px 12px;border-left:3px solid var(--teal);box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:0}
 .dur-metric-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:2px}
@@ -1523,17 +1544,21 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
     </div>
 
     <!-- ══ SLA WSA REKON (Mockup → SLA WSA REKON) ══
-         MOCKUP ONLY. Realisasi numbers below are hardcoded placeholders — no
-         pipeline, no data file, nothing wired up. Target WSA figures ARE
-         real, though: pulled from TARGETS in update_dashboard.py (the same
-         values every other KPI page on this dashboard uses), so achievement %
-         is at least computed against a genuine target even while realisasi
-         is fake. Two cards split by KPI, per the owner's request:
-           Card 1 "Rekonsiliasi SLA WSA"  — TTI, FFG, TTR FFG (realisasi + achievement)
-           Card 2 "Rekonsiliasi KPI WSA"  — PS-RE, FFG GAUL (realisasi only)
-         Replace with real numbers when a source is decided, the way
-         Technician Productivity went from mockup → real data earlier in
-         this project. -->
+         MOCKUP ONLY, and deliberately empty — no realisasi numbers at all, not
+         even placeholders. Structure copies the owner's reference spreadsheet
+         exactly: a 2-row grouped header (KPI band spanning its sub-columns)
+         pivoted by Area, reusing the .hid-area-tbl system already built for
+         Home ID Performance's own area breakdown (see .rekon-* classes added
+         near .hid-area-tbl above — they extend it with 3 KPI-band colors
+         instead of that page's 2). Colors are dashboard tokens (--wine,
+         --sandy, --green), not the reference's literal hues, per the owner's
+         "sesuaikan warnanya" — and reused the same way the reference reused
+         its own colors: TTI + PS/RE share --wine, FFG + FFG GAUL share
+         --sandy. Two cards:
+           Card 1 "Rekonsiliasi SLA WSA"  — TTI, FFG, TTR FFG × Area 1-4 + Nasional
+           Card 2 "Rekonsiliasi KPI WSA"  — PS/RE, FFG GAUL × Area 1-4 + Nasional
+         Wire up real data the way Technician Productivity went from mockup →
+         real data earlier in this project. -->
     <div class="page" id="page-slawsarekon">
       <div class="mrg-warn" style="margin-bottom:16px">
         <strong>🧪 Halaman mockup</strong> — seluruh angka di bawah ini contoh, belum
@@ -1541,45 +1566,66 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
         resmi dari TARGETS di update_dashboard.py; realisasinya masih contoh.
       </div>
 
-      <!-- Card 1 — TTI, FFG, TTR FFG: realisasi + achievement terhadap target WSA -->
+      <!-- Card 1 — TTI, FFG, TTR FFG per Area. Structure and column set match
+           the owner's reference spreadsheet exactly (grouped 2-row header,
+           Comply/Not Comply/PS/%Real/%Ach per KPI); cells are deliberately
+           empty, same as the reference — no pipeline exists yet, so there is
+           nothing honest to fill them with. -->
       <div class="card" style="margin-bottom:20px">
         <div class="ref-summary-header" style="margin-bottom:14px">Rekonsiliasi SLA WSA</div>
         <div style="overflow-x:auto">
-          <table class="hid-area-tbl">
+          <table class="hid-area-tbl rekon-tbl">
             <thead>
               <tr>
-                <th style="text-align:left">KPI</th>
-                <th>Realisasi (%)</th><th>Target WSA (%)</th><th>Achievement</th><th>Status</th>
+                <th class="rekon-area-col" rowspan="2">Area</th>
+                <th colspan="5" class="rekon-grp-a">TTI</th>
+                <th colspan="5" class="rekon-grp-b">FFG</th>
+                <th colspan="5" class="rekon-grp-c">TTR FFG</th>
+              </tr>
+              <tr>
+                <th class="rekon-grp-a">Comply</th><th class="rekon-grp-a">Not Comply</th><th class="rekon-grp-a">PS</th><th class="rekon-grp-a">%Real</th><th class="rekon-grp-a">%Ach</th>
+                <th class="rekon-grp-b">Comply</th><th class="rekon-grp-b">Not Comply</th><th class="rekon-grp-b">PS</th><th class="rekon-grp-b">%Real</th><th class="rekon-grp-b">%Ach</th>
+                <th class="rekon-grp-c">Comply</th><th class="rekon-grp-c">Not Comply</th><th class="rekon-grp-c">PS</th><th class="rekon-grp-c">%Real</th><th class="rekon-grp-c">%Ach</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td style="text-align:left">TTI</td><td class="tp-num">93.68</td><td class="tp-num">93.31</td><td class="tp-num">100.4%</td><td><span class="pt-status completed">Tercapai</span></td></tr>
-              <tr><td style="text-align:left">FFG</td><td class="tp-num">98.55</td><td class="tp-num">98.29</td><td class="tp-num">100.3%</td><td><span class="pt-status completed">Tercapai</span></td></tr>
-              <tr><td style="text-align:left">TTR FFG</td><td class="tp-num">77.90</td><td class="tp-num">80.81</td><td class="tp-num" style="color:var(--red);font-weight:700">96.4%</td><td><span class="pt-status cancelled">Belum Tercapai</span></td></tr>
+              <tr><td class="hid-area-name">Area 1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="hid-area-name">Area 2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="hid-area-name">Area 3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="hid-area-name">Area 4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             </tbody>
           </table>
-        </div>
-        <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.6">
-          <strong>Achievement</strong> = Realisasi ÷ Target WSA × 100%.
         </div>
       </div>
 
-      <!-- Card 2 — PS-RE, FFG GAUL: realisasi saja -->
+      <!-- Card 2 — PS/RE, FFG GAUL per Area. Same pattern; PS/RE reuses the
+           TTI band color and FFG GAUL reuses the FFG band color, mirroring how
+           the reference spreadsheet reused its own two colors across both
+           tables. -->
       <div class="card">
         <div class="ref-summary-header" style="margin-bottom:14px">Rekonsiliasi KPI WSA</div>
         <div style="overflow-x:auto">
-          <table class="hid-area-tbl">
+          <table class="hid-area-tbl rekon-tbl">
             <thead>
-              <tr><th style="text-align:left">KPI</th><th>Realisasi (%)</th></tr>
+              <tr>
+                <th class="rekon-area-col" rowspan="2">Area</th>
+                <th colspan="6" class="rekon-grp-a">PS/RE</th>
+                <th colspan="4" class="rekon-grp-b">FFG GAUL</th>
+              </tr>
+              <tr>
+                <th class="rekon-grp-a">PS</th><th class="rekon-grp-a">RE</th><th class="rekon-grp-a">Cancel</th><th class="rekon-grp-a">RE-Nett</th><th class="rekon-grp-a">%Real</th><th class="rekon-grp-a">%Ach</th>
+                <th class="rekon-grp-b">FFG</th><th class="rekon-grp-b">Gaul</th><th class="rekon-grp-b">%Real</th><th class="rekon-grp-b">%Ach</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td style="text-align:left">PS-RE</td><td class="tp-num">75.60</td></tr>
-              <tr><td style="text-align:left">FFG GAUL</td><td class="tp-num">92.10</td></tr>
+              <tr><td class="hid-area-name">Area 1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="hid-area-name">Area 2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="hid-area-name">Area 3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="hid-area-name">Area 4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="rekon-total-row"><td class="hid-area-name">Nasional</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             </tbody>
           </table>
-        </div>
-        <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.6">
-          Target WSA — PS-RE 75.17% · FFG GAUL 91.76%.
         </div>
       </div>
     </div><!-- /page-slawsarekon -->
