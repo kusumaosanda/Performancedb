@@ -1067,11 +1067,6 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 
         <!-- Download toolbar -->
         <div class="kpi-toolbar">
-          <button id="btnDownloadRaw" onclick="downloadRaw()"
-            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(127,29,29,.4)'"
-            onmouseout="this.style.transform='';this.style.boxShadow=''"
-            title="Download original DB columns (semicolon CSV)"
-            style="display:none;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Raw</button>
           <button id="btnDownloadKPI" onclick="downloadProcessed()"
             onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(42,63,94,.4)'"
             onmouseout="this.style.transform='';this.style.boxShadow=''"
@@ -1113,11 +1108,6 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 
       <!-- Download toolbar -->
       <div class="kpi-toolbar">
-        <button id="btnDownloadRaw2026" onclick="downloadRaw2026()"
-          onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(127,29,29,.4)'"
-          onmouseout="this.style.transform='';this.style.boxShadow=''"
-          title="Download original DB columns (semicolon CSV)"
-          style="display:none;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap">⬇ Download Raw</button>
         <button id="btnDownloadKPI2026" onclick="downloadProcessed2026()"
           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(42,63,94,.4)'"
           onmouseout="this.style.transform='';this.style.boxShadow=''"
@@ -3041,9 +3031,7 @@ function renderKPIBody(){
   // Show download buttons for entities that push raw/detail CSVs
   const _dlEntities = ['TTI','FFG','TTRFFG','PSRE'];
   const isDownloadMonth = _dlEntities.includes(selectedEntity) && selectedMonth && selectedMonth!=='summary';
-  const dlRaw  = $('btnDownloadRaw');
   const dlProc = $('btnDownloadKPI');
-  if(dlRaw)  dlRaw.style.display  = isDownloadMonth ? '' : 'none';
   if(dlProc) dlProc.style.display = isDownloadMonth ? '' : 'none';
 
   if(selectedMonth === 'summary'){ renderSummaryView(); return; }
@@ -6086,25 +6074,6 @@ async function _fetchAndDownload(url, filename, btn){
 
 // Generic download: works for any entity that pushes raw/detail CSVs (TTI, FFG, TTRFFG, …)
 const _DL_ENTITIES = ['TTI','FFG','TTRFFG','PSRE','MO','PDA'];
-async function downloadRaw(){
-  const e = selectedEntity;
-  if(!_DL_ENTITIES.includes(e)||!selectedMonth||selectedMonth==='summary') return;
-  // PSRE raw = the original source file (YYYYMM_PSRE.csv), stored directly in /data/
-  if(e === 'PSRE'){
-    await _fetchAndDownload(
-      `data/${selectedMonth}_PSRE.csv`,
-      `${selectedMonth}_PSRE.csv`,
-      $('btnDownloadRaw')
-    );
-    return;
-  }
-  const key = e.toLowerCase();
-  await _fetchAndDownload(
-    `data/${key}_raw_${selectedMonth}.csv`,
-    `${e}_Raw_${selectedMonth}.csv`,
-    $('btnDownloadRaw')
-  );
-}
 async function downloadProcessed(){
   const e = selectedEntity;
   if(!_DL_ENTITIES.includes(e)||!selectedMonth||selectedMonth==='summary') return;
@@ -6115,26 +6084,14 @@ async function downloadProcessed(){
     $('btnDownloadKPI')
   );
 }
-// Legacy aliases kept for safety
-async function downloadTTIRaw(){ await downloadRaw(); }
+// Legacy alias kept for safety
 async function downloadKPIData(){ await downloadProcessed(); }
 
-// ── KPI 2026 toolbar downloads — same pattern as downloadRaw()/
-// downloadProcessed() (KPI2025) but resolve the entity from the KPI 2026
-// dropdown's current tab, and route through _dlFileKey() so Fulfill AO
-// (TTI on this page) pulls the separate tti2026_* files instead of the
-// legacy-formula tti_* files KPI2025's downloadRaw()/downloadProcessed() use.
-async function downloadRaw2026(){
-  const cfg = KPI2026_TABS.find(c=>c.tab===current2026Tab);
-  if(!cfg || !kpi2026SelectedPeriod) return;
-  window._currentPageCtx = '2026';
-  const key = _dlFileKey(cfg.entity);
-  await _fetchAndDownload(
-    `data/${key}_raw_${kpi2026SelectedPeriod}.csv`,
-    `${cfg.label.replace(/\s+/g,'')}_Raw_${kpi2026SelectedPeriod}.csv`,
-    $('btnDownloadRaw2026')
-  );
-}
+// ── KPI 2026 toolbar download — same pattern as downloadProcessed()
+// (KPI2025) but resolves the entity from the KPI 2026 dropdown's current
+// tab, and routes through _dlFileKey() so Fulfill AO (TTI on this page)
+// pulls the separate tti2026_* files instead of the legacy-formula tti_*
+// files KPI2025's downloadProcessed() uses.
 async function downloadProcessed2026(){
   const cfg = KPI2026_TABS.find(c=>c.tab===current2026Tab);
   if(!cfg || !kpi2026SelectedPeriod) return;
@@ -6623,11 +6580,9 @@ function renderKpi2026Body(){
 
   // Toggle the 2026 download toolbar — visible only when a specific KPI
   // tab (not All KPI / Checklist) with data for the selected period is showing.
-  const dlRaw2026  = $('btnDownloadRaw2026');
   const dlProc2026 = $('btnDownloadKPI2026');
   const _cfgForDl  = KPI2026_TABS.find(c=>c.tab===current2026Tab);
   const _hasDlData = !!(_cfgForDl && kpi2026SelectedPeriod && (kpi2026Data?.months?.[kpi2026SelectedPeriod]||{})[_cfgForDl.entity]);
-  if(dlRaw2026)  dlRaw2026.style.display  = _hasDlData ? '' : 'none';
   if(dlProc2026) dlProc2026.style.display = _hasDlData ? '' : 'none';
 
   if(current2026Tab === 'checklist'){ body.innerHTML = renderKpi2026Checklist(); return; }
