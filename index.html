@@ -3805,6 +3805,157 @@ function renderEntityView(entity, d){
     </div>`;
   }
 
+  // ── FFG fallout insight (FFG only) — top 5 ACTSOL reasons, GAMAS share,
+  // average + peak ticket-open time, nasional & per area. Built by
+  // update_dashboard.py's _ffg_insight() from the eligible (not-comply)
+  // FFG rows for this month. trouble_headline is intentionally NOT part of
+  // this — it's free text, near-unique per ticket, and can contain
+  // customer phone/name/email typed in by agents (repo is public).
+  let ffgInsightSection = '';
+  if(entity === 'FFG' && d.insight){
+    const ins = d.insight;
+    const actsolRows = (nat)=> (nat.top_actsol||[]).map((a,i)=>`
+      <tr>
+        <td style="padding:6px 10px;text-align:center;font-weight:700;color:var(--muted);width:28px">${i+1}</td>
+        <td style="padding:6px 10px;font-size:.78rem;line-height:1.35">${a.label}</td>
+        <td style="padding:6px 10px;text-align:right;font-weight:700;font-size:.82rem;color:var(--navy)">${a.n.toLocaleString()}</td>
+        <td style="padding:6px 10px;text-align:right;font-size:.76rem;color:var(--muted);width:52px">${a.pct}%</td>
+      </tr>`).join('');
+    const hourBars = (nat)=>{
+      const hourly = nat.hourly_open||[];
+      if(!hourly.length) return '';
+      const maxN = Math.max(...hourly.map(h=>h.n));
+      const peakH = nat.peak_open_hour?.hour;
+      return `
+        <div style="display:flex;align-items:flex-end;gap:2px;height:64px;margin-top:10px">
+          ${hourly.map(h=>`<div title="Jam ${h.hour}:00 — ${h.n.toLocaleString()} tiket" style="flex:1;min-width:0;height:${maxN?Math.max(h.n/maxN*100,3):3}%;background:${h.hour===peakH?'var(--red)':'var(--accent)'};border-radius:2px 2px 0 0"></div>`).join('')}
+        </div>
+        <div style="display:flex;gap:2px;margin-top:3px">
+          ${hourly.map(h=>`<div style="flex:1;min-width:0;text-align:center;font-size:.56rem;color:var(--muted)">${h.hour%3===0?h.hour:''}</div>`).join('')}
+        </div>`;
+    };
+    const nat = ins.national;
+    const natCard = nat ? `
+      <div class="card" style="min-width:0">
+        <div class="ref-summary-header">🔧 Insight Fallout FFG — Nasional</div>
+        <div class="grid-4" style="margin-top:14px;margin-bottom:16px">
+          <div class="sla-stat neutral">
+            <div class="lbl"><span class="stat-icon">📦</span>Tiket Fallout</div>
+            <div class="val" style="color:#1a1a1a">${nat.n.toLocaleString()}</div>
+            <div class="sub">not-comply bulan ini</div>
+          </div>
+          ${nat.gamas?`
+          <div class="sla-stat amber">
+            <div class="lbl"><span class="stat-icon">⚠️</span>GAMAS (is_gamas=1)</div>
+            <div class="val" style="color:#1a1a1a">${nat.gamas.n_gamas.toLocaleString()}</div>
+            <div class="sub">${nat.gamas.pct}% dari ${nat.gamas.n_total.toLocaleString()} tiket</div>
+          </div>`:''}
+          ${nat.avg_open_time?`
+          <div class="sla-stat neutral">
+            <div class="lbl"><span class="stat-icon">🕒</span>Rata-rata Jam Buka Tiket</div>
+            <div class="val" style="color:#1a1a1a">${nat.avg_open_time}</div>
+            <div class="sub">rata-rata trouble_opentime</div>
+          </div>`:''}
+          ${nat.peak_open_hour?`
+          <div class="sla-stat neutral">
+            <div class="lbl"><span class="stat-icon">📈</span>Jam Tiket Open Terbanyak</div>
+            <div class="val" style="color:#1a1a1a">${String(nat.peak_open_hour.hour).padStart(2,'0')}:00</div>
+            <div class="sub">${nat.peak_open_hour.n.toLocaleString()} tiket (${nat.peak_open_hour.pct}%)</div>
+          </div>`:''}
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr .8fr 1fr;gap:18px;align-items:start">
+          <div>
+            <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Top 5 ACTSOL penyebab tidak comply</div>
+            <table style="width:100%;border-collapse:collapse">
+              <tbody>${actsolRows(nat)}</tbody>
+            </table>
+          </div>
+          <div>
+            <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Jenis Gangguan</div>
+            ${(nat.jenis_ggn||[]).map(j=>`
+              <div style="margin-bottom:8px">
+                <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:3px">
+                  <span style="font-weight:600">${j.label}</span>
+                  <span style="color:var(--muted)">${j.n.toLocaleString()} (${j.pct}%)</span>
+                </div>
+                <div style="background:rgba(42,63,94,.08);border-radius:4px;height:8px;overflow:hidden">
+                  <div style="width:${j.pct}%;height:100%;background:${j.label==='FISIK'?'var(--accent)':'var(--wine)'}"></div>
+                </div>
+              </div>`).join('')}
+          </div>
+          <div>
+            <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sebaran jam buka tiket (0–23)</div>
+            ${hourBars(nat)}
+          </div>
+        </div>
+        ${(nat.incident_domain?.top||[]).length ? `
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+          <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px">
+            Top Incident Domain (GAMAS)
+            <span style="text-transform:none;font-weight:400;font-size:.68rem"> — terisi untuk ${nat.incident_domain.n_filled.toLocaleString()} dari ${nat.n.toLocaleString()} tiket, sisanya bukan klasifikasi GAMAS</span>
+          </div>
+          <table style="width:100%;border-collapse:collapse">
+            <tbody>${nat.incident_domain.top.map((d,i)=>`
+              <tr>
+                <td style="padding:6px 10px;text-align:center;font-weight:700;color:var(--muted);width:28px">${i+1}</td>
+                <td style="padding:6px 10px;font-size:.78rem;line-height:1.35">${d.label}</td>
+                <td style="padding:6px 10px;text-align:right;font-weight:700;font-size:.82rem;color:var(--navy)">${d.n.toLocaleString()}</td>
+                <td style="padding:6px 10px;text-align:right;font-size:.76rem;color:var(--muted);width:52px">${d.pct}%</td>
+              </tr>`).join('')}</tbody>
+          </table>
+        </div>` : ''}
+        ${(nat.headline_keywords||[]).length ? `
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+          <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px">
+            Kata kunci terbanyak (trouble_headline)
+            <span style="text-transform:none;font-weight:400;font-size:.68rem"> — jumlah tiket yang menyebut kata ini, bukan teks tiket aslinya</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            ${nat.headline_keywords.map(k=>`<span style="background:rgba(42,63,94,.08);color:var(--navy);padding:5px 11px;border-radius:20px;font-size:.76rem;font-weight:600">${k.word} <span style="color:var(--muted);font-weight:400">${k.n.toLocaleString()}</span></span>`).join('')}
+          </div>
+        </div>` : ''}
+      </div>` : '';
+    const byArea = ins.by_area || {};
+    const areaOrder = Object.keys(byArea).sort();
+    const areaRows = areaOrder.map(area=>{
+      const r = byArea[area];
+      const top1 = (r.top_actsol||[])[0];
+      const peak = r.peak_open_hour;
+      const jenisTop = (r.jenis_ggn||[])[0];
+      const domTop = (r.incident_domain?.top||[])[0];
+      return `<tr>
+        <td class="hid-area-name">${area}</td>
+        <td style="padding:7px 12px;text-align:right;font-weight:700">${r.n.toLocaleString()}</td>
+        <td style="padding:7px 12px;text-align:right">${r.gamas?`${r.gamas.n_gamas.toLocaleString()} (${r.gamas.pct}%)`:'—'}</td>
+        <td style="padding:7px 12px;text-align:center">${jenisTop?`${jenisTop.label} ${jenisTop.pct}%`:'—'}</td>
+        <td style="padding:7px 12px;font-size:.76rem;line-height:1.35">${domTop?`${domTop.label} <span style="color:var(--muted)">(${domTop.n})</span>`:'—'}</td>
+        <td style="padding:7px 12px;font-size:.78rem;line-height:1.35">${top1?top1.label:'—'}</td>
+        <td style="padding:7px 12px;text-align:right;font-size:.78rem">${top1?`${top1.n.toLocaleString()} (${top1.pct}%)`:'—'}</td>
+        <td style="padding:7px 12px;text-align:center;font-weight:700;color:var(--navy)">${r.avg_open_time||'—'}</td>
+        <td style="padding:7px 12px;text-align:center;font-weight:700;color:var(--navy)">${peak?`${String(peak.hour).padStart(2,'0')}:00`:'—'}</td>
+      </tr>`;
+    }).join('');
+    const areaCard = areaRows ? `
+      <div class="card" style="min-width:0;margin-top:14px;overflow-x:auto">
+        <div class="ref-summary-header">Insight Fallout FFG — Per Area</div>
+        <table class="hid-area-tbl" style="width:100%;border-collapse:collapse;margin-top:14px">
+          <thead><tr>
+            <th class="rekon-area-col">Area</th>
+            <th style="text-align:right">Tiket Fallout</th>
+            <th style="text-align:right">GAMAS</th>
+            <th>Jenis Ggn</th>
+            <th>Top Incident Domain</th>
+            <th>Top ACTSOL</th>
+            <th style="text-align:right">Jumlah</th>
+            <th>Rata-rata Jam</th>
+            <th>Jam Terbanyak</th>
+          </tr></thead>
+          <tbody>${areaRows}</tbody>
+        </table>
+      </div>` : '';
+    ffgInsightSection = `<div style="margin-bottom:18px">${natCard}${areaCard}</div>`;
+  }
+
   // Dynamic threshold label per entity
   const ENTITY_THRESH = {
     TTI:     {comply:'≤ 72 hours',          nc:'> 72 hours'},
@@ -3873,9 +4024,10 @@ function renderEntityView(entity, d){
       </div>
     </div>
 
-    <!-- ③ TTI Reference Breakdown / PS-RE Breakdown (shown above area tree so it's never missed) -->
+    <!-- ③ TTI Reference Breakdown / PS-RE Breakdown / FFG Fallout Insight (shown above area tree so it's never missed) -->
     ${breakdownSection}
     ${psreSection}
+    ${ffgInsightSection}
 
     <!-- ④ Area tree (PSRE: embedded as 3rd column inside psreSection above, so skip here) -->
     ${(entity === 'PSRE' && d.psre_breakdown) ? '' : `
