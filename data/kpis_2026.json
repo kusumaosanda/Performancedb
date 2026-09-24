@@ -1,7 +1,7 @@
 {
   "last_updated": "202608",
   "last_updated_label": "August 2026",
-  "generated_at": "2026-09-24T06:44:37",
+  "generated_at": "2026-09-24T07:09:32",
   "months": {
     "202601": {
       "FFGGAUL": {
@@ -47457,14 +47457,54 @@
               {
                 "label": "FISIK",
                 "n": 3162,
-                "pct": 88.3
+                "pct": 88.3,
+                "manja": {
+                  "filled": 679,
+                  "empty": 2483,
+                  "pct_filled": 21.5
+                }
               },
               {
                 "label": "LOGIK",
                 "n": 421,
-                "pct": 11.7
+                "pct": 11.7,
+                "manja": {
+                  "filled": 0,
+                  "empty": 421,
+                  "pct_filled": 0.0
+                }
               }
             ],
+            "incident_domain": {
+              "n_filled": 206,
+              "top": [
+                {
+                  "label": "TSEL - TELKOM - CRA ACTIVITY",
+                  "n": 36,
+                  "pct": 1.0
+                },
+                {
+                  "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 22,
+                  "pct": 0.6
+                },
+                {
+                  "label": "GAMAS - OLT - CATUAN PLN OFF",
+                  "n": 20,
+                  "pct": 0.6
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 15,
+                  "pct": 0.4
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                  "n": 14,
+                  "pct": 0.4
+                }
+              ]
+            },
             "hourly_open": [
               {
                 "hour": 0,
@@ -47571,30 +47611,6 @@
             "avg_open_time": "13:17",
             "headline_keywords": [
               {
-                "word": "orderid",
-                "n": 2204
-              },
-              {
-                "word": "reguler",
-                "n": 2151
-              },
-              {
-                "word": "loker",
-                "n": 2085
-              },
-              {
-                "word": "notiket",
-                "n": 1995
-              },
-              {
-                "word": "inet",
-                "n": 1973
-              },
-              {
-                "word": "pool",
-                "n": 1912
-              },
-              {
                 "word": "stuck",
                 "n": 1880
               },
@@ -47605,10 +47621,6 @@
               {
                 "word": "gaul",
                 "n": 1709
-              },
-              {
-                "word": "hasil",
-                "n": 1630
               },
               {
                 "word": "network",
@@ -47623,12 +47635,40 @@
                 "n": 1572
               },
               {
-                "word": "terakhir",
-                "n": 1511
+                "word": "jika",
+                "n": 1191
               },
               {
-                "word": "dibutuhkan",
-                "n": 1198
+                "word": "hanya",
+                "n": 1185
+              },
+              {
+                "word": "note",
+                "n": 1171
+              },
+              {
+                "word": "kendala",
+                "n": 986
+              },
+              {
+                "word": "open",
+                "n": 909
+              },
+              {
+                "word": "msisdn",
+                "n": 701
+              },
+              {
+                "word": "gmail",
+                "n": 669
+              },
+              {
+                "word": "pengukuran",
+                "n": 664
+              },
+              {
+                "word": "hostname",
+                "n": 658
               }
             ]
           },
@@ -47671,14 +47711,54 @@
                 {
                   "label": "FISIK",
                   "n": 766,
-                  "pct": 90.7
+                  "pct": 90.7,
+                  "manja": {
+                    "filled": 140,
+                    "empty": 626,
+                    "pct_filled": 18.3
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 79,
-                  "pct": 9.3
+                  "pct": 9.3,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 79,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 27,
+                "top": [
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 11,
+                    "pct": 1.3
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 8,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "HSI-GAMAS NETWORK",
+                    "n": 2,
+                    "pct": 0.2
+                  },
+                  {
+                    "label": "GAMAS - OLT - Vandalisme",
+                    "n": 2,
+                    "pct": 0.2
+                  },
+                  {
+                    "label": "GAMAS - OLT - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 1,
+                    "pct": 0.1
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -47785,30 +47865,6 @@
               "avg_open_time": "13:34",
               "headline_keywords": [
                 {
-                  "word": "orderid",
-                  "n": 562
-                },
-                {
-                  "word": "loker",
-                  "n": 541
-                },
-                {
-                  "word": "reguler",
-                  "n": 539
-                },
-                {
-                  "word": "inet",
-                  "n": 509
-                },
-                {
-                  "word": "notiket",
-                  "n": 506
-                },
-                {
-                  "word": "pool",
-                  "n": 498
-                },
-                {
                   "word": "stuck",
                   "n": 473
                 },
@@ -47821,10 +47877,6 @@
                   "n": 434
                 },
                 {
-                  "word": "hasil",
-                  "n": 421
-                },
-                {
                   "word": "network",
                   "n": 412
                 },
@@ -47833,16 +47885,44 @@
                   "n": 400
                 },
                 {
-                  "word": "terakhir",
-                  "n": 383
-                },
-                {
                   "word": "tiket",
                   "n": 379
                 },
                 {
-                  "word": "dibutuhkan",
+                  "word": "hanya",
                   "n": 300
+                },
+                {
+                  "word": "note",
+                  "n": 298
+                },
+                {
+                  "word": "jika",
+                  "n": 298
+                },
+                {
+                  "word": "open",
+                  "n": 229
+                },
+                {
+                  "word": "kendala",
+                  "n": 229
+                },
+                {
+                  "word": "rekan",
+                  "n": 166
+                },
+                {
+                  "word": "gmail",
+                  "n": 161
+                },
+                {
+                  "word": "moban",
+                  "n": 151
+                },
+                {
+                  "word": "kabel",
+                  "n": 148
                 }
               ]
             },
@@ -47884,14 +47964,54 @@
                 {
                   "label": "FISIK",
                   "n": 798,
-                  "pct": 85.3
+                  "pct": 85.3,
+                  "manja": {
+                    "filled": 239,
+                    "empty": 559,
+                    "pct_filled": 29.9
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 137,
-                  "pct": 14.7
+                  "pct": 14.7,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 137,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 40,
+                "top": [
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 14,
+                    "pct": 1.5
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 4,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "SIP_TRUNK - TELKOM - ROUTER PE LOGIC",
+                    "n": 4,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 3,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "HSI - TELKOM - ROUTER PE LOGIC",
+                    "n": 3,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -47998,32 +48118,8 @@
               "avg_open_time": "13:53",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 578
-                },
-                {
-                  "word": "orderid",
-                  "n": 548
-                },
-                {
-                  "word": "loker",
-                  "n": 520
-                },
-                {
-                  "word": "notiket",
-                  "n": 496
-                },
-                {
-                  "word": "pool",
-                  "n": 475
-                },
-                {
                   "word": "stuck",
                   "n": 470
-                },
-                {
-                  "word": "inet",
-                  "n": 457
                 },
                 {
                   "word": "lapul",
@@ -48042,20 +48138,44 @@
                   "n": 398
                 },
                 {
-                  "word": "hasil",
-                  "n": 395
-                },
-                {
                   "word": "tools",
                   "n": 383
                 },
                 {
-                  "word": "terakhir",
-                  "n": 367
-                },
-                {
                   "word": "note",
                   "n": 308
+                },
+                {
+                  "word": "hanya",
+                  "n": 290
+                },
+                {
+                  "word": "jika",
+                  "n": 288
+                },
+                {
+                  "word": "kendala",
+                  "n": 271
+                },
+                {
+                  "word": "open",
+                  "n": 224
+                },
+                {
+                  "word": "pengukuran",
+                  "n": 206
+                },
+                {
+                  "word": "hostname",
+                  "n": 205
+                },
+                {
+                  "word": "msisdn",
+                  "n": 205
+                },
+                {
+                  "word": "gmail",
+                  "n": 204
                 }
               ]
             },
@@ -48097,14 +48217,54 @@
                 {
                   "label": "FISIK",
                   "n": 806,
-                  "pct": 85.3
+                  "pct": 85.3,
+                  "manja": {
+                    "filled": 190,
+                    "empty": 616,
+                    "pct_filled": 23.6
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 139,
-                  "pct": 14.7
+                  "pct": 14.7,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 139,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 64,
+                "top": [
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 14,
+                    "pct": 1.5
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 12,
+                    "pct": 1.3
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 6,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "HSI - GAMAS - ROUTER P/CORE LOGIC",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 4,
+                    "pct": 0.4
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -48211,32 +48371,8 @@
               "avg_open_time": "13:11",
               "headline_keywords": [
                 {
-                  "word": "orderid",
-                  "n": 550
-                },
-                {
-                  "word": "reguler",
-                  "n": 527
-                },
-                {
-                  "word": "loker",
-                  "n": 520
-                },
-                {
-                  "word": "inet",
-                  "n": 516
-                },
-                {
-                  "word": "notiket",
-                  "n": 491
-                },
-                {
                   "word": "stuck",
                   "n": 475
-                },
-                {
-                  "word": "pool",
-                  "n": 468
                 },
                 {
                   "word": "lapul",
@@ -48245,10 +48381,6 @@
                 {
                   "word": "gaul",
                   "n": 424
-                },
-                {
-                  "word": "hasil",
-                  "n": 405
                 },
                 {
                   "word": "tiket",
@@ -48263,12 +48395,40 @@
                   "n": 379
                 },
                 {
-                  "word": "terakhir",
-                  "n": 378
+                  "word": "jika",
+                  "n": 307
                 },
                 {
-                  "word": "dibutuhkan",
-                  "n": 310
+                  "word": "hanya",
+                  "n": 301
+                },
+                {
+                  "word": "note",
+                  "n": 286
+                },
+                {
+                  "word": "kendala",
+                  "n": 266
+                },
+                {
+                  "word": "open",
+                  "n": 222
+                },
+                {
+                  "word": "msisdn",
+                  "n": 221
+                },
+                {
+                  "word": "pengukuran",
+                  "n": 210
+                },
+                {
+                  "word": "hostname",
+                  "n": 206
+                },
+                {
+                  "word": "port",
+                  "n": 204
                 }
               ]
             },
@@ -48310,14 +48470,54 @@
                 {
                   "label": "FISIK",
                   "n": 792,
-                  "pct": 92.3
+                  "pct": 92.3,
+                  "manja": {
+                    "filled": 110,
+                    "empty": 682,
+                    "pct_filled": 13.9
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 66,
-                  "pct": 7.7
+                  "pct": 7.7,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 66,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 75,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 9,
+                    "pct": 1.0
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 8,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 8,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - OLT - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 7,
+                    "pct": 0.8
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 5,
+                    "pct": 0.6
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -48416,30 +48616,6 @@
               "avg_open_time": "12:27",
               "headline_keywords": [
                 {
-                  "word": "orderid",
-                  "n": 544
-                },
-                {
-                  "word": "reguler",
-                  "n": 507
-                },
-                {
-                  "word": "loker",
-                  "n": 504
-                },
-                {
-                  "word": "notiket",
-                  "n": 502
-                },
-                {
-                  "word": "inet",
-                  "n": 491
-                },
-                {
-                  "word": "pool",
-                  "n": 471
-                },
-                {
                   "word": "stuck",
                   "n": 462
                 },
@@ -48450,10 +48626,6 @@
                 {
                   "word": "gaul",
                   "n": 429
-                },
-                {
-                  "word": "hasil",
-                  "n": 409
                 },
                 {
                   "word": "network",
@@ -48468,12 +48640,40 @@
                   "n": 389
                 },
                 {
-                  "word": "terakhir",
-                  "n": 383
-                },
-                {
                   "word": "jika",
                   "n": 298
+                },
+                {
+                  "word": "hanya",
+                  "n": 294
+                },
+                {
+                  "word": "note",
+                  "n": 279
+                },
+                {
+                  "word": "open",
+                  "n": 234
+                },
+                {
+                  "word": "kendala",
+                  "n": 220
+                },
+                {
+                  "word": "moban",
+                  "n": 180
+                },
+                {
+                  "word": "kabel",
+                  "n": 165
+                },
+                {
+                  "word": "gmail",
+                  "n": 148
+                },
+                {
+                  "word": "input",
+                  "n": 147
                 }
               ]
             }
@@ -95824,14 +96024,54 @@
               {
                 "label": "FISIK",
                 "n": 4048,
-                "pct": 88.6
+                "pct": 88.6,
+                "manja": {
+                  "filled": 822,
+                  "empty": 3226,
+                  "pct_filled": 20.3
+                }
               },
               {
                 "label": "LOGIK",
                 "n": 519,
-                "pct": 11.4
+                "pct": 11.4,
+                "manja": {
+                  "filled": 0,
+                  "empty": 519,
+                  "pct_filled": 0.0
+                }
               }
             ],
+            "incident_domain": {
+              "n_filled": 280,
+              "top": [
+                {
+                  "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 32,
+                  "pct": 0.7
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 31,
+                  "pct": 0.7
+                },
+                {
+                  "label": "SIP_TRUNK - TELKOM - ROUTER PE LOGIC",
+                  "n": 19,
+                  "pct": 0.4
+                },
+                {
+                  "label": "HSI - GAMAS - ROUTER P/CORE LOGIC",
+                  "n": 17,
+                  "pct": 0.4
+                },
+                {
+                  "label": "HSI - TELKOM - DNS TELKOM",
+                  "n": 15,
+                  "pct": 0.3
+                }
+              ]
+            },
             "hourly_open": [
               {
                 "hour": 0,
@@ -95938,32 +96178,8 @@
             "avg_open_time": "13:33",
             "headline_keywords": [
               {
-                "word": "reguler",
-                "n": 2751
-              },
-              {
-                "word": "orderid",
-                "n": 2730
-              },
-              {
-                "word": "loker",
-                "n": 2527
-              },
-              {
-                "word": "inet",
-                "n": 2517
-              },
-              {
-                "word": "notiket",
-                "n": 2466
-              },
-              {
                 "word": "stuck",
                 "n": 2368
-              },
-              {
-                "word": "pool",
-                "n": 2316
               },
               {
                 "word": "lapul",
@@ -95978,10 +96194,6 @@
                 "n": 2136
               },
               {
-                "word": "hasil",
-                "n": 2028
-              },
-              {
                 "word": "tools",
                 "n": 1942
               },
@@ -95990,12 +96202,40 @@
                 "n": 1906
               },
               {
-                "word": "terakhir",
-                "n": 1866
-              },
-              {
                 "word": "note",
                 "n": 1477
+              },
+              {
+                "word": "hanya",
+                "n": 1432
+              },
+              {
+                "word": "jika",
+                "n": 1430
+              },
+              {
+                "word": "kendala",
+                "n": 1165
+              },
+              {
+                "word": "open",
+                "n": 1156
+              },
+              {
+                "word": "rekan",
+                "n": 889
+              },
+              {
+                "word": "msisdn",
+                "n": 884
+              },
+              {
+                "word": "gmail",
+                "n": 875
+              },
+              {
+                "word": "moban",
+                "n": 868
               }
             ]
           },
@@ -96038,14 +96278,54 @@
                 {
                   "label": "FISIK",
                   "n": 968,
-                  "pct": 91.8
+                  "pct": 91.8,
+                  "manja": {
+                    "filled": 171,
+                    "empty": 797,
+                    "pct_filled": 17.7
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 87,
-                  "pct": 8.2
+                  "pct": 8.2,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 87,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 13,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 3,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "SIP_TRUNK - GAMAS - PEMADAMAN LISTRIK",
+                    "n": 1,
+                    "pct": 0.1
+                  },
+                  {
+                    "label": "HSI-ACCESS FISIK",
+                    "n": 1,
+                    "pct": 0.1
+                  },
+                  {
+                    "label": "TSEL - TELKOM - IMPACT BACKBONE",
+                    "n": 1,
+                    "pct": 0.1
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -96152,32 +96432,8 @@
               "avg_open_time": "14:03",
               "headline_keywords": [
                 {
-                  "word": "orderid",
-                  "n": 707
-                },
-                {
-                  "word": "reguler",
-                  "n": 681
-                },
-                {
-                  "word": "loker",
-                  "n": 645
-                },
-                {
-                  "word": "inet",
-                  "n": 641
-                },
-                {
-                  "word": "notiket",
-                  "n": 639
-                },
-                {
                   "word": "stuck",
                   "n": 606
-                },
-                {
-                  "word": "pool",
-                  "n": 594
                 },
                 {
                   "word": "lapul",
@@ -96186,10 +96442,6 @@
                 {
                   "word": "gaul",
                   "n": 575
-                },
-                {
-                  "word": "hasil",
-                  "n": 527
                 },
                 {
                   "word": "tools",
@@ -96204,12 +96456,40 @@
                   "n": 488
                 },
                 {
-                  "word": "terakhir",
-                  "n": 484
-                },
-                {
                   "word": "note",
                   "n": 378
+                },
+                {
+                  "word": "hanya",
+                  "n": 367
+                },
+                {
+                  "word": "jika",
+                  "n": 366
+                },
+                {
+                  "word": "kendala",
+                  "n": 285
+                },
+                {
+                  "word": "open",
+                  "n": 283
+                },
+                {
+                  "word": "rekan",
+                  "n": 231
+                },
+                {
+                  "word": "moban",
+                  "n": 219
+                },
+                {
+                  "word": "kabel",
+                  "n": 196
+                },
+                {
+                  "word": "input",
+                  "n": 180
                 }
               ]
             },
@@ -96251,14 +96531,54 @@
                 {
                   "label": "FISIK",
                   "n": 1153,
-                  "pct": 85.9
+                  "pct": 85.9,
+                  "manja": {
+                    "filled": 327,
+                    "empty": 826,
+                    "pct_filled": 28.4
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 189,
-                  "pct": 14.1
+                  "pct": 14.1,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 189,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 91,
+                "top": [
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 20,
+                    "pct": 1.5
+                  },
+                  {
+                    "label": "SIP_TRUNK - TELKOM - ROUTER PE LOGIC",
+                    "n": 19,
+                    "pct": 1.4
+                  },
+                  {
+                    "label": "HSI - TELKOM - ROUTER PE LOGIC",
+                    "n": 13,
+                    "pct": 1.0
+                  },
+                  {
+                    "label": "HSI - TELKOM - DNS TELKOM",
+                    "n": 13,
+                    "pct": 1.0
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 6,
+                    "pct": 0.4
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -96365,36 +96685,12 @@
               "avg_open_time": "13:55",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 754
-                },
-                {
-                  "word": "orderid",
-                  "n": 707
-                },
-                {
-                  "word": "inet",
-                  "n": 661
-                },
-                {
-                  "word": "loker",
-                  "n": 658
-                },
-                {
-                  "word": "notiket",
-                  "n": 644
-                },
-                {
                   "word": "stuck",
                   "n": 627
                 },
                 {
                   "word": "tiket",
                   "n": 615
-                },
-                {
-                  "word": "pool",
-                  "n": 603
                 },
                 {
                   "word": "lapul",
@@ -96405,10 +96701,6 @@
                   "n": 554
                 },
                 {
-                  "word": "hasil",
-                  "n": 514
-                },
-                {
                   "word": "tools",
                   "n": 496
                 },
@@ -96417,12 +96709,40 @@
                   "n": 487
                 },
                 {
-                  "word": "terakhir",
-                  "n": 471
-                },
-                {
                   "word": "note",
                   "n": 392
+                },
+                {
+                  "word": "hanya",
+                  "n": 372
+                },
+                {
+                  "word": "jika",
+                  "n": 369
+                },
+                {
+                  "word": "kendala",
+                  "n": 359
+                },
+                {
+                  "word": "hostname",
+                  "n": 328
+                },
+                {
+                  "word": "pengukuran",
+                  "n": 328
+                },
+                {
+                  "word": "port",
+                  "n": 324
+                },
+                {
+                  "word": "mycx",
+                  "n": 319
+                },
+                {
+                  "word": "details",
+                  "n": 319
                 }
               ]
             },
@@ -96464,14 +96784,54 @@
                 {
                   "label": "FISIK",
                   "n": 1014,
-                  "pct": 86.9
+                  "pct": 86.9,
+                  "manja": {
+                    "filled": 230,
+                    "empty": 784,
+                    "pct_filled": 22.7
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 153,
-                  "pct": 13.1
+                  "pct": 13.1,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 153,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 75,
+                "top": [
+                  {
+                    "label": "HSI - GAMAS - ROUTER P/CORE LOGIC",
+                    "n": 17,
+                    "pct": 1.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - Degradasi Alpro",
+                    "n": 6,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 5,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 4,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "SIP_TRUNK - GAMAS - PE SS / SN",
+                    "n": 4,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -96578,32 +96938,8 @@
               "avg_open_time": "13:19",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 680
-                },
-                {
-                  "word": "orderid",
-                  "n": 672
-                },
-                {
-                  "word": "inet",
-                  "n": 630
-                },
-                {
-                  "word": "loker",
-                  "n": 625
-                },
-                {
-                  "word": "notiket",
-                  "n": 604
-                },
-                {
                   "word": "stuck",
                   "n": 585
-                },
-                {
-                  "word": "pool",
-                  "n": 569
                 },
                 {
                   "word": "lapul",
@@ -96618,10 +96954,6 @@
                   "n": 526
                 },
                 {
-                  "word": "hasil",
-                  "n": 509
-                },
-                {
                   "word": "tools",
                   "n": 487
                 },
@@ -96630,12 +96962,40 @@
                   "n": 480
                 },
                 {
-                  "word": "terakhir",
-                  "n": 476
-                },
-                {
                   "word": "jika",
                   "n": 370
+                },
+                {
+                  "word": "hanya",
+                  "n": 369
+                },
+                {
+                  "word": "note",
+                  "n": 360
+                },
+                {
+                  "word": "open",
+                  "n": 305
+                },
+                {
+                  "word": "msisdn",
+                  "n": 271
+                },
+                {
+                  "word": "kendala",
+                  "n": 268
+                },
+                {
+                  "word": "rekan",
+                  "n": 260
+                },
+                {
+                  "word": "pengukuran",
+                  "n": 258
+                },
+                {
+                  "word": "hostname",
+                  "n": 256
                 }
               ]
             },
@@ -96677,14 +97037,54 @@
                 {
                   "label": "FISIK",
                   "n": 913,
-                  "pct": 91.0
+                  "pct": 91.0,
+                  "manja": {
+                    "filled": 94,
+                    "empty": 819,
+                    "pct_filled": 10.3
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 90,
-                  "pct": 9.0
+                  "pct": 9.0,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 90,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 101,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 18,
+                    "pct": 1.8
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 9,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "IP - LOGIC - ROUTING",
+                    "n": 9,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 6,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "TSEL - TELKOM - IMPACT BACKBONE",
+                    "n": 6,
+                    "pct": 0.6
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -96791,30 +97191,6 @@
               "avg_open_time": "12:47",
               "headline_keywords": [
                 {
-                  "word": "orderid",
-                  "n": 644
-                },
-                {
-                  "word": "reguler",
-                  "n": 636
-                },
-                {
-                  "word": "loker",
-                  "n": 599
-                },
-                {
-                  "word": "inet",
-                  "n": 585
-                },
-                {
-                  "word": "notiket",
-                  "n": 579
-                },
-                {
-                  "word": "pool",
-                  "n": 550
-                },
-                {
                   "word": "stuck",
                   "n": 550
                 },
@@ -96831,10 +97207,6 @@
                   "n": 499
                 },
                 {
-                  "word": "hasil",
-                  "n": 478
-                },
-                {
                   "word": "tools",
                   "n": 455
                 },
@@ -96843,12 +97215,40 @@
                   "n": 451
                 },
                 {
-                  "word": "terakhir",
-                  "n": 435
-                },
-                {
                   "word": "note",
                   "n": 347
+                },
+                {
+                  "word": "jika",
+                  "n": 325
+                },
+                {
+                  "word": "hanya",
+                  "n": 324
+                },
+                {
+                  "word": "open",
+                  "n": 272
+                },
+                {
+                  "word": "kendala",
+                  "n": 253
+                },
+                {
+                  "word": "moban",
+                  "n": 213
+                },
+                {
+                  "word": "gmail",
+                  "n": 204
+                },
+                {
+                  "word": "rekan",
+                  "n": 173
+                },
+                {
+                  "word": "kabel",
+                  "n": 168
                 }
               ]
             }
@@ -154340,14 +154740,54 @@
               {
                 "label": "FISIK",
                 "n": 3559,
-                "pct": 87.9
+                "pct": 87.9,
+                "manja": {
+                  "filled": 642,
+                  "empty": 2917,
+                  "pct_filled": 18.0
+                }
               },
               {
                 "label": "LOGIK",
                 "n": 489,
-                "pct": 12.1
+                "pct": 12.1,
+                "manja": {
+                  "filled": 1,
+                  "empty": 488,
+                  "pct_filled": 0.2
+                }
               }
             ],
+            "incident_domain": {
+              "n_filled": 253,
+              "top": [
+                {
+                  "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 47,
+                  "pct": 1.2
+                },
+                {
+                  "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 36,
+                  "pct": 0.9
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                  "n": 23,
+                  "pct": 0.6
+                },
+                {
+                  "label": "GAMAS - OLT - CATUAN PLN OFF",
+                  "n": 16,
+                  "pct": 0.4
+                },
+                {
+                  "label": "GAMAS - OLT - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 9,
+                  "pct": 0.2
+                }
+              ]
+            },
             "hourly_open": [
               {
                 "hour": 0,
@@ -154454,14 +154894,6 @@
             "avg_open_time": "13:36",
             "headline_keywords": [
               {
-                "word": "reguler",
-                "n": 2436
-              },
-              {
-                "word": "inet",
-                "n": 2138
-              },
-              {
                 "word": "lapul",
                 "n": 2061
               },
@@ -154470,32 +154902,12 @@
                 "n": 2038
               },
               {
-                "word": "notiket",
-                "n": 1492
-              },
-              {
-                "word": "orderid",
-                "n": 1474
-              },
-              {
                 "word": "tiket",
                 "n": 1467
               },
               {
-                "word": "loker",
-                "n": 1358
-              },
-              {
                 "word": "stuck",
                 "n": 1286
-              },
-              {
-                "word": "pool",
-                "n": 1242
-              },
-              {
-                "word": "hasil",
-                "n": 1103
               },
               {
                 "word": "tools",
@@ -154510,8 +154922,36 @@
                 "n": 1025
               },
               {
-                "word": "terakhir",
-                "n": 1017
+                "word": "note",
+                "n": 975
+              },
+              {
+                "word": "kendala",
+                "n": 865
+              },
+              {
+                "word": "rekan",
+                "n": 824
+              },
+              {
+                "word": "pengukuran",
+                "n": 813
+              },
+              {
+                "word": "jika",
+                "n": 799
+              },
+              {
+                "word": "hostname",
+                "n": 798
+              },
+              {
+                "word": "hanya",
+                "n": 797
+              },
+              {
+                "word": "msisdn",
+                "n": 785
               }
             ]
           },
@@ -154554,14 +154994,54 @@
                 {
                   "label": "FISIK",
                   "n": 1045,
-                  "pct": 89.3
+                  "pct": 89.3,
+                  "manja": {
+                    "filled": 169,
+                    "empty": 876,
+                    "pct_filled": 16.2
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 125,
-                  "pct": 10.7
+                  "pct": 10.7,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 125,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 46,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 19,
+                    "pct": 1.6
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 6,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 3,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Kabel rapuh / Kropos di HH",
+                    "n": 3,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "GAMAS - ODP - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 3,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -154668,14 +155148,6 @@
               "avg_open_time": "14:07",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 762
-                },
-                {
-                  "word": "inet",
-                  "n": 664
-                },
-                {
                   "word": "lapul",
                   "n": 661
                 },
@@ -154684,48 +155156,56 @@
                   "n": 657
                 },
                 {
-                  "word": "notiket",
-                  "n": 475
-                },
-                {
-                  "word": "orderid",
-                  "n": 458
-                },
-                {
                   "word": "tiket",
                   "n": 441
-                },
-                {
-                  "word": "loker",
-                  "n": 425
                 },
                 {
                   "word": "stuck",
                   "n": 405
                 },
                 {
-                  "word": "pool",
-                  "n": 390
-                },
-                {
-                  "word": "hasil",
-                  "n": 346
-                },
-                {
                   "word": "pembayaran",
                   "n": 344
-                },
-                {
-                  "word": "network",
-                  "n": 327
                 },
                 {
                   "word": "tools",
                   "n": 327
                 },
                 {
-                  "word": "terakhir",
-                  "n": 319
+                  "word": "network",
+                  "n": 327
+                },
+                {
+                  "word": "note",
+                  "n": 308
+                },
+                {
+                  "word": "kendala",
+                  "n": 262
+                },
+                {
+                  "word": "rekan",
+                  "n": 249
+                },
+                {
+                  "word": "jika",
+                  "n": 238
+                },
+                {
+                  "word": "moban",
+                  "n": 236
+                },
+                {
+                  "word": "hanya",
+                  "n": 236
+                },
+                {
+                  "word": "open",
+                  "n": 221
+                },
+                {
+                  "word": "kabel",
+                  "n": 220
                 }
               ]
             },
@@ -154767,14 +155247,54 @@
                 {
                   "label": "FISIK",
                   "n": 830,
-                  "pct": 85.3
+                  "pct": 85.3,
+                  "manja": {
+                    "filled": 212,
+                    "empty": 618,
+                    "pct_filled": 25.5
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 143,
-                  "pct": 14.7
+                  "pct": 14.7,
+                  "manja": {
+                    "filled": 1,
+                    "empty": 142,
+                    "pct_filled": 0.7
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 52,
+                "top": [
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 15,
+                    "pct": 1.5
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 11,
+                    "pct": 1.1
+                  },
+                  {
+                    "label": "SIP_TRUNK - TELKOM - ROUTER PE LOGIC",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "HSI - TELKOM - DNS TELKOM",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "HSI - TELKOM - ROUTER PE LOGIC",
+                    "n": 3,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -154881,14 +155401,6 @@
               "avg_open_time": "13:59",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 546
-                },
-                {
-                  "word": "inet",
-                  "n": 461
-                },
-                {
                   "word": "lapul",
                   "n": 443
                 },
@@ -154901,24 +155413,8 @@
                   "n": 330
                 },
                 {
-                  "word": "orderid",
-                  "n": 300
-                },
-                {
-                  "word": "notiket",
-                  "n": 296
-                },
-                {
-                  "word": "loker",
-                  "n": 272
-                },
-                {
                   "word": "stuck",
                   "n": 256
-                },
-                {
-                  "word": "pool",
-                  "n": 250
                 },
                 {
                   "word": "pengukuran",
@@ -154939,6 +155435,30 @@
                 {
                   "word": "pembayaran",
                   "n": 230
+                },
+                {
+                  "word": "mycx",
+                  "n": 228
+                },
+                {
+                  "word": "details",
+                  "n": 228
+                },
+                {
+                  "word": "tools",
+                  "n": 211
+                },
+                {
+                  "word": "note",
+                  "n": 205
+                },
+                {
+                  "word": "network",
+                  "n": 202
+                },
+                {
+                  "word": "fiber",
+                  "n": 199
                 }
               ]
             },
@@ -154980,14 +155500,54 @@
                 {
                   "label": "FISIK",
                   "n": 974,
-                  "pct": 88.2
+                  "pct": 88.2,
+                  "manja": {
+                    "filled": 193,
+                    "empty": 781,
+                    "pct_filled": 19.8
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 130,
-                  "pct": 11.8
+                  "pct": 11.8,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 130,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 49,
+                "top": [
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 10,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 8,
+                    "pct": 0.7
+                  },
+                  {
+                    "label": "HSI - GAMAS - ROUTER P/CORE LOGIC",
+                    "n": 4,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 4,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - OLT - MODUL CONTROL RUSAK",
+                    "n": 3,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -155094,14 +155654,6 @@
               "avg_open_time": "13:10",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 634
-                },
-                {
-                  "word": "inet",
-                  "n": 574
-                },
-                {
                   "word": "lapul",
                   "n": 526
                 },
@@ -155114,24 +155666,8 @@
                   "n": 397
                 },
                 {
-                  "word": "orderid",
-                  "n": 377
-                },
-                {
-                  "word": "notiket",
-                  "n": 374
-                },
-                {
-                  "word": "loker",
-                  "n": 348
-                },
-                {
                   "word": "stuck",
                   "n": 334
-                },
-                {
-                  "word": "pool",
-                  "n": 320
                 },
                 {
                   "word": "msisdn",
@@ -155150,8 +155686,32 @@
                   "n": 282
                 },
                 {
-                  "word": "hasil",
-                  "n": 277
+                  "word": "network",
+                  "n": 275
+                },
+                {
+                  "word": "mycx",
+                  "n": 274
+                },
+                {
+                  "word": "details",
+                  "n": 274
+                },
+                {
+                  "word": "pembayaran",
+                  "n": 265
+                },
+                {
+                  "word": "tools",
+                  "n": 261
+                },
+                {
+                  "word": "note",
+                  "n": 242
+                },
+                {
+                  "word": "kendala",
+                  "n": 235
                 }
               ]
             },
@@ -155193,14 +155753,54 @@
                 {
                   "label": "FISIK",
                   "n": 710,
-                  "pct": 88.6
+                  "pct": 88.6,
+                  "manja": {
+                    "filled": 68,
+                    "empty": 642,
+                    "pct_filled": 9.6
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 91,
-                  "pct": 11.4
+                  "pct": 11.4,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 91,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 106,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 27,
+                    "pct": 3.4
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 10,
+                    "pct": 1.2
+                  },
+                  {
+                    "label": "GAMAS - OLT - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 9,
+                    "pct": 1.1
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 6,
+                    "pct": 0.7
+                  },
+                  {
+                    "label": "IP - LOGIC - ROUTING",
+                    "n": 6,
+                    "pct": 0.7
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -155307,32 +155907,12 @@
               "avg_open_time": "13:00",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 494
-                },
-                {
-                  "word": "inet",
-                  "n": 439
-                },
-                {
                   "word": "lapul",
                   "n": 431
                 },
                 {
                   "word": "gaul",
                   "n": 428
-                },
-                {
-                  "word": "notiket",
-                  "n": 347
-                },
-                {
-                  "word": "orderid",
-                  "n": 339
-                },
-                {
-                  "word": "loker",
-                  "n": 313
                 },
                 {
                   "word": "tiket",
@@ -155343,20 +155923,8 @@
                   "n": 291
                 },
                 {
-                  "word": "pool",
-                  "n": 282
-                },
-                {
-                  "word": "hasil",
-                  "n": 260
-                },
-                {
                   "word": "tools",
                   "n": 256
-                },
-                {
-                  "word": "terakhir",
-                  "n": 243
                 },
                 {
                   "word": "network",
@@ -155365,6 +155933,38 @@
                 {
                   "word": "note",
                   "n": 220
+                },
+                {
+                  "word": "pembayaran",
+                  "n": 186
+                },
+                {
+                  "word": "hanya",
+                  "n": 181
+                },
+                {
+                  "word": "jika",
+                  "n": 179
+                },
+                {
+                  "word": "kendala",
+                  "n": 170
+                },
+                {
+                  "word": "moban",
+                  "n": 166
+                },
+                {
+                  "word": "rekan",
+                  "n": 148
+                },
+                {
+                  "word": "open",
+                  "n": 145
+                },
+                {
+                  "word": "kabel",
+                  "n": 133
                 }
               ]
             }
@@ -211060,14 +211660,54 @@
               {
                 "label": "FISIK",
                 "n": 2970,
-                "pct": 88.6
+                "pct": 88.6,
+                "manja": {
+                  "filled": 499,
+                  "empty": 2471,
+                  "pct_filled": 16.8
+                }
               },
               {
                 "label": "LOGIK",
                 "n": 382,
-                "pct": 11.4
+                "pct": 11.4,
+                "manja": {
+                  "filled": 1,
+                  "empty": 381,
+                  "pct_filled": 0.3
+                }
               }
             ],
+            "incident_domain": {
+              "n_filled": 176,
+              "top": [
+                {
+                  "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 32,
+                  "pct": 1.0
+                },
+                {
+                  "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 25,
+                  "pct": 0.7
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                  "n": 21,
+                  "pct": 0.6
+                },
+                {
+                  "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                  "n": 12,
+                  "pct": 0.4
+                },
+                {
+                  "label": "TSEL - TELKOM - CRA ACTIVITY",
+                  "n": 11,
+                  "pct": 0.3
+                }
+              ]
+            },
             "hourly_open": [
               {
                 "hour": 0,
@@ -211174,20 +211814,12 @@
             "avg_open_time": "13:42",
             "headline_keywords": [
               {
-                "word": "reguler",
-                "n": 2071
-              },
-              {
                 "word": "lapul",
                 "n": 1999
               },
               {
                 "word": "gaul",
                 "n": 1990
-              },
-              {
-                "word": "inet",
-                "n": 1753
               },
               {
                 "word": "pembayaran",
@@ -211204,10 +211836,6 @@
               {
                 "word": "moban",
                 "n": 722
-              },
-              {
-                "word": "notiket",
-                "n": 690
               },
               {
                 "word": "kabel",
@@ -211232,6 +211860,18 @@
               {
                 "word": "port",
                 "n": 611
+              },
+              {
+                "word": "internet",
+                "n": 590
+              },
+              {
+                "word": "kendala",
+                "n": 588
+              },
+              {
+                "word": "mycx",
+                "n": 583
               }
             ]
           },
@@ -211274,14 +211914,54 @@
                 {
                   "label": "FISIK",
                   "n": 914,
-                  "pct": 93.3
+                  "pct": 93.3,
+                  "manja": {
+                    "filled": 109,
+                    "empty": 805,
+                    "pct_filled": 11.9
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 66,
-                  "pct": 6.7
+                  "pct": 6.7,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 66,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 43,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 14,
+                    "pct": 1.4
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 8,
+                    "pct": 0.8
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Kabel rapuh / Kropos di HH",
+                    "n": 4,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 2,
+                    "pct": 0.2
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 2,
+                    "pct": 0.2
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -211388,20 +212068,12 @@
               "avg_open_time": "14:20",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 693
-                },
-                {
                   "word": "lapul",
                   "n": 686
                 },
                 {
                   "word": "gaul",
                   "n": 684
-                },
-                {
-                  "word": "inet",
-                  "n": 580
                 },
                 {
                   "word": "pembayaran",
@@ -211418,10 +212090,6 @@
                 {
                   "word": "kabel",
                   "n": 227
-                },
-                {
-                  "word": "notiket",
-                  "n": 226
                 },
                 {
                   "word": "moban",
@@ -211446,6 +212114,18 @@
                 {
                   "word": "note",
                   "n": 163
+                },
+                {
+                  "word": "perbaikan",
+                  "n": 159
+                },
+                {
+                  "word": "pilih",
+                  "n": 157
+                },
+                {
+                  "word": "dibayar",
+                  "n": 156
                 }
               ]
             },
@@ -211487,14 +212167,54 @@
                 {
                   "label": "FISIK",
                   "n": 571,
-                  "pct": 82.2
+                  "pct": 82.2,
+                  "manja": {
+                    "filled": 155,
+                    "empty": 416,
+                    "pct_filled": 27.1
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 124,
-                  "pct": 17.8
+                  "pct": 17.8,
+                  "manja": {
+                    "filled": 1,
+                    "empty": 123,
+                    "pct_filled": 0.8
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 28,
+                "top": [
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 9,
+                    "pct": 1.3
+                  },
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 6,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 6,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - ODC - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 2,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 1,
+                    "pct": 0.1
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -211601,20 +212321,12 @@
               "avg_open_time": "13:49",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 394
-                },
-                {
                   "word": "lapul",
                   "n": 344
                 },
                 {
                   "word": "gaul",
                   "n": 343
-                },
-                {
-                  "word": "inet",
-                  "n": 292
                 },
                 {
                   "word": "pembayaran",
@@ -211659,6 +212371,14 @@
                 {
                   "word": "indihome",
                   "n": 147
+                },
+                {
+                  "word": "rekan",
+                  "n": 141
+                },
+                {
+                  "word": "msisdn",
+                  "n": 140
                 }
               ]
             },
@@ -211700,14 +212420,54 @@
                 {
                   "label": "FISIK",
                   "n": 915,
-                  "pct": 87.6
+                  "pct": 87.6,
+                  "manja": {
+                    "filled": 181,
+                    "empty": 734,
+                    "pct_filled": 19.8
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 130,
-                  "pct": 12.4
+                  "pct": 12.4,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 130,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 38,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 7,
+                    "pct": 0.7
+                  },
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "HSI - GAMAS - DNS?RESOLVER",
+                    "n": 3,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "GAMAS - OLT - MODUL CONTROL RUSAK",
+                    "n": 3,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -211822,14 +212582,6 @@
                   "n": 571
                 },
                 {
-                  "word": "reguler",
-                  "n": 570
-                },
-                {
-                  "word": "inet",
-                  "n": 528
-                },
-                {
                   "word": "pembayaran",
                   "n": 486
                 },
@@ -211872,6 +212624,14 @@
                 {
                   "word": "rekan",
                   "n": 228
+                },
+                {
+                  "word": "moban",
+                  "n": 219
+                },
+                {
+                  "word": "down",
+                  "n": 203
                 }
               ]
             },
@@ -211913,14 +212673,54 @@
                 {
                   "label": "FISIK",
                   "n": 570,
-                  "pct": 90.2
+                  "pct": 90.2,
+                  "manja": {
+                    "filled": 54,
+                    "empty": 516,
+                    "pct_filled": 9.5
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 62,
-                  "pct": 9.8
+                  "pct": 9.8,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 62,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 67,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 16,
+                    "pct": 2.5
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 10,
+                    "pct": 1.6
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 9,
+                    "pct": 1.4
+                  },
+                  {
+                    "label": "GAMAS - OLT - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 4,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "GAMAS - ODC - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 4,
+                    "pct": 0.6
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -212019,20 +212819,12 @@
               "avg_open_time": "13:03",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 414
-                },
-                {
                   "word": "gaul",
                   "n": 392
                 },
                 {
                   "word": "lapul",
                   "n": 391
-                },
-                {
-                  "word": "inet",
-                  "n": 353
                 },
                 {
                   "word": "pembayaran",
@@ -212045,10 +212837,6 @@
                 {
                   "word": "tiket",
                   "n": 152
-                },
-                {
-                  "word": "notiket",
-                  "n": 133
                 },
                 {
                   "word": "rekan",
@@ -212077,6 +212865,18 @@
                 {
                   "word": "pengukuran",
                   "n": 105
+                },
+                {
+                  "word": "note",
+                  "n": 104
+                },
+                {
+                  "word": "msisdn",
+                  "n": 103
+                },
+                {
+                  "word": "port",
+                  "n": 98
                 }
               ]
             }
@@ -268536,14 +269336,54 @@
               {
                 "label": "FISIK",
                 "n": 3033,
-                "pct": 90.4
+                "pct": 90.4,
+                "manja": {
+                  "filled": 377,
+                  "empty": 2656,
+                  "pct_filled": 12.4
+                }
               },
               {
                 "label": "LOGIK",
                 "n": 322,
-                "pct": 9.6
+                "pct": 9.6,
+                "manja": {
+                  "filled": 1,
+                  "empty": 321,
+                  "pct_filled": 0.3
+                }
               }
             ],
+            "incident_domain": {
+              "n_filled": 229,
+              "top": [
+                {
+                  "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 43,
+                  "pct": 1.3
+                },
+                {
+                  "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 39,
+                  "pct": 1.2
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                  "n": 29,
+                  "pct": 0.9
+                },
+                {
+                  "label": "TSEL - TELKOM - CRA ACTIVITY",
+                  "n": 18,
+                  "pct": 0.5
+                },
+                {
+                  "label": "GAMAS - OLT - CATUAN PLN OFF",
+                  "n": 11,
+                  "pct": 0.3
+                }
+              ]
+            },
             "hourly_open": [
               {
                 "hour": 0,
@@ -268650,10 +269490,6 @@
             "avg_open_time": "13:37",
             "headline_keywords": [
               {
-                "word": "reguler",
-                "n": 2107
-              },
-              {
                 "word": "gaul",
                 "n": 2085
               },
@@ -268664,10 +269500,6 @@
               {
                 "word": "pembayaran",
                 "n": 1949
-              },
-              {
-                "word": "inet",
-                "n": 1723
               },
               {
                 "word": "pengukuran",
@@ -268708,6 +269540,14 @@
               {
                 "word": "kabel",
                 "n": 620
+              },
+              {
+                "word": "details",
+                "n": 576
+              },
+              {
+                "word": "mycx",
+                "n": 574
               }
             ]
           },
@@ -268750,14 +269590,54 @@
                 {
                   "label": "FISIK",
                   "n": 949,
-                  "pct": 94.1
+                  "pct": 94.1,
+                  "manja": {
+                    "filled": 100,
+                    "empty": 849,
+                    "pct_filled": 10.5
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 60,
-                  "pct": 5.9
+                  "pct": 5.9,
+                  "manja": {
+                    "filled": 1,
+                    "empty": 59,
+                    "pct_filled": 1.7
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 65,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 20,
+                    "pct": 2.0
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 11,
+                    "pct": 1.1
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 10,
+                    "pct": 1.0
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Kabel rapuh / Kropos di HH",
+                    "n": 6,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 3,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -268872,16 +269752,8 @@
                   "n": 722
                 },
                 {
-                  "word": "reguler",
-                  "n": 711
-                },
-                {
                   "word": "pembayaran",
                   "n": 681
-                },
-                {
-                  "word": "inet",
-                  "n": 582
                 },
                 {
                   "word": "moban",
@@ -268922,6 +269794,14 @@
                 {
                   "word": "satu",
                   "n": 160
+                },
+                {
+                  "word": "merah",
+                  "n": 158
+                },
+                {
+                  "word": "salah",
+                  "n": 158
                 }
               ]
             },
@@ -268963,14 +269843,54 @@
                 {
                   "label": "FISIK",
                   "n": 466,
-                  "pct": 82.5
+                  "pct": 82.5,
+                  "manja": {
+                    "filled": 94,
+                    "empty": 372,
+                    "pct_filled": 20.2
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 99,
-                  "pct": 17.5
+                  "pct": 17.5,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 99,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 38,
+                "top": [
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 12,
+                    "pct": 2.1
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 11,
+                    "pct": 1.9
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 5,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 3,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Aktifitas Perbaikan",
+                    "n": 1,
+                    "pct": 0.2
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -269077,10 +269997,6 @@
               "avg_open_time": "13:19",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 337
-                },
-                {
                   "word": "gaul",
                   "n": 312
                 },
@@ -269091,10 +270007,6 @@
                 {
                   "word": "pembayaran",
                   "n": 287
-                },
-                {
-                  "word": "inet",
-                  "n": 247
                 },
                 {
                   "word": "pengukuran",
@@ -269135,6 +270047,14 @@
                 {
                   "word": "msisdn",
                   "n": 118
+                },
+                {
+                  "word": "down",
+                  "n": 117
+                },
+                {
+                  "word": "indihome",
+                  "n": 111
                 }
               ]
             },
@@ -269176,14 +270096,54 @@
                 {
                   "label": "FISIK",
                   "n": 883,
-                  "pct": 89.4
+                  "pct": 89.4,
+                  "manja": {
+                    "filled": 116,
+                    "empty": 767,
+                    "pct_filled": 13.1
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 105,
-                  "pct": 10.6
+                  "pct": 10.6,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 105,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 32,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 7,
+                    "pct": 0.7
+                  },
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - Aktifitas Perbaikan",
+                    "n": 3,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 3,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -269298,16 +270258,8 @@
                   "n": 569
                 },
                 {
-                  "word": "reguler",
-                  "n": 563
-                },
-                {
                   "word": "pembayaran",
                   "n": 534
-                },
-                {
-                  "word": "inet",
-                  "n": 492
                 },
                 {
                   "word": "gpon",
@@ -269348,6 +270300,14 @@
                 {
                   "word": "power",
                   "n": 225
+                },
+                {
+                  "word": "teknologi",
+                  "n": 221
+                },
+                {
+                  "word": "fisik",
+                  "n": 220
                 }
               ]
             },
@@ -269389,14 +270349,54 @@
                 {
                   "label": "FISIK",
                   "n": 735,
-                  "pct": 92.7
+                  "pct": 92.7,
+                  "manja": {
+                    "filled": 67,
+                    "empty": 668,
+                    "pct_filled": 9.1
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 58,
-                  "pct": 7.3
+                  "pct": 7.3,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 58,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 94,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 24,
+                    "pct": 3.0
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 13,
+                    "pct": 1.6
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 6,
+                    "pct": 0.8
+                  },
+                  {
+                    "label": "IP - LOGIC - UNBALANCE",
+                    "n": 5,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "GAMAS - ODC - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 4,
+                    "pct": 0.5
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -269503,10 +270503,6 @@
               "avg_open_time": "13:04",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 496
-                },
-                {
                   "word": "gaul",
                   "n": 476
                 },
@@ -269517,10 +270513,6 @@
                 {
                   "word": "pembayaran",
                   "n": 447
-                },
-                {
-                  "word": "inet",
-                  "n": 402
                 },
                 {
                   "word": "tiket",
@@ -269535,11 +270527,11 @@
                   "n": 153
                 },
                 {
-                  "word": "pengukuran",
+                  "word": "msisdn",
                   "n": 150
                 },
                 {
-                  "word": "msisdn",
+                  "word": "pengukuran",
                   "n": 150
                 },
                 {
@@ -269561,6 +270553,14 @@
                 {
                   "word": "port",
                   "n": 134
+                },
+                {
+                  "word": "merah",
+                  "n": 131
+                },
+                {
+                  "word": "dibayar",
+                  "n": 129
                 }
               ]
             }
@@ -328434,14 +329434,54 @@
               {
                 "label": "FISIK",
                 "n": 3551,
-                "pct": 90.9
+                "pct": 90.9,
+                "manja": {
+                  "filled": 474,
+                  "empty": 3077,
+                  "pct_filled": 13.3
+                }
               },
               {
                 "label": "LOGIK",
                 "n": 355,
-                "pct": 9.1
+                "pct": 9.1,
+                "manja": {
+                  "filled": 0,
+                  "empty": 355,
+                  "pct_filled": 0.0
+                }
               }
             ],
+            "incident_domain": {
+              "n_filled": 240,
+              "top": [
+                {
+                  "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 28,
+                  "pct": 0.7
+                },
+                {
+                  "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 27,
+                  "pct": 0.7
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                  "n": 21,
+                  "pct": 0.5
+                },
+                {
+                  "label": "GAMAS - OLT - CATUAN PLN OFF",
+                  "n": 18,
+                  "pct": 0.5
+                },
+                {
+                  "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                  "n": 15,
+                  "pct": 0.4
+                }
+              ]
+            },
             "hourly_open": [
               {
                 "hour": 0,
@@ -328548,10 +329588,6 @@
             "avg_open_time": "13:34",
             "headline_keywords": [
               {
-                "word": "reguler",
-                "n": 2388
-              },
-              {
                 "word": "lapul",
                 "n": 2259
               },
@@ -328562,10 +329598,6 @@
               {
                 "word": "pembayaran",
                 "n": 2129
-              },
-              {
-                "word": "inet",
-                "n": 1848
               },
               {
                 "word": "pengukuran",
@@ -328606,6 +329638,14 @@
               {
                 "word": "mycx",
                 "n": 789
+              },
+              {
+                "word": "tiket",
+                "n": 777
+              },
+              {
+                "word": "down",
+                "n": 736
               }
             ]
           },
@@ -328648,14 +329688,54 @@
                 {
                   "label": "FISIK",
                   "n": 1094,
-                  "pct": 92.9
+                  "pct": 92.9,
+                  "manja": {
+                    "filled": 100,
+                    "empty": 994,
+                    "pct_filled": 9.1
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 83,
-                  "pct": 7.1
+                  "pct": 7.1,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 83,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 77,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 18,
+                    "pct": 1.5
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 8,
+                    "pct": 0.7
+                  },
+                  {
+                    "label": "HSI - TELKOM - DNS TELKOM",
+                    "n": 6,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - Degradasi Alpro",
+                    "n": 5,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 5,
+                    "pct": 0.4
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -328762,10 +329842,6 @@
               "avg_open_time": "14:28",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 805
-                },
-                {
                   "word": "lapul",
                   "n": 793
                 },
@@ -328776,10 +329852,6 @@
                 {
                   "word": "pembayaran",
                   "n": 753
-                },
-                {
-                  "word": "inet",
-                  "n": 624
                 },
                 {
                   "word": "rekan",
@@ -328820,6 +329892,14 @@
                 {
                   "word": "dibayar",
                   "n": 191
+                },
+                {
+                  "word": "msisdn",
+                  "n": 190
+                },
+                {
+                  "word": "perbaikan",
+                  "n": 181
                 }
               ]
             },
@@ -328861,14 +329941,54 @@
                 {
                   "label": "FISIK",
                   "n": 583,
-                  "pct": 88.1
+                  "pct": 88.1,
+                  "manja": {
+                    "filled": 121,
+                    "empty": 462,
+                    "pct_filled": 20.8
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 79,
-                  "pct": 11.9
+                  "pct": 11.9,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 79,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 55,
+                "top": [
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 19,
+                    "pct": 2.9
+                  },
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 8,
+                    "pct": 1.2
+                  },
+                  {
+                    "label": "HSI-GAMAS NETWORK",
+                    "n": 8,
+                    "pct": 1.2
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 5,
+                    "pct": 0.8
+                  },
+                  {
+                    "label": "Telkom - OSP - KABEL - PUTUS - Vandalisme",
+                    "n": 5,
+                    "pct": 0.8
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -328975,10 +330095,6 @@
               "avg_open_time": "13:45",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 404
-                },
-                {
                   "word": "gaul",
                   "n": 358
                 },
@@ -328991,8 +330107,8 @@
                   "n": 336
                 },
                 {
-                  "word": "inet",
-                  "n": 296
+                  "word": "gpon",
+                  "n": 163
                 },
                 {
                   "word": "pengukuran",
@@ -329000,10 +330116,6 @@
                 },
                 {
                   "word": "hostname",
-                  "n": 163
-                },
-                {
-                  "word": "gpon",
                   "n": 163
                 },
                 {
@@ -329033,6 +330145,14 @@
                 {
                   "word": "internet",
                   "n": 141
+                },
+                {
+                  "word": "power",
+                  "n": 130
+                },
+                {
+                  "word": "down",
+                  "n": 128
                 }
               ]
             },
@@ -329074,14 +330194,54 @@
                 {
                   "label": "FISIK",
                   "n": 867,
-                  "pct": 88.5
+                  "pct": 88.5,
+                  "manja": {
+                    "filled": 130,
+                    "empty": 737,
+                    "pct_filled": 15.0
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 113,
-                  "pct": 11.5
+                  "pct": 11.5,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 113,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 23,
+                "top": [
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 3,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 3,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 2,
+                    "pct": 0.2
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Kualitas Sambungan",
+                    "n": 2,
+                    "pct": 0.2
+                  },
+                  {
+                    "label": "TSEL - TELKOM - CANCEL TIKET",
+                    "n": 2,
+                    "pct": 0.2
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -329188,10 +330348,6 @@
               "avg_open_time": "13:01",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 512
-                },
-                {
                   "word": "lapul",
                   "n": 480
                 },
@@ -329202,10 +330358,6 @@
                 {
                   "word": "pembayaran",
                   "n": 452
-                },
-                {
-                  "word": "inet",
-                  "n": 438
                 },
                 {
                   "word": "pengukuran",
@@ -329246,6 +330398,14 @@
                 {
                   "word": "teknologi",
                   "n": 266
+                },
+                {
+                  "word": "msisdn",
+                  "n": 264
+                },
+                {
+                  "word": "fisik",
+                  "n": 242
                 }
               ]
             },
@@ -329287,14 +330447,54 @@
                 {
                   "label": "FISIK",
                   "n": 1007,
-                  "pct": 92.6
+                  "pct": 92.6,
+                  "manja": {
+                    "filled": 123,
+                    "empty": 884,
+                    "pct_filled": 12.2
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 80,
-                  "pct": 7.4
+                  "pct": 7.4,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 80,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 85,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 14,
+                    "pct": 1.3
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 10,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 9,
+                    "pct": 0.8
+                  },
+                  {
+                    "label": "GAMAS - ODP - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 6,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Aktifitas Perbaikan",
+                    "n": 5,
+                    "pct": 0.5
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -329401,10 +330601,6 @@
               "avg_open_time": "12:59",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 667
-                },
-                {
                   "word": "gaul",
                   "n": 630
                 },
@@ -329415,10 +330611,6 @@
                 {
                   "word": "pembayaran",
                   "n": 588
-                },
-                {
-                  "word": "inet",
-                  "n": 490
                 },
                 {
                   "word": "pengukuran",
@@ -329459,6 +330651,14 @@
                 {
                   "word": "details",
                   "n": 196
+                },
+                {
+                  "word": "mycx",
+                  "n": 195
+                },
+                {
+                  "word": "down",
+                  "n": 195
                 }
               ]
             }
@@ -347995,24 +349195,74 @@
               {
                 "label": "FISIK",
                 "n": 8186,
-                "pct": 85.6
+                "pct": 85.6,
+                "manja": {
+                  "filled": 775,
+                  "empty": 7411,
+                  "pct_filled": 9.5
+                }
               },
               {
                 "label": "LOGIK",
                 "n": 1312,
-                "pct": 13.7
+                "pct": 13.7,
+                "manja": {
+                  "filled": 0,
+                  "empty": 1312,
+                  "pct_filled": 0.0
+                }
               },
               {
                 "label": "PERMINTAAN",
                 "n": 66,
-                "pct": 0.7
+                "pct": 0.7,
+                "manja": {
+                  "filled": 0,
+                  "empty": 66,
+                  "pct_filled": 0.0
+                }
               },
               {
                 "label": "CONTENT_ADDON",
                 "n": 1,
-                "pct": 0.0
+                "pct": 0.0,
+                "manja": {
+                  "filled": 0,
+                  "empty": 1,
+                  "pct_filled": 0.0
+                }
               }
             ],
+            "incident_domain": {
+              "n_filled": 1116,
+              "top": [
+                {
+                  "label": "GAMAS - FEEDER - PIHAK KETIGA (UTILITAS)",
+                  "n": 219,
+                  "pct": 2.3
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - VANDALISME (PENCURIAN)",
+                  "n": 135,
+                  "pct": 1.4
+                },
+                {
+                  "label": "GAMAS - FEEDER - VANDALISME (PENCURIAN)",
+                  "n": 96,
+                  "pct": 1.0
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 95,
+                  "pct": 1.0
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - PIHAK KETIGA (UTILITAS)",
+                  "n": 86,
+                  "pct": 0.9
+                }
+              ]
+            },
             "hourly_open": [
               {
                 "hour": 0,
@@ -348119,10 +349369,6 @@
             "avg_open_time": "13:48",
             "headline_keywords": [
               {
-                "word": "reguler",
-                "n": 5610
-              },
-              {
                 "word": "lapul",
                 "n": 5536
               },
@@ -348133,10 +349379,6 @@
               {
                 "word": "pembayaran",
                 "n": 5203
-              },
-              {
-                "word": "inet",
-                "n": 4459
               },
               {
                 "word": "pengukuran",
@@ -348163,11 +349405,11 @@
                 "n": 1902
               },
               {
-                "word": "port",
+                "word": "msisdn",
                 "n": 1859
               },
               {
-                "word": "msisdn",
+                "word": "port",
                 "n": 1859
               },
               {
@@ -348177,6 +349419,14 @@
               {
                 "word": "details",
                 "n": 1734
+              },
+              {
+                "word": "kabel",
+                "n": 1727
+              },
+              {
+                "word": "mycx",
+                "n": 1726
               }
             ]
           },
@@ -348219,19 +349469,64 @@
                 {
                   "label": "FISIK",
                   "n": 2513,
-                  "pct": 88.5
+                  "pct": 88.5,
+                  "manja": {
+                    "filled": 172,
+                    "empty": 2341,
+                    "pct_filled": 6.8
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 319,
-                  "pct": 11.2
+                  "pct": 11.2,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 319,
+                    "pct_filled": 0.0
+                  }
                 },
                 {
                   "label": "PERMINTAAN",
                   "n": 9,
-                  "pct": 0.3
+                  "pct": 0.3,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 9,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 468,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - VANDALISME (PENCURIAN)",
+                    "n": 114,
+                    "pct": 4.0
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - PIHAK KETIGA (UTILITAS)",
+                    "n": 71,
+                    "pct": 2.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - VANDALISME (PENCURIAN)",
+                    "n": 52,
+                    "pct": 1.8
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 32,
+                    "pct": 1.1
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - PIHAK KETIGA (UTILITAS)",
+                    "n": 31,
+                    "pct": 1.1
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -348346,16 +349641,8 @@
                   "n": 1863
                 },
                 {
-                  "word": "reguler",
-                  "n": 1823
-                },
-                {
                   "word": "pembayaran",
                   "n": 1747
-                },
-                {
-                  "word": "inet",
-                  "n": 1474
                 },
                 {
                   "word": "rekan",
@@ -348396,6 +349683,14 @@
                 {
                   "word": "hari",
                   "n": 458
+                },
+                {
+                  "word": "mohon",
+                  "n": 454
+                },
+                {
+                  "word": "kendala",
+                  "n": 450
                 }
               ]
             },
@@ -348437,19 +349732,64 @@
                 {
                   "label": "FISIK",
                   "n": 1263,
-                  "pct": 75.9
+                  "pct": 75.9,
+                  "manja": {
+                    "filled": 226,
+                    "empty": 1037,
+                    "pct_filled": 17.9
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 369,
-                  "pct": 22.2
+                  "pct": 22.2,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 369,
+                    "pct_filled": 0.0
+                  }
                 },
                 {
                   "label": "PERMINTAAN",
                   "n": 31,
-                  "pct": 1.9
+                  "pct": 1.9,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 31,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 157,
+                "top": [
+                  {
+                    "label": "GAMAS - FEEDER - VANDALISME (PENCURIAN)",
+                    "n": 33,
+                    "pct": 2.0
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - PIHAK KETIGA (UTILITAS)",
+                    "n": 31,
+                    "pct": 1.9
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 23,
+                    "pct": 1.4
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 13,
+                    "pct": 0.8
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - VANDALISME (PENCURIAN)",
+                    "n": 6,
+                    "pct": 0.4
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -348556,10 +349896,6 @@
               "avg_open_time": "14:19",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 903
-                },
-                {
                   "word": "lapul",
                   "n": 813
                 },
@@ -348570,10 +349906,6 @@
                 {
                   "word": "pembayaran",
                   "n": 760
-                },
-                {
-                  "word": "inet",
-                  "n": 628
                 },
                 {
                   "word": "pengukuran",
@@ -348614,6 +349946,14 @@
                 {
                   "word": "indihome",
                   "n": 358
+                },
+                {
+                  "word": "modem",
+                  "n": 340
+                },
+                {
+                  "word": "down",
+                  "n": 338
                 }
               ]
             },
@@ -348655,24 +349995,74 @@
                 {
                   "label": "FISIK",
                   "n": 1998,
-                  "pct": 85.3
+                  "pct": 85.3,
+                  "manja": {
+                    "filled": 197,
+                    "empty": 1801,
+                    "pct_filled": 9.9
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 331,
-                  "pct": 14.1
+                  "pct": 14.1,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 331,
+                    "pct_filled": 0.0
+                  }
                 },
                 {
                   "label": "PERMINTAAN",
                   "n": 12,
-                  "pct": 0.5
+                  "pct": 0.5,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 12,
+                    "pct_filled": 0.0
+                  }
                 },
                 {
                   "label": "CONTENT_ADDON",
                   "n": 1,
-                  "pct": 0.0
+                  "pct": 0.0,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 1,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 205,
+                "top": [
+                  {
+                    "label": "GAMAS - FEEDER - PIHAK KETIGA (UTILITAS)",
+                    "n": 93,
+                    "pct": 4.0
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - PIHAK KETIGA (UTILITAS)",
+                    "n": 38,
+                    "pct": 1.6
+                  },
+                  {
+                    "label": "GAMAS - LB DNS - MAINTENANCE TERENCANA (CRQ)",
+                    "n": 13,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 7,
+                    "pct": 0.3
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Kualitas Sambungan",
+                    "n": 5,
+                    "pct": 0.2
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -348787,16 +350177,8 @@
                   "n": 1187
                 },
                 {
-                  "word": "reguler",
-                  "n": 1168
-                },
-                {
                   "word": "pembayaran",
                   "n": 1119
-                },
-                {
-                  "word": "inet",
-                  "n": 1047
                 },
                 {
                   "word": "pengukuran",
@@ -348837,6 +350219,14 @@
                 {
                   "word": "msisdn",
                   "n": 558
+                },
+                {
+                  "word": "teknologi",
+                  "n": 528
+                },
+                {
+                  "word": "fisik",
+                  "n": 502
                 }
               ]
             },
@@ -348878,19 +350268,64 @@
                 {
                   "label": "FISIK",
                   "n": 2412,
-                  "pct": 88.7
+                  "pct": 88.7,
+                  "manja": {
+                    "filled": 180,
+                    "empty": 2232,
+                    "pct_filled": 7.5
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 293,
-                  "pct": 10.8
+                  "pct": 10.8,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 293,
+                    "pct_filled": 0.0
+                  }
                 },
                 {
                   "label": "PERMINTAAN",
                   "n": 14,
-                  "pct": 0.5
+                  "pct": 0.5,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 14,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 286,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 48,
+                    "pct": 1.8
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - PIHAK KETIGA (UTILITAS)",
+                    "n": 24,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 17,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 15,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - PIHAK KETIGA (UTILITAS)",
+                    "n": 15,
+                    "pct": 0.6
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -348997,10 +350432,6 @@
               "avg_open_time": "13:24",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 1716
-                },
-                {
                   "word": "lapul",
                   "n": 1673
                 },
@@ -349011,10 +350442,6 @@
                 {
                   "word": "pembayaran",
                   "n": 1577
-                },
-                {
-                  "word": "inet",
-                  "n": 1310
                 },
                 {
                   "word": "moban",
@@ -349055,6 +350482,14 @@
                 {
                   "word": "segera",
                   "n": 430
+                },
+                {
+                  "word": "internet",
+                  "n": 429
+                },
+                {
+                  "word": "perbaikan",
+                  "n": 428
                 }
               ]
             }
@@ -367647,14 +369082,54 @@
               {
                 "label": "FISIK",
                 "n": 3133,
-                "pct": 89.8
+                "pct": 89.8,
+                "manja": {
+                  "filled": 279,
+                  "empty": 2854,
+                  "pct_filled": 8.9
+                }
               },
               {
                 "label": "LOGIK",
                 "n": 357,
-                "pct": 10.2
+                "pct": 10.2,
+                "manja": {
+                  "filled": 0,
+                  "empty": 357,
+                  "pct_filled": 0.0
+                }
               }
             ],
+            "incident_domain": {
+              "n_filled": 225,
+              "top": [
+                {
+                  "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                  "n": 27,
+                  "pct": 0.8
+                },
+                {
+                  "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 23,
+                  "pct": 0.7
+                },
+                {
+                  "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                  "n": 19,
+                  "pct": 0.5
+                },
+                {
+                  "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                  "n": 17,
+                  "pct": 0.5
+                },
+                {
+                  "label": "GAMAS - OLT - CATUAN PLN OFF",
+                  "n": 11,
+                  "pct": 0.3
+                }
+              ]
+            },
             "hourly_open": [
               {
                 "hour": 0,
@@ -367769,16 +369244,8 @@
                 "n": 2119
               },
               {
-                "word": "reguler",
-                "n": 2085
-              },
-              {
                 "word": "pembayaran",
                 "n": 2015
-              },
-              {
-                "word": "inet",
-                "n": 1731
               },
               {
                 "word": "pengukuran",
@@ -367819,6 +369286,14 @@
               {
                 "word": "rekan",
                 "n": 689
+              },
+              {
+                "word": "kendala",
+                "n": 632
+              },
+              {
+                "word": "internet",
+                "n": 615
               }
             ]
           },
@@ -367861,14 +369336,54 @@
                 {
                   "label": "FISIK",
                   "n": 1049,
-                  "pct": 90.5
+                  "pct": 90.5,
+                  "manja": {
+                    "filled": 73,
+                    "empty": 976,
+                    "pct_filled": 7.0
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 110,
-                  "pct": 9.5
+                  "pct": 9.5,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 110,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 122,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Degradasi Alpro",
+                    "n": 26,
+                    "pct": 2.2
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 12,
+                    "pct": 1.0
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 10,
+                    "pct": 0.9
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Digigit Binatang Pengerat",
+                    "n": 8,
+                    "pct": 0.7
+                  },
+                  {
+                    "label": "DWDM - MODUL - HANG - Suhu",
+                    "n": 8,
+                    "pct": 0.7
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -367983,16 +369498,8 @@
                   "n": 777
                 },
                 {
-                  "word": "reguler",
-                  "n": 766
-                },
-                {
                   "word": "pembayaran",
                   "n": 737
-                },
-                {
-                  "word": "inet",
-                  "n": 597
                 },
                 {
                   "word": "kabel",
@@ -368033,6 +369540,14 @@
                 {
                   "word": "kendala",
                   "n": 209
+                },
+                {
+                  "word": "fiber",
+                  "n": 200
+                },
+                {
+                  "word": "segera",
+                  "n": 197
                 }
               ]
             },
@@ -368074,14 +369589,54 @@
                 {
                   "label": "FISIK",
                   "n": 461,
-                  "pct": 83.5
+                  "pct": 83.5,
+                  "manja": {
+                    "filled": 66,
+                    "empty": 395,
+                    "pct_filled": 14.3
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 91,
-                  "pct": 16.5
+                  "pct": 16.5,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 91,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 20,
+                "top": [
+                  {
+                    "label": "GAMAS - FEEDER - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 11,
+                    "pct": 2.0
+                  },
+                  {
+                    "label": "GAMAS - ODC - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 4,
+                    "pct": 0.7
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 2,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 1,
+                    "pct": 0.2
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Digigit Binatang Pengerat",
+                    "n": 1,
+                    "pct": 0.2
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -368188,10 +369743,6 @@
               "avg_open_time": "14:44",
               "headline_keywords": [
                 {
-                  "word": "reguler",
-                  "n": 324
-                },
-                {
                   "word": "lapul",
                   "n": 307
                 },
@@ -368202,10 +369753,6 @@
                 {
                   "word": "pembayaran",
                   "n": 286
-                },
-                {
-                  "word": "inet",
-                  "n": 245
                 },
                 {
                   "word": "pengukuran",
@@ -368246,6 +369793,14 @@
                 {
                   "word": "indihome",
                   "n": 106
+                },
+                {
+                  "word": "gangguan",
+                  "n": 105
+                },
+                {
+                  "word": "rekan",
+                  "n": 104
                 }
               ]
             },
@@ -368287,14 +369842,54 @@
                 {
                   "label": "FISIK",
                   "n": 704,
-                  "pct": 88.1
+                  "pct": 88.1,
+                  "manja": {
+                    "filled": 70,
+                    "empty": 634,
+                    "pct_filled": 9.9
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 95,
-                  "pct": 11.9
+                  "pct": 11.9,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 95,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 32,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Kualitas Sambungan",
+                    "n": 4,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - FEEDER - Lingkungan/Masyarakat",
+                    "n": 4,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - OLT - CATUAN PLN OFF",
+                    "n": 3,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Ditabrak Truk/Mobil/Kecelakaan",
+                    "n": 3,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Aktifitas Perbaikan",
+                    "n": 2,
+                    "pct": 0.3
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -368409,16 +370004,8 @@
                   "n": 398
                 },
                 {
-                  "word": "reguler",
-                  "n": 392
-                },
-                {
                   "word": "pembayaran",
                   "n": 380
-                },
-                {
-                  "word": "inet",
-                  "n": 374
                 },
                 {
                   "word": "pengukuran",
@@ -368459,6 +370046,14 @@
                 {
                   "word": "down",
                   "n": 219
+                },
+                {
+                  "word": "fisik",
+                  "n": 216
+                },
+                {
+                  "word": "teknologi",
+                  "n": 209
                 }
               ]
             },
@@ -368500,14 +370095,54 @@
                 {
                   "label": "FISIK",
                   "n": 919,
-                  "pct": 93.8
+                  "pct": 93.8,
+                  "manja": {
+                    "filled": 70,
+                    "empty": 849,
+                    "pct_filled": 7.6
+                  }
                 },
                 {
                   "label": "LOGIK",
                   "n": 61,
-                  "pct": 6.2
+                  "pct": 6.2,
+                  "manja": {
+                    "filled": 0,
+                    "empty": 61,
+                    "pct_filled": 0.0
+                  }
                 }
               ],
+              "incident_domain": {
+                "n_filled": 51,
+                "top": [
+                  {
+                    "label": "GAMAS - DISTRIBUSI - FORCE MAJEUR (BENCANA ALAM, KELAKAAN, LAINNYA)",
+                    "n": 8,
+                    "pct": 0.8
+                  },
+                  {
+                    "label": "GAMAS - DISTRIBUSI - Aktifitas Perbaikan",
+                    "n": 6,
+                    "pct": 0.6
+                  },
+                  {
+                    "label": "GAMAS - ODP - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 5,
+                    "pct": 0.5
+                  },
+                  {
+                    "label": "GAMAS - ODC - KERUSAKAN PATCHCORE/ADAPTOR/CONNECTOR",
+                    "n": 4,
+                    "pct": 0.4
+                  },
+                  {
+                    "label": "TSEL - TELKOM - CRA ACTIVITY",
+                    "n": 4,
+                    "pct": 0.4
+                  }
+                ]
+              },
               "hourly_open": [
                 {
                   "hour": 0,
@@ -368626,14 +370261,6 @@
                   "n": 612
                 },
                 {
-                  "word": "reguler",
-                  "n": 603
-                },
-                {
-                  "word": "inet",
-                  "n": 515
-                },
-                {
                   "word": "kabel",
                   "n": 276
                 },
@@ -368672,6 +370299,14 @@
                 {
                   "word": "segera",
                   "n": 178
+                },
+                {
+                  "word": "fiber",
+                  "n": 174
+                },
+                {
+                  "word": "tiket",
+                  "n": 169
                 }
               ]
             }
