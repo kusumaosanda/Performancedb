@@ -3873,7 +3873,7 @@ function renderEntityView(entity, d){
           <div>
             <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Jenis Gangguan</div>
             ${(nat.jenis_ggn||[]).map(j=>`
-              <div style="margin-bottom:8px">
+              <div style="margin-bottom:10px">
                 <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:3px">
                   <span style="font-weight:600">${j.label}</span>
                   <span style="color:var(--muted)">${j.n.toLocaleString()} (${j.pct}%)</span>
@@ -3881,6 +3881,9 @@ function renderEntityView(entity, d){
                 <div style="background:rgba(42,63,94,.08);border-radius:4px;height:8px;overflow:hidden">
                   <div style="width:${j.pct}%;height:100%;background:${j.label==='FISIK'?'var(--accent)':'var(--wine)'}"></div>
                 </div>
+                ${j.manja?`<div style="font-size:.68rem;color:var(--muted);margin-top:3px">
+                  Manja (first_cust_assign) terisi: <strong style="color:var(--navy)">${j.manja.filled.toLocaleString()} (${j.manja.pct_filled}%)</strong> · kosong: ${j.manja.empty.toLocaleString()}
+                </div>`:''}
               </div>`).join('')}
           </div>
           <div>
