@@ -84,14 +84,6 @@ header h1{font-size:.95rem;font-weight:600}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .section-gap{margin-top:20px}
 
-/* ── HOME ID ─────────────────────────────────────────────────────────────── */
-.home-id-header{display:flex;align-items:center;gap:18px;margin-bottom:18px}
-.home-id-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--teal));display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;flex-shrink:0}
-.home-id-title h2{font-size:1.2rem;font-weight:700}
-.home-id-title p{font-size:.82rem;color:var(--muted);margin-top:3px}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
-.info-item label{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:3px}
-.info-item span{font-size:.88rem;font-weight:500}
 .status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:.72rem;font-weight:600}
 .status-badge.active{background:#d1fae5;color:#065f46}
 .status-badge.on-hold{background:#fef3c7;color:#92400e}
@@ -269,131 +261,9 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .conv-result-badge.success{background:#d1fae5;color:#065f46}
 .conv-result-badge.error{background:#fee2e2;color:#991b1b}
 
-/* ── TECHNICIAN PRODUCTIVITY ─────────────────────────────────────────────────
-   NOTE: an earlier revision referenced .tp-bar* here after those rules had been
-   deleted, so the regional bars shipped unstyled. Every class used by
-   renderTechProd() is defined below — keep them in sync. */
-.tp-var3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.tp-var3-item{border:1.5px solid var(--border);border-radius:var(--radius-md);padding:13px 15px;background:var(--card)}
-.tp-var3-item.is-all{border-color:var(--accent);background:rgba(127,29,29,.04)}
-.tp-var3-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.tp-var3-val{font-size:1.7rem;font-weight:800;color:var(--navy);line-height:1.15;margin-top:4px;letter-spacing:-.5px}
-.tp-var3-sub{font-size:.72rem;color:var(--muted);margin-top:3px}
-.tp-var3-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
-
-/* ── Produktivitas Teknisi: tabel angka ringkas ─────────────────────────────
-   Dirancang untuk menampung sebulan penuh (31 hari = 33 kolom). Selebar apa pun
-   layarnya, kolom label dibuat sticky supaya NAS/MJP tetap terlihat saat tabel
-   digeser ke samping. Warna mengikuti palet dashboard. */
-.tp-rep-scroll{overflow-x:auto;overflow-y:hidden;border-radius:var(--radius-sm)}
-.tp-rep-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:.8rem}
-.tp-rep-tbl th,.tp-rep-tbl td{border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
-.tp-rep-tbl th{background:var(--navy);color:#fff;padding:7px 9px;font-size:.68rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.3px;text-align:center;white-space:nowrap;
-  border-right-color:rgba(255,255,255,.14);border-bottom:none;line-height:1.3}
-.tp-rep-tbl th:first-child,.tp-rep-tbl td.tp-rep-lbl{position:sticky;left:0;z-index:2;
-  text-align:left;min-width:74px;box-shadow:2px 0 4px rgba(40,30,20,.08)}
-.tp-rep-tbl th:first-child{background:var(--accent)}
-.tp-rep-tbl th.tp-rep-avg{background:#1a3252;border-left:2px solid rgba(255,255,255,.35)}
-.tp-rep-tbl td{padding:8px 9px;text-align:center;background:#fff;font-variant-numeric:tabular-nums;
-  white-space:nowrap}
-.tp-rep-tbl td.tp-rep-lbl{background:var(--accent);color:#fff;font-weight:800;letter-spacing:.4px;
-  border-right-color:rgba(255,255,255,.18)}
-.tp-rep-tbl td.tp-rep-avg{background:rgba(42,63,94,.07);font-weight:800;color:var(--navy);
-  border-left:2px solid var(--border)}
-.tp-rep-tbl td.tp-hi{background:rgba(22,101,52,.13);font-weight:800;color:#166534}
-.tp-rep-tbl td.tp-lo{background:rgba(153,27,27,.1);font-weight:800;color:#991b1b}
-.tp-rep-tbl tr:hover td:not(.tp-rep-lbl){background:rgba(42,63,94,.04)}
-.tp-rep-tbl tr:hover td.tp-hi{background:rgba(22,101,52,.18)}
-.tp-rep-tbl tr:hover td.tp-lo{background:rgba(153,27,27,.15)}
-.tp-rep-legend{margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.6}
-.tp-rep-chip{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:4px}
-.tp-source{display:inline-block;margin-top:6px;font-weight:700;color:var(--navy);letter-spacing:.2px}
-/* Tabel mingguan hanya punya beberapa kolom. Berbeda dari tabel harian, ia
-   TIDAK direntangkan selebar kartu — dengan width:100% dan 3 kolom, tiap sel
-   jadi selebar telapak tangan dan angkanya terapung sendirian. Lebarnya
-   mengikuti isi, rata kiri. */
-/* Kartunya ikut menyempit mengikuti tabel, bukan hanya tabelnya. Kalau hanya
-   tabel yang menyempit, header maroon tetap membentang selebar dashboard dan
-   hasil tangkapan layarnya jadi kosong melompong di sebelah kanan. */
-.tp-week-card{width:fit-content;max-width:100%;margin-bottom:20px}
-.tp-week-card .ref-summary-header{display:block}
-/* Dengan fit-content, lebar kartu ditentukan anak terlebarnya — teks legenda
-   yang panjang akan melebarkan kartu melebihi tabelnya. Dibatasi agar
-   membungkus, bukan mendorong. */
-.tp-week-card .tp-rep-legend{max-width:392px}
-.tp-week-tbl{width:auto;max-width:100%}
-/* Pakai selektor `table.` agar spesifisitasnya melampaui aturan min-width
-   .tp-rep-tbl yang berada lebih bawah di stylesheet — tanpa itu, lebar kolom
-   di sini diam-diam dikalahkan nilai 46px milik tabel harian. */
-table.tp-week-tbl th:not(:first-child),table.tp-week-tbl td:not(.tp-rep-lbl){min-width:148px}
-table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
-.tp-week-tbl th,.tp-week-tbl td{padding:10px 18px}
-.tp-week-tbl td:not(.tp-rep-lbl){font-size:.92rem;font-weight:700}
-.tp-week-tbl th{line-height:1.35}
-.tp-week-tbl th small{display:block;font-weight:600;font-size:.62rem;opacity:.85;letter-spacing:0}
-.tp-week-tbl td.tp-parsial{background:rgba(212,144,26,.1)}
-.tp-week-tbl tr:hover td.tp-parsial{background:rgba(212,144,26,.18)}
-
-/* Kolom angka wajib punya lebar minimum. Tanpa ini, width:100% memeras kolom
-   sampai "1,69" terpotong di layar sempit — tabel harus menggeser, bukan
-   memotong. Dengan 31 hari lebar alaminya ~1.190px, jadi scroll horizontal
-   muncul di layar kecil dan itu memang yang diinginkan. */
-.tp-rep-tbl th:not(:first-child),.tp-rep-tbl td:not(.tp-rep-lbl){min-width:46px}
-/* Sebulan penuh: rapatkan supaya lebih banyak kolom terlihat sekaligus */
-.tp-rep-tbl.is-long th,.tp-rep-tbl.is-long td{padding:7px 5px;font-size:.74rem}
-.tp-rep-tbl.is-long th{font-size:.63rem}
-.tp-rep-tbl.is-long th:not(:first-child),.tp-rep-tbl.is-long td:not(.tp-rep-lbl){min-width:33px}
-.tp-rep-tbl.is-long th.tp-rep-avg,.tp-rep-tbl.is-long td.tp-rep-avg{min-width:54px}
-.tp-rep-tbl.is-long th:first-child,.tp-rep-tbl.is-long td.tp-rep-lbl{min-width:58px}
-/* Tanpa nama hari, Minggu ditandai lewat warna header agar tetap terbaca */
-.tp-rep-tbl th.tp-th-min{background:#1a3252}
-
-/* ── Rincian kendala per symptom ────────────────────────────────────────────
-   Menggantikan satu tabel panjang berkepala navy polos: tiap kategori jadi
-   kartu sendiri dengan warna aksennya, karena sub-kendala hanya bermakna di
-   dalam kategorinya ("ODP FULL" hanya ada di Kendala Teknik). */
-.tp-sym-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
-.tp-sym{border:1.5px solid var(--border);border-radius:var(--radius-md);overflow:hidden;background:var(--card)}
-.tp-sym-head{padding:9px 14px;color:#fff;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.tp-sym-head.is-clickable{cursor:pointer;transition:filter .15s}
-.tp-sym-head.is-clickable:hover{filter:brightness(1.15)}
-.tp-sym-head.is-clickable:active{filter:brightness(.95)}
-.tp-sym-name{font-size:.76rem;font-weight:800;letter-spacing:.3px}
-.tp-sym-n{font-size:.72rem;font-weight:700;opacity:.92;white-space:nowrap}
-.tp-sym-body{padding:10px 14px 12px}
-.tp-sym-row{display:flex;align-items:center;gap:9px;padding:5px 0}
-.tp-sym-row+.tp-sym-row{border-top:1px solid rgba(212,197,169,.35)}
-.tp-sym-rank{width:17px;height:17px;border-radius:5px;background:rgba(42,63,94,.09);color:var(--navy);
-  font-size:.62rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.tp-sym-lbl{flex:1;min-width:0;font-size:.75rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tp-sym-bar{width:58px;height:6px;background:rgba(42,63,94,.08);border-radius:99px;overflow:hidden;flex-shrink:0}
-.tp-sym-bar span{display:block;height:100%;border-radius:99px}
-.tp-sym-n2{width:46px;text-align:right;font-size:.74rem;font-weight:800;color:var(--navy);
-  font-variant-numeric:tabular-nums;flex-shrink:0}
-.tp-sym-pct{width:42px;text-align:right;font-size:.68rem;color:var(--muted);font-weight:600;flex-shrink:0}
-
-
-.tp-err-top{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.tp-err-box{border-radius:var(--radius-md);padding:13px 15px;text-align:center}
-.tp-err-box.ok{background:rgba(22,101,52,.09)}
-.tp-err-box.bad{background:rgba(153,27,27,.08)}
-.tp-err-box.tot{background:rgba(42,63,94,.06)}
-.tp-err-val{font-size:1.5rem;font-weight:800;line-height:1.15;letter-spacing:-.5px}
-.tp-err-box.ok .tp-err-val{color:#166534}
-.tp-err-box.bad .tp-err-val{color:#991b1b}
-.tp-err-box.tot .tp-err-val{color:var(--navy)}
-.tp-err-lbl{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:3px}
-
-.tp-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
-.tp-bar-lbl{font-size:.74rem;color:var(--text);width:132px;flex-shrink:0;font-weight:600}
-.tp-bar{flex:1;height:10px;background:rgba(42,63,94,.07);border-radius:99px;overflow:hidden}
-.tp-bar span{display:block;height:100%;border-radius:99px}
-.tp-bar-n{font-size:.75rem;font-weight:800;color:var(--navy);width:52px;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums}
-
-.tp-sun{color:var(--muted);font-size:.68rem;font-weight:700;margin-left:5px}
-.tp-num{text-align:center;font-variant-numeric:tabular-nums}
-@media (max-width:900px){.tp-var3,.tp-err-top{grid-template-columns:1fr}}
+/* Legend under the SLA WSA REKON tables (color chip + text). */
+.rekon-legend{margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.6}
+.rekon-chip{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:4px}
 
 /* ── DATA MERGER ────────────────────────────────────────────────────────────── */
 .mrg-file-list{display:flex;flex-direction:column;gap:8px;margin-top:16px}
@@ -648,60 +518,16 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 .sla-stat.clickable:active{transform:translateY(0)}
 .drill-hint{font-size:.64rem;color:var(--teal);margin-top:7px;letter-spacing:.2px;opacity:.85}
 
-/* ── HOME ID DASHBOARD ───────────────────────────────────────────────────── */
-.hid-filter-bar{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border);padding:12px 14px}
-.hid-fg{display:flex;flex-direction:column;gap:4px}
-.hid-fg label{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.hid-sel,.hid-inp{padding:7px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:.82rem;background:#fff;color:var(--text);outline:none;font-family:'Poppins',sans-serif;transition:border-color .15s,box-shadow .15s}
-.hid-sel{padding-right:30px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B5E52'/></svg>");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer;appearance:none;-webkit-appearance:none}
-.hid-sel:hover,.hid-inp:hover{border-color:var(--accent2)}
-.hid-sel:focus,.hid-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(127,29,29,.12)}
+/* ── Shared table + button styles ─────────────────────────────────────
+   The "hid-" prefix is historical (these began on the removed Home ID page).
+   Still used by SLA WSA REKON and the FFG insight table — don't rename lightly. */
 .hid-btn{padding:8px 22px;background:var(--accent-grad);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;align-self:flex-end;transition:transform .15s,box-shadow .15s}
 .hid-btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(127,29,29,.25)}
-.hid-lu{font-size:.7rem;color:var(--muted);align-self:flex-end;padding-bottom:2px;margin-left:auto}
-.hid-flow-outer{overflow-x:auto;padding-bottom:4px}
-.hid-flow-container{position:relative;width:720px;height:440px;flex-shrink:0}
-.hid-card{position:absolute;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 16px;box-shadow:0 6px 20px rgba(0,0,0,.13),0 2px 6px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s;cursor:default;border:none}
-.hid-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.1)}
-.hid-card-lbl{font-size:.56rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px;opacity:.75}
-.hid-card-val{font-size:1.45rem;font-weight:800;line-height:1;letter-spacing:-.5px}
-.hid-card-pct{font-size:.76rem;font-weight:700;margin-top:3px}
-.hid-card-sub{font-size:.6rem;margin-top:1px;opacity:.65}
-/* Pastel retro palette — flat, no gradient */
-.hid-blue-main{background:#D6E8FA;color:#1a3a6e}
-.hid-blue{background:#C8DEF5;color:#1a3566}
-.hid-green{background:#C8EDD8;color:#1a5c36}
-.hid-amber{background:#FBE9B8;color:#7A4A00}
-.hid-orange{background:#FDDCC4;color:#7A3300}
-.hid-red{background:#FAD0D0;color:#7A1A1A}
-.hid-dark{background:#D0D8F0;color:#1a2a60}
-.hid-teal{background:#C4EAE4;color:#175450}
-.dur-matrix{width:100%;border-collapse:collapse;font-size:.79rem}
-.dur-matrix th{background:var(--navy);color:#fff;padding:8px 10px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border:1px solid rgba(255,255,255,.14);white-space:nowrap}
-.dur-matrix td{padding:8px 12px;text-align:center;border:1px solid var(--border);font-weight:500}
-.dur-matrix td.dm-hdr{background:rgba(42,63,94,.06);font-weight:700;text-align:left;color:var(--navy);white-space:nowrap}
-.dur-matrix td.dm-tot{font-weight:700;background:rgba(42,63,94,.06)}
-.dur-matrix tr.dm-total-row td{background:var(--navy);color:#fff;font-weight:700;border:1px solid rgba(255,255,255,.16)}
 .hid-area-tbl{width:100%;border-collapse:collapse;font-size:.79rem}
 .hid-area-tbl th{background:var(--navy);color:#fff;padding:9px 13px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border:1px solid rgba(255,255,255,.14)}
-.hid-area-tbl th.hid-grp-reg{background:#C0392B;color:#fff}
-.hid-area-tbl th.hid-grp-hid{background:#1A7A52;color:#fff}
-.hid-area-tbl th.hid-area-col{text-align:left;background:var(--navy2)}
 .hid-area-tbl td{padding:9px 13px;border:1px solid var(--border);text-align:center;font-weight:500}
 .hid-area-tbl td.hid-area-name{text-align:left;font-weight:700;color:var(--navy);background:rgba(42,63,94,.04)}
 .hid-area-tbl tr:hover td{background:rgba(42,63,94,.04)}
-.hid-area-tbl tr.hid-total-row td{background:var(--navy2);color:#fff;font-weight:700;border:1px solid rgba(255,255,255,.16)}
-.hid-pct-good{color:#166534;font-weight:700}
-.hid-pct-warn{color:#92400e;font-weight:700;background:rgba(251,191,36,.12)}
-.hid-pct-bad{color:#991b1b;font-weight:700;background:rgba(239,68,68,.09)}
-/* Expandable area table */
-.hid-area-tbl tr.hid-witel-row td{background:#f8f5ee;font-size:.76rem;font-weight:500}
-.hid-area-tbl tr.hid-witel-row td.hid-area-name{padding-left:26px;color:var(--teal);font-weight:600}
-.hid-area-tbl tr.hid-sto-row td{background:#faf8f3;font-size:.73rem;color:var(--muted);font-weight:400}
-.hid-area-tbl tr.hid-sto-row td.hid-area-name{padding-left:46px;color:var(--muted)}
-.hid-expand-btn{cursor:pointer;display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;font-size:.65rem;border-radius:4px;background:rgba(42,63,94,.12);color:var(--navy);font-weight:800;margin-right:6px;transition:transform .2s,background .15s;flex-shrink:0}
-.hid-expand-btn.open{transform:rotate(90deg);background:var(--teal);color:#fff}
-.hid-area-name-cell{display:flex;align-items:center}
 
 /* Grouped-header pivot table (SLA WSA REKON) — extends .hid-area-tbl with
    colored KPI bands spanning both header rows (group label + sub-columns),
@@ -711,7 +537,7 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
    reused them too: TTI & PS/RE share --wine, FFG & FFG GAUL share --sandy.
    Selectors are scoped as .hid-area-tbl th.rekon-* (not bare .rekon-*) to
    out-specificity the base ".hid-area-tbl th" rule above — a bare single-class
-   selector loses to that silently, the same trap .tp-bar hit earlier. */
+   selector loses to that silently. */
 .hid-area-tbl th.rekon-area-col{background:var(--accent);color:#fff;text-align:left;min-width:100px}
 .hid-area-tbl th.rekon-grp-a{background:var(--wine);color:#fff}
 .hid-area-tbl th.rekon-grp-b{background:var(--sandy);color:var(--text)}
@@ -732,31 +558,15 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 .rekon-block .ref-summary-header{display:inline-block;width:auto;padding:9px 26px}
 /* %Ach < 100% gets a pastel-red flag. Written twice (plain + rekon-total-row)
    because .hid-area-tbl tr.rekon-total-row td (0,2,2) already outranks a
-   single-purpose .rekon-ach-low class (0,2,1) on the Nasional row — the exact
-   trap .tp-bar and the first cut of .rekon-grp-* hit earlier on this page. */
+   single-purpose .rekon-ach-low class (0,2,1) on the Nasional row — the same
+   trap the first cut of .rekon-grp-* hit earlier on this page. */
 .hid-area-tbl td.rekon-ach-low,
 .hid-area-tbl tr.rekon-total-row td.rekon-ach-low{background:rgba(168,48,32,.14);color:var(--red);font-weight:700}
 
-/* Duration summary card */
-.dur-metric-card{background:var(--bg);border-radius:10px;padding:10px 12px;border-left:3px solid var(--teal);box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:0}
-.dur-metric-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:2px}
-.dur-metric-val{font-size:1.25rem;font-weight:800;color:var(--navy)}
-.dur-metric-sub{font-size:.67rem;color:var(--muted);margin-top:1px}
 /* Duration package filter buttons */
 .dur-pkg-btn{padding:4px 12px;border:1.5px solid var(--border);border-radius:99px;background:var(--bg);font-size:.72rem;font-weight:600;cursor:pointer;color:var(--muted);font-family:'Poppins',sans-serif;transition:all .15s}
 .dur-pkg-btn:hover{border-color:var(--teal);color:var(--teal)}
 .dur-pkg-btn.active{background:var(--teal);border-color:var(--teal);color:#fff}
-/* Home ID page banner */
-.hid-page-banner{background:linear-gradient(135deg,var(--navy2) 0%,var(--navy) 45%,var(--accent) 100%);border-radius:14px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;overflow:hidden}
-.hid-page-banner::before{content:'';position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.05)}
-.hid-banner-icon{font-size:1.8rem;background:rgba(255,255,255,.15);border-radius:12px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hid-banner-title{font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:.3px}
-.hid-banner-sub{font-size:.73rem;color:rgba(255,255,255,.6);margin-top:3px}
-.hid-banner-stats{display:flex;gap:10px;flex-shrink:0}
-.hid-banner-stat{text-align:center;background:rgba(255,255,255,.12);border-radius:8px;padding:8px 16px;border:1px solid rgba(255,255,255,.15);min-width:80px}
-.hid-bs-lbl{font-size:.62rem;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.5px}
-.hid-bs-val{font-size:1.05rem;font-weight:800;color:#fff;margin-top:2px}
-.hid-bs-warn{color:#FCD34D}
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
 @media(max-width:768px){
@@ -779,7 +589,7 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 <div id="sidebar">
   <div class="sidebar-logo">
     <h2 id="sidebarTitle">Performance DB</h2>
-    <p id="sidebarSub">Management Portal</p>
+    <p id="sidebarSub">FOS Management Portal</p>
   </div>
   <nav>
     <a onclick="showPage('calendar')" id="nav-calendar"><span class="icon">📅</span> Calendar of Event</a>
@@ -793,20 +603,11 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
       </div>
     </div>
     <div>
-      <div class="nav-grp-toggle expanded" id="nav-grp-homeid" onclick="toggleNavGroup('homeid')">
-        <span class="icon">🏠</span> Home ID <em class="nav-chevron">▶</em>
-      </div>
-      <div class="nav-submenu open" id="nav-sub-homeid">
-        <a class="active" onclick="showPage('home')" id="nav-home">Home ID Performance</a>
-        <a onclick="showPage('techprod')" id="nav-techprod">Technician Productivity</a>
-      </div>
-    </div>
-    <div>
-      <div class="nav-grp-toggle" id="nav-grp-kpi" onclick="toggleNavGroup('kpi')">
+      <div class="nav-grp-toggle expanded" id="nav-grp-kpi" onclick="toggleNavGroup('kpi')">
         <span class="icon">📊</span> KPI <em class="nav-chevron">▶</em>
       </div>
-      <div class="nav-submenu" id="nav-sub-kpi">
-        <a onclick="showPage('kpi')" id="nav-kpi">KPI 2025</a>
+      <div class="nav-submenu open" id="nav-sub-kpi">
+        <a class="active" onclick="showPage('kpi')" id="nav-kpi">KPI 2025</a>
         <a onclick="showPage('kpi2026')" id="nav-kpi2026">KPI 2026</a>
         <a onclick="showPage('kpidef')" id="nav-kpidef">KPI Definition</a>
       </div>
@@ -831,7 +632,7 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
   <header>
     <div style="display:flex;align-items:center;gap:10px">
       <button class="hamburger" onclick="toggleSidebar()">☰</button>
-      <h1 id="pageTitle">Home ID</h1>
+      <h1 id="pageTitle">KPI 2025</h1>
     </div>
     <div style="display:flex;align-items:center;gap:8px">
       <span class="header-meta" id="headerDate"></span>
@@ -842,200 +643,8 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 
   <div class="content">
 
-    <!-- ══ HOME ID ══ -->
-    <div class="page active" id="page-home">
-
-      <!-- Banner -->
-      <div class="hid-page-banner">
-        <div style="display:flex;align-items:center;gap:14px">
-          <div class="hid-banner-icon">🏠</div>
-          <div>
-            <div class="hid-banner-title">Home ID Dashboard</div>
-            <div class="hid-banner-sub">Installation Performance Monitor</div>
-          </div>
-        </div>
-        <div class="hid-banner-stats">
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Total RE</div><div class="hid-bs-val" id="hid-bn-re">—</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">PS Rate</div><div class="hid-bs-val" id="hid-bn-ps">—</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Valid Rate</div><div class="hid-bs-val" id="hid-bn-valid">—</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Fallout</div><div class="hid-bs-val hid-bs-warn" id="hid-bn-fallout">—</div></div>
-        </div>
-      </div>
-
-      <!-- Filters -->
-      <div class="card" style="margin-bottom:16px;padding:16px 20px">
-        <div class="hid-filter-bar">
-          <div class="hid-fg"><label>Area</label>
-            <select class="hid-sel" id="hid-area"><option>ALL</option><option>AREA 1</option><option>AREA 2</option><option>AREA 3</option><option>AREA 4</option></select></div>
-          <div class="hid-fg"><label>Witel</label>
-            <select class="hid-sel" id="hid-witel"><option>ALL</option></select></div>
-          <div class="hid-fg"><label>Periode</label>
-            <input class="hid-inp" id="hid-period" type="text" value="Juli 2026" style="width:130px"></div>
-          <div class="hid-fg"><label>Package</label>
-            <select class="hid-sel" id="hid-pkg"><option>ALL</option><option>Reguler</option><option>Home ID</option></select></div>
-          <div class="hid-fg"><label>Exc FO Kend. Plgn</label>
-            <select class="hid-sel" id="hid-exc"><option>NONE</option><option>YES</option></select></div>
-          <button class="hid-btn" onclick="renderHomeIDPage()">Submit</button>
-          <span class="hid-lu" id="hid-last-update"></span>
-        </div>
-      </div>
-
-      <!-- 3-card row: Installation Flow | Avg Duration | Fallout Breakdown -->
-      <div style="display:grid;grid-template-columns:1fr 220px 220px;gap:16px;margin-bottom:16px;align-items:start">
-        <div class="card">
-          <div class="ref-summary-header" style="margin-bottom:14px">Installation Flow</div>
-          <div class="hid-flow-outer">
-            <div class="hid-flow-container" id="hid-flow-container"></div>
-          </div>
-        </div>
-        <div class="card" id="hid-dur-summary" style="padding:18px 16px"></div>
-        <div class="card" id="hid-fallout-breakdown" style="padding:18px 16px"></div>
-      </div>
-
-      <!-- Duration Matrix -->
-      <div class="card" style="margin-bottom:16px">
-        <div class="ref-summary-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
-          <span>Duration Matrix
-            <span style="font-size:.66rem;font-weight:500;text-transform:none;letter-spacing:0;opacity:.8">— Durasi TTI vs Durasi Instalasi</span>
-          </span>
-          <div style="display:flex;gap:6px;align-items:center">
-            <span style="font-size:.66rem;font-weight:700;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.4px">Filter:</span>
-            <button class="dur-pkg-btn active" id="durPkgAll"   onclick="setDurPkg('all')"  >All</button>
-            <button class="dur-pkg-btn"        id="durPkgReg"   onclick="setDurPkg('reg')"  >Indihome Reg</button>
-            <button class="dur-pkg-btn"        id="durPkgHid"   onclick="setDurPkg('hid')"  >Home ID</button>
-          </div>
-        </div>
-        <div style="overflow-x:auto"><table class="dur-matrix" id="hid-dur-matrix"></table></div>
-      </div>
-
-      <!-- Area Summary -->
-      <div class="card">
-        <div class="ref-summary-header" style="margin-bottom:16px">Area Summary</div>
-        <div style="overflow-x:auto"><table class="hid-area-tbl" id="hid-area-tbl"></table></div>
-      </div>
-
-    </div>
-
-    <!-- ══ TECHNICIAN PRODUCTIVITY (Home ID → Technician Productivity) ══
-         Metrik (mengikuti pivot pemilik data):
-           produktivitas harian = order hari itu ÷ CHIEF_CODE unik hari itu
-           angka periode        = rata-rata dari nilai harian
-         Baris tanpa CHIEF_CODE dibuang — sama seperti perilaku pivot Excel.
-
-         Wilayah diambil dari sto_hierarchy_map.json (Area → Regional → Branch →
-         STO), BUKAN dari kolom REGIONAL/WITEL di file sumber. Peta itu mencakup
-         100% dari 1.193 STO pada data ini, jadi tidak ada baris yang hilang.
-
-         Angka teknisi dihitung ulang di setiap level, tidak dijumlahkan dari
-         level bawah: 31% teknisi bekerja di lebih dari satu STO, sehingga
-         menjumlahkan STO menghasilkan kelebihan hitung (+175 dari 2.844). -->
-    <div class="page" id="page-techprod">
-
-      <div class="hid-page-banner">
-        <div style="display:flex;align-items:center;gap:14px">
-          <div class="hid-banner-icon">🔧</div>
-          <div>
-            <div class="hid-banner-title">Technician Productivity</div>
-            <div class="hid-banner-sub">Order per teknisi per hari</div>
-          </div>
-        </div>
-        <div class="hid-banner-stats">
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Cakupan</div><div class="hid-bs-val" id="tp-bn-scope" style="font-size:.85rem">—</div></div>
-          <div class="hid-banner-stat"><div class="hid-bs-lbl">Produktivitas</div><div class="hid-bs-val" id="tp-bn-prod">—</div></div>
-        </div>
-      </div>
-
-      <div id="tp-loading" class="loading"><div class="spinner"></div> Memuat data teknisi…</div>
-
-      <div id="tp-main" style="display:none">
-
-        <!-- Filter -->
-        <div class="tree-filter-bar" style="margin-bottom:16px">
-          <div class="filter-group">
-            <label>Bulan</label>
-            <select id="tp-f-bulan" onchange="tpFilterChanged()"></select>
-          </div>
-          <div class="filter-group">
-            <label>Area</label>
-            <select id="tp-f-area" onchange="tpFilterChanged('area')"></select>
-          </div>
-          <div class="filter-group">
-            <label>Regional</label>
-            <select id="tp-f-regional" onchange="tpFilterChanged('regional')"></select>
-          </div>
-          <div class="filter-group">
-            <label>Branch</label>
-            <select id="tp-f-branch" onchange="tpFilterChanged('branch')"></select>
-          </div>
-          <div class="filter-group">
-            <label>STO</label>
-            <select id="tp-f-sto" onchange="tpFilterChanged('sto')"></select>
-          </div>
-          <div class="filter-group" style="justify-content:flex-end">
-            <button onclick="tpResetFilter()"
-              style="background:none;border:1.5px solid var(--border);color:var(--muted);padding:7px 14px;
-                     border-radius:8px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">
-              ↺ Reset
-            </button>
-          </div>
-        </div>
-
-        <!-- CARD 1 — All / Homepass / Reguler -->
-        <div class="card" style="margin-bottom:20px">
-          <div class="ref-summary-header" style="margin-bottom:14px">
-            Produktivitas Harian — All · Homepass · Reguler
-          </div>
-          <div class="tp-var3" id="tp-var3"></div>
-          <div style="height:300px;margin-top:16px"><canvas id="ch_techprod"></canvas></div>
-          <div style="margin-top:12px;font-size:.73rem;color:var(--muted);line-height:1.7" id="tp-var3-note"></div>
-        </div>
-
-        <!-- CARD 1b — Report manajemen: tabel angka, tanpa grafik.
-             Ditaruh di bawah (bukan di samping) karena 12 kolom tanggal tidak
-             muat di kolom sempit. Cakupannya tetap Nasional + STO MJP dan tidak
-             mengikuti filter wilayah; hanya filter Bulan yang berlaku. -->
-        <div class="card" style="margin-bottom:20px">
-          <div class="ref-summary-header" style="margin-bottom:12px">Produktivitas Teknisi Daily</div>
-          <div class="tp-rep-scroll"><table class="tp-rep-tbl" id="tp-report"></table></div>
-        </div>
-
-        <!-- CARD 1c — Produktivitas mingguan.
-             Minggu berjalan Jumat–Kamis karena laporan ditarik tiap Jumat,
-             sehingga data lengkap hanya sampai Kamis. Minggu pertama dipotong
-             di awal bulan: dari tanggal 1 sampai Kamis pertama. -->
-        <div class="card tp-week-card">
-          <div class="ref-summary-header" style="margin-bottom:12px">Produktivitas Teknisi Weekly</div>
-          <div class="tp-rep-scroll"><table class="tp-rep-tbl tp-week-tbl" id="tp-report-week"></table></div>
-          <div id="tp-week-legend" class="tp-rep-legend"></div>
-        </div>
-
-        <!-- CARD 3 — Kendala -->
-        <div class="card">
-          <div class="ref-summary-header" style="margin-bottom:14px">
-            Summary Kendala — ERRORCODE_AKHIR &amp; SUBERRORCODE_AKHIR
-          </div>
-          <div class="tp-err-top" id="tp-err-top"></div>
-
-          <div style="font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;
-                      letter-spacing:.5px;margin:20px 0 8px">Kategori — ERRORCODE_AKHIR</div>
-          <div id="tp-err-cat"></div>
-
-          <div style="font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;
-                      letter-spacing:.5px;margin:22px 0 10px">Rincian per Symptom — SUBERRORCODE_AKHIR (top 5 tiap kategori)</div>
-          <div class="tp-sym-grid" id="tp-err-sub"></div>
-          <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);
-                      font-size:.73rem;color:var(--muted);line-height:1.7">
-            Kendala dihitung dari <strong>ERRORCODE_AKHIR</strong> — status akhir setelah penanganan,
-            bukan <code style="background:rgba(42,63,94,.08);padding:1px 5px;border-radius:4px">ERRORCODE</code> awal.
-            Keduanya berbeda pada 221 order. Nilai <em>KENDALA SYSTEM</em> (1 order) digabungkan ke
-            <em>KENDALA SISTEM</em> karena salah ketik.
-          </div>
-        </div>
-      </div>
-    </div><!-- /page-techprod -->
-
     <!-- ══ KPI PAGE ══ -->
-    <div class="page" id="page-kpi">
+    <div class="page active" id="page-kpi">
       <div class="loading" id="kpiLoading"><div class="spinner"></div> Loading KPIs…</div>
       <div id="kpiMain" style="display:none">
         <!-- Banner -->
@@ -1551,18 +1160,16 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
          MOCKUP ONLY, and deliberately empty — no realisasi numbers at all, not
          even placeholders. Structure copies the owner's reference spreadsheet
          exactly: a 2-row grouped header (KPI band spanning its sub-columns)
-         pivoted by Area, reusing the .hid-area-tbl system already built for
-         Home ID Performance's own area breakdown (see .rekon-* classes added
-         near .hid-area-tbl above — they extend it with 3 KPI-band colors
-         instead of that page's 2). Colors are dashboard tokens (--wine,
+         pivoted by Area, reusing the shared .hid-area-tbl table styles (see .rekon-* classes added
+         near .hid-area-tbl above — they extend it with 3 KPI-band colors).
+         Colors are dashboard tokens (--wine,
          --sandy, --green), not the reference's literal hues, per the owner's
          "sesuaikan warnanya" — and reused the same way the reference reused
          its own colors: TTI + PS/RE share --wine, FFG + FFG GAUL share
          --sandy. Two cards:
            Card 1 "Rekonsiliasi SLA WSA"  — TTI, FFG, TTR FFG × Area 1-4 + Nasional
            Card 2 "Rekonsiliasi KPI WSA"  — PS/RE, FFG GAUL × Area 1-4 + Nasional
-         Wire up real data the way Technician Productivity went from mockup →
-         real data earlier in this project. -->
+         Wire up real data once a pipeline for it exists. -->
     <div class="page" id="page-slawsarekon">
       <div class="mrg-warn" style="margin-bottom:16px">
         <strong>🧪 Halaman mockup</strong> — seluruh angka di bawah ini contoh (namun
@@ -1668,8 +1275,8 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
       <!-- Legend: target per KPI (KPI 2025 / TARGETS in update_dashboard.py —
            the same numbers the KPI 2025 page itself uses) + the %Ach color
            key, shared by both tables above. -->
-      <div class="tp-rep-legend">
-        <span class="tp-rep-chip" style="background:rgba(168,48,32,.3)"></span>Achievement below 100% (target not met)
+      <div class="rekon-legend">
+        <span class="rekon-chip" style="background:rgba(168,48,32,.3)"></span>Achievement below 100% (target not met)
         <br>
         <strong>Target (KPI 2025):</strong>
         TTI 93.31% · FFG 98.29% · TTR FFG 80.81% · PS/RE 75.17% · FFG GAUL 91.76%
@@ -2265,14 +1872,6 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
         <div id="dp-group-kpi"></div>
       </div>
 
-      <!-- Home ID Page items -->
-      <div class="card" style="margin-bottom:16px">
-        <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;display:flex;align-items:center;gap:8px">
-          <span style="background:#1A7A52;color:#fff;padding:3px 10px;border-radius:99px;font-size:.7rem">Home ID Page</span>
-        </div>
-        <div id="dp-group-homeid"></div>
-      </div>
-
       <!-- Backend items -->
       <div class="card">
         <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;display:flex;align-items:center;gap:8px">
@@ -2300,9 +1899,7 @@ table.tp-week-tbl th:first-child,table.tp-week-tbl td.tp-rep-lbl{min-width:96px}
 // 2025 and 2026 KPI data live in SEPARATE files — different formulas apply
 // even to KPIs sharing the same entity name (legacy TTI vs Fulfill AO, etc.)
 // so they're never merged client-side; each page reads only its own file.
-// Dicap otomatis oleh build_techprod.py — jangan diubah manual.
-const TECHPROD_VERSION = '1a762730282b';
-const DATA = { kpis2025:'./data/kpis_2025.json', kpis2026:'./data/kpis_2026.json', home:'./data/home.json', projects:'./data/projects.json', techprod:'./data/technician_productivity.json' };
+const DATA = { kpis2025:'./data/kpis_2025.json', kpis2026:'./data/kpis_2026.json', projects:'./data/projects.json' };
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let kpiData       = null;
@@ -2324,14 +1921,13 @@ async function fetchJSON(url){
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
-const pageTitles = { home:'Home ID Performance', techprod:'Technician Productivity', kpi:'KPI 2025', kpi2026:'KPI 2026', kpidef:'KPI Definition', tracker:'Project Tracker', calendar:'Calendar of Event', converter:'File Converter', merger:'File Merger', devprogress:'Dev Progress', slawsarekon:'SLA WSA REKON' };
+const pageTitles = { kpi:'KPI 2025', kpi2026:'KPI 2026', kpidef:'KPI Definition', tracker:'Project Tracker', calendar:'Calendar of Event', converter:'File Converter', merger:'File Merger', devprogress:'Dev Progress', slawsarekon:'SLA WSA REKON' };
 
 // Collapsible sidebar groups: group id → the page ids living inside it.
 // showPage() auto-expands whichever group owns the page being opened, so adding
 // a group means adding one line here rather than another if-branch below.
 const navGroups = {
   fileedit: ['converter', 'merger'],
-  homeid:   ['home', 'techprod'],
   kpi:      ['kpi', 'kpi2026', 'kpidef'],
   mockup:   ['slawsarekon'],
 };
@@ -2350,17 +1946,16 @@ function showPage(id){
   closeSidebar();
   if(id==='devprogress') renderDevProgress();
   if(id==='calendar') calRender();
-  if(id==='techprod') renderTechProd();
   if(id==='slawsarekon') rekonInitFilters();
 }
 
 /* SLA WSA REKON filter bar — Area/Region/Branch cascade from the real
    Area→Regional→Branch hierarchy in sto_hierarchy_map.json (not invented),
-   the same source Technician Productivity's own filter reads. Selecting a
+   the same source the other area filters read. Selecting a
    value does NOT change the tables below: this page has no data source yet
    (see the mockup notice), so the filter only narrows its own dropdown
    options for now — wiring it to real filtering is future work once a
-   pipeline exists, same as Technician Productivity went from mockup → real. */
+   pipeline exists. */
 const REKON_HIER = {
   'AREA 1': {SUMBAGUT:['BANDA ACEH','BINJAI','MEDAN','PADANG SIDEMPUAN','PEMATANG SIANTAR','RANTAU PRAPAT'],
              SUMBAGTENG:['BATAM','BUKIT TINGGI','DUMAI','PADANG','PEKANBARU'],
@@ -2377,7 +1972,7 @@ const REKON_HIER = {
 };
 const REKON_SEMUA = '__ALL__';
 
-/* Same fix as _tpOpt() in Technician Productivity: rewriting innerHTML wipes
+/* Rewriting innerHTML wipes
    whatever was selected, so the previous value is restored when it still
    exists in the new option list. */
 function _rekonOpt(sel, items, label){
@@ -2460,444 +2055,11 @@ setDate();
 function slaColor(pct, target=95){ return pct >= target ? '#2E8B57' : pct >= (target-5) ? '#D4901A' : '#C0392B'; }
 function slaClass(pct, target=95){ return pct >= target ? 'green' : pct >= (target-5) ? 'amber' : 'red2'; }
 
-// ─── HOME ID ─────────────────────────────────────────────────────────────────
-function renderHome(d){
-  if(d.dashboardTitle) $('sidebarTitle').textContent = d.dashboardTitle;
-  if(d.dashboardSub)   $('sidebarSub').textContent   = d.dashboardSub;
-  renderHomeIDPage();
-}
-
-// ─── HOME ID STATIC DATA ──────────────────────────────────────────────────────
-const HOMEID_DATA = {
-  funnel:{
-    re:8890,
-    progress:{count:8818,pct:99.19},
-    ogp:{count:39,pct:0.44},
-    pi_open:{count:33,pct:0.37},
-    ps:{count:6028,pct:68.36},
-    fallout:{count:943,pct:10.69},
-    fallout_breakdown:{
-      teknik:    {count:412, pct:43.7},
-      pelanggan: {count:298, pct:31.6},
-      lainnya:   {count:125, pct:13.3},
-      other:     {count:68,  pct:7.2},
-      blank:     {count:40,  pct:4.2},
-    },
-    cancel:{count:222,pct:2.52},
-    not_yet:{count:1625,pct:18.43},
-    ps_re_gross:67.81,
-    ps_re_valid:69.54,
-  },
-  duration:{
-    cols:['< 2 JAM','2–5 JAM','5–12 JAM','> 12 JAM','N/A','Total'],
-    rows:[
-      {lbl:'< 2 JAM', d:[3537,142,21,19,0,3719]},
-      {lbl:'2–5 JAM', d:[890,73,10,2,3,978]},
-      {lbl:'5–12 JAM',d:[695,108,29,1,4,837]},
-      {lbl:'> 12 JAM',d:[308,25,7,19,49,408]},
-      {lbl:'N/A',     d:[77,4,0,1,4,86]},
-    ],
-    avgTti_reg:12.58, avgInst_reg:1.18,
-    avgTti_hid:11.44, avgInst_hid:1.12,
-    // Per-package breakdowns
-    reg:{
-      cols:['< 2 JAM','2–5 JAM','5–12 JAM','> 12 JAM','N/A','Total'],
-      rows:[
-        {lbl:'< 2 JAM', d:[2210,88,13,12,0,2323]},
-        {lbl:'2–5 JAM', d:[556,46,7,1,2,612]},
-        {lbl:'5–12 JAM',d:[435,68,18,1,3,525]},
-        {lbl:'> 12 JAM',d:[193,16,4,12,31,256]},
-        {lbl:'N/A',     d:[48,3,0,1,3,55]},
-      ],
-    },
-    hid:{
-      cols:['< 2 JAM','2–5 JAM','5–12 JAM','> 12 JAM','N/A','Total'],
-      rows:[
-        {lbl:'< 2 JAM', d:[1327,54,8,7,0,1396]},
-        {lbl:'2–5 JAM', d:[334,27,3,1,1,366]},
-        {lbl:'5–12 JAM',d:[260,40,11,0,1,312]},
-        {lbl:'> 12 JAM',d:[115,9,3,7,18,152]},
-        {lbl:'N/A',     d:[29,1,0,0,1,31]},
-      ],
-    },
-  },
-  areas:[
-    {name:'AREA 1',
-     reg:{re:29178,re_nett:23703,ps:22208,pct:93.7,tti:15.41,inst:1.06},
-     hid:{re:14083,sh:1954,ps:11647,pct:96.0,tti:13.19,inst:1.10},
-     witels:[
-       {name:'Witel Jakarta Barat', hid:{re:4920,sh:682,ps:4075,pct:95.8,tti:12.6,inst:1.08},
-        stos:[
-          {name:'STO Kebon Jeruk',  hid:{re:1680,sh:230,ps:1390,pct:95.3}},
-          {name:'STO Grogol',       hid:{re:1440,sh:200,ps:1200,pct:96.0}},
-          {name:'STO Cengkareng',   hid:{re:1060,sh:148,ps:880, pct:95.7}},
-          {name:'STO Kalideres',    hid:{re:740, sh:104,ps:605, pct:97.1}},
-        ]},
-       {name:'Witel Jakarta Timur', hid:{re:4683,sh:650,ps:3879,pct:96.3,tti:13.6,inst:1.11},
-        stos:[
-          {name:'STO Jatinegara',   hid:{re:1540,sh:212,ps:1278,pct:96.1}},
-          {name:'STO Pulogadung',   hid:{re:1360,sh:188,ps:1134,pct:96.8}},
-          {name:'STO Kramat Jati',  hid:{re:1015,sh:142,ps:842, pct:95.9}},
-          {name:'STO Matraman',     hid:{re:768, sh:108,ps:625, pct:97.2}},
-        ]},
-       {name:'Witel Jakarta Selatan', hid:{re:4480,sh:622,ps:3693,pct:95.8,tti:13.4,inst:1.12},
-        stos:[
-          {name:'STO Kebayoran Baru',hid:{re:1580,sh:218,ps:1302,pct:95.6}},
-          {name:'STO Pasar Minggu', hid:{re:1245,sh:174,ps:1034,pct:96.2}},
-          {name:'STO Tebet',        hid:{re:985, sh:140,ps:812, pct:95.7}},
-          {name:'STO Cilandak',     hid:{re:670, sh:90, ps:545, pct:96.8}},
-        ]},
-     ]},
-    {name:'AREA 2',
-     reg:{re:25542,re_nett:22223,ps:21413,pct:96.4,tti:8.17, inst:0.86},
-     hid:{re:14527,sh:1235,ps:12986,pct:97.7,tti:6.22, inst:1.06},
-     witels:[
-       {name:'Witel Surabaya', hid:{re:5200,sh:440,ps:4657,pct:97.9,tti:6.0,inst:1.04},
-        stos:[
-          {name:'STO Gubeng',       hid:{re:1800,sh:150,ps:1614,pct:97.8}},
-          {name:'STO Darmo',        hid:{re:1640,sh:140,ps:1474,pct:98.1}},
-          {name:'STO Rungkut',      hid:{re:1070,sh:90, ps:960, pct:97.6}},
-          {name:'STO Wiyung',       hid:{re:690, sh:60, ps:609, pct:97.8}},
-        ]},
-       {name:'Witel Malang', hid:{re:5158,sh:438,ps:4617,pct:97.5,tti:6.4,inst:1.07},
-        stos:[
-          {name:'STO Malang Kota',  hid:{re:1960,sh:166,ps:1756,pct:97.7}},
-          {name:'STO Dinoyo',       hid:{re:1580,sh:136,ps:1413,pct:97.3}},
-          {name:'STO Kepanjen',     hid:{re:975, sh:82, ps:875, pct:97.9}},
-          {name:'STO Batu',         hid:{re:643, sh:54, ps:573, pct:97.5}},
-        ]},
-       {name:'Witel Sidoarjo', hid:{re:4169,sh:357,ps:3712,pct:97.7,tti:6.2,inst:1.07},
-        stos:[
-          {name:'STO Sidoarjo Kota',hid:{re:1680,sh:142,ps:1500,pct:97.9}},
-          {name:'STO Waru',         hid:{re:1285,sh:112,ps:1147,pct:97.5}},
-          {name:'STO Gedangan',     hid:{re:805, sh:68, ps:718, pct:97.7}},
-          {name:'STO Krian',        hid:{re:399, sh:35, ps:347, pct:97.7}},
-        ]},
-     ]},
-    {name:'AREA 3',
-     reg:{re:22719,re_nett:19764,ps:18887,pct:95.6,tti:13.53,inst:1.39},
-     hid:{re:15492,sh:1467,ps:13565,pct:96.7,tti:15.14,inst:1.17},
-     witels:[
-       {name:'Witel Semarang', hid:{re:5420,sh:510,ps:4750,pct:96.8,tti:14.8,inst:1.15},
-        stos:[
-          {name:'STO Simpang Lima',hid:{re:1960,sh:184,ps:1720,pct:96.9}},
-          {name:'STO Banyumanik', hid:{re:1580,sh:148,ps:1384,pct:96.6}},
-          {name:'STO Ngaliyan',   hid:{re:1045,sh:98, ps:914, pct:96.7}},
-          {name:'STO Pedurungan', hid:{re:835, sh:80, ps:732, pct:97.1}},
-        ]},
-       {name:'Witel Yogyakarta', hid:{re:5372,sh:510,ps:4710,pct:96.7,tti:15.3,inst:1.18},
-        stos:[
-          {name:'STO Sleman',    hid:{re:2050,sh:195,ps:1797,pct:96.7}},
-          {name:'STO Bantul',    hid:{re:1620,sh:154,ps:1420,pct:96.6}},
-          {name:'STO Godean',    hid:{re:1018,sh:96, ps:893, pct:96.9}},
-          {name:'STO Wonosari',  hid:{re:684, sh:65, ps:600, pct:96.8}},
-        ]},
-       {name:'Witel Solo', hid:{re:4700,sh:447,ps:4105,pct:96.6,tti:15.5,inst:1.19},
-        stos:[
-          {name:'STO Solo Kota', hid:{re:1840,sh:175,ps:1610,pct:96.9}},
-          {name:'STO Karanganyar',hid:{re:1415,sh:134,ps:1238,pct:96.4}},
-          {name:'STO Sukoharjo', hid:{re:895, sh:86, ps:782, pct:96.5}},
-          {name:'STO Boyolali',  hid:{re:550, sh:52, ps:475, pct:96.7}},
-        ]},
-     ]},
-    {name:'AREA 4',
-     reg:{re:21996,re_nett:18868,ps:16798,pct:89.0,tti:13.38,inst:1.53},
-     hid:{re:19316,sh:1667,ps:17101,pct:96.9,tti:11.27,inst:1.14},
-     witels:[
-       {name:'Witel Makassar', hid:{re:6850,sh:590,ps:6075,pct:97.0,tti:10.9,inst:1.12},
-        stos:[
-          {name:'STO Makassar Kota',hid:{re:2600,sh:224,ps:2310,pct:97.1}},
-          {name:'STO Panakkukang', hid:{re:2050,sh:176,ps:1822,pct:97.2}},
-          {name:'STO Tamalanrea', hid:{re:1320,sh:114,ps:1172,pct:96.9}},
-          {name:'STO Gowa',       hid:{re:880, sh:76, ps:771, pct:96.7}},
-        ]},
-       {name:'Witel Medan', hid:{re:6508,sh:561,ps:5768,pct:96.7,tti:11.5,inst:1.15},
-        stos:[
-          {name:'STO Medan Kota', hid:{re:2450,sh:210,ps:2173,pct:96.9}},
-          {name:'STO Helvetia',   hid:{re:1950,sh:170,ps:1727,pct:96.5}},
-          {name:'STO Deli Serdang',hid:{re:1280,sh:110,ps:1135,pct:96.7}},
-          {name:'STO Binjai',     hid:{re:828, sh:71, ps:733, pct:97.1}},
-        ]},
-       {name:'Witel Palembang', hid:{re:5958,sh:516,ps:5258,pct:97.0,tti:11.4,inst:1.14},
-        stos:[
-          {name:'STO Palembang Kota',hid:{re:2280,sh:196,ps:2016,pct:97.1}},
-          {name:'STO Ilir Timur',  hid:{re:1780,sh:156,ps:1573,pct:97.0}},
-          {name:'STO Jakabaring',  hid:{re:1148,sh:100,ps:1015,pct:96.9}},
-          {name:'STO Banyuasin',   hid:{re:750, sh:64, ps:654, pct:97.0}},
-        ]},
-     ]},
-    {name:'TOTAL',
-     reg:{re:99435,re_nett:84558,ps:79306,pct:93.8,tti:12.58,inst:1.18},
-     hid:{re:63418,sh:6323, ps:55299,pct:96.9,tti:11.44,inst:1.12},
-     witels:null},
-  ],
-};
-
-function _hidN(n){ return n.toLocaleString('id-ID'); }
-function _hidP(p){ return p.toFixed(2)+'%'; }
-function _hidPClass(p){ return p>=95?'hid-pct-good':p>=90?'hid-pct-warn':'hid-pct-bad'; }
-
-function renderHomeIDPage(){
-  _renderHIDBanner();
-  _renderHIDFunnel();
-  _renderHIDDuration();
-  _renderHIDDurSummary();
-  _renderHIDFallout();
-  _renderHIDAreaTable();
-}
-
-function _renderHIDFunnel(){
-  const c=$('hid-flow-container'); if(!c) return;
-  const d=HOMEID_DATA.funnel;
-
-  // [left, top, width, height] — compact layout ~740×400
-  const POS={
-    re:       [10,  138, 130, 120],
-    progress: [178, 36,  148, 100],
-    ogp:      [178, 172, 148, 76],
-    pi_open:  [178, 278, 148, 76],
-    ps:       [368, 14,  148, 96],
-    fallout:  [368, 144, 148, 76],
-    cancel:   [368, 246, 148, 76],
-    not_yet:  [368, 346, 148, 76],
-    gross:    [558, 36,  144, 92],
-    valid:    [558, 174, 144, 92],
-  };
-
-  const cx=k=>POS[k][0]+POS[k][2];
-  const cy=k=>POS[k][1]+POS[k][3]/2;
-  const lx=k=>POS[k][0];
-
-  function arrow(a,b){
-    const x1=cx(a),y1=cy(a),x2=lx(b),y2=cy(b),mx=(x1+x2)/2;
-    return `<path d="M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}"
-      stroke="rgba(150,160,180,.55)" stroke-width="2" fill="none" stroke-linecap="round"
-      marker-end="url(#hid-arrow)"/>`;
-  }
-
-  function card(key,cls,lbl,val,pct='',sub=''){
-    const [l,t,w,h]=POS[key];
-    return `<div class="hid-card ${cls}" style="left:${l}px;top:${t}px;width:${w}px;height:${h}px">
-      <div class="hid-card-lbl">${lbl}</div>
-      <div class="hid-card-val">${val}</div>
-      ${pct?`<div class="hid-card-pct">${pct}</div>`:''}
-      ${sub?`<div class="hid-card-sub">${sub}</div>`:''}
-    </div>`;
-  }
-
-  c.innerHTML = `
-    ${card('re',      'hid-blue-main','RE',           _hidN(d.re),             '',                '100%')}
-    ${card('progress','hid-blue',    'Progress',      _hidN(d.progress.count), _hidP(d.progress.pct),'')}
-    ${card('ogp',     'hid-amber',   'OGP Install',   _hidN(d.ogp.count),      _hidP(d.ogp.pct),'')}
-    ${card('pi_open', 'hid-amber',   'PI Open',       _hidN(d.pi_open.count),  _hidP(d.pi_open.pct),'')}
-    ${card('ps',      'hid-green',   'PS',            _hidN(d.ps.count),       _hidP(d.ps.pct),'of Progress')}
-    ${card('fallout', 'hid-orange',  'Fallout',       _hidN(d.fallout.count),  _hidP(d.fallout.pct),'')}
-    ${card('cancel',  'hid-red',     'Cancel',        _hidN(d.cancel.count),   _hidP(d.cancel.pct),'')}
-    ${card('not_yet', 'hid-orange',  'Not Yet PS',    _hidN(d.not_yet.count),  _hidP(d.not_yet.pct),'')}
-    ${card('gross',   'hid-dark',    'PS / RE Gross', _hidP(d.ps_re_gross),    '','')}
-    ${card('valid',   'hid-teal',    'PS / RE Valid', _hidP(d.ps_re_valid),    '','')}
-    <svg style="position:absolute;top:0;left:0;width:720px;height:440px;pointer-events:none;overflow:visible">
-      <defs>
-        <marker id="hid-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0,8 3,0 6" fill="rgba(150,160,180,.7)"/>
-        </marker>
-      </defs>
-      ${arrow('re','progress')}${arrow('re','ogp')}${arrow('re','pi_open')}
-      ${arrow('progress','ps')}${arrow('progress','fallout')}
-      ${arrow('progress','cancel')}${arrow('progress','not_yet')}
-      ${arrow('ps','gross')}
-    </svg>`;
-  c.style.height='440px';
-}
-
-let _durPkg = 'all';
-function setDurPkg(pkg){
-  _durPkg = pkg;
-  ['All','Reg','Hid'].forEach(x=>{ const b=$('durPkg'+x); if(b) b.classList.toggle('active', x.toLowerCase()===pkg||(pkg==='all'&&x==='All')); });
-  _renderHIDDuration();
-}
-function _renderHIDDuration(){
-  const t=$('hid-dur-matrix'); if(!t) return;
-  const src = _durPkg==='reg' ? HOMEID_DATA.duration.reg :
-              _durPkg==='hid' ? HOMEID_DATA.duration.hid :
-              HOMEID_DATA.duration;
-  const {cols,rows}=src;
-  const totals=cols.map((_,ci)=>rows.reduce((s,r)=>s+r.d[ci],0));
-  const pkgLabel = _durPkg==='reg'?' — Indihome Reguler':_durPkg==='hid'?' — Home ID':'';
-  t.innerHTML=`<thead>
-    <tr>
-      <th rowspan="2" style="text-align:left;background:var(--navy2);min-width:90px">Durasi TTI${pkgLabel}</th>
-      <th colspan="${cols.length-1}" style="background:#1a4a7a">Durasi Instalasi</th>
-    </tr>
-    <tr>${cols.slice(0,-1).map(c=>`<th>${c}</th>`).join('')}<th style="background:#0f3460">Total</th></tr>
-  </thead>
-  <tbody>
-    ${rows.map(r=>`<tr>
-      <td class="dm-hdr">${r.lbl}</td>
-      ${r.d.map((v,i)=>`<td class="${i===r.d.length-1?'dm-tot':''}">${_hidN(v)}</td>`).join('')}
-    </tr>`).join('')}
-    <tr class="dm-total-row">
-      <td style="text-align:left">Total</td>
-      ${totals.map(v=>`<td>${_hidN(v)}</td>`).join('')}
-    </tr>
-  </tbody>`;
-}
-
-function _renderHIDBanner(){
-  const d=HOMEID_DATA.funnel;
-  const r=$('hid-bn-re');    if(r) r.textContent=_hidN(d.re);
-  const p=$('hid-bn-ps');    if(p) p.textContent=d.ps.pct.toFixed(1)+'%';
-  const v=$('hid-bn-valid'); if(v) v.textContent=d.ps_re_valid.toFixed(1)+'%';
-  const f=$('hid-bn-fallout');if(f) f.textContent=d.fallout.pct.toFixed(1)+'%';
-}
-
-function _renderHIDDurSummary(){
-  const el=$('hid-dur-summary'); if(!el) return;
-  const d=HOMEID_DATA.duration;
-  const metrics=[
-    {lbl:'Avg Durasi TTI',   sub:'Indihome Reg', val:d.avgTti_reg.toFixed(2)+' jam',  color:'#C0392B'},
-    {lbl:'Avg Durasi TTI',   sub:'Home ID',       val:d.avgTti_hid.toFixed(2)+' jam',  color:'#1A7A52'},
-    {lbl:'Avg Durasi Inst.', sub:'Indihome Reg', val:d.avgInst_reg.toFixed(2)+' jam', color:'#C0392B'},
-    {lbl:'Avg Durasi Inst.', sub:'Home ID',       val:d.avgInst_hid.toFixed(2)+' jam', color:'#1A7A52'},
-  ];
-  el.innerHTML=`<div class="ref-summary-header" style="margin-bottom:12px;font-size:.78rem">Avg Duration</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      ${metrics.map(m=>`
-        <div class="dur-metric-card" style="border-left-color:${m.color}">
-          <div class="dur-metric-lbl">${m.lbl}</div>
-          <div class="dur-metric-val">${m.val}</div>
-          <div class="dur-metric-sub">${m.sub}</div>
-        </div>`).join('')}
-    </div>`;
-}
-
-function _renderHIDFallout(){
-  const el=$('hid-fallout-breakdown'); if(!el) return;
-  const fb=HOMEID_DATA.funnel.fallout_breakdown;
-  const total=HOMEID_DATA.funnel.fallout.count;
-  const items=[
-    {lbl:'Fallout Teknik',    key:'teknik',    color:'#2563EB'},
-    {lbl:'Fallout Pelanggan', key:'pelanggan', color:'#D97706'},
-    {lbl:'Fallout Lainnya',   key:'lainnya',   color:'#059669'},
-    {lbl:'Other',             key:'other',     color:'#7C3AED'},
-    {lbl:'Blank',             key:'blank',     color:'#6B7280'},
-  ];
-  el.innerHTML=`<div class="ref-summary-header" style="margin-bottom:12px;font-size:.78rem">Fallout Breakdown
-    <span style="font-size:.67rem;font-weight:500;text-transform:none;letter-spacing:0;opacity:.8">— ${_hidN(total)} total</span>
-  </div>
-  <div style="display:flex;flex-direction:column;gap:8px">
-    ${items.map(it=>{
-      const v=fb[it.key]||{count:0,pct:0};
-      return `<div style="background:var(--bg);border-radius:9px;padding:9px 11px;border-left:3px solid ${it.color}">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
-          <span style="font-size:.69rem;font-weight:600;color:var(--text)">${it.lbl}</span>
-          <span style="font-size:.75rem;font-weight:700;color:${it.color}">${_hidN(v.count)}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:7px">
-          <div style="flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden">
-            <div style="width:${Math.round(v.pct)}%;height:100%;background:${it.color};border-radius:99px;opacity:.85"></div>
-          </div>
-          <span style="font-size:.67rem;color:var(--muted);font-weight:600;min-width:32px;text-align:right">${v.pct.toFixed(1)}%</span>
-        </div>
-      </div>`;
-    }).join('')}
-  </div>`;
-}
-
-function _renderHIDAreaTable(){
-  const t=$('hid-area-tbl'); if(!t) return;
-  const areas=HOMEID_DATA.areas;
-
-  const thead=`<thead>
-    <tr>
-      <th class="hid-area-col" rowspan="2" style="min-width:200px">Area / Witel / STO</th>
-      <th colspan="6" class="hid-grp-reg">Indihome Reguler</th>
-      <th colspan="6" class="hid-grp-hid">Home ID</th>
-    </tr>
-    <tr>
-      <th>RE</th><th>RE Nett *</th><th>PS</th><th>%PS/RE</th><th>Dur.TTI</th><th>Dur.Inst</th>
-      <th>RE</th><th>Salah HP **</th><th>PS</th><th>%PS/RE</th><th>Dur.TTI</th><th>Dur.Inst</th>
-    </tr>
-  </thead>`;
-
-  function areaRow(a){
-    const tot=a.name==='TOTAL';
-    const hasWitel=a.witels&&a.witels.length;
-    const rc=tot?'':_hidPClass(a.reg.pct);
-    const hc=tot?'':_hidPClass(a.hid.pct);
-    const areaId='hid-area-'+a.name.replace(/\s+/g,'-');
-    const btn=hasWitel?`<span class="hid-expand-btn" id="btn-${areaId}" onclick="toggleHIDArea('${areaId}')">▶</span>`:'<span style="width:22px;display:inline-block"></span>';
-    return `<tr class="${tot?'hid-total-row':''}">
-      <td class="hid-area-name"><div class="hid-area-name-cell">${btn}${a.name}</div></td>
-      <td>${_hidN(a.reg.re)}</td><td>${_hidN(a.reg.re_nett)}</td><td>${_hidN(a.reg.ps)}</td>
-      <td class="${rc}">${_hidP(a.reg.pct)}</td>
-      <td>${a.reg.tti.toFixed(2)}</td><td>${a.reg.inst.toFixed(2)}</td>
-      <td>${_hidN(a.hid.re)}</td><td>${_hidN(a.hid.sh)}</td><td>${_hidN(a.hid.ps)}</td>
-      <td class="${hc}">${_hidP(a.hid.pct)}</td>
-      <td>${a.hid.tti.toFixed(2)}</td><td>${a.hid.inst.toFixed(2)}</td>
-    </tr>
-    ${hasWitel?a.witels.map(w=>witelRow(areaId,w)).join(''):''}`;
-  }
-
-  function witelRow(areaId,w){
-    const wId=areaId+'-'+w.name.replace(/\s+/g,'-');
-    const btn=`<span class="hid-expand-btn" id="btn-${wId}" onclick="toggleHIDWitel('${wId}')">▶</span>`;
-    return `<tr class="hid-witel-row" id="wrow-${wId}" style="display:none">
-      <td class="hid-area-name"><div class="hid-area-name-cell">${btn}${w.name}</div></td>
-      <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
-      <td>${_hidN(w.hid.re)}</td><td>${_hidN(w.hid.sh)}</td><td>${_hidN(w.hid.ps)}</td>
-      <td class="${_hidPClass(w.hid.pct)}">${_hidP(w.hid.pct)}</td>
-      <td>${w.hid.tti.toFixed(2)}</td><td>${w.hid.inst.toFixed(2)}</td>
-    </tr>
-    ${w.stos.map(s=>stoRow(wId,s)).join('')}`;
-  }
-
-  function stoRow(wId,s){
-    const hc=_hidPClass(s.hid.pct);
-    return `<tr class="hid-sto-row" id="srow-${wId}-${s.name.replace(/\s+/g,'-')}" style="display:none">
-      <td class="hid-area-name"><div class="hid-area-name-cell"><span style="width:22px;display:inline-block"></span>${s.name}</div></td>
-      <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
-      <td>${_hidN(s.hid.re)}</td><td>—</td><td>${_hidN(s.hid.ps)}</td>
-      <td class="${hc}">${_hidP(s.hid.pct)}</td><td>—</td><td>—</td>
-    </tr>`;
-  }
-
-  t.innerHTML=thead+`<tbody>${areas.map(areaRow).join('')}</tbody>
-  <tfoot><tr><td colspan="13" style="padding:8px 13px;font-size:.68rem;color:var(--muted);border:1px solid var(--border);font-style:italic">
-    * RE Nett = RE dikurangi Salah Homepass &nbsp;|&nbsp; ** Salah HP = Homepass tidak valid pada saat request
-  </td></tr></tfoot>`;
-}
-
-function toggleHIDArea(areaId){
-  const btn=$('btn-'+areaId);
-  const wRows=document.querySelectorAll(`[id^="wrow-${areaId}-"]`);
-  const isOpen=btn&&btn.classList.contains('open');
-  if(btn){ btn.classList.toggle('open'); }
-  wRows.forEach(r=>{
-    r.style.display=isOpen?'none':'';
-    // collapse child STOs when area is collapsed
-    if(isOpen){
-      const wId=r.id.replace('wrow-','');
-      const sRows=document.querySelectorAll(`[id^="srow-${wId}-"]`);
-      sRows.forEach(s=>s.style.display='none');
-      const wb=$('btn-'+wId); if(wb) wb.classList.remove('open');
-    }
-  });
-}
-
-function toggleHIDWitel(wId){
-  const btn=$('btn-'+wId);
-  const sRows=document.querySelectorAll(`[id^="srow-${wId}-"]`);
-  const isOpen=btn&&btn.classList.contains('open');
-  if(btn) btn.classList.toggle('open');
-  sRows.forEach(r=>r.style.display=isOpen?'none':'');
-}
-
 // ─── KPI MENU ────────────────────────────────────────────────────────────────
 const MONTH_NAMES = ['','Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 // Entities that should never surface as standalone KPI cards/rows/charts —
-// Home ID has its own dedicated sidebar page, so re-listing it here would be redundant.
+// A Home ID entity is not a KPI card — keep it out of the KPI views if a file ever carries one.
 const EXCLUDED_KPI_ENTITIES = ['HOMEID','HOME_ID','HOME-ID','HID'];
 // NOTE: KPI 2025 no longer filters months by calendar period. update_dashboard.py
 // computes TTI/FFG TWICE for any period — once with the legacy (2025) formula,
@@ -2948,7 +2110,7 @@ function renderKPIs(data){
     sel.appendChild(opt);
   });
   // Also add any entities from data not in our known list
-  // (HOME ID / HOMEID is excluded — it has its own dedicated "Home ID" page in the sidebar;
+  // (HOME ID / HOMEID is excluded — it is not a KPI entity;
   // MO / PDA are KPI 2026-only entities and belong exclusively on the KPI 2026 page —
   // both are excluded here so they can never leak into the KPI 2025 dropdown.)
   availableEntities.forEach(e => {
@@ -4979,483 +4141,6 @@ function _convReset(){
   _convData = null; _convResult = null;
 }
 
-// ─── TECHNICIAN PRODUCTIVITY ──────────────────────────────────────────────────
-// Data lives in data/technician_productivity.json, pre-aggregated offline. The
-// source CSV is per-order and carries customer SERVICENUMs; only counts are
-// published. Each geographic level stores its own technician count rather than
-// summing from below — 31% of technicians work across more than one STO, so
-// rolling STO counts up over-counts (+175 against a true 2,844 on 1 Aug).
-let tpData = null;
-const TP_HARI = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
-const TP_VAR  = [
-  {k:'ALL',  n:'All',      c:'#2A3F5E'},
-  {k:'HPID', n:'Homepass', c:'#C4522A'},
-  {k:'REG',  n:'Reguler',  c:'#1F7A7E'},
-];
-const TP_SEMUA = '__ALL__';
-
-function _tpD(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
-/* Rata-rata dari nilai harian — bukan total order ÷ total teknisi.
-   Cara kedua memberi ~8,5 karena satu teknisi bekerja di banyak hari. */
-function _tpAvg(seri){
-  const v = seri.filter(r=>r[2]).map(r=>r[1]/r[2]);
-  return v.length ? v.reduce((a,b)=>a+b,0)/v.length : 0;
-}
-/* Menulis ulang innerHTML membuang pilihan yang sedang aktif, sehingga memilih
-   STO langsung terhapus sebelum sempat dirender. Pilihan dipertahankan selama
-   masih ada di daftar yang baru; kalau tidak (mis. Area diganti), jatuh ke
-   "Semua" — itu memang perilaku yang diinginkan. */
-function _tpOpt(sel, items, label){
-  const prev = sel.value;
-  sel.innerHTML = `<option value="${TP_SEMUA}">${label}</option>` +
-    items.map(v=>`<option value="${v}">${v}</option>`).join('');
-  if(prev && [...sel.options].some(o=>o.value===prev)) sel.value = prev;
-}
-
-async function loadTechProd(){
-  if(tpData) return true;
-  try {
-    // URL memakai cap versi, bukan Date.now(). Alasannya:
-    //   - Date.now() → unduh ulang 500 KB tiap kunjungan, terasa lambat.
-    //   - URL tetap  → ter-cache, TAPI data baru tidak muncul sampai cache
-    //     kedaluwarsa; hard refresh pun tidak membantu karena fetch() ini
-    //     berjalan setelah halaman dimuat sehingga tidak ikut dilewati.
-    // Cap versi diperbarui build_techprod.py setiap kali data diolah ulang,
-    // jadi URL hanya berubah ketika isinya benar-benar berubah: data sama
-    // dilayani dari cache, data baru langsung terunduh.
-    const r = await fetch(DATA.techprod + '?v=' + TECHPROD_VERSION);
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    tpData = await r.json();
-    return true;
-  } catch(e){
-    $('tp-loading').innerHTML =
-      `<div style="color:#991b1b;font-weight:600">⚠ Gagal memuat data teknisi: ${e.message}<br>
-       <span style="font-weight:400;color:var(--muted);font-size:.8rem">
-       Pastikan data/technician_productivity.json sudah ter-deploy.</span></div>`;
-    return false;
-  }
-}
-
-/* Rantai filter Area → Regional → Branch → STO, sumbernya sto_hierarchy_map.json. */
-function tpFilterChanged(dari){
-  // STO adalah level terdalam — tidak ada daftar di bawahnya yang perlu dibangun ulang.
-  if(dari === 'sto'){ renderTechProd(); return; }
-  const H = tpData.hier;
-  const area = $('tp-f-area').value, reg = $('tp-f-regional').value, br = $('tp-f-branch').value;
-
-  if(dari==='area' || dari===undefined){
-    const regs = area===TP_SEMUA
-      ? [...new Set(Object.values(H).flatMap(a=>Object.keys(a)))].sort()
-      : Object.keys(H[area]).sort();
-    _tpOpt($('tp-f-regional'), regs, 'Semua Regional');
-  }
-  if(dari==='area' || dari==='regional' || dari===undefined){
-    const r2 = $('tp-f-regional').value;
-    let brs = [];
-    for(const a in H){
-      if(area!==TP_SEMUA && a!==area) continue;
-      for(const r in H[a]){
-        if(r2!==TP_SEMUA && r!==r2) continue;
-        brs.push(...Object.keys(H[a][r]));
-      }
-    }
-    _tpOpt($('tp-f-branch'), [...new Set(brs)].sort(), 'Semua Branch');
-  }
-  const r3 = $('tp-f-regional').value, b3 = $('tp-f-branch').value;
-  let stos = [];
-  for(const a in H){
-    if(area!==TP_SEMUA && a!==area) continue;
-    for(const r in H[a]){
-      if(r3!==TP_SEMUA && r!==r3) continue;
-      for(const b in H[a][r]){
-        if(b3!==TP_SEMUA && b!==b3) continue;
-        stos.push(...H[a][r][b]);
-      }
-    }
-  }
-  _tpOpt($('tp-f-sto'), [...new Set(stos)].sort(), 'Semua STO');
-  renderTechProd();
-}
-
-function tpResetFilter(){
-  // Semua select dikosongkan lebih dulu: _tpOpt mempertahankan pilihan yang masih
-  // valid, jadi mengosongkan Area saja tidak cukup — STO yang terpilih akan
-  // bertahan karena tetap ada di daftar lengkap.
-  ['tp-f-bulan','tp-f-area','tp-f-regional','tp-f-branch','tp-f-sto']
-    .forEach(id => $(id).value = TP_SEMUA);
-  tpFilterChanged('area');
-}
-
-/* Kunci entitas terdalam yang dipilih — tiap level punya angka teknisinya sendiri. */
-function _tpScope(){
-  const sto=$('tp-f-sto').value, br=$('tp-f-branch').value,
-        rg=$('tp-f-regional').value, ar=$('tp-f-area').value;
-  if(sto!==TP_SEMUA) return {key:'STO|'+sto,        label:'STO '+sto};
-  if(br !==TP_SEMUA) return {key:'branch|'+br,      label:'Branch '+br};
-  if(rg !==TP_SEMUA) return {key:'regional|'+rg,    label:'Regional '+rg};
-  if(ar !==TP_SEMUA) return {key:'area|'+ar,        label:ar};
-  return {key:'NASIONAL|', label:'Nasional'};
-}
-
-/* Jalur Area → Regional → Branch sebuah STO, dibaca dari hierarki yang sama
-   (sto_hierarchy_map.json) supaya tidak ada nama wilayah yang di-hardcode. */
-function _tpJalur(sto){
-  const H = tpData.hier;
-  for(const a in H) for(const r in H[a]) for(const b in H[a][r])
-    if(H[a][r][b].includes(sto)) return `${a} · ${r} · ${b}`;
-  return '—';
-}
-
-/* Nomor minggu dalam bulannya. Minggu berjalan Jumat–Kamis karena laporan
-   ditarik tiap Jumat, sehingga hari terakhir yang datanya lengkap adalah Kamis.
-   Minggu pertama dipotong di batas bulan: dari tanggal 1 sampai Kamis pertama —
-   Agustus 2026 mulai Sabtu, jadi W1 = 1–6, W2 = 7–13, W3 = 14–20. */
-function _tpMinggu(tglStr){
-  const [y, m, d] = tglStr.split('-').map(Number);
-  let kamis = new Date(y, m - 1, 1);
-  while (kamis.getDay() !== 4) kamis.setDate(kamis.getDate() + 1);
-  const k = kamis.getDate();
-  return d <= k ? 1 : 1 + Math.ceil((d - k) / 7);
-}
-
-/* Produktivitas mingguan = rata-rata nilai HARIAN dalam minggu itu — cara yang
-   sama dipakai untuk angka periode. Bukan total order ÷ total teknisi, karena
-   satu teknisi bekerja di banyak hari sehingga penyebutnya akan tercacah ganda. */
-function _tpRenderWeekly(pilihBulan){
-  const baris = [
-    {kode:'NAS', key:'NASIONAL|'},
-    {kode:'MJP', key:'STO|MJP'},
-  ];
-  const nas = pilihBulan(tpData.lvl.ALL['NASIONAL|'] || []);
-  if(!nas.length){ $('tp-report-week').innerHTML=''; $('tp-week-legend').innerHTML=''; return; }
-
-  // Kelompokkan indeks hari yang tersedia ke dalam minggunya
-  const minggu = new Map();
-  nas.forEach(r=>{
-    const t = tpData.tgl[r[0]];
-    const w = _tpMinggu(t);
-    if(!minggu.has(w)) minggu.set(w, []);
-    minggu.get(w).push({i:r[0], t});
-  });
-  const urut = [...minggu.keys()].sort((a,b)=>a-b);
-
-  // Kartu mingguan memakai bahasa Inggris ("1 Aug"), berbeda dari kartu harian.
-  const fmtTgl = t => { const d=_tpD(t);
-    return `${d.getDate()} ${d.toLocaleDateString('en-GB',{month:'short'})}`; };
-
-  /* Minggu dianggap lengkap bila ditutup secara wajar DAN tidak ada hari bolong.
-     Penutup yang wajar: hari Kamis (akhir minggu Jum–Kam), atau tanggal terakhir
-     bulan itu — minggu terakhir bulan memang terpotong oleh kalender, bukan
-     karena datanya kurang, jadi tidak pantas ditandai belum lengkap. */
-  const lengkapnya = w => {
-    const hari = minggu.get(w);
-    const d0 = _tpD(hari[0].t), d1 = _tpD(hari[hari.length-1].t);
-    const akhirBln = new Date(d1.getFullYear(), d1.getMonth()+1, 0).getDate();
-    const ditutupWajar = d1.getDay() === 4 || d1.getDate() === akhirBln;
-    const rentangHari = Math.round((d1 - d0) / 86400000) + 1;
-    return ditutupWajar && hari.length >= rentangHari;
-  };
-
-  // Kolom penutup: rata-rata sepanjang bulan terakhir yang ada datanya.
-  // "MtD" selama bulan belum tuntas, berubah jadi "FM" begitu hari terakhir
-  // bulan itu ikut terdata — jadi labelnya mengikuti data, bukan disetel manual.
-  const bulanTerakhir = tpData.tgl[nas[nas.length-1][0]].slice(0,7);
-  const hariBulanItu  = nas.filter(r=>tpData.tgl[r[0]].startsWith(bulanTerakhir));
-  const tglAkhir      = _tpD(tpData.tgl[hariBulanItu[hariBulanItu.length-1][0]]);
-  const akhirBulan    = new Date(tglAkhir.getFullYear(), tglAkhir.getMonth()+1, 0).getDate();
-  const bulanTuntas   = tglAkhir.getDate() === akhirBulan;
-  const namaBulan     = tglAkhir.toLocaleDateString('en-GB', {month:'short'});
-  const labelMtd      = `${bulanTuntas ? 'FM' : 'MtD'} ${namaBulan}`;
-  const idxBulanItu   = new Set(hariBulanItu.map(r=>r[0]));
-
-  const head = `<thead><tr><th>Week</th>` + urut.map(w=>{
-    const h = minggu.get(w);
-    return `<th>Week ${w}<small>${fmtTgl(h[0].t)} – ${fmtTgl(h[h.length-1].t)}</small></th>`;
-  }).join('') + `<th class="tp-rep-avg">${labelMtd}<small>${
-      bulanTuntas ? 'full month' : `1–${tglAkhir.getDate()} ${namaBulan}`
-    }</small></th></tr></thead>`;
-
-  const body = baris.map(b=>{
-    const seri = pilihBulan(tpData.lvl.ALL[b.key] || []);
-    const peta = Object.fromEntries(seri.map(r=>[r[0], r[2]?r[1]/r[2]:null]));
-    const nilai = urut.map(w=>{
-      const v = minggu.get(w).map(h=>peta[h.i]).filter(x=>x!=null);
-      return v.length ? v.reduce((a,c)=>a+c,0)/v.length : null;
-    });
-    const ada = nilai.filter(v=>v!=null);
-    const hi = ada.length>1 ? Math.max(...ada) : null;
-    const lo = ada.length>1 ? Math.min(...ada) : null;
-    // MtD dihitung ulang dari nilai harian bulan itu — bukan rata-rata dari
-    // angka mingguan, karena panjang tiap minggu berbeda (W1 sering 6 hari).
-    const harianBulan = seri.filter(r=>idxBulanItu.has(r[0]) && r[2]).map(r=>r[1]/r[2]);
-    const mtd = harianBulan.length
-      ? harianBulan.reduce((a,c)=>a+c,0)/harianBulan.length : null;
-
-    return `<tr><td class="tp-rep-lbl">${b.kode}</td>` + nilai.map((v,i)=>{
-      if(v==null) return `<td>—</td>`;
-      const kelas = [v===hi?'tp-hi':v===lo?'tp-lo':'',
-                     lengkapnya(urut[i])?'':'tp-parsial'].filter(Boolean).join(' ');
-      return `<td class="${kelas}">${v.toFixed(2).replace('.',',')}</td>`;
-    }).join('')
-    + `<td class="tp-rep-avg">${mtd==null?'—':mtd.toFixed(2).replace('.',',')}</td></tr>`;
-  }).join('');
-
-  $('tp-report-week').innerHTML = head + `<tbody>${body}</tbody>`;
-
-  const parsial = urut.filter(w=>!lengkapnya(w));
-  $('tp-week-legend').innerHTML =
-    `<span class="tp-rep-chip" style="background:rgba(22,101,52,.35)"></span>Highest Productivity
-     &nbsp;·&nbsp;
-     <span class="tp-rep-chip" style="background:rgba(153,27,27,.3)"></span>Lowest Productivity`
-    + (parsial.length
-        ? `&nbsp;·&nbsp;<span class="tp-rep-chip" style="background:rgba(212,144,26,.35)"></span>`
-          + `Week ${parsial.join(', ')} incomplete`
-        : '')
-    + `<br><span class="tp-source">Source: KPRO</span>`;
-}
-
-/* Report manajemen: tabel angka, varian ALL, baris Nasional + STO MJP.
-   Kolom terakhir memakai istilah "Nasional" sesuai kosakata pemilik data
-   (rata-rata dari nilai harian), dengan sub-label agar tidak tertukar dengan
-   baris "Nas". */
-function _tpRenderReport(pilihBulan){
-  const baris = [
-    {kode:'NAS', key:'NASIONAL|'},
-    {kode:'MJP', key:'STO|MJP'},
-  ];
-  const nas = pilihBulan(tpData.lvl.ALL['NASIONAL|'] || []);
-  if(!nas.length){ $('tp-report').innerHTML=''; return; }
-  const idx = nas.map(r=>r[0]);
-
-  // Nama hari yang memaksa kolom melebar ("Sab1" butuh 31px, "1,69" hanya 26px).
-  // Untuk periode panjang nama hari dilepas — Minggu tetap dikenali lewat warna.
-  const ringkas = idx.length > 16;
-  const head = `<thead><tr><th>${ringkas ? 'Tanggal' : 'Hari/Tanggal'}</th>` +
-    idx.map(i=>{ const d=_tpD(tpData.tgl[i]);
-      return ringkas
-        ? `<th class="${d.getDay()===0?'tp-th-min':''}" title="${TP_HARI[d.getDay()]} ${d.getDate()}">${d.getDate()}</th>`
-        : `<th>${TP_HARI[d.getDay()]}<br>${d.getDate()}</th>`; }).join('') +
-    `<th class="tp-rep-avg">Rata-rata</th></tr></thead>`;
-
-  const body = baris.map(b=>{
-    const seri = pilihBulan(tpData.lvl.ALL[b.key] || []);
-    const peta = Object.fromEntries(seri.map(r=>[r[0], r[2]?r[1]/r[2]:null]));
-    const nilai = idx.map(i=>peta[i] ?? null);
-    const ada = nilai.filter(v=>v!=null);
-    const hi = ada.length ? Math.max(...ada) : null;
-    const lo = ada.length ? Math.min(...ada) : null;
-    const avg = ada.length ? ada.reduce((x,y)=>x+y,0)/ada.length : null;
-    return `<tr>
-      <td class="tp-rep-lbl">${b.kode}</td>` +
-      nilai.map(v=>{
-        if(v==null) return `<td>—</td>`;
-        const c = v===hi ? ' tp-hi' : v===lo ? ' tp-lo' : '';
-        return `<td class="${c.trim()}">${v.toFixed(2).replace('.',',')}</td>`;
-      }).join('') +
-      `<td class="tp-rep-avg">${avg==null?'—':avg.toFixed(2).replace('.',',')}</td></tr>`;
-  }).join('');
-
-  // Sebulan penuh perlu kolom yang lebih rapat agar muat lebih banyak sekaligus
-  $('tp-report').classList.toggle('is-long', idx.length > 16);
-  $('tp-report').innerHTML = head + `<tbody>${body}</tbody>`;
-  const lg = $('tp-report').parentElement.nextElementSibling;
-  if(lg && lg.classList.contains('tp-rep-legend')) lg.remove();
-  $('tp-report').parentElement.insertAdjacentHTML('afterend',
-    `<div class="tp-rep-legend">
-       <span class="tp-rep-chip" style="background:rgba(22,101,52,.35)"></span>Highest Productivity
-       &nbsp;·&nbsp;
-       <span class="tp-rep-chip" style="background:rgba(153,27,27,.3)"></span>Lowest Productivity</div>`);
-}
-
-/* Nama sub-kendala panjang terpotong di kartu ("KENDALA IKR/I…"), jadi kepala
-   kategori bisa diklik untuk membuka panel berisi daftar LENGKAP dengan nama
-   utuh. Memakai drill panel yang sudah dipakai halaman KPI agar konsisten. */
-function tpOpenSymptom(kategori){
-  const {key, label} = _tpScope();
-  const E = tpData.err[key];
-  const v = E && E.kat ? E.kat[kategori] : null;
-  if(!v) return;
-  const WARNA = {'KENDALA PELANGGAN':'#991b1b','KENDALA TEKNIK':'#C4522A',
-                 'KENDALA LAINNYA':'#D4901A','FALLOUT HOMEPASS':'#4c1d6b',
-                 'KENDALA SISTEM':'#2A3F5E'};
-  const c = WARNA[kategori] || '#6B5E52';
-  const berkendala = E.n - E.ok;
-  const maxS = v.top.length ? v.top[0][1] : 1;
-
-  $('drillTitle').textContent = `⚠ ${kategori}`;
-  $('drillBody').innerHTML = `
-    <div style="display:flex;gap:10px;margin-bottom:16px">
-      <div style="flex:1;background:${c}14;border-left:3px solid ${c};border-radius:0 8px 8px 0;padding:10px 12px">
-        <div style="font-size:1.3rem;font-weight:800;color:${c};line-height:1.1">${v.n.toLocaleString('id-ID')}</div>
-        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Order</div>
-      </div>
-      <div style="flex:1;background:rgba(42,63,94,.06);border-radius:8px;padding:10px 12px">
-        <div style="font-size:1.3rem;font-weight:800;color:var(--navy);line-height:1.1">${(v.n/berkendala*100).toFixed(1)}%</div>
-        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Dari kendala</div>
-      </div>
-      <div style="flex:1;background:rgba(42,63,94,.06);border-radius:8px;padding:10px 12px">
-        <div style="font-size:1.3rem;font-weight:800;color:var(--navy);line-height:1.1">${v.top.length}</div>
-        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Jenis</div>
-      </div>
-    </div>
-    <div style="font-size:.73rem;color:var(--muted);margin-bottom:10px">
-      Cakupan: <strong style="color:var(--navy)">${label}</strong> · seluruh ${v.top.length} sub-kendala
-    </div>
-    <table class="hid-area-tbl">
-      <thead><tr><th style="text-align:left">Sub-kendala</th><th>Order</th><th>%</th></tr></thead>
-      <tbody>${v.top.map(([s,n],i)=>`
-        <tr>
-          <td style="text-align:left;line-height:1.4">
-            <span style="display:inline-block;width:18px;height:18px;border-radius:5px;background:${c}1f;
-                         color:${c};font-size:.62rem;font-weight:800;text-align:center;line-height:18px;
-                         margin-right:7px;vertical-align:1px">${i+1}</span>${s}
-            <div style="margin:5px 0 2px 25px;height:5px;background:rgba(42,63,94,.08);border-radius:99px;overflow:hidden">
-              <span style="display:block;height:100%;width:${(n/maxS*100).toFixed(0)}%;background:${c};border-radius:99px"></span>
-            </div>
-          </td>
-          <td class="tp-num" style="font-weight:700">${n.toLocaleString('id-ID')}</td>
-          <td class="tp-num" style="color:var(--muted)">${(n/v.n*100).toFixed(1)}%</td>
-        </tr>`).join('')}
-      </tbody>
-    </table>`;
-  $('drillOverlay').classList.add('show');
-  $('drillPanel').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-async function renderTechProd(){
-  if(!tpData){
-    $('tp-loading').style.display='block'; $('tp-main').style.display='none';
-    if(!await loadTechProd()) return;
-    $('tp-loading').style.display='none'; $('tp-main').style.display='block';
-
-    _tpOpt($('tp-f-bulan'), tpData.bulan.map(b=>{
-      const [y,m]=b.split('-'); return b;
-    }), 'Semua Bulan');
-    _tpOpt($('tp-f-area'), Object.keys(tpData.hier).sort(), 'Semua Area');
-    tpFilterChanged('area');
-    return;
-  }
-
-  const {key, label} = _tpScope();
-  const bulan = $('tp-f-bulan').value;
-  const pilihBulan = seri => bulan===TP_SEMUA
-    ? seri : seri.filter(r=>tpData.tgl[r[0]].slice(0,7)===bulan);
-
-  const seriVar = {};
-  TP_VAR.forEach(v=>{ seriVar[v.k] = pilihBulan(tpData.lvl[v.k][key] || []); });
-  const utama = seriVar.ALL;
-
-  // Report manajemen berdiri sendiri: cakupannya tetap, jadi dirender di luar
-  // cabang "tidak ada order pada cakupan ini" di bawah.
-  _tpRenderReport(pilihBulan);
-  _tpRenderWeekly(pilihBulan);
-
-  if(!utama.length){
-    $('tp-bn-scope').textContent = label;
-    $('tp-bn-prod').textContent  = '—';
-    $('tp-var3').innerHTML = `<div style="grid-column:1/-1;padding:20px;text-align:center;
-      color:var(--muted);font-size:.82rem">Tidak ada order pada cakupan ini.</div>`;
-    $('tp-err-top').innerHTML=''; $('tp-err-cat').innerHTML=''; $('tp-err-sub').innerHTML='';
-    $('tp-var3-note').textContent='';
-    if(chartInstances.techprod){ chartInstances.techprod.destroy(); chartInstances.techprod=null; }
-    return;
-  }
-
-  const prodAll = _tpAvg(utama);
-  $('tp-bn-scope').textContent = label;
-  $('tp-bn-prod').textContent  = prodAll.toFixed(2);
-
-  // ── CARD 1 — tiga varian ──
-  $('tp-var3').innerHTML = TP_VAR.map(v=>{
-    const s=seriVar[v.k], p=_tpAvg(s), o=s.reduce((t,r)=>t+r[1],0);
-    return `<div class="tp-var3-item${v.k==='ALL'?' is-all':''}">
-      <div class="tp-var3-lbl"><span class="tp-var3-dot" style="background:${v.c}"></span>${v.n}</div>
-      <div class="tp-var3-val">${p.toFixed(4)}</div>
-      <div class="tp-var3-sub">${o.toLocaleString('id-ID')} order</div>
-    </div>`;
-  }).join('');
-  $('tp-var3-note').innerHTML =
-    `Produktivitas = order ÷ teknisi unik pada tanggal tersebut; angka periode adalah rata-rata nilai harian.
-     <strong>Homepass dan Reguler tidak menjumlah menjadi All</strong> — teknisi yang mengerjakan kedua
-     jenis masuk ke penyebut keduanya, sehingga All justru lebih tinggi.`;
-
-  const labels = utama.map(r=>{ const d=_tpD(tpData.tgl[r[0]]); return `${TP_HARI[d.getDay()]} ${d.getDate()}`; });
-  const cv=$('ch_techprod');
-  if(cv){
-    if(chartInstances.techprod) chartInstances.techprod.destroy();
-    chartInstances.techprod = new Chart(cv,{
-      type:'line',
-      data:{labels, datasets:TP_VAR.map(v=>({
-        label:v.n,
-        data:utama.map(r=>{ const m=seriVar[v.k].find(x=>x[0]===r[0]); return m&&m[2]?m[1]/m[2]:null; }),
-        borderColor:v.c, backgroundColor:v.c+'15', borderWidth:2.5,
-        tension:.35, pointRadius:4, pointHoverRadius:8, fill:v.k==='ALL'
-      }))},
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{position:'top',labels:{font:{size:11},padding:14}},
-          tooltip:{callbacks:{label:c=>{
-            const v=TP_VAR[c.datasetIndex], m=seriVar[v.k].find(x=>x[0]===utama[c.dataIndex][0]);
-            return ` ${v.n}: ${c.parsed.y.toFixed(4)}  (${m[1].toLocaleString('id-ID')} ÷ ${m[2].toLocaleString('id-ID')})`;
-          }}},
-          datalabels:{display:false}},
-        scales:{y:{ticks:{callback:v=>v.toFixed(2)},grid:{color:'#f0ebe3'}},x:{grid:{display:false}}}}});
-  }
-
-  // ── CARD 3 — kendala ──
-  // Ringkasan kendala tidak dipecah per bulan; datanya satu periode penuh.
-  const E = tpData.err[key];
-  if(!E){ $('tp-err-top').innerHTML=''; $('tp-err-cat').innerHTML=''; $('tp-err-sub').innerHTML=''; return; }
-  const berkendala = E.n - E.ok;
-  $('tp-err-top').innerHTML = `
-    <div class="tp-err-box tot"><div class="tp-err-val">${E.n.toLocaleString('id-ID')}</div>
-      <div class="tp-err-lbl">Total Order</div></div>
-    <div class="tp-err-box ok"><div class="tp-err-val">${E.ok.toLocaleString('id-ID')}</div>
-      <div class="tp-err-lbl">Tanpa Kendala · ${(E.ok/E.n*100).toFixed(1)}%</div></div>
-    <div class="tp-err-box bad"><div class="tp-err-val">${berkendala.toLocaleString('id-ID')}</div>
-      <div class="tp-err-lbl">Ada Kendala · ${(berkendala/E.n*100).toFixed(1)}%</div></div>`;
-
-  const KAT = Object.entries(E.kat || {}).sort((a,b)=>b[1].n-a[1].n);
-  const WARNA = {'KENDALA PELANGGAN':'#991b1b','KENDALA TEKNIK':'#C4522A',
-                 'KENDALA LAINNYA':'#D4901A','FALLOUT HOMEPASS':'#4c1d6b',
-                 'KENDALA SISTEM':'#2A3F5E'};
-  const warna = k => WARNA[k] || '#6B5E52';
-  const maxN = KAT.length ? KAT[0][1].n : 1;
-
-  // Ringkasan kategori
-  $('tp-err-cat').innerHTML = KAT.length ? KAT.map(([k,v])=>`
-    <div class="tp-bar-row">
-      <span class="tp-bar-lbl">${k}</span>
-      <div class="tp-bar"><span style="width:${(v.n/maxN*100).toFixed(1)}%;background:${warna(k)}"></span></div>
-      <span class="tp-bar-n">${v.n.toLocaleString('id-ID')}</span>
-    </div>`).join('')
-    : `<div style="padding:14px;color:var(--muted);font-size:.8rem">Tidak ada kendala tercatat.</div>`;
-
-  // Rincian per symptom — top 5 di dalam masing-masing kategori
-  $('tp-err-sub').innerHTML = KAT.length ? KAT.map(([k,v])=>{
-    const c = warna(k);
-    const maxS = v.top.length ? v.top[0][1] : 1;
-    return `<div class="tp-sym">
-      <div class="tp-sym-head is-clickable" style="background:${c}"
-           onclick="tpOpenSymptom(${JSON.stringify(k).replace(/"/g,'&quot;')})"
-           title="Klik untuk melihat rincian lengkap">
-        <span class="tp-sym-name">${k}</span>
-        <span class="tp-sym-n">${v.n.toLocaleString('id-ID')} order ›</span>
-      </div>
-      <div class="tp-sym-body">${v.top.map(([s,n],i)=>`
-        <div class="tp-sym-row">
-          <span class="tp-sym-rank">${i+1}</span>
-          <span class="tp-sym-lbl" title="${s}">${s}</span>
-          <span class="tp-sym-bar"><span style="width:${(n/maxS*100).toFixed(0)}%;background:${c}"></span></span>
-          <span class="tp-sym-n2">${n.toLocaleString('id-ID')}</span>
-          <span class="tp-sym-pct">${(n/v.n*100).toFixed(0)}%</span>
-        </div>`).join('')}
-      </div></div>`;
-  }).join('')
-    : `<div style="padding:14px;color:var(--muted);font-size:.8rem">Tidak ada rincian kendala.</div>`;
-
-}
-
 // ─── DATA MERGER ──────────────────────────────────────────────────────────────
 const MRG_MAX_FILES = 15;
 const MRG_XLSX_ROW_LIMIT = 1048575;   // Excel's hard cap, minus the header row
@@ -5503,8 +4188,8 @@ function _mrgFmtSize(bytes){
 /* Read one file into {headers, rows}. Excel → first sheet only.
    .txt is read the same way as .csv — SheetJS's string-mode CSV parser
    auto-detects the delimiter (comma, tab, semicolon, pipe) from the header
-   row, which matters here since some source exports (e.g. the technician
-   productivity feed) are pipe-delimited despite a .csv/.txt extension. */
+   row, which matters here since some source exports are pipe-delimited
+   despite a .csv/.txt extension. */
 function _mrgReadFile(file){
   return new Promise(resolve => {
     const ext = file.name.split('.').pop().toLowerCase();
@@ -6281,9 +4966,6 @@ async function clearDashboardCache(){
   const btn = document.querySelector('[onclick="clearDashboardCache()"]');
   const orig = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳ Loading…'; btn.disabled=true; }
-  // Data teknisi kini memakai cache browser agar tidak mengunduh 440 KB tiap
-  // kunjungan; tombol ini jadi satu-satunya cara memaksa muat ulang.
-  tpData = null;
   let data2025 = null, data2026 = null;
   try {
     const [r25, r26] = await Promise.all([
@@ -7197,9 +5879,7 @@ function renderKpi2026Checklist(){
 function showErr(elId,msg){ const el=$(elId); if(el) el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">⚠ ${msg}</div>`; }
 
 async function init(){
-  const [homeRes,kpi2025Res,kpi2026Res,projRes]=await Promise.allSettled([fetchJSON(DATA.home),fetchJSON(DATA.kpis2025),fetchJSON(DATA.kpis2026),fetchJSON(DATA.projects)]);
-  if(homeRes.status==='fulfilled') renderHome(homeRes.value);
-  else renderHomeIDPage(); // static data always available
+  const [kpi2025Res,kpi2026Res,projRes]=await Promise.allSettled([fetchJSON(DATA.kpis2025),fetchJSON(DATA.kpis2026),fetchJSON(DATA.projects)]);
   // 2025 and 2026 KPI data are independent fetches — one failing (e.g. no
   // 2025 file exists yet) must not block the other page from rendering.
   // A missing file (404) here just means that year hasn't been processed
@@ -7235,13 +5915,6 @@ const DP_ITEMS = {
     { id:'kpi-nc-dl',        title:'NC download button in Not Comply panel', desc:'Download NC button added to the Not Comply Breakdown panel. Downloads NC_{KPI}_{period}.csv with full hierarchy: Area | Regional | Branch | STO | Comply | Not Comply | Total | SLA% | Status.' },
     { id:'kpi-bar-labels',   title:'Bar chart values always visible',        desc:'Month-to-month trend chart bars now show SLA% values permanently (size 9 bold, white background), not only on hover.' },
   ],
-  homeid: [
-    { id:'hid-banner',    title:'Page banner header',             desc:'Gradient banner at top of Home ID page showing Total RE, PS Rate, Valid Rate, and Fallout % key stats.' },
-    { id:'hid-layout',    title:'3-card row layout',              desc:'Installation Flow, Avg Duration, and Fallout Breakdown now appear side-by-side in one row.' },
-    { id:'hid-fallout',   title:'Fallout Breakdown card',         desc:'New card showing Fallout split: Teknik / Pelanggan / Lainnya / Other / Blank with count and percentage.' },
-    { id:'hid-compact',   title:'Installation Flow compacted',    desc:'Resized from 920×560 to 720×440. Card no longer dominates the screen.' },
-    { id:'hid-durfilter', title:'Duration Matrix package filter',  desc:'Filter buttons — All / Indihome Reg / Home ID — above the duration matrix table. Each shows its own data set.' },
-  ],
   backend: [
     { id:'be-pushui',     title:'push_ui.py created',             desc:'Standalone script to push only index.html to GitHub (~3 sec). Run after UI edits: python3 push_ui.py' },
     { id:'be-ttrffg-csv', title:'TTRFFG CSV export in update_dashboard.py', desc:'Added build_ttrffg_raw_csv() and build_ttrffg_detail_csv(). Pushes data/ttrffg_raw_{period}.csv and data/ttrffg_detail_{period}.csv during monthly update run.' },
@@ -7274,7 +5947,7 @@ function dpRenderGroup(containerId, items){
 
 function dpUpdateProgress(){
   const state = dpLoad();
-  const allItems = [...DP_ITEMS.kpi, ...DP_ITEMS.homeid, ...DP_ITEMS.backend];
+  const allItems = [...DP_ITEMS.kpi, ...DP_ITEMS.backend];
   const total = allItems.length;
   const done  = allItems.filter(i=>state[i.id]).length;
   const lbl = $('dp-progress-label');
@@ -7297,14 +5970,12 @@ function dpResetAll(){
   if(!confirm('Reset all checkboxes?')) return;
   localStorage.removeItem(DP_STORAGE_KEY);
   dpRenderGroup('dp-group-kpi',     DP_ITEMS.kpi);
-  dpRenderGroup('dp-group-homeid',  DP_ITEMS.homeid);
   dpRenderGroup('dp-group-backend', DP_ITEMS.backend);
   dpUpdateProgress();
 }
 
 function renderDevProgress(){
   dpRenderGroup('dp-group-kpi',     DP_ITEMS.kpi);
-  dpRenderGroup('dp-group-homeid',  DP_ITEMS.homeid);
   dpRenderGroup('dp-group-backend', DP_ITEMS.backend);
   dpUpdateProgress();
 }
