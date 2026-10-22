@@ -235,6 +235,63 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
 .btn-export:hover{transform:translateY(-1px)}
 .empty-state{text-align:center;padding:40px;color:var(--muted);font-size:.85rem}
 
+/* ── PROJECT TRACKER — readability + summary pass ───────────────────────────
+   Everything is scoped to #page-tracker: the bare table/thead rules above are
+   global (every KPI table inherits them), so overriding them here keeps the
+   rest of the dashboard untouched. Colors were checked against WCAG contrast
+   (text >= 4.5, icons/borders >= 3). The old amber "Medium" text was 2.6, the
+   drag handle / delete icon / progress track were 1.6-1.8. */
+/* #main/.content are flex items with min-width:auto, so a wide table would stretch the whole page; let the table scroll in its own wrapper instead. */
+#main:has(#page-tracker.active),#main:has(#page-tracker.active) .content{min-width:0}
+#page-tracker .pt-toolbar h2{font-size:1.15rem}
+#page-tracker .search-input{font-size:.92rem;padding:8px 14px;width:240px}
+#page-tracker .btn-add{font-size:.92rem;padding:9px 18px}
+#page-tracker .pt-table-wrap table{min-width:1260px}
+#page-tracker thead th{font-size:.78rem;letter-spacing:.35px;padding:11px 12px}
+#page-tracker tbody td{font-size:.95rem;padding:12px;line-height:1.35}
+#page-tracker tbody tr.main-row{background:#fff}
+#page-tracker tbody tr.main-row:hover{background:#FBF7F0}
+#page-tracker tbody tr.sub-row{background:#EEF2F6}
+#page-tracker tbody tr.sub-row:hover{background:#E4EBF2}
+#page-tracker tbody tr.sub-row td{font-size:.9rem;padding:10px 12px}
+#page-tracker .editable:hover{background:rgba(42,63,94,.08);border-radius:4px}
+#page-tracker .pt-status,#page-tracker .pt-priority{font-size:.8rem;padding:4px 11px;font-weight:700}
+#page-tracker tr.sub-row .pt-status,#page-tracker tr.sub-row .pt-priority{font-size:.76rem;padding:3px 9px}
+#page-tracker .pt-status.not-started{background:#E5E7EB;color:#374151}
+#page-tracker .pt-priority.high{background:#FBE4E0;color:#9B2C1F}
+#page-tracker .pt-priority.medium{background:#FDEFC8;color:#7A4F00}
+#page-tracker .pt-priority.low{background:#DDF0E2;color:#1F6B3A}
+#page-tracker .drag-handle{color:#8B7D6F;font-size:1.15rem}
+#page-tracker .drag-handle:hover{color:var(--navy)}
+#page-tracker .btn-del{color:#8B7D6F;opacity:1;font-size:1.15rem}
+#page-tracker .btn-del:hover{color:var(--red);background:rgba(168,48,32,.1)}
+#page-tracker .row-expand{font-size:1.05rem;padding:2px 6px}
+#page-tracker .btn-add-sub,#page-tracker .btn-notes{font-size:.82rem;padding:4px 10px;color:var(--navy);border-color:#8B7D6F}
+#page-tracker .btn-notes.has-notes{border-color:var(--navy);background:rgba(42,63,94,.1);font-weight:700}
+.pt-prog{display:flex;flex-direction:column;gap:3px;min-width:130px}
+.pt-prog-row{display:flex;align-items:center;gap:8px}
+.pt-prog-track{width:84px;height:9px;background:#D8D2C4;border-radius:99px;overflow:hidden;flex-shrink:0}
+.pt-prog-fill{height:100%;border-radius:99px}
+.pt-prog-pct{font-size:.88rem;font-weight:800;min-width:38px}
+.pt-prog-cap{font-size:.75rem;color:var(--muted)}
+.pt-summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 14px}
+.pt-card{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;text-align:left;font-family:inherit;color:var(--text);transition:border-color .15s,box-shadow .15s}
+.pt-card:hover{border-color:var(--navy)}
+.pt-card:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.pt-card .n{display:block;font-size:1.9rem;font-weight:800;line-height:1.1;color:var(--navy)}
+.pt-card .l{display:block;font-size:.88rem;font-weight:700;margin-top:2px}
+.pt-card .s{display:block;font-size:.78rem;color:var(--muted);margin-top:2px}
+.pt-card.alert .n{color:var(--red)}
+.pt-card.active{border-color:var(--navy);box-shadow:0 0 0 2px rgba(42,63,94,.28);background:#EEF2F6}
+.pt-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:12px}
+.pt-filters label{display:block;font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:3px}
+.pt-filters select{padding:7px 10px;font-size:.92rem;border:1.5px solid #8B7D6F;border-radius:8px;background:#fff;color:var(--text);min-width:140px;font-family:inherit}
+.pt-filters .pt-reset{padding:8px 14px;font-size:.88rem;font-weight:700;border:1.5px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);cursor:pointer;font-family:inherit}
+.pt-filters .pt-reset:hover{background:var(--navy);color:#fff}
+.pt-count{margin-left:auto;font-size:.9rem;color:var(--muted)}
+#saveBanner{background:#FFF4D6;border-color:#E3B341;color:#6B4700;font-size:.88rem;gap:12px}
+@media (max-width:900px){.pt-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 /* ── DATA CONVERTER ─────────────────────────────────────────────────────────── */
 .conv-drop-zone{border:3px dashed var(--border);border-radius:16px;background:var(--card);padding:56px 32px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .conv-drop-zone:hover,.conv-drop-zone.drag-over{border-color:var(--teal);background:rgba(127,29,29,.05)}
@@ -1295,19 +1352,32 @@ tr.drop-below{box-shadow:inset 0 -3px 0 0 var(--teal)}
               <button class="btn-add" onclick="openAddProjectModal()">+ Add Project</button>
             </div>
           </div>
+          <div class="save-bar" id="saveBanner" style="display:none">
+            <span>💾 Changes are saved in this browser only. Other people won't see them until you export and publish projects.json.</span>
+            <button class="btn-export" onclick="exportProjects()">Export</button>
+          </div>
+          <div class="pt-summary" id="ptSummary"></div>
+          <div class="pt-filters">
+            <div><label for="ptFStatus">Status</label><select id="ptFStatus" onchange="ptSetFilter('status',this.value)"></select></div>
+            <div><label for="ptFPriority">Priority</label><select id="ptFPriority" onchange="ptSetFilter('priority',this.value)"></select></div>
+            <div><label for="ptFPic" title="Matches the project PIC or any of its subtask PICs">PIC</label><select id="ptFPic" onchange="ptSetFilter('pic',this.value)"></select></div>
+            <div><label for="ptFCategory">Category</label><select id="ptFCategory" onchange="ptSetFilter('category',this.value)"></select></div>
+            <button class="pt-reset" onclick="ptResetFilters()">Reset filters</button>
+            <span class="pt-count" id="ptCount"></span>
+          </div>
           <div class="pt-table-wrap">
             <table>
               <thead><tr>
-                <th style="width:28px"></th>
-                <th style="width:28%">Project</th>
-                <th style="width:130px">Sub Task</th>
-                <th style="width:100px">PIC</th>
-                <th style="width:90px">Priority</th>
-                <th style="width:100px">Start Date</th>
-                <th style="width:110px">Due Date</th>
-                <th style="width:130px">Progress</th>
-                <th style="width:100px">Category</th>
-                <th style="width:36px"></th>
+                <th style="width:34px"></th>
+                <th style="width:260px">Project</th>
+                <th style="width:150px">Sub Task</th>
+                <th style="width:120px">PIC</th>
+                <th style="width:115px">Priority</th>
+                <th style="width:115px">Start Date</th>
+                <th style="width:125px">Due Date</th>
+                <th style="width:170px">Progress</th>
+                <th style="width:115px">Category</th>
+                <th style="width:44px"></th>
               </tr></thead>
               <tbody id="projectTable"></tbody>
             </table>
@@ -3646,29 +3716,56 @@ function loadProjects(data){
     const pn=parseInt((p.id||'').replace(/\D/g,'')); if(pn>_maxId) _maxId=pn;
     if(!p.id) p.id='p'+(++projectIdCounter);
     (p.subtasks||[]).forEach(s=>{ const sn=parseInt((s.id||'').replace(/\D/g,'')); if(sn>_maxId) _maxId=sn; if(!s.id) s.id='s'+(++projectIdCounter); });
-    p.subtasks=p.subtasks||[]; p._open=false;
+    p.subtasks=p.subtasks||[]; p._open=false; _syncRollup(p);
   });
   projectIdCounter=_maxId;
+  if(projectsDirty){ const b=$('saveBanner'); if(b) b.style.display='flex'; }
 }
 
 function renderTracker(){
-  renderTable(allProjects);
+  renderTable(getFiltered());
 }
 
 function _fmtDate(val){ if(!val) return '—'; const d=new Date(val); return isNaN(d)?val:d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
-function _isOverdue(val,status){ if(!val||status==='Completed'||status==='Cancelled') return false; return new Date(val)<new Date(); }
+function _todayISO(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+// Compared as calendar dates, not timestamps: a due date of today is not overdue until tomorrow.
+function _isOverdue(val,status){
+  if(!val||status==='Completed'||status==='Cancelled') return false;
+  const v=String(val).slice(0,10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(v) ? v<_todayISO() : new Date(val)<new Date();
+}
+function _daysLeft(val){
+  const v=String(val||'').slice(0,10); if(!/^\d{4}-\d{2}-\d{2}$/.test(v)) return null;
+  return Math.round((new Date(v+'T00:00:00')-new Date(_todayISO()+'T00:00:00'))/86400000);
+}
+const _progColor = v => v>=100 ? '#166534' : '#2A3F5E';
 function _progressSlider(id, val, isSub, parentId){
   const v=val!=null?val:0;
-  const color=v>=100?'#16a34a':v>=50?'var(--teal)':'#d97706';
   const subArgs=isSub?`,true,'${parentId}'`:'';
-  return `<div style="display:flex;align-items:center;gap:6px;min-width:120px">
-    <input type="range" min="0" max="100" value="${v}"
-      style="width:72px;cursor:pointer;accent-color:${color}"
-      oninput="this.nextElementSibling.textContent=this.value+'%';this.style.accentColor=this.value>=100?'#16a34a':this.value>=50?'var(--teal)':'#d97706'"
+  return `<div class="pt-prog-row" style="min-width:130px">
+    <input type="range" min="0" max="100" value="${v}" aria-label="Progress"
+      style="width:84px;cursor:pointer;accent-color:${_progColor(v)}"
+      oninput="this.nextElementSibling.textContent=this.value+'%';this.style.accentColor=this.value>=100?'#166534':'#2A3F5E';this.nextElementSibling.style.color=this.style.accentColor"
       onchange="updateField('${id}','progress',parseInt(this.value)${subArgs});saveLocal()">
-    <span style="font-size:.72rem;font-weight:600;color:${color};min-width:30px">${v}%</span>
+    <span class="pt-prog-pct" style="color:${_progColor(v)}">${v}%</span>
   </div>`;
 }
+// ── Project progress = average of its subtasks ──
+// A Completed subtask counts as 100; Cancelled subtasks are left out. Projects
+// without (active) subtasks keep their manual slider.
+function _subPct(s){ return s.status==='Completed' ? 100 : Math.max(0,Math.min(100,+s.progress||0)); }
+function _activeSubs(p){ return (p.subtasks||[]).filter(s=>s.status!=='Cancelled'); }
+function _rollup(p){ const a=_activeSubs(p); return a.length ? Math.round(a.reduce((t,s)=>t+_subPct(s),0)/a.length) : null; }
+function _syncRollup(p){ const r=_rollup(p); if(r!==null) p.progress=r; }
+function _projProgressCell(p){
+  const r=_rollup(p);
+  if(r===null) return _progressSlider(p.id, p.progress, false, '');
+  const n=_activeSubs(p).length;
+  return `<div class="pt-prog" title="Calculated automatically: average progress of ${n} active subtask${n>1?'s':''} (completed = 100%, cancelled not counted). Edit the subtasks to change it.">
+    <div class="pt-prog-row"><div class="pt-prog-track"><div class="pt-prog-fill" style="width:${r}%;background:${_progColor(r)}"></div></div><span class="pt-prog-pct" style="color:${_progColor(r)}">${r}%</span></div>
+    <span class="pt-prog-cap">auto · ${n} subtask${n>1?'s':''}</span></div>`;
+}
+function _refreshProjProgress(p){ const c=document.getElementById('pprog_'+p.id); if(c) c.innerHTML=_projProgressCell(p); }
 
 function _attachDrag(row, type, id, parentId){
   row.draggable=true;
@@ -3716,6 +3813,7 @@ function _attachDrag(row, type, id, parentId){
 function renderTable(projects){
   const tbody=$('projectTable');
   tbody.innerHTML='';
+  _ptBuildFilters(); _renderPtSummary(); $('ptCount').textContent=`Showing ${projects.length} of ${allProjects.length} project${allProjects.length===1?'':'s'}`;
   $('noProjects').style.display=projects.length?'none':'block';
 
   // Render in stored array order — NOT re-sorted here. allProjects is sorted
@@ -3741,21 +3839,21 @@ function renderTable(projects){
       <td class="pt-name-cell" style="font-weight:600" title="${fmt(p.name)}">
         <span class="editable" onclick="editCell(this,'${p.id}','name')">${fmt(p.name)}</span>
         <span class="editable" onclick="editSelect(this,'${p.id}','status',STATUS_OPTIONS)" title="Click to change status" style="margin-left:6px;cursor:pointer">
-          <span class="pt-status ${cls}" style="font-size:.68rem;padding:2px 7px">${fmt(p.status)}</span>
+          <span class="pt-status ${cls}">${fmt(p.status)}</span>
         </span>
       </td>
       <td>
-        <button class="btn-add-sub" onclick="addSubtask('${p.id}')" style="font-size:.72rem;padding:3px 8px">+ Add</button>
-        ${subCount?`<span style="font-size:.72rem;color:var(--muted);margin-left:4px">${subCount} task${subCount>1?'s':''}</span>`:''}
+        <button class="btn-add-sub" onclick="addSubtask('${p.id}')">+ Add</button>
+        ${subCount?`<span style="font-size:.82rem;color:var(--muted);margin-left:4px">${subCount} task${subCount>1?'s':''}</span>`:''}
       </td>
       <td><span class="editable" onclick="editCell(this,'${p.id}','pic')">${fmt(p.pic)}</span></td>
       <td><span class="editable" onclick="editSelect(this,'${p.id}','priority',PRIORITY_OPTIONS)"><span class="pt-priority ${priCls}">● ${fmt(p.priority)}</span></span></td>
-      <td style="font-size:.8rem;color:var(--muted)">${_fmtDate(p.startDate)}</td>
-      <td style="color:${overdue?'var(--red)':'inherit'};font-weight:${overdue?600:400};font-size:.8rem">
+      <td style="font-size:.92rem;color:var(--muted)">${_fmtDate(p.startDate)}</td>
+      <td style="color:${overdue?'var(--red)':'inherit'};font-weight:${overdue?600:400};font-size:.92rem">
         <span class="editable" onclick="editDateCell(this,'${p.id}','dueDate')" title="Click to edit due date">${_fmtDate(p.dueDate)}${overdue?' ⚠':''}</span>${histIcon}
       </td>
-      <td>${_progressSlider(p.id, pct, false, '')}</td>
-      <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${p.id}','category')">${fmt(p.category)}</span></td>
+      <td id="pprog_${p.id}">${_projProgressCell(p)}</td>
+      <td style="color:var(--muted);font-size:.92rem"><span class="editable" onclick="editCell(this,'${p.id}','category')">${fmt(p.category)}</span></td>
       <td><button class="btn-del" onclick="deleteProject('${p.id}')" title="Delete">🗑️</button></td>`;
     tbody.appendChild(mainRow);
     _attachDrag(mainRow,'project',p.id,null);
@@ -3776,20 +3874,20 @@ function renderTable(projects){
         <td class="sub-indent pt-name-cell" title="${fmt(s.name)}">
           ↳ <span class="editable" onclick="editCell(this,'${s.id}','name',true,'${p.id}')">${fmt(s.name)}</span>
           <span class="editable" onclick="editSelect(this,'${s.id}','status',STATUS_OPTIONS,true,'${p.id}')" title="Click to change status" style="margin-left:4px;cursor:pointer">
-            <span class="pt-status ${sCls}" style="font-size:.62rem;padding:1px 5px">${fmt(s.status)}</span>
+            <span class="pt-status ${sCls}">${fmt(s.status)}</span>
           </span>
         </td>
         <td><button class="btn-notes ${s.notes||s.blockers?'has-notes':''}" onclick="openSubtaskNotes('${s.id}','${p.id}')" title="${s.notes||s.blockers?'View/edit notes':'Add notes'}">${s.notes||s.blockers?'📝':'📋'} <span>${s.notes||s.blockers?'Notes':'+ Notes'}</span></button></td>
         <td><span class="editable" onclick="editCell(this,'${s.id}','pic',true,'${p.id}')">${fmt(s.pic)}</span></td>
         <td><span class="editable" onclick="editSelect(this,'${s.id}','priority',PRIORITY_OPTIONS,true,'${p.id}')"><span class="pt-priority ${sPriCls}">● ${fmt(s.priority)}</span></span></td>
-        <td style="font-size:.8rem">
+        <td style="font-size:.88rem">
           <span class="editable" onclick="editDateCell(this,'${s.id}','startDate',true,'${p.id}')" title="Click to edit start date" style="color:var(--muted)">${_fmtDate(s.startDate)||'—'}</span>
         </td>
-        <td style="color:${sOverdue?'var(--red)':'inherit'};font-weight:${sOverdue?600:400};font-size:.8rem">
+        <td style="color:${sOverdue?'var(--red)':'inherit'};font-weight:${sOverdue?600:400};font-size:.88rem">
           <span class="editable" onclick="editDateCell(this,'${s.id}','dueDate',true,'${p.id}')" title="Click to edit">${_fmtDate(s.dueDate)}${sOverdue?' ⚠':''}</span>${sHistIcon}
         </td>
         <td>${_progressSlider(s.id, sPct, true, p.id)}</td>
-        <td style="color:var(--muted);font-size:.8rem"><span class="editable" onclick="editCell(this,'${s.id}','category',true,'${p.id}')">${fmt(s.category)}</span></td>
+        <td style="color:var(--muted);font-size:.88rem"><span class="editable" onclick="editCell(this,'${s.id}','category',true,'${p.id}')">${fmt(s.category)}</span></td>
         <td><button class="btn-del" onclick="deleteSubtask('${p.id}','${s.id}')" title="Delete subtask">🗑️</button></td>`;
       tbody.appendChild(sr);
       _attachDrag(sr,'subtask',s.id,p.id);
@@ -3809,7 +3907,7 @@ function toggleSubs(pid){
 function editCell(el, id, field, isSub=false, parentId=null){
   const current=el.textContent.trim()==='—'?'':el.textContent.trim();
   const input=document.createElement('input');
-  input.value=current; input.style.cssText='border:1px solid var(--teal);border-radius:5px;padding:3px 7px;font-size:.83rem;width:120px;outline:none';
+  input.value=current; input.style.cssText='border:1px solid var(--teal);border-radius:5px;padding:4px 8px;font-size:.92rem;width:160px;outline:none';
   el.innerHTML=''; el.appendChild(input); input.focus(); input.select();
   let saved=false;
   const save=()=>{ if(saved) return; saved=true; const v=input.value.trim(); updateField(id,field,v,isSub,parentId); saveLocal(); renderTable(getFiltered()); };
@@ -3819,7 +3917,7 @@ function editCell(el, id, field, isSub=false, parentId=null){
 function editSelect(el, id, field, options, isSub=false, parentId=null){
   const cur=getFieldValue(id,field,isSub,parentId)||'';
   const sel=document.createElement('select');
-  sel.style.cssText='border:1px solid var(--teal);border-radius:5px;padding:3px 6px;font-size:.8rem;outline:none;cursor:pointer;background:#fff';
+  sel.style.cssText='border:1px solid var(--teal);border-radius:5px;padding:4px 7px;font-size:.9rem;outline:none;cursor:pointer;background:#fff';
   options.forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o;if(o===cur)opt.selected=true;sel.appendChild(opt);});
   el.innerHTML=''; el.appendChild(sel); sel.focus();
   // Stop propagation so parent onclick doesn't re-trigger editSelect while dropdown is open
@@ -3867,7 +3965,8 @@ function getFieldValue(id,field,isSub,parentId){
 }
 
 function updateField(id,field,value,isSub,parentId){
-  if(isSub){ const p=allProjects.find(p=>p.id===parentId); const s=p?.subtasks?.find(s=>s.id===id); if(s) s[field]=value; }
+  if(isSub){ const p=allProjects.find(p=>p.id===parentId); const s=p?.subtasks?.find(s=>s.id===id); if(s) s[field]=value;
+    if(p && (field==='progress'||field==='status')){ _syncRollup(p); _refreshProjProgress(p); } }
   else { const p=allProjects.find(p=>p.id===id); if(p) p[field]=value; }
   projectsDirty=true;
 }
@@ -3906,7 +4005,7 @@ function addSubtask(pid){
   const p=allProjects.find(p=>p.id===pid); if(!p) return;
   p.subtasks=p.subtasks||[];
   p.subtasks.push({id:'s'+(++projectIdCounter),name:'New Subtask',status:'Not Started',priority:p.priority||'Medium',pic:p.pic||'',startDate:p.startDate||'',dueDate:p.dueDate||'',progress:0,category:p.category||''});
-  p._open=true; projectsDirty=true; saveLocal(); renderTable(getFiltered());
+  _syncRollup(p); p._open=true; projectsDirty=true; saveLocal(); renderTable(getFiltered());
 }
 
 function deleteProject(pid){
@@ -3916,7 +4015,7 @@ function deleteProject(pid){
 
 function deleteSubtask(pid,sid){
   const p=allProjects.find(p=>p.id===pid); if(!p) return;
-  p.subtasks=p.subtasks.filter(s=>s.id!==sid); saveLocal(); renderTable(getFiltered());
+  p.subtasks=p.subtasks.filter(s=>s.id!==sid); _syncRollup(p); saveLocal(); renderTable(getFiltered());
 }
 
 let _stNotesId=null, _stNotesPid=null;
@@ -4455,11 +4554,86 @@ function exportProjects(){
 }
 
 function filterProjects(q){ renderTable(getFiltered(q)); }
+const ptF={status:'',priority:'',pic:'',category:'',quick:''};
+const _OPEN = st => st!=='Completed' && st!=='Cancelled';
+function _ptFlags(p){
+  const subs=p.subtasks||[], own=_OPEN(p.status), dl=_daysLeft(p.dueDate);
+  const soon=(d,st)=>_OPEN(st)&&d!==null&&d>=0&&d<=7;
+  const f={
+    overdueSelf:_isOverdue(p.dueDate,p.status), soonSelf:soon(dl,p.status),
+    overdueSubs:subs.filter(s=>_isOverdue(s.dueDate,s.status)).length,
+    soonSubs:subs.filter(s=>soon(_daysLeft(s.dueDate),s.status)).length,
+    blockedSubs:subs.filter(s=>_OPEN(s.status)&&(s.blockers||'').trim()).length };
+  f.overdue=f.overdueSelf||f.overdueSubs>0; f.soon=f.soonSelf||f.soonSubs>0; f.blocked=f.blockedSubs>0;
+  return f;
+}
+function _ptMatch(p){
+  if(ptF.status && p.status!==ptF.status) return false;
+  if(ptF.priority && p.priority!==ptF.priority) return false;
+  if(ptF.category && p.category!==ptF.category) return false;
+  if(ptF.pic && p.pic!==ptF.pic && !(p.subtasks||[]).some(s=>s.pic===ptF.pic)) return false;
+  if(ptF.quick){
+    const f=_ptFlags(p);
+    if(ptF.quick==='inprogress' && p.status!=='In Progress') return false;
+    if(ptF.quick==='overdue' && !f.overdue) return false;
+    if(ptF.quick==='soon' && !f.soon) return false;
+    if(ptF.quick==='blocked' && !f.blocked) return false;
+  }
+  return true;
+}
 function getFiltered(q=''){
   const qEl=document.querySelector('.search-input'); if(!q&&qEl) q=qEl.value;
-  let list=allProjects;
+  let list=allProjects.filter(_ptMatch);
   if(q){ const lq=q.toLowerCase(); list=list.filter(p=>(p.name||'').toLowerCase().includes(lq)||(p.pic||'').toLowerCase().includes(lq)||(p.category||'').toLowerCase().includes(lq)); }
   return list;
+}
+function ptSetFilter(key,val){ ptF[key]=val; renderTable(getFiltered()); }
+function ptQuick(k){ ptF.quick = ptF.quick===k ? '' : k; renderTable(getFiltered()); }
+function ptResetFilters(){
+  ptF.status=ptF.priority=ptF.pic=ptF.category=ptF.quick='';
+  const qEl=document.querySelector('.search-input'); if(qEl) qEl.value='';
+  renderTable(getFiltered());
+}
+// Dropdown options come from the data. Options are only rebuilt when the set
+// changes (rewriting innerHTML wipes the current selection), and each build
+// uses new Option() so a project name can never inject markup.
+function _ptBuildFilters(){
+  const uniq=a=>[...new Set(a.filter(Boolean))].sort((x,y)=>String(x).localeCompare(String(y),'id',{sensitivity:'base'}));
+  const specs=[
+    ['ptFStatus','status','All statuses',STATUS_OPTIONS],
+    ['ptFPriority','priority','All priorities',PRIORITY_OPTIONS],
+    ['ptFPic','pic','All PICs',uniq(allProjects.flatMap(p=>[p.pic,...(p.subtasks||[]).map(s=>s.pic)]))],
+    ['ptFCategory','category','All categories',uniq(allProjects.map(p=>p.category))],
+  ];
+  specs.forEach(([id,key,label,items])=>{
+    const sel=$(id); if(!sel) return;
+    const sig=items.join('\u0001');
+    if(sel.dataset.sig!==sig){
+      sel.innerHTML=''; sel.appendChild(new Option(label,''));
+      items.forEach(v=>sel.appendChild(new Option(v,v)));
+      sel.dataset.sig=sig;
+    }
+    if(!items.includes(ptF[key])) ptF[key]='';
+    sel.value=ptF[key];
+  });
+}
+function _renderPtSummary(){
+  const el=$('ptSummary'); if(!el) return;
+  const all=allProjects, fl=all.map(_ptFlags);
+  const cnt=pred=>all.filter(pred).length;
+  const sum=k=>fl.reduce((t,f)=>t+f[k],0);
+  const cards=[
+    {k:'',            n:all.length,                                  l:'Total projects', s:`${cnt(p=>p.status==='Completed')} completed`},
+    {k:'inprogress',  n:cnt(p=>p.status==='In Progress'),            l:'In progress',    s:`${cnt(p=>p.status==='Not Started')} not started · ${cnt(p=>p.status==='On Hold')} on hold`},
+    {k:'overdue',     n:fl.filter(f=>f.overdue).length,              l:'Overdue',        s:`${fl.filter(f=>f.overdueSelf).length} project · ${sum('overdueSubs')} subtask`, alert:true},
+    {k:'soon',        n:fl.filter(f=>f.soon).length,                 l:'Due in 7 days',  s:`${fl.filter(f=>f.soonSelf).length} project · ${sum('soonSubs')} subtask`},
+    {k:'blocked',     n:fl.filter(f=>f.blocked).length,              l:'Blocked',        s:`${sum('blockedSubs')} subtask with a blocker`, alert:true},
+  ];
+  el.innerHTML=cards.map(c=>{
+    const on = c.k ? ptF.quick===c.k : !ptF.quick;
+    return `<button type="button" class="pt-card${c.alert&&c.n?' alert':''}${on?' active':''}" onclick="ptQuick('${c.k}')" aria-pressed="${on}">
+      <span class="n">${c.n}</span><span class="l">${c.l}</span><span class="s">${c.s}</span></button>`;
+  }).join('');
 }
 
 // ─── DRILL PANEL ─────────────────────────────────────────────────────────────
