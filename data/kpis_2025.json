@@ -1,7 +1,7 @@
 {
   "last_updated": "202609",
   "last_updated_label": "September 2026",
-  "generated_at": "2026-10-07T09:37:06",
+  "generated_at": "2026-10-24T10:02:41",
   "months": {
     "202601": {
       "FFGGAUL": {
@@ -351646,7 +351646,7 @@
                     "pct": 0.5
                   },
                   {
-                    "label": "TSEL - TELKOM - PEKERJAAN PIHAK KE-3",
+                    "label": "TELKOM - ONT/MODEM FISIK",
                     "n": 2,
                     "pct": 0.3
                   }
@@ -351806,11 +351806,11 @@
                   "n": 153
                 },
                 {
-                  "word": "internet",
+                  "word": "gangguan",
                   "n": 142
                 },
                 {
-                  "word": "gangguan",
+                  "word": "internet",
                   "n": 142
                 }
               ]
@@ -352304,11 +352304,11 @@
                   "n": 240
                 },
                 {
-                  "word": "contact",
+                  "word": "snipboard",
                   "n": 236
                 },
                 {
-                  "word": "snipboard",
+                  "word": "contact",
                   "n": 236
                 }
               ]
