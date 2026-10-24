@@ -39367,7 +39367,7 @@ Periode;tsel_area;tsel_regional;tsel_branch;tsel_cluster;tsel_region_network;tse
 202602;AREA 3;JATENG;PEKALONGAN;BATANG;JAWA TENGAH DAN DIY;PEKALONGAN;BDY;AOi4260116023922928cd3e70;Manja;tgl_manja_awal tersedia (durasi negatif di-clamp ke 0 = Comply);358,21;Not Comply
 202602;AREA 1;SUMBAGUT;BINJAI;LANGSA;SUMBAGUT;BINJAI;LGS;AOi4260117071429046bc36f0;Manja;tgl_manja_awal tersedia (durasi negatif di-clamp ke 0 = Comply);859,28;Not Comply
 202602;AREA 1;SUMBAGUT;BANDA ACEH;ACEH SELATAN;SUMBAGUT;BANDA ACEH;SNA;AOi42601171038493999df260;Manja;tgl_manja_awal tersedia (durasi negatif di-clamp ke 0 = Comply);364,42;Not Comply
-202602;AREA 1;SUMBAGTENG;BATAM;BATAM;SUMBAGTENG;BATAM;LBJ;AOi426011712485444887fed0;Manja;tgl_manja_awal tersedia (durasi negatif di-clamp ke 0 = Comply);;Anomaly
+202602;AREA 1;SUMBAGTENG;BATAM;BATAM;SUMBAGTENG;BATAM;LBJ;AOi426011712485444887fed0;Manja;tgl_manja_awal tersedia (durasi negatif di-clamp ke 0 = Comply);0,00;Comply
 202602;AREA 1;SUMBAGSEL;JAMBI;SAROLANGUN;SUMBAGSEL;JAMBI;MBN;AOi426011802535406989ff90;Manja;tgl_manja_awal tersedia (durasi negatif di-clamp ke 0 = Comply);676,21;Not Comply
 202602;AREA 4;SULAWESI;MAKASSAR;KOTA MAKASSAR;SULAWESI;MAKASSAR;TMA;AOi4260121074808435dce820;Manja;tgl_manja_awal tersedia (durasi negatif di-clamp ke 0 = Comply);190,56;Not Comply
 202602;AREA 1;SUMBAGUT;BANDA ACEH;PIDIE BIREUN;SUMBAGUT;BANDA ACEH;SLG;AOi4260121085928030db9100;Manja;tgl_manja_awal tersedia (durasi negatif di-clamp ke 0 = Comply);125,45;Not Comply
