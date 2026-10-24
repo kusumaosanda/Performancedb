@@ -1,7 +1,7 @@
 {
   "last_updated": "202609",
   "last_updated_label": "September 2026",
-  "generated_at": "2026-10-24T10:02:50",
+  "generated_at": "2026-10-24T10:24:37",
   "months": {
     "202601": {
       "FFGGAUL": {
@@ -79859,17 +79859,17 @@
       },
       "TTI": {
         "total": 131240,
-        "comply": 100382,
+        "comply": 100383,
         "not_comply": 30837,
-        "anomaly": 21,
+        "anomaly": 20,
         "sla_pct": 76.5,
         "target": 95.5,
         "by_area": [
           {
             "area": "AREA 1",
-            "comply": 20521,
+            "comply": 20522,
             "not_comply": 11367,
-            "anomaly": 2,
+            "anomaly": 1,
             "sla_pct": 64.35,
             "by_regional": [
               {
@@ -80593,17 +80593,17 @@
               },
               {
                 "regional": "SUMBAGTENG",
-                "comply": 5176,
+                "comply": 5177,
                 "not_comply": 3675,
-                "anomaly": 1,
+                "anomaly": 0,
                 "sla_pct": 58.48,
                 "by_branch": [
                   {
                     "branch": "BATAM",
-                    "comply": 974,
+                    "comply": 975,
                     "not_comply": 552,
-                    "anomaly": 1,
-                    "sla_pct": 63.83,
+                    "anomaly": 0,
+                    "sla_pct": 63.85,
                     "by_sto": [
                       {
                         "sto": "BLP",
@@ -80663,10 +80663,10 @@
                       },
                       {
                         "sto": "LBJ",
-                        "comply": 187,
+                        "comply": 188,
                         "not_comply": 67,
-                        "anomaly": 1,
-                        "sla_pct": 73.62
+                        "anomaly": 0,
+                        "sla_pct": 73.73
                       },
                       {
                         "sto": "NGS",
@@ -89130,7 +89130,7 @@
           {
             "area": "AREA 1",
             "manja": {
-              "comply": 20521,
+              "comply": 20522,
               "not_comply": 11367
             },
             "pi": {
@@ -96488,7 +96488,7 @@
                   "n": 196
                 },
                 {
-                  "word": "input",
+                  "word": "boleh",
                   "n": 180
                 }
               ]
@@ -96725,11 +96725,11 @@
                   "n": 359
                 },
                 {
-                  "word": "pengukuran",
+                  "word": "hostname",
                   "n": 328
                 },
                 {
-                  "word": "hostname",
+                  "word": "pengukuran",
                   "n": 328
                 },
                 {
@@ -96737,11 +96737,11 @@
                   "n": 324
                 },
                 {
-                  "word": "details",
+                  "word": "mycx",
                   "n": 319
                 },
                 {
-                  "word": "mycx",
+                  "word": "details",
                   "n": 319
                 }
               ]
@@ -155437,11 +155437,11 @@
                   "n": 230
                 },
                 {
-                  "word": "details",
+                  "word": "mycx",
                   "n": 228
                 },
                 {
-                  "word": "mycx",
+                  "word": "details",
                   "n": 228
                 },
                 {
@@ -202353,8 +202353,8 @@
         ]
       },
       "FFG": {
-        "total": 131219,
-        "comply": 128071,
+        "total": 131220,
+        "comply": 128072,
         "not_comply": 3148,
         "anomaly": 0,
         "sla_pct": 97.6,
@@ -202362,7 +202362,7 @@
         "by_area": [
           {
             "area": "AREA 1",
-            "comply": 30975,
+            "comply": 30976,
             "not_comply": 913,
             "anomaly": 0,
             "sla_pct": 97.14,
@@ -203088,14 +203088,14 @@
               },
               {
                 "regional": "SUMBAGTENG",
-                "comply": 8658,
+                "comply": 8659,
                 "not_comply": 193,
                 "anomaly": 0,
                 "sla_pct": 97.82,
                 "by_branch": [
                   {
                     "branch": "BATAM",
-                    "comply": 1462,
+                    "comply": 1463,
                     "not_comply": 64,
                     "anomaly": 0,
                     "sla_pct": 95.81,
@@ -203158,10 +203158,10 @@
                       },
                       {
                         "sto": "LBJ",
-                        "comply": 242,
+                        "comply": 243,
                         "not_comply": 12,
                         "anomaly": 0,
-                        "sla_pct": 95.28
+                        "sla_pct": 95.29
                       },
                       {
                         "sto": "NGS",
@@ -270009,11 +270009,11 @@
                   "n": 287
                 },
                 {
-                  "word": "hostname",
+                  "word": "pengukuran",
                   "n": 139
                 },
                 {
-                  "word": "pengukuran",
+                  "word": "hostname",
                   "n": 139
                 },
                 {
@@ -330107,7 +330107,7 @@
                   "n": 336
                 },
                 {
-                  "word": "hostname",
+                  "word": "pengukuran",
                   "n": 163
                 },
                 {
@@ -330115,7 +330115,7 @@
                   "n": 163
                 },
                 {
-                  "word": "pengukuran",
+                  "word": "hostname",
                   "n": 163
                 },
                 {
@@ -330360,11 +330360,11 @@
                   "n": 452
                 },
                 {
-                  "word": "hostname",
+                  "word": "pengukuran",
                   "n": 331
                 },
                 {
-                  "word": "pengukuran",
+                  "word": "hostname",
                   "n": 331
                 },
                 {
@@ -330653,11 +330653,11 @@
                   "n": 196
                 },
                 {
-                  "word": "down",
+                  "word": "mycx",
                   "n": 195
                 },
                 {
-                  "word": "mycx",
+                  "word": "down",
                   "n": 195
                 }
               ]
@@ -349405,11 +349405,11 @@
                 "n": 1902
               },
               {
-                "word": "msisdn",
+                "word": "port",
                 "n": 1859
               },
               {
-                "word": "port",
+                "word": "msisdn",
                 "n": 1859
               },
               {
@@ -370036,11 +370036,11 @@
                   "n": 233
                 },
                 {
-                  "word": "msisdn",
+                  "word": "power",
                   "n": 222
                 },
                 {
-                  "word": "power",
+                  "word": "msisdn",
                   "n": 222
                 },
                 {
