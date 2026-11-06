@@ -1,7 +1,7 @@
 {
   "last_updated": "202610",
   "last_updated_label": "October 2026",
-  "generated_at": "2026-11-06T09:00:31",
+  "generated_at": "2026-11-06T09:08:54",
   "months": {
     "202601": {
       "FFGGAUL": {
@@ -280157,11 +280157,11 @@
                   "n": 321
                 },
                 {
-                  "word": "details",
+                  "word": "mycx",
                   "n": 307
                 },
                 {
-                  "word": "mycx",
+                  "word": "details",
                   "n": 307
                 },
                 {
@@ -351774,11 +351774,11 @@
                   "n": 207
                 },
                 {
-                  "word": "indihome",
+                  "word": "gpon",
                   "n": 197
                 },
                 {
-                  "word": "gpon",
+                  "word": "indihome",
                   "n": 197
                 },
                 {
@@ -352003,11 +352003,11 @@
               "avg_open_time": "13:04",
               "headline_keywords": [
                 {
-                  "word": "lapul",
+                  "word": "gaul",
                   "n": 488
                 },
                 {
-                  "word": "gaul",
+                  "word": "lapul",
                   "n": 488
                 },
                 {
